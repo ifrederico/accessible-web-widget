@@ -125,7 +125,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Version History
 
-- **1.0.1** - Improved color scheme for better accessibility (blue theme)
+- **1.0.2** - Improved color scheme for better accessibility (blue theme)
 - **1.0.0** - Initial release with core accessibility features
 
 ---
