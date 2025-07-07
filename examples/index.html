@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccessibleWeb Widget Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #886f60;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .feature {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #886f60;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        a {
+            color: #886f60;
+        }
+        a:hover {
+            color: #5f4e43;
+        }
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AccessibleWeb Widget Demo</h1>
+        
+        <p>This page demonstrates the AccessibleWeb Widget. Look for the accessibility button in the bottom-left corner of your screen.</p>
+        
+        <div class="warning">
+            <strong>⚠️ Disclaimer:</strong> This widget is provided "as is" without warranty. It does not guarantee compliance with accessibility laws or standards. See full disclaimer in the widget documentation.
+        </div>
+
+        <h2>Available Features</h2>
+        
+        <div class="feature-list">
+            <div class="feature">
+                <h3>Content Adjustments</h3>
+                <ul>
+                    <li>Increase text size (3 levels)</li>
+                    <li>Bold text</li>
+                    <li>Adjust line spacing</li>
+                    <li>Adjust letter spacing</li>
+                    <li>Dyslexia-friendly font</li>
+                    <li>Hide images</li>
+                </ul>
+            </div>
+            
+            <div class="feature">
+                <h3>Color Adjustments</h3>
+                <ul>
+                    <li>Dark contrast</li>
+                    <li>Light contrast</li>
+                    <li>Invert colors</li>
+                    <li>High saturation</li>
+                    <li>Low saturation</li>
+                    <li>Monochrome</li>
+                </ul>
+            </div>
+            
+            <div class="feature">
+                <h3>Navigation Tools</h3>
+                <ul>
+                    <li>Highlight links</li>
+                    <li>Highlight headings</li>
+                    <li>Large cursor</li>
+                    <li>Reading guide</li>
+                    <li>Stop animations</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Test Content</h2>
+        
+        <p>This is a paragraph of text to test the various accessibility features. Try enabling different options from the accessibility menu to see how they affect this content.</p>
+        
+        <p>Here's a <a href="#demo">link to test</a> the link highlighting feature, and here's <a href="#another">another link</a> to see how multiple links are styled.</p>
+        
+        <h3>Subheading for Testing</h3>
+        
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+        
+        <ul>
+            <li>List item one</li>
+            <li>List item two</li>
+            <li>List item three with a <a href="#list-link">link inside</a></li>
+        </ul>
+
+        <h2>Implementation</h2>
+        
+        <p>To add this widget to your own website, simply add this script tag before the closing <code>&lt;/body&gt;</code> tag:</p>
+        
+        <pre><code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@latest/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code></pre>
+        
+        <p>The widget will automatically initialize and appear on your page.</p>
+    </div>
+
+    <!-- AccessibleWeb Widget -->
+    <script src="../dist/accessible-web-widget.min.js"></script>
+</body>
+</html>
