@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.0.0
+ * AccessibleWeb Widget v1.0.1
  * https://github.com/ifrederico/accessible-web-widget
  * 
  * Copyright (c) 2024 ifrederico
@@ -17,9 +17,9 @@ class AccessibleWebWidget {
     // ======================================================
     this.widgetTheme = {
       // Core colors
-      primaryColor: '#886f60',
-      primaryColorLight: '#b6a89e',
-      primaryColorDark: '#5f4e43',
+      primaryColor: '#1976d2',        // Accessible blue (WCAG AA compliant)
+      primaryColorLight: '#42a5f5',   // Lighter blue
+      primaryColorDark: '#0d47a1',    // Darker blue
       backgroundColor: '#f5f7fa',
       textColor: '#222222',
       textColorInverted: '#ffffff',
@@ -28,11 +28,11 @@ class AccessibleWebWidget {
       buttonSize: '34px',
       cardBackground: '#ffffff',
       borderColor: '#d1d5db',
-      focusRingColor: '#b6a89e',
+      focusRingColor: '#1976d2',      // Match primary
       
       // Interactive states
-      hoverColor: '#b6a89e',
-      activeColor: '#5f4e43',
+      hoverColor: '#42a5f5',          // Use light blue for hover
+      activeColor: '#0d47a1',         // Use dark blue for active
       
       // Feedback colors
       successColor: '#2e7d32', // Green
