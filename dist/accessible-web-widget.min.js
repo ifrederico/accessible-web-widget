@@ -2,7 +2,7 @@
  * AccessibleWeb Widget v1.0.2
  * https://github.com/ifrederico/accessible-web-widget
  * 
- * Copyright (c) 2024 ifrederico
+ * Copyright (c) 2025 ifrederico
  * Released under the MIT License
  * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
