@@ -553,6 +553,12 @@ enableReadingAid(enable = false) {
     const guideHeight = 100; // Height of the clear reading window
 
     if (enable) {
+      // Always clean up existing listener first to prevent duplicates
+      if (window.__accweb__scrollGuide) {
+        document.removeEventListener('mousemove', window.__accweb__scrollGuide);
+        delete window.__accweb__scrollGuide;
+      }
+
       if (!container) {
         // Create container but don't make it visible yet
         container = document.createElement('div');
@@ -560,46 +566,47 @@ enableReadingAid(enable = false) {
         container.setAttribute('aria-hidden', 'true');
         container.innerHTML = this.readingAidTemplate;
         document.body.prepend(container);
-
-        const rgTop = container.querySelector('.acc-rg-top');
-        const rgBottom = container.querySelector('.acc-rg-bottom');
-        
-        // Initially hide the guide completely
-        rgTop.style.display = 'none';
-        rgBottom.style.display = 'none';
-        this.readingAidVisible = false;
-
-        const updateGuidePosition = this.throttle((event) => {
-          // If first mouse movement after enabling, make the guide visible
-          if (!this.readingAidVisible) {
-            rgTop.style.display = 'block';
-            rgBottom.style.display = 'block';
-            this.readingAidVisible = true;
-          }
-          
-          // Position the guide at the mouse Y coordinate
-          const mouseY = event.clientY;
-          const topHeight = Math.max(0, mouseY - guideHeight / 2);
-          const bottomHeight = Math.max(0, window.innerHeight - (mouseY + guideHeight / 2));
-          rgTop.style.height = `${topHeight}px`;
-          rgBottom.style.height = `${bottomHeight}px`;
-        }, 16);
-
-        window.__accweb__scrollGuide = updateGuidePosition;
-        document.addEventListener('mousemove', updateGuidePosition, { passive: true });
-        
-        // No initial positioning - wait for mouse movement
       }
+
+      const rgTop = container.querySelector('.acc-rg-top');
+      const rgBottom = container.querySelector('.acc-rg-bottom');
+      
+      // Initially hide the guide completely
+      rgTop.style.display = 'none';
+      rgBottom.style.display = 'none';
+      this.readingAidVisible = false;
+
+      const updateGuidePosition = this.throttle((event) => {
+        // If first mouse movement after enabling, make the guide visible
+        if (!this.readingAidVisible) {
+          rgTop.style.display = 'block';
+          rgBottom.style.display = 'block';
+          this.readingAidVisible = true;
+        }
+        
+        // Position the guide at the mouse Y coordinate
+        const mouseY = event.clientY;
+        const topHeight = Math.max(0, mouseY - guideHeight / 2);
+        const bottomHeight = Math.max(0, window.innerHeight - (mouseY + guideHeight / 2));
+        rgTop.style.height = `${topHeight}px`;
+        rgBottom.style.height = `${bottomHeight}px`;
+      }, 16);
+
+      window.__accweb__scrollGuide = updateGuidePosition;
+      document.addEventListener('mousemove', updateGuidePosition, { passive: true });
     } else {
       // Reset visibility flag when disabled
       this.readingAidVisible = false;
       
+      // Clean up event listener
+      if (window.__accweb__scrollGuide) {
+        document.removeEventListener('mousemove', window.__accweb__scrollGuide);
+        delete window.__accweb__scrollGuide;
+      }
+      
+      // Remove container
       if (container) {
         container.remove();
-        if (window.__accweb__scrollGuide) {
-          document.removeEventListener('mousemove', window.__accweb__scrollGuide);
-          delete window.__accweb__scrollGuide;
-        }
       }
     }
   } catch (e) {
@@ -629,27 +636,6 @@ concealImages(enable = false) {
   }
 }
 
-  concealImages(enable = false) {
-    const styleId = `acc-hide-images`;
-    const existingStyle = document.getElementById(styleId);
-    if (existingStyle) existingStyle.remove();
-    document.documentElement.classList.toggle(styleId, enable);
-    if (enable) {
-      const css = `
-        body > *:not(.acc-container) img,
-        body > *:not(.acc-container) picture,
-        body > *:not(.acc-container) svg:not(.acc-container svg),
-        body > *:not(.acc-container) video,
-        body > *:not(.acc-container) iframe,
-        body > *:not(.acc-container) canvas,
-        body > *:not(.acc-container) .video,
-        body > *:not(.acc-container) .image {
-          display: none !important;
-        }
-      `;
-      this.injectStyle(styleId, css);
-    }
-  }
 
   applyEnhancements() {
     const { states } = this.loadConfig();
@@ -1615,6 +1601,41 @@ concealImages(enable = false) {
       const langTitle = this.findElement(".acc-menu-title-dynamic", menu);
 
 
+      // Focus trapping for language panel
+      const trapFocus = (e) => {
+        if (!langPanel.classList.contains('open')) return;
+        
+        const focusableElements = langPanel.querySelectorAll(
+          'button, input, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.key === 'Tab') {
+          if (e.shiftKey) {
+            if (document.activeElement === firstElement) {
+              e.preventDefault();
+              lastElement.focus();
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              e.preventDefault();
+              firstElement.focus();
+            }
+          }
+        }
+        
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          langPanel.classList.remove('open');
+          langToggle.setAttribute('aria-expanded', 'false');
+          backButton.classList.remove('visible');
+          defaultTitle.classList.remove('hidden');
+          langTitle.classList.remove('visible');
+          langToggle.focus();
+        }
+      };
+
       langToggle.addEventListener("click", () => {
         const isExpanded = langToggle.getAttribute('aria-expanded') === 'true';
         langToggle.setAttribute('aria-expanded', !isExpanded);
@@ -1626,17 +1647,22 @@ concealImages(enable = false) {
         
         if (!isExpanded) {
           langSearch.focus();
+          document.addEventListener('keydown', trapFocus);
+        } else {
+          document.removeEventListener('keydown', trapFocus);
         }
       });
 
       backButton.addEventListener("click", () => {
         langPanel.classList.remove('open');
         langToggle.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('keydown', trapFocus);
         
         // Reset header
         backButton.classList.remove('visible');
         defaultTitle.classList.remove('hidden');
         langTitle.classList.remove('visible');
+        langToggle.focus();
       });
 
       // Close language panel if clicking outside
@@ -1647,6 +1673,7 @@ concealImages(enable = false) {
               !backButton.contains(e.target)) {
             langPanel.classList.remove('open');
             langToggle.setAttribute('aria-expanded', 'false');
+            document.removeEventListener('keydown', trapFocus);
             
             // Reset header
             backButton.classList.remove('visible');
