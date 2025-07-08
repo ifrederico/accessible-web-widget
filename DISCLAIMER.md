@@ -1,5 +1,20 @@
 # DISCLAIMER
 
+## INDUSTRY CONTEXT
+
+This widget is fundamentally different from accessibility overlays that claim automated compliance. We align with the accessibility community's position as stated in the [Overlay Factsheet](https://overlayfactsheet.com/).
+
+Unlike overlay products criticized in the factsheet:
+- We make NO claims of automated WCAG/ADA compliance
+- We do NOT attempt to automatically "fix" accessibility issues
+- We do NOT detect or track users' assistive technology
+- We provide user-controlled preferences only, similar to browser settings
+- We explicitly state this is NOT a replacement for proper accessibility
+
+For more information about the problems with automated overlay solutions, please read:
+- [The Overlay Factsheet](https://overlayfactsheet.com/)
+- [WebAIM Survey on Overlays](https://webaim.org/projects/practitionersurvey3/#overlays)
+
 ## NO WARRANTY
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

@@ -15,6 +15,12 @@ A lightweight, customizable accessibility widget that helps make websites more a
 - ⌨️ **Keyboard Accessible**: Full keyboard navigation support
 - 📱 **Mobile Friendly**: Responsive design for all devices
 
+### Important Distinction
+
+This widget provides user preference controls (like font size, contrast, etc.) similar to browser settings. It is NOT an automated accessibility overlay that claims to fix compliance issues. 
+
+We strongly support the accessibility community's position outlined in the [Overlay Factsheet](https://overlayfactsheet.com/). Proper accessibility must be built into websites from the ground up, not added as an afterthought.
+
 ## Quick Start
 
 Add this single line to your website's HTML:
@@ -131,3 +137,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ---
 
 **Remember**: This widget is one part of making your website accessible. Always test your entire website with screen readers and accessibility tools, and consult with accessibility professionals for comprehensive compliance.
+
