@@ -138,11 +138,4 @@ MIT License. This software is provided "as is" without warranty of any kind, exp
 - OpenDyslexic font by Abbie Gonzalez
 - Inspired by the need for better web accessibility
 
-## Version History
-
-- **1.0.2** - Improved color scheme for better accessibility (blue theme)
-- **1.0.0** - Initial release with core accessibility features
-
----
-
 **Remember**: This widget is one part of making your website accessible. Always test your entire website with screen readers and accessibility tools, and consult with accessibility professionals for comprehensive compliance.
