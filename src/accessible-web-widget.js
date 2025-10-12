@@ -2521,6 +2521,15 @@ concealImages(enable = false) {
   
       startAccessibleWebWidget() {
         try {
+          const dataAttributeOptions = this.getDataAttributeOptions();
+          if (dataAttributeOptions && Object.keys(dataAttributeOptions).length) {
+            this.dataOptions = dataAttributeOptions;
+            this.options = {
+              ...this.options,
+              ...dataAttributeOptions
+            };
+          }
+
           const baseOptions = { ...this.options };
           const lang = baseOptions.lang ||
             document.querySelector('html')?.getAttribute('lang')?.replace(/[_-].*/, '') ||
@@ -2538,6 +2547,8 @@ concealImages(enable = false) {
             baseOptions.size = this.normalizeButtonSize(baseOptions.size);
             this.widgetTheme.buttonSize = baseOptions.size;
           }
+
+          this.options = { ...baseOptions };
           
           // First load the saved configuration
           this.loadConfig(false);
