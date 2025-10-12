@@ -144,7 +144,8 @@ class AccessibleWebWidget {
         "Dyslexia Font": "Dyslexia Font",
         "Language": "Language",
         "Open Accessibility Menu": "Open Accessibility Menu",
-        "Hide Images": "Hide Images"
+        "Hide Images": "Hide Images",
+        "Skip to accessibility menu": "Skip to accessibility menu"
       }
     };
 
@@ -218,17 +219,46 @@ class AccessibleWebWidget {
       { label: 'Monochrome', key: 'monochrome', icon: this.widgetIcons.monochrome },
       { label: 'High Saturation', key: 'high-saturation', icon: this.widgetIcons.highSaturation }
     ];
+    this.colorFilterKeys = this.colorOptions.map(option => option.key);
+    this.activeColorFilterKey = null;
+
+    this.textScaleSelectors = "h1,h2,h3,h4,h5,h6,p,a,dl,dt,li,ol,th,td,span,blockquote,.acc-text";
+    this.textScaleObserver = null;
+    this.currentTextScaleMultiplier = 1;
 
     // Global settings and state
     this.widgetConfig = {};
     this.cookieKey = "accweb";
     this.readingAidVisible = false;
+    this.readableFontLoaded = false;
 
-    // Cache for text elements (performance optimization)
-    this.textElementsCache = null;
+    // Menu state tracking for focus management
+    this.activeMenuContainer = null;
+    this.activeMenuToggle = null;
+    this.menuKeyListener = null;
+    this.previousFocus = null;
+    this.widgetToggleButton = null;
+    this.skipLinkElement = null;
+    this.menuContainer = null;
+
+    this.dataOptions = this.getDataAttributeOptions();
 
     // Merge any passed options (for instance, widget position or language)
-    this.options = Object.assign({ lang: 'en', position: 'bottom-left' }, options);
+    this.options = {
+      lang: 'en',
+      position: 'bottom-left',
+      ...this.dataOptions,
+      ...options
+    };
+
+    if (this.options.offset) {
+      this.options.offset = this.normalizeOffset(this.options.offset);
+    }
+
+    if (this.options.size) {
+      this.widgetTheme.buttonSize = this.normalizeButtonSize(this.options.size);
+      this.options.size = this.widgetTheme.buttonSize;
+    }
   }
 
   // ======================================================
@@ -269,6 +299,113 @@ class AccessibleWebWidget {
     } catch (e) {
       console.warn('Error setting cookie:', e);
     }
+  }
+
+  getDataAttributeOptions() {
+    const options = {};
+    if (typeof document === 'undefined') return options;
+
+    const attributes = ['lang', 'position', 'offset', 'size'];
+
+    const assignValue = (key, value) => {
+      if (value === null || typeof value === 'undefined' || value === '') return;
+      switch (key) {
+        case 'lang': {
+          const lang = String(value).trim();
+          if (lang) options.lang = lang;
+          break;
+        }
+        case 'position': {
+          const position = String(value).trim();
+          if (position) options.position = position;
+          break;
+        }
+        case 'offset': {
+          const normalized = this.normalizeOffset(value);
+          if (normalized) options.offset = normalized;
+          break;
+        }
+        case 'size': {
+          const normalizedSize = this.normalizeButtonSize(value);
+          if (normalizedSize) options.size = normalizedSize;
+          break;
+        }
+        default:
+          break;
+      }
+    };
+
+    const inspectElement = (el) => {
+      if (!el) return;
+      attributes.forEach(key => {
+        const attrName = `data-acc-${key}`;
+        const attrValue = el.getAttribute ? el.getAttribute(attrName) : null;
+        assignValue(key, attrValue);
+      });
+    };
+
+    const scriptCandidates = [];
+    if (document.currentScript) {
+      scriptCandidates.push(document.currentScript);
+    }
+    document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size]').forEach(script => {
+      if (!scriptCandidates.includes(script)) {
+        scriptCandidates.push(script);
+      }
+    });
+    scriptCandidates.forEach(inspectElement);
+
+    attributes.forEach(key => {
+      if (options[key] !== undefined) return;
+      const el = document.querySelector(`[data-acc-${key}]`);
+      if (el) {
+        assignValue(key, el.getAttribute(`data-acc-${key}`));
+      }
+    });
+
+    return options;
+  }
+
+  normalizeOffset(value) {
+    if (!value && value !== 0) return undefined;
+    let parts = [];
+    if (Array.isArray(value)) {
+      parts = value;
+    } else if (typeof value === 'string') {
+      parts = value.split(/[, ]+/);
+    } else {
+      parts = [value];
+    }
+    const parsed = parts
+      .map(part => {
+        const number = Number(part);
+        return Number.isFinite(number) ? Math.round(number) : null;
+      })
+      .filter(number => number !== null);
+
+    if (!parsed.length) return undefined;
+    if (parsed.length === 1) parsed.push(parsed[0]);
+    return [parsed[0], parsed[1] !== undefined ? parsed[1] : parsed[0]];
+  }
+
+  normalizeButtonSize(value) {
+    const fallback = this.widgetTheme?.buttonSize || '34px';
+    if (typeof value === 'number' && Number.isFinite(value)) {
+      return `${Math.max(24, Math.round(value))}px`;
+    }
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (!trimmed) return fallback;
+      if (/^\d+(\.\d+)?(px|em|rem|%)$/i.test(trimmed)) {
+        return trimmed;
+      }
+      const numeric = Number(trimmed);
+      if (Number.isFinite(numeric)) {
+        return `${Math.max(24, Math.round(numeric))}px`;
+      }
+      return trimmed;
+    }
+    return fallback;
   }
 
   findElement(selector, parent = document) {
@@ -409,38 +546,329 @@ class AccessibleWebWidget {
   }
 
   throttle(func, limit) {
-  let inThrottle;
-  return function (...args) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
+    let inThrottle;
+    return function (...args) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  }
+
+  getFocusableElements(root) {
+    if (!root) return [];
+    const selectors = [
+      'a[href]',
+      'button:not([disabled])',
+      'input:not([disabled])',
+      'textarea:not([disabled])',
+      'select:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])'
+    ].join(',');
+    const hasDocument = typeof document !== 'undefined';
+    const activeElement = hasDocument ? document.activeElement : null;
+    return Array.from(root.querySelectorAll(selectors)).filter(el => {
+      if (el.hasAttribute('disabled')) return false;
+      if (el.getAttribute('aria-hidden') === 'true') return false;
+      if (el.closest('[aria-hidden="true"]')) return false;
+      const rect = el.getBoundingClientRect();
+      const style = typeof window !== 'undefined' && window.getComputedStyle ? window.getComputedStyle(el) : { visibility: 'visible', display: 'block' };
+      const hasSize = rect.width > 0 || rect.height > 0;
+      const isVisible = (hasSize || (hasDocument && el === activeElement)) && style.visibility !== 'hidden' && style.display !== 'none';
+      return isVisible;
+    });
+  }
+
+  openMenu(menuContainer, toggleBtn) {
+    if (!menuContainer) return;
+    const menu = this.findElement('.acc-menu', menuContainer);
+    this.activeMenuContainer = menuContainer;
+    this.activeMenuToggle = toggleBtn || this.activeMenuToggle;
+    this.previousFocus = document.activeElement && typeof document.activeElement.focus === 'function'
+      ? document.activeElement
+      : null;
+
+    menuContainer.style.display = 'block';
+    if (menu) {
+      menu.setAttribute('aria-hidden', 'false');
+      menu.setAttribute('aria-modal', 'true');
+      if (!menu.hasAttribute('tabindex')) {
+        menu.setAttribute('tabindex', '-1');
+      }
     }
-  };
-}
-  
 
+    if (this.activeMenuToggle) {
+      this.activeMenuToggle.setAttribute('aria-expanded', 'true');
+    }
 
+    const focusable = this.getFocusableElements(menuContainer);
+    if (focusable.length) {
+      focusable[0].focus();
+    } else if (menu) {
+      menu.focus();
+    }
+
+    if (this.menuKeyListener) {
+      document.removeEventListener('keydown', this.menuKeyListener, true);
+    }
+
+    this.menuKeyListener = (event) => {
+      if (!this.activeMenuContainer) return;
+      if (event.key === 'Escape' || event.key === 'Esc') {
+        event.preventDefault();
+        this.closeMenu(this.activeMenuContainer);
+        return;
+      }
+      if (event.key === 'Tab') {
+        const focusables = this.getFocusableElements(this.activeMenuContainer);
+        if (!focusables.length) {
+          event.preventDefault();
+          return;
+        }
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (event.shiftKey) {
+          if (document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          }
+        } else if (document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', this.menuKeyListener, true);
+  }
+
+  closeMenu(menuContainer, toggleBtn) {
+    const targetContainer = menuContainer || this.activeMenuContainer;
+    if (!targetContainer) return;
+    const menu = this.findElement('.acc-menu', targetContainer);
+    targetContainer.style.display = 'none';
+    if (menu) {
+      menu.setAttribute('aria-hidden', 'true');
+      menu.setAttribute('aria-modal', 'false');
+    }
+
+    const langPanel = this.findElement('#acc-lang-panel', targetContainer);
+    if (langPanel) {
+      langPanel.classList.remove('open');
+      if (langPanel.__accwebTrapFocus) {
+        document.removeEventListener('keydown', langPanel.__accwebTrapFocus);
+        delete langPanel.__accwebTrapFocus;
+      }
+    }
+    const langToggle = this.findElement('.acc-lang-toggle', targetContainer);
+    if (langToggle) {
+      langToggle.setAttribute('aria-expanded', 'false');
+    }
+    const backButton = this.findElement('.acc-back-btn', targetContainer);
+    if (backButton) {
+      backButton.classList.remove('visible');
+    }
+    const defaultTitle = this.findElement('.acc-menu-title-default', targetContainer);
+    if (defaultTitle) {
+      defaultTitle.classList.remove('hidden');
+    }
+    const langTitle = this.findElement('.acc-menu-title-dynamic', targetContainer);
+    if (langTitle) {
+      langTitle.classList.remove('visible');
+    }
+
+    if (this.menuKeyListener) {
+      document.removeEventListener('keydown', this.menuKeyListener, true);
+      this.menuKeyListener = null;
+    }
+
+    const toggle = toggleBtn || this.activeMenuToggle;
+    if (toggle) {
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    const focusTarget = toggle || this.previousFocus;
+    if (focusTarget && typeof focusTarget.focus === 'function') {
+      focusTarget.focus();
+    }
+
+    this.activeMenuContainer = null;
+    this.activeMenuToggle = null;
+    this.previousFocus = null;
+  }
+
+  ensureSkipLink() {
+    if (typeof document === 'undefined') return null;
+    if (this.skipLinkElement && document.body.contains(this.skipLinkElement)) {
+      this.updateSkipLinkLabel();
+      return this.skipLinkElement;
+    }
+    const existing = document.getElementById('acc-skip-link');
+    if (existing) {
+      this.skipLinkElement = existing;
+      if (!existing.getAttribute('data-acc-text')) {
+        existing.setAttribute('data-acc-text', 'Skip to accessibility menu');
+      }
+      this.updateSkipLinkLabel();
+      return existing;
+    }
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.id = 'acc-skip-link';
+    button.className = 'acc-skip-link';
+    button.setAttribute('tabindex', '0');
+    button.setAttribute('data-acc-text', 'Skip to accessibility menu');
+    button.setAttribute('aria-label', this.translate('Skip to accessibility menu'));
+    button.textContent = this.translate('Skip to accessibility menu');
+
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      const toggle = this.widgetToggleButton;
+      if (!toggle) return;
+
+      const currentMenu = this.activeMenuContainer || this.menuContainer;
+      const menuIsVisible = currentMenu && currentMenu.style.display !== 'none';
+
+      const focusMenu = () => {
+        const targetMenu = this.activeMenuContainer || this.menuContainer;
+        if (!targetMenu) return;
+        const focusables = this.getFocusableElements(targetMenu);
+        if (focusables.length) {
+          focusables[0].focus();
+        }
+      };
+
+      if (!menuIsVisible) {
+        toggle.click();
+        requestAnimationFrame(focusMenu);
+      } else {
+        focusMenu();
+      }
+    });
+
+    const skipCSS = `
+      .acc-skip-link {
+        font-family: inherit;
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        background: ${this.widgetTheme.cardBackground};
+        color: ${this.widgetTheme.textColor};
+        border: 3px solid ${this.widgetTheme.primaryColor};
+        border-radius: ${this.widgetTheme.buttonBorderRadius};
+        padding: 8px 16px;
+        z-index: ${Number(this.widgetTheme.zIndex) + 2};
+        transform: translateY(-140%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        font-size: 16px;
+        line-height: 1.2;
+        font-weight: 600;
+        background-clip: padding-box;
+      }
+      .acc-skip-link:focus,
+      .acc-skip-link:active {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+        outline: ${this.widgetTheme.focusBorderWidth} solid ${this.widgetTheme.focusRingColor};
+        outline-offset: ${this.widgetTheme.focusOutlineOffset};
+      }
+    `;
+    this.injectStyle('acc-skip-link-style', skipCSS);
+
+    document.body.insertBefore(button, document.body.firstChild);
+    this.skipLinkElement = button;
+    return button;
+  }
+
+  updateSkipLinkLabel() {
+    if (!this.skipLinkElement) return;
+    const key = this.skipLinkElement.getAttribute('data-acc-text') || 'Skip to accessibility menu';
+    const label = this.translate(key);
+    this.skipLinkElement.textContent = label;
+    this.skipLinkElement.setAttribute('aria-label', label);
+  }
 
   // ======================================================
   // ACCESSIBILITY FEATURES
   // ======================================================
+  shouldSkipScaling(element) {
+    return element.closest('.acc-menu, .acc-container, .acc-widget');
+  }
+
+  applyScaleToElement(element, multiplier) {
+    if (
+      !element ||
+      !(element instanceof Element) ||
+      this.shouldSkipScaling(element) ||
+      element.classList.contains('material-icons') ||
+      element.classList.contains('fa')
+    ) {
+      return;
+    }
+    const baseAttr = 'data-acc-baseSize';
+    if (!element.hasAttribute(baseAttr)) {
+      const computedSize = parseFloat(window.getComputedStyle(element).fontSize);
+      if (Number.isNaN(computedSize) || computedSize <= 0) {
+        return;
+      }
+      element.setAttribute(baseAttr, String(computedSize));
+    }
+    const baseSize = parseFloat(element.getAttribute(baseAttr));
+    if (Number.isNaN(baseSize) || baseSize <= 0) {
+      return;
+    }
+    element.style.fontSize = `${baseSize * multiplier}px`;
+  }
+
+  ensureTextScaleObserver() {
+    if (this.textScaleObserver || !document.body) return;
+    this.textScaleObserver = new MutationObserver((mutations) => {
+      if (this.currentTextScaleMultiplier <= 1) {
+        return;
+      }
+      const pending = new Set();
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+          if (!(node instanceof Element)) return;
+          if (node.matches && node.matches(this.textScaleSelectors)) {
+            pending.add(node);
+          }
+          node.querySelectorAll?.(this.textScaleSelectors).forEach(el => pending.add(el));
+        });
+      });
+      if (!pending.size) return;
+      pending.forEach(el => this.applyScaleToElement(el, this.currentTextScaleMultiplier));
+    });
+    this.textScaleObserver.observe(document.body, { childList: true, subtree: true });
+  }
+
+  disconnectTextScaleObserver() {
+    if (!this.textScaleObserver) return;
+    this.textScaleObserver.disconnect();
+    this.textScaleObserver = null;
+  }
+
   scaleText(multiply = 1) {
     try {
-      if (!this.textElementsCache) {
-        this.textElementsCache = document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,a,dl,dt,li,ol,th,td,span,blockquote,.acc-text");
+      this.currentTextScaleMultiplier = multiply;
+      if (multiply > 1) {
+        this.ensureTextScaleObserver();
+        const elements = document.querySelectorAll(this.textScaleSelectors);
+        elements.forEach(el => this.applyScaleToElement(el, multiply));
+      } else {
+        this.disconnectTextScaleObserver();
+        const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
+        scaledElements.forEach(el => {
+          if (this.shouldSkipScaling(el)) return;
+          el.style.fontSize = '';
+          el.removeAttribute('data-acc-baseSize');
+        });
       }
-      this.textElementsCache.forEach(el => {
-        if (!el.classList.contains('material-icons') && !el.classList.contains('fa')) {
-          let baseSize = Number(el.getAttribute('data-acc-baseSize') || 0);
-          if (!baseSize) {
-            baseSize = parseInt(window.getComputedStyle(el).getPropertyValue('font-size'));
-            el.setAttribute('data-acc-baseSize', String(baseSize));
-          }
-          let newSize = baseSize * multiply;
-          el.style.fontSize = newSize + 'px';
-        }
-      });
     } catch (e) {
       console.warn('Error scaling text:', e);
     }
@@ -515,26 +943,72 @@ class AccessibleWebWidget {
     this.applyToolStyle({ ...config, enable });
   }
 
+  ensureReadableFontLoaded() {
+    if (this.readableFontLoaded) return;
+    const existing = document.getElementById('acc-readable-text-font');
+    if (existing) {
+      this.readableFontLoaded = true;
+      return;
+    }
+    const style = document.createElement('style');
+    style.id = 'acc-readable-text-font';
+    style.textContent = `
+      @font-face {
+        font-family: "OpenDyslexic3";
+        src: url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"),
+             url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype");
+        font-display: swap;
+      }
+    `;
+    document.head.appendChild(style);
+    this.readableFontLoaded = true;
+  }
+
   enableReadableText(enable = false) {
+    const shouldEnable = !!enable;
+    if (shouldEnable) {
+      this.ensureReadableFontLoaded();
+    }
+    const exclusionSuffix = ':not(.acc-widget):not(.acc-menu):not(.acc-container)';
+    const readableSelectors = [
+      `*:not(.acc-widget):not(.acc-menu):not(.acc-container)`,
+      `h1${exclusionSuffix}`,
+      `h2${exclusionSuffix}`,
+      `h3${exclusionSuffix}`,
+      `h4${exclusionSuffix}`,
+      `h5${exclusionSuffix}`,
+      `h6${exclusionSuffix}`,
+      `.wsite-headline${exclusionSuffix}`,
+      `.wsite-content-title${exclusionSuffix}`,
+      `p${exclusionSuffix}`,
+      `a${exclusionSuffix}`,
+      `span${exclusionSuffix}`,
+      `li${exclusionSuffix}`,
+      `ol${exclusionSuffix}`,
+      `dl${exclusionSuffix}`,
+      `dt${exclusionSuffix}`,
+      `th${exclusionSuffix}`,
+      `td${exclusionSuffix}`,
+      `blockquote${exclusionSuffix}`,
+      `label${exclusionSuffix}`,
+      `button:not(.acc-btn)${exclusionSuffix}`,
+      `svg${exclusionSuffix}`,
+      `i${exclusionSuffix}`,
+      `img${exclusionSuffix}`,
+      `.acc-text${exclusionSuffix}`
+    ];
     const config = {
       id: "readable-text",
       selector: "body",
-      childrenSelector: [
-        "*:not(.acc-widget):not(.acc-menu):not(.acc-container):not(.acc-container *)",
-        ...this.targetSelectors.TEXT.map(selector => 
-          `${selector}:not(.acc-widget ${selector}, .acc-menu ${selector}, .acc-container ${selector})`
-        )
-      ],
+      childrenSelector: readableSelectors,
       styles: { 
-        'font-family': 'OpenDyslexic3, Comic Sans MS, Arial, Helvetica, sans-serif' 
+        'font-family': '"OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif' 
       },
-      css: `@font-face {
-        font-family: OpenDyslexic3;
-        src: url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"),
-             url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype");
+      css: `.acc-container, .acc-container *, .acc-menu, .acc-menu * {
+        font-family: inherit !important;
       }`
     };
-    this.applyToolStyle({ ...config, enable });
+    this.applyToolStyle({ ...config, enable: shouldEnable });
   }
 
   pauseMotion(enable = false) {
@@ -647,12 +1121,12 @@ concealImages(enable = false) {
         this.textScaleIndex = scaleIndex;
         this.multiLevelFeatures['text-scale'].currentIndex = scaleIndex;
         this.scaleText(scaleValue);
-      } else {
-        this.scaleText(1);
       }
     } else {
-      this.multiLevelFeatures['text-scale'].currentIndex = -1;
-      this.scaleText(1);
+      this.textScaleIndex = 0;
+      if (this.multiLevelFeatures['text-scale']) {
+        this.multiLevelFeatures['text-scale'].currentIndex = -1;
+      }
     }
     // Apply other enhancements
     this.concealImages(states && states['hide-images']);
@@ -667,31 +1141,81 @@ concealImages(enable = false) {
     this.enableLargePointer(states && states['large-pointer']);
   }
 
-  applyVisualFilters() {
-    const { states } = this.loadConfig();
-    let css = "";
+  isColorFilterKey(key) {
+    return Array.isArray(this.colorFilterKeys) && this.colorFilterKeys.includes(key);
+  }
 
-    // For each color option, if its state is active, build its CSS.
-    const colorKeys = ['dark-contrast', 'light-contrast', 'invert-colors', 'low-saturation', 'monochrome', 'high-saturation'];
-    colorKeys.forEach(key => {
-      if (states && states[key]) {
-        const filter = this.visualFilters[key];
-        if (filter) {
-          const adjustedFilter = { 
-            ...filter, 
-            selector: filter.selector || 'body > *:not(.acc-container)'
-          };
-          css += this.buildCSS(adjustedFilter);
+  getActiveColorFilterKey(states = this.widgetConfig.states) {
+    if (!this.colorFilterKeys || !this.colorFilterKeys.length) return null;
+    if (!states) return this.activeColorFilterKey || null;
+    for (const key of this.colorFilterKeys) {
+      if (states[key]) {
+        return key;
+      }
+    }
+    return null;
+  }
+
+  setColorFilterUI(menu, activeKey = null) {
+    if (!menu || !menu.querySelectorAll) return;
+    this.colorFilterKeys.forEach(filterKey => {
+      const button = menu.querySelector(`.acc-btn[data-key="${filterKey}"]`);
+      if (!button) return;
+      const isActive = filterKey === activeKey;
+      button.classList.toggle('acc-selected', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  }
+
+  updateColorFilterState(activeKey = null) {
+    if (!this.colorFilterKeys || !this.colorFilterKeys.length) {
+      this.activeColorFilterKey = null;
+      return;
+    }
+    const states = this.widgetConfig.states || {};
+    const payload = {};
+    let requiresUpdate = false;
+    this.colorFilterKeys.forEach(filterKey => {
+      const rawCurrent = states[filterKey];
+      const shouldBeActive = activeKey === filterKey;
+      if (shouldBeActive) {
+        if (rawCurrent !== true) {
+          payload[filterKey] = true;
+          requiresUpdate = true;
         }
+      } else if (rawCurrent) {
+        payload[filterKey] = false;
+        requiresUpdate = true;
       }
     });
+    if (requiresUpdate) {
+      this.updateState(payload);
+    }
+    this.activeColorFilterKey = activeKey;
+  }
 
-    if (css.trim() === "") {
+  applyVisualFilters() {
+    const { states } = this.loadConfig();
+    const activeKey = this.getActiveColorFilterKey(states);
+    this.activeColorFilterKey = activeKey;
+
+    if (!activeKey) {
       const style = document.getElementById('acc-filter-style');
       if (style) style.remove();
-    } else {
-      this.injectStyle('acc-filter-style', css);
+      return;
     }
+    const filter = this.visualFilters[activeKey];
+    if (!filter) {
+      const style = document.getElementById('acc-filter-style');
+      if (style) style.remove();
+      return;
+    }
+    const adjustedFilter = {
+      ...filter,
+      selector: filter.selector || 'body > *:not(.acc-container)'
+    };
+    const css = this.buildCSS(adjustedFilter);
+    this.injectStyle('acc-filter-style', css);
   }
 
   cycleTextScale(enable = false) {
@@ -703,20 +1227,20 @@ concealImages(enable = false) {
     } else {
       this.textScaleIndex = 0;
       if (this.multiLevelFeatures['text-scale']) {
-        this.multiLevelFeatures['text-scale'].currentIndex = 0;
+        this.multiLevelFeatures['text-scale'].currentIndex = -1;
       }
     }
     const progressIndicator = document.querySelector(`.acc-progress-indicator[data-feature="text-scale"]`);
     if (progressIndicator) {
       const dots = progressIndicator.querySelectorAll('.acc-progress-dot');
       dots.forEach(dot => dot.classList.remove('active'));
-      if (this.textScaleIndex < dots.length) {
+      if (enable && this.textScaleIndex < dots.length) {
         dots[this.textScaleIndex].classList.add('active');
       }
     }
-    const multiply = this.textScaleValues[this.textScaleIndex];
+    const multiply = enable ? this.textScaleValues[this.textScaleIndex] : 1;
     this.scaleText(multiply);
-    this.updateState({ 'text-scale': multiply });
+    this.updateState({ 'text-scale': multiply > 1 ? multiply : false });
     return this.textScaleIndex;
   }
 
@@ -729,12 +1253,18 @@ concealImages(enable = false) {
       button.classList.remove('acc-selected');
       button.setAttribute('aria-pressed', 'false');
       this.updateState({ [featureKey]: false });
+      if (featureKey === 'text-scale') {
+        this.textScaleIndex = 0;
+      }
     } else {
       feature.currentIndex = newIndex;
       button.classList.add('acc-selected');
       button.setAttribute('aria-pressed', 'true');
       const newValue = feature.values[newIndex];
       this.updateState({ [featureKey]: newValue });
+      if (featureKey === 'text-scale') {
+        this.textScaleIndex = newIndex;
+      }
     }
     const indicator = button.querySelector(`.acc-progress-indicator[data-feature="${featureKey}"]`);
     if (indicator) {
@@ -754,6 +1284,7 @@ concealImages(enable = false) {
   resetEnhancements() {
     this.saveConfig({ states: {} });
     this.textScaleIndex = 0;
+    this.activeColorFilterKey = null;
     Object.keys(this.multiLevelFeatures).forEach(key => {
       this.multiLevelFeatures[key].currentIndex = -1;
     });
@@ -801,18 +1332,14 @@ concealImages(enable = false) {
       'acc-pause-motion',
       'acc-hide-images'
     );
-    if (this.textElementsCache) {
-      this.textElementsCache.forEach(el => {
-        if (!el.classList.contains('material-icons') && !el.classList.contains('fa')) {
-          const baseSize = el.getAttribute('data-acc-baseSize');
-          if (baseSize) {
-            el.style.fontSize = `${baseSize}px`;
-          } else {
-            el.style.fontSize = '';
-          }
-        }
-      });
-    }
+    this.disconnectTextScaleObserver();
+    this.currentTextScaleMultiplier = 1;
+    const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
+    scaledElements.forEach(el => {
+      if (!(el instanceof Element) || this.shouldSkipScaling(el)) return;
+      el.style.fontSize = '';
+      el.removeAttribute('data-acc-baseSize');
+    });
     let guide = this.findElement('.acc-rg-container');
     if (guide) {
       guide.remove();
@@ -879,6 +1406,7 @@ concealImages(enable = false) {
     menu.querySelectorAll("[aria-label]").forEach(el => {
       el.setAttribute("aria-label", this.getTranslatedText(el, el.getAttribute("aria-label")));
     });
+    this.updateSkipLinkLabel();
   }
 
   displayMenu({ container, lang }) {
@@ -1580,7 +2108,14 @@ concealImages(enable = false) {
       `;
       const menuContainer = document.createElement("div");
       menuContainer.innerHTML = menuTemplate;
+      menuContainer.style.display = 'none';
       const menu = this.findElement(".acc-menu", menuContainer);
+      if (menu) {
+        menu.setAttribute('aria-hidden', 'true');
+        if (!menu.hasAttribute('tabindex')) {
+          menu.setAttribute('tabindex', '-1');
+        }
+      }
       if (this.widgetTheme.menuPosition === 'right') {
         menu.style.right = '0px';
         menu.style.left = 'auto';
@@ -1605,9 +2140,11 @@ concealImages(enable = false) {
       const trapFocus = (e) => {
         if (!langPanel.classList.contains('open')) return;
         
-        const focusableElements = langPanel.querySelectorAll(
-          'button, input, [tabindex]:not([tabindex="-1"])'
-        );
+        const focusableElements = this.getFocusableElements(langPanel);
+        if (backButton.classList.contains('visible') && !focusableElements.includes(backButton)) {
+          focusableElements.unshift(backButton);
+        }
+        if (!focusableElements.length) return;
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
 
@@ -1625,13 +2162,22 @@ concealImages(enable = false) {
           }
         }
         
-        if (e.key === 'Escape') {
+        if (e.key === 'Escape' || e.key === 'Esc') {
           e.preventDefault();
-          langPanel.classList.remove('open');
-          langToggle.setAttribute('aria-expanded', 'false');
-          backButton.classList.remove('visible');
-          defaultTitle.classList.remove('hidden');
-          langTitle.classList.remove('visible');
+          e.stopPropagation();
+          closeLanguagePanel();
+        }
+      };
+
+      const closeLanguagePanel = (returnFocus = true) => {
+        langPanel.classList.remove('open');
+        langToggle.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('keydown', trapFocus);
+        delete langPanel.__accwebTrapFocus;
+        backButton.classList.remove('visible');
+        defaultTitle.classList.remove('hidden');
+        langTitle.classList.remove('visible');
+        if (returnFocus) {
           langToggle.focus();
         }
       };
@@ -1648,21 +2194,14 @@ concealImages(enable = false) {
         if (!isExpanded) {
           langSearch.focus();
           document.addEventListener('keydown', trapFocus);
+          langPanel.__accwebTrapFocus = trapFocus;
         } else {
-          document.removeEventListener('keydown', trapFocus);
+          closeLanguagePanel(false);
         }
       });
 
       backButton.addEventListener("click", () => {
-        langPanel.classList.remove('open');
-        langToggle.setAttribute('aria-expanded', 'false');
-        document.removeEventListener('keydown', trapFocus);
-        
-        // Reset header
-        backButton.classList.remove('visible');
-        defaultTitle.classList.remove('hidden');
-        langTitle.classList.remove('visible');
-        langToggle.focus();
+        closeLanguagePanel();
       });
 
       // Close language panel if clicking outside
@@ -1671,14 +2210,7 @@ concealImages(enable = false) {
               !langPanel.contains(e.target) && 
               !langToggle.contains(e.target) &&
               !backButton.contains(e.target)) {
-            langPanel.classList.remove('open');
-            langToggle.setAttribute('aria-expanded', 'false');
-            document.removeEventListener('keydown', trapFocus);
-            
-            // Reset header
-            backButton.classList.remove('visible');
-            defaultTitle.classList.remove('hidden');
-            langTitle.classList.remove('visible');
+            closeLanguagePanel(false);
           }
         });
 
@@ -1708,8 +2240,7 @@ concealImages(enable = false) {
           }
           
           // Close panel
-          langPanel.classList.remove('open');
-          langToggle.setAttribute('aria-expanded', 'false');
+          closeLanguagePanel(false);
           
           // Save language preference and update UI
           this.saveConfig({ lang: langCode });
@@ -1722,7 +2253,7 @@ concealImages(enable = false) {
         const target = e.target.closest('[role="button"], button, .acc-overlay');
         if (!target) return;
         if (target.classList.contains('acc-overlay') || target.classList.contains('acc-menu-close')) {
-          this.toggleDisplay(menuContainer, false);
+          this.closeMenu(menuContainer);
           return;
         }
         if (target.classList.contains('acc-reset-btn')) {
@@ -1737,25 +2268,11 @@ concealImages(enable = false) {
             this.cycleMultiLevelFeature(key, btn);
           } 
           // For color adjustments, deselect any other active color filter.
-          else if (['dark-contrast', 'light-contrast', 'invert-colors', 'low-saturation', 'monochrome', 'high-saturation'].includes(key)) {
-            menu.querySelectorAll('.acc-btn').forEach(otherBtn => {
-              const otherKey = otherBtn.dataset.key;
-              if (['dark-contrast', 'light-contrast', 'invert-colors', 'low-saturation', 'monochrome', 'high-saturation'].includes(otherKey) && otherKey !== key) {
-                otherBtn.classList.remove('acc-selected');
-                otherBtn.setAttribute('aria-pressed', 'false');
-                this.updateState({ [otherKey]: false });
-              }
-            });
-            const isSelected = !btn.classList.contains('acc-selected');
-            if (isSelected) {
-              btn.classList.add('acc-selected');
-              btn.setAttribute('aria-pressed', 'true');
-              this.updateState({ [key]: key });
-            } else {
-              btn.classList.remove('acc-selected');
-              btn.setAttribute('aria-pressed', 'false');
-              this.updateState({ [key]: false });
-            }
+          else if (this.isColorFilterKey(key)) {
+            const isCurrentlyActive = btn.classList.contains('acc-selected');
+            const newActiveKey = isCurrentlyActive ? null : key;
+            this.setColorFilterUI(menu, newActiveKey);
+            this.updateColorFilterState(newActiveKey);
             this.applyVisualFilters();
           } 
           // For other adjustments, simply toggle.
@@ -1778,8 +2295,14 @@ concealImages(enable = false) {
       });
       this.translateMenuUI(menuContainer);
       const config = this.loadConfig();
+      const activeColorFilter = this.getActiveColorFilterKey(config.states);
+      this.setColorFilterUI(menu, activeColorFilter);
+      this.updateColorFilterState(activeColorFilter);
       if (config.states) {
         for (let key in config.states) {
+          if (this.isColorFilterKey(key)) {
+            continue;
+          }
           if (config.states[key] && key !== "text-scale") {
             const selector = key; // keys now directly match our updated options.
             const btn = this.findElement(`.acc-btn[data-key="${selector}"]`, menu);
@@ -1875,11 +2398,13 @@ concealImages(enable = false) {
       widget.innerHTML = widgetTemplate;
       widget.classList.add("acc-container");
       const btn = this.findElement(".acc-toggle-btn", widget);
+
+      this.widgetToggleButton = btn;
     
-      const { position = "bottom-left", offset = [20, 20] } = options;
-      const safeOffset = Array.isArray(offset) ? offset : [20, 20];
-      const offsetX = safeOffset[0] || 20;
-      const offsetY = safeOffset[1] || 25;
+      const { position = "bottom-left", offset = [20, 20], size } = options;
+      const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
+      const offsetX = normalizedOffset[0] ?? 20;
+      const offsetY = normalizedOffset[1] ?? 25;
       let buttonStyle = { left: `${offsetX}px`, bottom: `${offsetY}px` };
       if (position === "bottom-right") {
         buttonStyle = { right: `${offsetX}px`, left: "auto", bottom: `${offsetY}px` };
@@ -1891,33 +2416,61 @@ concealImages(enable = false) {
         buttonStyle = { top: "50%", transform: "translateY(-50%)", left: `${offsetX}px`, bottom: "auto" };
       }
       Object.assign(btn.style, buttonStyle);
+
+      const customButtonSizeProvided = size !== undefined && size !== null && String(size).trim() !== '';
+      const buttonSize = customButtonSizeProvided
+        ? this.normalizeButtonSize(size)
+        : this.widgetTheme.buttonSize;
+
+      if (customButtonSizeProvided) {
+        btn.style.width = buttonSize;
+        btn.style.height = buttonSize;
+        btn.style.minWidth = buttonSize;
+        btn.style.minHeight = buttonSize;
+        btn.style.maxWidth = buttonSize;
+        btn.style.maxHeight = buttonSize;
+      }
+
+      const icon = btn.querySelector('svg');
+      const numericButtonSize = parseInt(buttonSize, 10);
+      if (icon && Number.isFinite(numericButtonSize) && customButtonSizeProvided) {
+        const iconSize = `${Math.max(20, Math.round(numericButtonSize * 0.6))}px`;
+        ['width', 'height', 'minWidth', 'minHeight', 'maxWidth', 'maxHeight'].forEach(prop => {
+          const cssProp = prop.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`);
+          icon.style.setProperty(cssProp, iconSize, 'important');
+        });
+      }
       
       let menu;
       btn.addEventListener("click", (event) => {
         event.preventDefault();
-        const expanded = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', !expanded);
-        
-        if (menu) {
-          this.toggleDisplay(menu);
-        } else {
+        if (!menu) {
           menu = this.displayMenu({ ...options, container: widget });
-          
-          // Add a click handler to the overlay to blur the toggle button when clicking outside
+          if (!menu) return;
+          this.menuContainer = menu;
+
           const overlay = menu.querySelector('.acc-overlay');
           if (overlay) {
-            overlay.addEventListener('click', () => {
-              btn.blur();
+            overlay.addEventListener('click', (overlayEvent) => {
+              overlayEvent.stopPropagation();
+              this.closeMenu(menu, btn);
             });
           }
-          
-          // Add a click handler to the close button to blur the toggle button
+
           const closeBtn = menu.querySelector('.acc-menu-close');
           if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-              btn.blur();
+            closeBtn.addEventListener('click', (closeEvent) => {
+              closeEvent.stopPropagation();
+              this.closeMenu(menu, btn);
             });
           }
+        }
+
+        const isHidden = menu.style.display === 'none' || window.getComputedStyle(menu).display === 'none';
+        if (isHidden) {
+          this.openMenu(menu, btn);
+        } else {
+          this.closeMenu(menu, btn);
         }
       });
       
@@ -1931,14 +2484,18 @@ concealImages(enable = false) {
       
       document.body.appendChild(widget);
       this.translateMenuUI(widget);
+      this.ensureSkipLink();
       
       // Add a click handler to the document to blur the toggle button when clicking outside
       document.addEventListener('click', (e) => {
-        // If clicking outside both the widget and the toggle button, blur the toggle
-        if (btn && 
-            e.target !== btn && 
-            !btn.contains(e.target) && 
-            (!menu || !menu.contains(e.target))) {
+        if (!btn) return;
+        const clickedToggle = e.target === btn || btn.contains(e.target);
+        if (menu && this.activeMenuContainer === menu && menu.style.display !== 'none') {
+          const clickedInsideMenu = menu.contains(e.target);
+          if (!clickedToggle && !clickedInsideMenu) {
+            this.closeMenu(menu, btn);
+          }
+        } else if (!clickedToggle) {
           btn.blur();
         }
       });
@@ -1964,21 +2521,35 @@ concealImages(enable = false) {
   
       startAccessibleWebWidget() {
         try {
-          const lang = this.fetchDataAttr("lang") || 
-            document.querySelector('html')?.getAttribute('lang')?.replace(/[_-].*/, '') || 
-            navigator.language || 
+          const baseOptions = { ...this.options };
+          const lang = baseOptions.lang ||
+            document.querySelector('html')?.getAttribute('lang')?.replace(/[_-].*/, '') ||
+            navigator.language ||
             "en";
-          const position = "bottom-left";
+          baseOptions.lang = lang;
+
+          baseOptions.position = baseOptions.position || "bottom-left";
+
+          if (baseOptions.offset) {
+            baseOptions.offset = this.normalizeOffset(baseOptions.offset);
+          }
+
+          if (baseOptions.size) {
+            baseOptions.size = this.normalizeButtonSize(baseOptions.size);
+            this.widgetTheme.buttonSize = baseOptions.size;
+          }
           
           // First load the saved configuration
           this.loadConfig(false);
+          const initialColorFilter = this.getActiveColorFilterKey(this.widgetConfig.states);
+          this.updateColorFilterState(initialColorFilter);
           
           // Apply all saved settings immediately on page load
           this.applyEnhancements();
           this.applyVisualFilters();
           
           // Then launch the widget UI
-          this.launchWidget({ lang, position });
+          this.launchWidget(baseOptions);
         } catch (e) {
           console.error('Error starting AccessibleWeb Widget:', e);
         }
@@ -1987,7 +2558,7 @@ concealImages(enable = false) {
      
       launchWidget(args = {}) {
         try {
-          let options = { lang: 'en', position: 'bottom-left' };
+          let options = { lang: 'en', position: 'bottom-left', offset: [20, 20] };
           
           // Load the saved configuration
           try {
