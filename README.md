@@ -4,6 +4,16 @@ A lightweight, customizable accessibility widget that helps make websites more a
 
 **⚠️ IMPORTANT: Please read the [DISCLAIMER](DISCLAIMER.md) before using this widget.**
 
+## Purpose
+
+This widget provides user preference controls that allow website visitors to adjust visual and interactive elements according to their needs. Features include font size adjustment, contrast options, reading guides, and animation controls.
+
+## Scope & Limitations
+
+This widget provides user-facing customization tools. It does not provide, ensure, or guarantee accessibility compliance with WCAG, ADA, Section 508, or any other accessibility standards.
+
+Website accessibility requires proper semantic HTML, ARIA implementation, keyboard navigation, alternative text, and other fundamental development practices that must be implemented at the code level.
+
 ## Features
 
 - 🔍 **Text Adjustments**: Font size scaling (3 levels), bold text, line height, letter spacing
@@ -120,8 +130,7 @@ Found a bug? Please [open an issue](https://github.com/ifrederico/accessible-web
 - Screenshots if applicable
 
 ## License
-
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License. This software is provided "as is" without warranty of any kind, express or implied. See [LICENSE](LICENSE) file for complete terms.
 
 ## Acknowledgments
 
@@ -137,4 +146,3 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ---
 
 **Remember**: This widget is one part of making your website accessible. Always test your entire website with screen readers and accessibility tools, and consult with accessibility professionals for comprehensive compliance.
-
