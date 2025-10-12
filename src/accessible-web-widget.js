@@ -2101,7 +2101,7 @@ concealImages(enable = false) {
           </div>
         </div>
         <div class="acc-footer">
-          <a href="https://accessibleweb.com" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>
+          <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>
         </div>
       </div>
       <div class="acc-overlay"> </div>
