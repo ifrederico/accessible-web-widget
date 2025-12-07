@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.0.2
+ * AccessibleWeb Widget v1.0.8
  * https://github.com/ifrederico/accessible-web-widget
  * 
  * Copyright (c) 2025 ifrederico
@@ -75,7 +75,8 @@ class AccessibleWebWidget {
       arrowBack: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg>',
       adjustFontSize: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 4v3h5v12h3V7h5V4H2m19 5h-9v3h3v7h3v-7h3V9Z"/></svg>',
       language: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/></svg>',
-      hideImages: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m840-234-80-80v-446H314l-80-80h526q33 0 56.5 23.5T840-760v526ZM792-56l-64-64H200q-33 0-56.5-23.5T120-200v-528l-64-64 56-56 736 736-56 56ZM240-280l120-160 90 120 33-44-283-283v447h447l-80-80H240Zm297-257ZM424-424Z"/></svg>'
+      hideImages: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m840-234-80-80v-446H314l-80-80h526q33 0 56.5 23.5T840-760v526ZM792-56l-64-64H200q-33 0-56.5-23.5T120-200v-528l-64-64 56-56 736 736-56 56ZM240-280l120-160 90 120 33-44-283-283v447h447l-80-80H240Zm297-257ZM424-424Z"/></svg>',
+      accessibilityReport: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h200v-80H240v80Zm254-54 166-166-56-56-110 110-46-46-56 56 102 102ZM240-440h200v-80H240v80Zm0-160h200v-80H240v80Zm-40 400v-560 560Z"/></svg>'
     };
 
     this.targetSelectors = {
@@ -145,17 +146,499 @@ class AccessibleWebWidget {
         "Language": "Language",
         "Open Accessibility Menu": "Open Accessibility Menu",
         "Hide Images": "Hide Images",
-        "Skip to accessibility menu": "Skip to accessibility menu"
+        "Skip to accessibility menu": "Skip to accessibility menu",
+        "Accessibility Report": "Accessibility Report",
+        "Run Accessibility Check": "Run Accessibility Check",
+        "Loading...": "Loading...",
+        "Analyzing page...": "Analyzing page...",
+        "Critical": "Critical",
+        "Serious": "Serious",
+        "Moderate": "Moderate",
+        "Minor": "Minor",
+        "Violations Found": "Violations Found",
+        "No Issues Found": "No Issues Found",
+        "Element": "Element",
+        "Issue": "Issue",
+        "How to Fix": "How to Fix",
+        "Close Report": "Close Report",
+        "Passed Tests": "Passed Tests",
+        "Items Need Review": "Items Need Review"
+      },
+      it: {
+        "Accessibility Menu": "Menu Accessibilità",
+        "Reset settings": "Ripristina impostazioni",
+        "Reset All Settings": "Ripristina tutte le impostazioni",
+        "Close": "Chiudi",
+        "Content Adjustments": "Regolazioni Contenuto",
+        "Adjust Font Size": "Regola Dimensione Font",
+        "Highlight Title": "Evidenzia Titoli",
+        "Highlight Links": "Evidenzia Link",
+        "Readable Font": "Font Leggibile",
+        "Color Adjustments": "Regolazioni Colore",
+        "Invert Colors": "Inverti Colori",
+        "Light Contrast": "Contrasto Chiaro",
+        "Dark Contrast": "Contrasto Scuro",
+        "High Contrast": "Alto Contrasto",
+        "High Saturation": "Alta Saturazione",
+        "Low Saturation": "Bassa Saturazione",
+        "Monochrome": "Monocromatico",
+        "Tools": "Strumenti",
+        "Reading Guide": "Guida di Lettura",
+        "Stop Animations": "Ferma Animazioni",
+        "Big Cursor": "Cursore Grande",
+        "Increase Font Size": "Aumenta Dimensione Font",
+        "Decrease Font Size": "Diminuisci Dimensione Font",
+        "Letter Spacing": "Spaziatura Lettere",
+        "Line Height": "Altezza Riga",
+        "Font Weight": "Grassetto",
+        "Dyslexia Font": "Font Dislessia",
+        "Language": "Lingua",
+        "Open Accessibility Menu": "Apri Menu Accessibilità",
+        "Hide Images": "Nascondi Immagini",
+        "Skip to accessibility menu": "Vai al menu accessibilità",
+        "Accessibility Report": "Report Accessibilità",
+        "Run Accessibility Check": "Esegui Controllo Accessibilità",
+        "Loading...": "Caricamento...",
+        "Analyzing page...": "Analisi pagina...",
+        "Critical": "Critico",
+        "Serious": "Grave",
+        "Moderate": "Moderato",
+        "Minor": "Minore",
+        "Violations Found": "Violazioni Trovate",
+        "No Issues Found": "Nessun Problema Trovato",
+        "Element": "Elemento",
+        "Issue": "Problema",
+        "How to Fix": "Come Risolvere",
+        "Close Report": "Chiudi Report",
+        "Passed Tests": "Test Superati",
+        "Items Need Review": "Elementi da Rivedere"
+      },
+      fr: {
+        "Accessibility Menu": "Menu Accessibilité",
+        "Reset settings": "Réinitialiser les paramètres",
+        "Reset All Settings": "Réinitialiser tous les paramètres",
+        "Close": "Fermer",
+        "Content Adjustments": "Ajustements du Contenu",
+        "Adjust Font Size": "Ajuster la Taille de Police",
+        "Highlight Title": "Surligner les Titres",
+        "Highlight Links": "Surligner les Liens",
+        "Readable Font": "Police Lisible",
+        "Color Adjustments": "Ajustements des Couleurs",
+        "Invert Colors": "Inverser les Couleurs",
+        "Light Contrast": "Contraste Clair",
+        "Dark Contrast": "Contraste Sombre",
+        "High Contrast": "Contraste Élevé",
+        "High Saturation": "Saturation Élevée",
+        "Low Saturation": "Saturation Faible",
+        "Monochrome": "Monochrome",
+        "Tools": "Outils",
+        "Reading Guide": "Guide de Lecture",
+        "Stop Animations": "Arrêter les Animations",
+        "Big Cursor": "Grand Curseur",
+        "Increase Font Size": "Augmenter la Taille de Police",
+        "Decrease Font Size": "Diminuer la Taille de Police",
+        "Letter Spacing": "Espacement des Lettres",
+        "Line Height": "Hauteur de Ligne",
+        "Font Weight": "Graisse de Police",
+        "Dyslexia Font": "Police Dyslexie",
+        "Language": "Langue",
+        "Open Accessibility Menu": "Ouvrir le Menu Accessibilité",
+        "Hide Images": "Masquer les Images",
+        "Skip to accessibility menu": "Aller au menu accessibilité",
+        "Accessibility Report": "Rapport d'Accessibilité",
+        "Run Accessibility Check": "Lancer le Contrôle d'Accessibilité",
+        "Loading...": "Chargement...",
+        "Analyzing page...": "Analyse de la page...",
+        "Critical": "Critique",
+        "Serious": "Grave",
+        "Moderate": "Modéré",
+        "Minor": "Mineur",
+        "Violations Found": "Violations Trouvées",
+        "No Issues Found": "Aucun Problème Trouvé",
+        "Element": "Élément",
+        "Issue": "Problème",
+        "How to Fix": "Comment Corriger",
+        "Close Report": "Fermer le Rapport",
+        "Passed Tests": "Tests Réussis",
+        "Items Need Review": "Éléments à Vérifier"
+      },
+      de: {
+        "Accessibility Menu": "Barrierefreiheit-Menü",
+        "Reset settings": "Einstellungen zurücksetzen",
+        "Reset All Settings": "Alle Einstellungen zurücksetzen",
+        "Close": "Schließen",
+        "Content Adjustments": "Inhaltsanpassungen",
+        "Adjust Font Size": "Schriftgröße anpassen",
+        "Highlight Title": "Titel hervorheben",
+        "Highlight Links": "Links hervorheben",
+        "Readable Font": "Lesbare Schrift",
+        "Color Adjustments": "Farbanpassungen",
+        "Invert Colors": "Farben invertieren",
+        "Light Contrast": "Heller Kontrast",
+        "Dark Contrast": "Dunkler Kontrast",
+        "High Contrast": "Hoher Kontrast",
+        "High Saturation": "Hohe Sättigung",
+        "Low Saturation": "Niedrige Sättigung",
+        "Monochrome": "Monochrom",
+        "Tools": "Werkzeuge",
+        "Reading Guide": "Lesehilfe",
+        "Stop Animations": "Animationen stoppen",
+        "Big Cursor": "Großer Cursor",
+        "Increase Font Size": "Schriftgröße erhöhen",
+        "Decrease Font Size": "Schriftgröße verringern",
+        "Letter Spacing": "Zeichenabstand",
+        "Line Height": "Zeilenhöhe",
+        "Font Weight": "Schriftstärke",
+        "Dyslexia Font": "Legasthenie-Schrift",
+        "Language": "Sprache",
+        "Open Accessibility Menu": "Barrierefreiheit-Menü öffnen",
+        "Hide Images": "Bilder ausblenden",
+        "Skip to accessibility menu": "Zum Barrierefreiheit-Menü springen",
+        "Accessibility Report": "Barrierefreiheit-Bericht",
+        "Run Accessibility Check": "Barrierefreiheitsprüfung starten",
+        "Loading...": "Laden...",
+        "Analyzing page...": "Seite wird analysiert...",
+        "Critical": "Kritisch",
+        "Serious": "Schwerwiegend",
+        "Moderate": "Mäßig",
+        "Minor": "Gering",
+        "Violations Found": "Verstöße gefunden",
+        "No Issues Found": "Keine Probleme gefunden",
+        "Element": "Element",
+        "Issue": "Problem",
+        "How to Fix": "Lösung",
+        "Close Report": "Bericht schließen",
+        "Passed Tests": "Bestandene Tests",
+        "Items Need Review": "Elemente zur Überprüfung"
+      },
+      es: {
+        "Accessibility Menu": "Menú de Accesibilidad",
+        "Reset settings": "Restablecer configuración",
+        "Reset All Settings": "Restablecer toda la configuración",
+        "Close": "Cerrar",
+        "Content Adjustments": "Ajustes de Contenido",
+        "Adjust Font Size": "Ajustar Tamaño de Fuente",
+        "Highlight Title": "Resaltar Títulos",
+        "Highlight Links": "Resaltar Enlaces",
+        "Readable Font": "Fuente Legible",
+        "Color Adjustments": "Ajustes de Color",
+        "Invert Colors": "Invertir Colores",
+        "Light Contrast": "Contraste Claro",
+        "Dark Contrast": "Contraste Oscuro",
+        "High Contrast": "Alto Contraste",
+        "High Saturation": "Alta Saturación",
+        "Low Saturation": "Baja Saturación",
+        "Monochrome": "Monocromo",
+        "Tools": "Herramientas",
+        "Reading Guide": "Guía de Lectura",
+        "Stop Animations": "Detener Animaciones",
+        "Big Cursor": "Cursor Grande",
+        "Increase Font Size": "Aumentar Tamaño de Fuente",
+        "Decrease Font Size": "Disminuir Tamaño de Fuente",
+        "Letter Spacing": "Espaciado de Letras",
+        "Line Height": "Altura de Línea",
+        "Font Weight": "Grosor de Fuente",
+        "Dyslexia Font": "Fuente para Dislexia",
+        "Language": "Idioma",
+        "Open Accessibility Menu": "Abrir Menú de Accesibilidad",
+        "Hide Images": "Ocultar Imágenes",
+        "Skip to accessibility menu": "Ir al menú de accesibilidad",
+        "Accessibility Report": "Informe de Accesibilidad",
+        "Run Accessibility Check": "Ejecutar Comprobación de Accesibilidad",
+        "Loading...": "Cargando...",
+        "Analyzing page...": "Analizando página...",
+        "Critical": "Crítico",
+        "Serious": "Grave",
+        "Moderate": "Moderado",
+        "Minor": "Menor",
+        "Violations Found": "Violaciones Encontradas",
+        "No Issues Found": "Sin Problemas Encontrados",
+        "Element": "Elemento",
+        "Issue": "Problema",
+        "How to Fix": "Cómo Solucionarlo",
+        "Close Report": "Cerrar Informe",
+        "Passed Tests": "Pruebas Superadas",
+        "Items Need Review": "Elementos a Revisar"
+      },
+      ru: {
+        "Accessibility Menu": "Меню доступности",
+        "Reset settings": "Сбросить настройки",
+        "Reset All Settings": "Сбросить все настройки",
+        "Close": "Закрыть",
+        "Content Adjustments": "Настройки контента",
+        "Adjust Font Size": "Изменить размер шрифта",
+        "Highlight Title": "Выделить заголовки",
+        "Highlight Links": "Выделить ссылки",
+        "Readable Font": "Читаемый шрифт",
+        "Color Adjustments": "Настройки цвета",
+        "Invert Colors": "Инвертировать цвета",
+        "Light Contrast": "Светлый контраст",
+        "Dark Contrast": "Тёмный контраст",
+        "High Contrast": "Высокий контраст",
+        "High Saturation": "Высокая насыщенность",
+        "Low Saturation": "Низкая насыщенность",
+        "Monochrome": "Монохромный",
+        "Tools": "Инструменты",
+        "Reading Guide": "Линейка для чтения",
+        "Stop Animations": "Остановить анимации",
+        "Big Cursor": "Большой курсор",
+        "Increase Font Size": "Увеличить размер шрифта",
+        "Decrease Font Size": "Уменьшить размер шрифта",
+        "Letter Spacing": "Межбуквенный интервал",
+        "Line Height": "Высота строки",
+        "Font Weight": "Жирный шрифт",
+        "Dyslexia Font": "Шрифт для дислексии",
+        "Language": "Язык",
+        "Open Accessibility Menu": "Открыть меню доступности",
+        "Hide Images": "Скрыть изображения",
+        "Skip to accessibility menu": "Перейти к меню доступности",
+        "Accessibility Report": "Отчёт о доступности",
+        "Run Accessibility Check": "Запустить проверку доступности",
+        "Loading...": "Загрузка...",
+        "Analyzing page...": "Анализ страницы...",
+        "Critical": "Критический",
+        "Serious": "Серьёзный",
+        "Moderate": "Умеренный",
+        "Minor": "Незначительный",
+        "Violations Found": "Найдены нарушения",
+        "No Issues Found": "Проблем не найдено",
+        "Element": "Элемент",
+        "Issue": "Проблема",
+        "How to Fix": "Как исправить",
+        "Close Report": "Закрыть отчёт",
+        "Passed Tests": "Пройденные тесты",
+        "Items Need Review": "Требуют проверки"
+      },
+      pl: {
+        "Accessibility Menu": "Menu Dostępności",
+        "Reset settings": "Zresetuj ustawienia",
+        "Reset All Settings": "Zresetuj wszystkie ustawienia",
+        "Close": "Zamknij",
+        "Content Adjustments": "Dostosowanie Treści",
+        "Adjust Font Size": "Dostosuj Rozmiar Czcionki",
+        "Highlight Title": "Podświetl Tytuły",
+        "Highlight Links": "Podświetl Linki",
+        "Readable Font": "Czytelna Czcionka",
+        "Color Adjustments": "Dostosowanie Kolorów",
+        "Invert Colors": "Odwróć Kolory",
+        "Light Contrast": "Jasny Kontrast",
+        "Dark Contrast": "Ciemny Kontrast",
+        "High Contrast": "Wysoki Kontrast",
+        "High Saturation": "Wysoka Saturacja",
+        "Low Saturation": "Niska Saturacja",
+        "Monochrome": "Monochromatyczny",
+        "Tools": "Narzędzia",
+        "Reading Guide": "Linia do Czytania",
+        "Stop Animations": "Zatrzymaj Animacje",
+        "Big Cursor": "Duży Kursor",
+        "Increase Font Size": "Zwiększ Rozmiar Czcionki",
+        "Decrease Font Size": "Zmniejsz Rozmiar Czcionki",
+        "Letter Spacing": "Odstępy Między Literami",
+        "Line Height": "Wysokość Linii",
+        "Font Weight": "Grubość Czcionki",
+        "Dyslexia Font": "Czcionka dla Dysleksji",
+        "Language": "Język",
+        "Open Accessibility Menu": "Otwórz Menu Dostępności",
+        "Hide Images": "Ukryj Obrazy",
+        "Skip to accessibility menu": "Przejdź do menu dostępności",
+        "Accessibility Report": "Raport Dostępności",
+        "Run Accessibility Check": "Uruchom Sprawdzanie Dostępności",
+        "Loading...": "Ładowanie...",
+        "Analyzing page...": "Analizowanie strony...",
+        "Critical": "Krytyczny",
+        "Serious": "Poważny",
+        "Moderate": "Umiarkowany",
+        "Minor": "Drobny",
+        "Violations Found": "Znalezione Naruszenia",
+        "No Issues Found": "Brak Problemów",
+        "Element": "Element",
+        "Issue": "Problem",
+        "How to Fix": "Jak Naprawić",
+        "Close Report": "Zamknij Raport",
+        "Passed Tests": "Zaliczone Testy",
+        "Items Need Review": "Elementy do Sprawdzenia"
+      },
+      ro: {
+        "Accessibility Menu": "Meniu Accesibilitate",
+        "Reset settings": "Resetare setări",
+        "Reset All Settings": "Resetare toate setările",
+        "Close": "Închide",
+        "Content Adjustments": "Ajustări Conținut",
+        "Adjust Font Size": "Ajustare Dimensiune Font",
+        "Highlight Title": "Evidențiere Titluri",
+        "Highlight Links": "Evidențiere Linkuri",
+        "Readable Font": "Font Lizibil",
+        "Color Adjustments": "Ajustări Culoare",
+        "Invert Colors": "Inversare Culori",
+        "Light Contrast": "Contrast Luminos",
+        "Dark Contrast": "Contrast Întunecat",
+        "High Contrast": "Contrast Ridicat",
+        "High Saturation": "Saturație Ridicată",
+        "Low Saturation": "Saturație Scăzută",
+        "Monochrome": "Monocrom",
+        "Tools": "Instrumente",
+        "Reading Guide": "Ghid de Citire",
+        "Stop Animations": "Oprire Animații",
+        "Big Cursor": "Cursor Mare",
+        "Increase Font Size": "Mărire Dimensiune Font",
+        "Decrease Font Size": "Micșorare Dimensiune Font",
+        "Letter Spacing": "Spațiere Litere",
+        "Line Height": "Înălțime Linie",
+        "Font Weight": "Grosime Font",
+        "Dyslexia Font": "Font pentru Dislexie",
+        "Language": "Limbă",
+        "Open Accessibility Menu": "Deschide Meniul Accesibilitate",
+        "Hide Images": "Ascunde Imagini",
+        "Skip to accessibility menu": "Salt la meniul de accesibilitate",
+        "Accessibility Report": "Raport Accesibilitate",
+        "Run Accessibility Check": "Rulează Verificare Accesibilitate",
+        "Loading...": "Se încarcă...",
+        "Analyzing page...": "Se analizează pagina...",
+        "Critical": "Critic",
+        "Serious": "Grav",
+        "Moderate": "Moderat",
+        "Minor": "Minor",
+        "Violations Found": "Încălcări Găsite",
+        "No Issues Found": "Nicio Problemă Găsită",
+        "Element": "Element",
+        "Issue": "Problemă",
+        "How to Fix": "Cum se Remediază",
+        "Close Report": "Închide Raportul",
+        "Passed Tests": "Teste Trecute",
+        "Items Need Review": "Elemente de Verificat"
+      },
+      nl: {
+        "Accessibility Menu": "Toegankelijkheidsmenu",
+        "Reset settings": "Instellingen resetten",
+        "Reset All Settings": "Alle instellingen resetten",
+        "Close": "Sluiten",
+        "Content Adjustments": "Inhoudsaanpassingen",
+        "Adjust Font Size": "Lettergrootte aanpassen",
+        "Highlight Title": "Titels markeren",
+        "Highlight Links": "Links markeren",
+        "Readable Font": "Leesbaar Lettertype",
+        "Color Adjustments": "Kleuraanpassingen",
+        "Invert Colors": "Kleuren omkeren",
+        "Light Contrast": "Licht Contrast",
+        "Dark Contrast": "Donker Contrast",
+        "High Contrast": "Hoog Contrast",
+        "High Saturation": "Hoge Verzadiging",
+        "Low Saturation": "Lage Verzadiging",
+        "Monochrome": "Monochroom",
+        "Tools": "Hulpmiddelen",
+        "Reading Guide": "Leeshulp",
+        "Stop Animations": "Animaties stoppen",
+        "Big Cursor": "Grote Cursor",
+        "Increase Font Size": "Lettergrootte vergroten",
+        "Decrease Font Size": "Lettergrootte verkleinen",
+        "Letter Spacing": "Letterafstand",
+        "Line Height": "Regelhoogte",
+        "Font Weight": "Letterdikte",
+        "Dyslexia Font": "Dyslexie Lettertype",
+        "Language": "Taal",
+        "Open Accessibility Menu": "Toegankelijkheidsmenu openen",
+        "Hide Images": "Afbeeldingen verbergen",
+        "Skip to accessibility menu": "Ga naar toegankelijkheidsmenu",
+        "Accessibility Report": "Toegankelijkheidsrapport",
+        "Run Accessibility Check": "Toegankelijkheidscontrole uitvoeren",
+        "Loading...": "Laden...",
+        "Analyzing page...": "Pagina analyseren...",
+        "Critical": "Kritiek",
+        "Serious": "Ernstig",
+        "Moderate": "Matig",
+        "Minor": "Gering",
+        "Violations Found": "Overtredingen Gevonden",
+        "No Issues Found": "Geen Problemen Gevonden",
+        "Element": "Element",
+        "Issue": "Probleem",
+        "How to Fix": "Hoe op te lossen",
+        "Close Report": "Rapport Sluiten",
+        "Passed Tests": "Geslaagde Tests",
+        "Items Need Review": "Items te Controleren"
+      },
+      uk: {
+        "Accessibility Menu": "Меню доступності",
+        "Reset settings": "Скинути налаштування",
+        "Reset All Settings": "Скинути всі налаштування",
+        "Close": "Закрити",
+        "Content Adjustments": "Налаштування контенту",
+        "Adjust Font Size": "Змінити розмір шрифту",
+        "Highlight Title": "Виділити заголовки",
+        "Highlight Links": "Виділити посилання",
+        "Readable Font": "Читабельний шрифт",
+        "Color Adjustments": "Налаштування кольору",
+        "Invert Colors": "Інвертувати кольори",
+        "Light Contrast": "Світлий контраст",
+        "Dark Contrast": "Темний контраст",
+        "High Contrast": "Високий контраст",
+        "High Saturation": "Висока насиченість",
+        "Low Saturation": "Низька насиченість",
+        "Monochrome": "Монохромний",
+        "Tools": "Інструменти",
+        "Reading Guide": "Лінійка для читання",
+        "Stop Animations": "Зупинити анімації",
+        "Big Cursor": "Великий курсор",
+        "Increase Font Size": "Збільшити розмір шрифту",
+        "Decrease Font Size": "Зменшити розмір шрифту",
+        "Letter Spacing": "Міжлітерний інтервал",
+        "Line Height": "Висота рядка",
+        "Font Weight": "Жирний шрифт",
+        "Dyslexia Font": "Шрифт для дислексії",
+        "Language": "Мова",
+        "Open Accessibility Menu": "Відкрити меню доступності",
+        "Hide Images": "Приховати зображення",
+        "Skip to accessibility menu": "Перейти до меню доступності",
+        "Accessibility Report": "Звіт про доступність",
+        "Run Accessibility Check": "Запустити перевірку доступності",
+        "Loading...": "Завантаження...",
+        "Analyzing page...": "Аналіз сторінки...",
+        "Critical": "Критичний",
+        "Serious": "Серйозний",
+        "Moderate": "Помірний",
+        "Minor": "Незначний",
+        "Violations Found": "Знайдені порушення",
+        "No Issues Found": "Проблем не знайдено",
+        "Element": "Елемент",
+        "Issue": "Проблема",
+        "How to Fix": "Як виправити",
+        "Close Report": "Закрити звіт",
+        "Passed Tests": "Пройдені тести",
+        "Items Need Review": "Потребують перевірки"
       }
     };
 
-    this.supportedLanguages = [{ code: "en", label: "English (English)" }];
+    this.supportedLanguages = [
+      { code: "en", label: "English (English)" },
+      { code: "it", label: "Italiano (Italian)" },
+      { code: "fr", label: "Français (French)" },
+      { code: "de", label: "Deutsch (German)" },
+      { code: "es", label: "Español (Spanish)" },
+      { code: "ru", label: "Русский (Russian)" },
+      { code: "pl", label: "Polski (Polish)" },
+      { code: "ro", label: "Română (Romanian)" },
+      { code: "nl", label: "Nederlands (Dutch)" },
+      { code: "uk", label: "Українська (Ukrainian)" }
+    ];
 
     this.accessTools = [
       { label: 'Big Cursor', key: 'large-pointer', icon: this.widgetIcons.largePointer },
       { label: 'Stop Animations', key: 'pause-motion', icon: this.widgetIcons.pauseMotion },
       { label: 'Reading Guide', key: 'reading-aid', icon: this.widgetIcons.readingAid }
     ];
+
+    // Add Accessibility Report only in dev mode (?acc-dev=true)
+    if (this.isDevMode()) {
+      this.accessTools.push({
+        label: 'Accessibility Report',
+        key: 'accessibility-report',
+        icon: this.widgetIcons.accessibilityReport,
+        isAction: true
+      });
+    }
+
+    // axe-core state
+    this.axeCoreLoaded = false;
+    this.axeCoreLoading = false;
 
     // Font size cycling
     this.textScaleIndex = 0;
@@ -245,7 +728,7 @@ class AccessibleWebWidget {
 
     // Merge any passed options (for instance, widget position or language)
     this.options = {
-      lang: 'en',
+      lang: this.getDefaultLanguage(),
       position: 'bottom-left',
       ...this.dataOptions,
       ...options
@@ -298,6 +781,73 @@ class AccessibleWebWidget {
       document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Strict" + (isSecure ? ";Secure" : "");
     } catch (e) {
       console.warn('Error setting cookie:', e);
+    }
+  }
+
+  getSavedLanguage() {
+    try {
+      // Try localStorage first
+      if (this.storageAvailable()) {
+        const stored = localStorage.getItem(this.cookieKey);
+        if (stored) {
+          const config = JSON.parse(stored);
+          if (config.lang) return config.lang;
+        }
+      }
+      // Fallback to cookie
+      const cookieVal = this.fetchCookie(this.cookieKey);
+      if (cookieVal && cookieVal !== "") {
+        const config = JSON.parse(cookieVal);
+        if (config.lang) return config.lang;
+      }
+    } catch (e) {
+      // Ignore parsing errors
+    }
+    return null;
+  }
+
+  getBrowserLanguage() {
+    if (typeof navigator === 'undefined') return 'en';
+
+    const supportedCodes = this.supportedLanguages.map(lang => lang.code);
+
+    // Get browser languages (navigator.languages is an array, navigator.language is a string)
+    const browserLanguages = navigator.languages
+      ? [...navigator.languages]
+      : [navigator.language || navigator.userLanguage || 'en'];
+
+    for (const browserLang of browserLanguages) {
+      // Extract the primary language code (e.g., 'en-US' -> 'en')
+      const primaryCode = browserLang.split('-')[0].toLowerCase();
+
+      if (supportedCodes.includes(primaryCode)) {
+        return primaryCode;
+      }
+    }
+
+    // Default to English if no supported language found
+    return 'en';
+  }
+
+  getDefaultLanguage() {
+    // Priority: 1. Saved language, 2. Browser language, 3. English
+    const savedLang = this.getSavedLanguage();
+    if (savedLang) {
+      const supportedCodes = this.supportedLanguages.map(lang => lang.code);
+      if (supportedCodes.includes(savedLang)) {
+        return savedLang;
+      }
+    }
+    return this.getBrowserLanguage();
+  }
+
+  isDevMode() {
+    if (typeof window === 'undefined') return false;
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('acc-dev') === 'true';
+    } catch (e) {
+      return false;
     }
   }
 
@@ -969,9 +1519,31 @@ class AccessibleWebWidget {
     if (shouldEnable) {
       this.ensureReadableFontLoaded();
     }
-    const exclusionSuffix = ':not(.acc-widget):not(.acc-menu):not(.acc-container)';
+    // Exclude widget elements and common icon classes
+    const iconExclusions = [
+      ':not(.acc-widget)',
+      ':not(.acc-menu)',
+      ':not(.acc-container)',
+      ':not(.material-icons)',
+      ':not(.material-icons-outlined)',
+      ':not(.material-icons-round)',
+      ':not(.material-symbols-outlined)',
+      ':not(.material-symbols-rounded)',
+      ':not(.fa)',
+      ':not(.fas)',
+      ':not(.far)',
+      ':not(.fab)',
+      ':not(.fa-solid)',
+      ':not(.fa-regular)',
+      ':not(.fa-brands)',
+      ':not(.glyphicon)',
+      ':not(.icon)',
+      ':not(.icons)',
+      ':not([class*="icon-"])',
+      ':not([data-icon])'
+    ].join('');
+    const exclusionSuffix = iconExclusions;
     const readableSelectors = [
-      `*:not(.acc-widget):not(.acc-menu):not(.acc-container)`,
       `h1${exclusionSuffix}`,
       `h2${exclusionSuffix}`,
       `h3${exclusionSuffix}`,
@@ -992,9 +1564,6 @@ class AccessibleWebWidget {
       `blockquote${exclusionSuffix}`,
       `label${exclusionSuffix}`,
       `button:not(.acc-btn)${exclusionSuffix}`,
-      `svg${exclusionSuffix}`,
-      `i${exclusionSuffix}`,
-      `img${exclusionSuffix}`,
       `.acc-text${exclusionSuffix}`
     ];
     const config = {
@@ -1085,6 +1654,515 @@ enableReadingAid(enable = false) {
     }
   } catch (e) {
     console.warn('Error with reading aid:', e);
+  }
+}
+
+// ======================================================
+// AXE-CORE ACCESSIBILITY REPORT
+// ======================================================
+
+loadAxeCore() {
+  return new Promise((resolve, reject) => {
+    if (this.axeCoreLoaded && window.axe) {
+      resolve(window.axe);
+      return;
+    }
+
+    if (this.axeCoreLoading) {
+      // Wait for existing load to complete
+      const checkLoaded = setInterval(() => {
+        if (this.axeCoreLoaded && window.axe) {
+          clearInterval(checkLoaded);
+          resolve(window.axe);
+        }
+      }, 100);
+      return;
+    }
+
+    this.axeCoreLoading = true;
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/axe-core@latest/axe.min.js';
+    script.async = true;
+
+    script.onload = () => {
+      this.axeCoreLoaded = true;
+      this.axeCoreLoading = false;
+      resolve(window.axe);
+    };
+
+    script.onerror = () => {
+      this.axeCoreLoading = false;
+      reject(new Error('Failed to load axe-core'));
+    };
+
+    document.head.appendChild(script);
+  });
+}
+
+async runAccessibilityReport() {
+  // Create or get report panel
+  let panel = this.findElement('.acc-report-panel');
+
+  if (!panel) {
+    panel = this.createReportPanel();
+    document.body.appendChild(panel);
+  }
+
+  panel.classList.add('acc-report-visible');
+
+  const contentArea = this.findElement('.acc-report-content', panel);
+  const statusArea = this.findElement('.acc-report-status', panel);
+
+  // Show loading state
+  statusArea.textContent = this.translate('Loading...');
+  contentArea.innerHTML = `<div class="acc-report-loading">${this.translate('Analyzing page...')}</div>`;
+
+  try {
+    const axe = await this.loadAxeCore();
+
+    // Run axe analysis
+    const results = await axe.run(document, {
+      runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
+    });
+
+    this.displayReportResults(panel, results);
+
+  } catch (error) {
+    contentArea.innerHTML = `<div class="acc-report-error">Error: ${error.message}</div>`;
+    statusArea.textContent = '';
+  }
+}
+
+createReportPanel() {
+  const panel = document.createElement('div');
+  panel.className = 'acc-report-panel acc-container';
+  panel.setAttribute('role', 'dialog');
+  panel.setAttribute('aria-modal', 'true');
+  panel.setAttribute('aria-label', this.translate('Accessibility Report'));
+
+  panel.innerHTML = `
+    <div class="acc-report-overlay"></div>
+    <div class="acc-report-dialog">
+      <div class="acc-report-header">
+        <h2 class="acc-report-title">${this.translate('Accessibility Report')}</h2>
+        <button type="button" class="acc-report-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
+      </div>
+      <div class="acc-report-status"></div>
+      <div class="acc-report-content"></div>
+      <div class="acc-report-footer">
+        <span class="acc-report-powered">Powered by axe-core</span>
+      </div>
+    </div>
+  `;
+
+  // Add styles
+  this.injectReportStyles();
+
+  // Close handlers
+  const closeBtn = panel.querySelector('.acc-report-close');
+  const overlay = panel.querySelector('.acc-report-overlay');
+
+  closeBtn.addEventListener('click', () => this.closeReportPanel());
+  overlay.addEventListener('click', () => this.closeReportPanel());
+
+  // Escape key handler
+  panel.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      this.closeReportPanel();
+    }
+  });
+
+  return panel;
+}
+
+injectReportStyles() {
+  if (document.getElementById('acc-report-styles')) return;
+
+  const style = document.createElement('style');
+  style.id = 'acc-report-styles';
+  style.textContent = `
+    .acc-report-panel {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: ${this.widgetTheme.zIndex + 10};
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .acc-report-panel.acc-report-visible {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .acc-report-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .acc-report-dialog {
+      position: relative;
+      background: #fff;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 800px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .acc-report-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .acc-report-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+    .acc-report-close {
+      background: none;
+      border: none;
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .acc-report-close:hover {
+      background: #f0f0f0;
+    }
+    .acc-report-close svg {
+      width: 20px;
+      height: 20px;
+      fill: #666;
+    }
+    .acc-report-status {
+      padding: 8px 20px;
+      font-size: 14px;
+      color: #666;
+      background: #f8f9fa;
+    }
+    .acc-report-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+    }
+    .acc-report-loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+    .acc-report-error {
+      color: #d32f2f;
+      padding: 20px;
+      text-align: center;
+    }
+    .acc-report-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .acc-report-stat {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .acc-report-stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      display: block;
+    }
+    .acc-report-stat-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    .acc-report-stat.critical .acc-report-stat-value { color: #d32f2f; }
+    .acc-report-stat.serious .acc-report-stat-value { color: #f57c00; }
+    .acc-report-stat.moderate .acc-report-stat-value { color: #fbc02d; }
+    .acc-report-stat.minor .acc-report-stat-value { color: #7cb342; }
+    .acc-report-stat.passed .acc-report-stat-value { color: #43a047; }
+    .acc-report-section {
+      margin-bottom: 20px;
+    }
+    .acc-report-section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    .acc-report-violation {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .acc-report-violation-header {
+      padding: 12px 16px;
+      background: #f8f9fa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .acc-report-violation-header:hover {
+      background: #f0f0f0;
+    }
+    .acc-report-violation-impact {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: #fff;
+    }
+    .acc-report-violation-impact.critical { background: #d32f2f; }
+    .acc-report-violation-impact.serious { background: #f57c00; }
+    .acc-report-violation-impact.moderate { background: #fbc02d; color: #333; }
+    .acc-report-violation-impact.minor { background: #7cb342; }
+    .acc-report-violation-title {
+      flex: 1;
+      font-weight: 500;
+      color: #333;
+    }
+    .acc-report-violation-count {
+      font-size: 12px;
+      color: #666;
+      background: #e0e0e0;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+    .acc-report-violation-details {
+      display: none;
+      padding: 16px;
+      border-top: 1px solid #e0e0e0;
+    }
+    .acc-report-violation.expanded .acc-report-violation-details {
+      display: block;
+    }
+    .acc-report-violation-desc {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    .acc-report-violation-help {
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    .acc-report-violation-help a {
+      color: #1976d2;
+    }
+    .acc-report-node {
+      background: #f8f9fa;
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 8px;
+    }
+    .acc-report-node-html {
+      font-family: monospace;
+      font-size: 12px;
+      background: #263238;
+      color: #80cbc4;
+      padding: 8px 12px;
+      border-radius: 4px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .acc-report-node-fix {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #333;
+    }
+    .acc-report-node-fix strong {
+      color: #1976d2;
+    }
+    .acc-report-success {
+      text-align: center;
+      padding: 40px;
+    }
+    .acc-report-success-icon {
+      width: 64px;
+      height: 64px;
+      background: #43a047;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .acc-report-success-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: #fff;
+    }
+    .acc-report-footer {
+      padding: 12px 20px;
+      border-top: 1px solid #e0e0e0;
+      text-align: center;
+    }
+    .acc-report-powered {
+      font-size: 12px;
+      color: #999;
+    }
+    @media (max-width: 600px) {
+      .acc-report-dialog {
+        width: 95%;
+        max-height: 90vh;
+      }
+      .acc-report-summary {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+displayReportResults(panel, results) {
+  const contentArea = this.findElement('.acc-report-content', panel);
+  const statusArea = this.findElement('.acc-report-status', panel);
+
+  const violations = results.violations || [];
+  const passes = results.passes || [];
+  const incomplete = results.incomplete || [];
+
+  // Count by severity
+  const counts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
+  violations.forEach(v => {
+    if (counts[v.impact] !== undefined) {
+      counts[v.impact] += v.nodes.length;
+    }
+  });
+
+  const totalViolations = Object.values(counts).reduce((a, b) => a + b, 0);
+
+  statusArea.textContent = totalViolations > 0
+    ? `${totalViolations} ${this.translate('Violations Found')}`
+    : this.translate('No Issues Found');
+
+  let html = `
+    <div class="acc-report-summary">
+      <div class="acc-report-stat critical">
+        <span class="acc-report-stat-value">${counts.critical}</span>
+        <span class="acc-report-stat-label">${this.translate('Critical')}</span>
+      </div>
+      <div class="acc-report-stat serious">
+        <span class="acc-report-stat-value">${counts.serious}</span>
+        <span class="acc-report-stat-label">${this.translate('Serious')}</span>
+      </div>
+      <div class="acc-report-stat moderate">
+        <span class="acc-report-stat-value">${counts.moderate}</span>
+        <span class="acc-report-stat-label">${this.translate('Moderate')}</span>
+      </div>
+      <div class="acc-report-stat minor">
+        <span class="acc-report-stat-value">${counts.minor}</span>
+        <span class="acc-report-stat-label">${this.translate('Minor')}</span>
+      </div>
+      <div class="acc-report-stat passed">
+        <span class="acc-report-stat-value">${passes.length}</span>
+        <span class="acc-report-stat-label">${this.translate('Passed Tests')}</span>
+      </div>
+    </div>
+  `;
+
+  if (violations.length === 0) {
+    html += `
+      <div class="acc-report-success">
+        <div class="acc-report-success-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+        </div>
+        <h3>${this.translate('No Issues Found')}</h3>
+      </div>
+    `;
+  } else {
+    html += `<div class="acc-report-section">
+      <div class="acc-report-section-title">${this.translate('Violations Found')} (${violations.length})</div>
+    `;
+
+    // Sort by severity
+    const severityOrder = { critical: 0, serious: 1, moderate: 2, minor: 3 };
+    violations.sort((a, b) => (severityOrder[a.impact] || 4) - (severityOrder[b.impact] || 4));
+
+    violations.forEach((violation, index) => {
+      html += `
+        <div class="acc-report-violation" data-index="${index}">
+          <div class="acc-report-violation-header">
+            <span class="acc-report-violation-impact ${violation.impact}">${this.translate(this.capitalizeFirst(violation.impact))}</span>
+            <span class="acc-report-violation-title">${this.escapeHtml(violation.help)}</span>
+            <span class="acc-report-violation-count">${violation.nodes.length} ${this.translate('Element')}${violation.nodes.length > 1 ? 's' : ''}</span>
+          </div>
+          <div class="acc-report-violation-details">
+            <p class="acc-report-violation-desc">${this.escapeHtml(violation.description)}</p>
+            <p class="acc-report-violation-help">
+              <a href="${violation.helpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
+            </p>
+            ${violation.nodes.slice(0, 5).map(node => `
+              <div class="acc-report-node">
+                <div class="acc-report-node-html">${this.escapeHtml(node.html)}</div>
+                ${node.failureSummary ? `<div class="acc-report-node-fix"><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(node.failureSummary)}</div>` : ''}
+              </div>
+            `).join('')}
+            ${violation.nodes.length > 5 ? `<p style="color:#666;font-size:13px;margin-top:12px;">... and ${violation.nodes.length - 5} more elements</p>` : ''}
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  }
+
+  if (incomplete.length > 0) {
+    html += `
+      <div class="acc-report-section">
+        <div class="acc-report-section-title">${this.translate('Items Need Review')} (${incomplete.length})</div>
+        <p style="color:#666;font-size:14px;">These items require manual verification.</p>
+      </div>
+    `;
+  }
+
+  contentArea.innerHTML = html;
+
+  // Add click handlers for expandable violations
+  contentArea.querySelectorAll('.acc-report-violation-header').forEach(header => {
+    header.addEventListener('click', () => {
+      header.parentElement.classList.toggle('expanded');
+    });
+  });
+}
+
+capitalizeFirst(str) {
+  if (!str) return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+escapeHtml(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+closeReportPanel() {
+  const panel = this.findElement('.acc-report-panel');
+  if (panel) {
+    panel.classList.remove('acc-report-visible');
   }
 }
 
@@ -2263,10 +3341,14 @@ concealImages(enable = false) {
         const btn = target.classList.contains('acc-btn') ? target : null;
         if (btn) {
           const key = btn.dataset.key;
+          // Handle accessibility report action
+          if (key === 'accessibility-report') {
+            this.runAccessibilityReport();
+          }
           // Handle multi-level feature for text-scale.
-          if (key === 'text-scale') {
+          else if (key === 'text-scale') {
             this.cycleMultiLevelFeature(key, btn);
-          } 
+          }
           // For color adjustments, deselect any other active color filter.
           else if (this.isColorFilterKey(key)) {
             const isCurrentlyActive = btn.classList.contains('acc-selected');
@@ -2274,7 +3356,7 @@ concealImages(enable = false) {
             this.setColorFilterUI(menu, newActiveKey);
             this.updateColorFilterState(newActiveKey);
             this.applyVisualFilters();
-          } 
+          }
           // For other adjustments, simply toggle.
           else {
             const isSelected = !btn.classList.contains("acc-selected");
@@ -2569,7 +3651,7 @@ concealImages(enable = false) {
      
       launchWidget(args = {}) {
         try {
-          let options = { lang: 'en', position: 'bottom-left', offset: [20, 20] };
+          let options = { lang: this.getDefaultLanguage(), position: 'bottom-left', offset: [20, 20] };
           
           // Load the saved configuration
           try {
