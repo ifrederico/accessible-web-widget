@@ -4,17 +4,22 @@
   "description": "A lightweight, customizable accessibility widget for websites.",
   "type": "module",
   "scripts": {
+    "lint": "eslint . --max-warnings=0",
     "build": "rollup -c",
     "dev": "rollup -c --watch",
+    "check:axe-version": "npm view axe-core version",
     "test:smoke": "playwright test",
     "test": "npm run test:smoke",
-    "ci": "npm run build && npm run test:smoke"
+    "ci": "npm run lint && npm run build && npm run test:smoke"
   },
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.21.0",
     "@playwright/test": "^1.52.0",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
+    "eslint": "^9.21.0",
+    "globals": "^15.15.0",
     "http-server": "^14.1.1",
     "rollup": "^4.34.0",
     "rollup-plugin-string": "^3.0.0"

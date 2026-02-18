@@ -591,6 +591,9 @@ var AccessibleWebWidget = (function () {
           { code: "uk", label: "Українська (Ukrainian)" }
         ];
 
+    /** @typedef {import('./index.js').default} AccessibleWebWidget */
+
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
     const stateMethods = {
 
       storageAvailable() {
@@ -599,7 +602,7 @@ var AccessibleWebWidget = (function () {
             localStorage.setItem(test, test);
             localStorage.removeItem(test);
             return true;
-          } catch (e) {
+          } catch {
             return false;
           }
         },
@@ -646,7 +649,7 @@ var AccessibleWebWidget = (function () {
               const config = JSON.parse(cookieVal);
               if (config.lang) return config.lang;
             }
-          } catch (e) {
+          } catch {
             // Ignore parsing errors
           }
           return null;
@@ -692,7 +695,7 @@ var AccessibleWebWidget = (function () {
           try {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('acc-dev') === 'true';
-          } catch (e) {
+          } catch {
             return false;
           }
         },
@@ -824,7 +827,7 @@ var AccessibleWebWidget = (function () {
           if (this.storageAvailable()) {
             try {
               localStorage.setItem(this.cookieKey, JSON.stringify(this.widgetConfig));
-            } catch (e) {
+            } catch {
               this.storeCookie(this.cookieKey, JSON.stringify(this.widgetConfig), 365);
             }
           } else {
@@ -889,6 +892,9 @@ var AccessibleWebWidget = (function () {
     const STATIC_STYLE_ID = 'acc-static-styles';
     const STATIC_STYLES = [menuCSS, widgetCSS, reportCSS, readingGuideCSS, skipLinkCSS].join('\n');
 
+    /** @typedef {import('./index.js').default} AccessibleWebWidget */
+
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
     const styleMethods = {
 
       findElement(selector, parent = document) {
@@ -920,7 +926,7 @@ var AccessibleWebWidget = (function () {
         const browserPrefixes = ['-o-', '-ms-', '-moz-', '-webkit-', ''];
         const prefixedProperties = ['filter'];
         for (let key in styles) {
-          if (!styles.hasOwnProperty(key)) continue;
+          if (!Object.prototype.hasOwnProperty.call(styles, key)) continue;
           let prefixes = prefixedProperties.includes(key) ? browserPrefixes : [""];
           prefixes.forEach(prefix => {
             css += `${prefix}${key}:${styles[key]} !important;`;
@@ -998,6 +1004,13 @@ var AccessibleWebWidget = (function () {
 
     };
 
+    /** @typedef {import('./index.js').default} AccessibleWebWidget */
+
+    const AXE_CORE_VERSION = '4.11.1';
+    const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
+    const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
+
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
     const featureMethods = {
 
       ensureSkipLink() {
@@ -1423,10 +1436,17 @@ var AccessibleWebWidget = (function () {
             return;
           }
       
+          if (script && !script.src.includes(`/axe-core@${AXE_CORE_VERSION}/`)) {
+            script.remove();
+            script = null;
+          }
+
           if (!script) {
             script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/axe-core@latest/axe.min.js';
+            script.src = AXE_CORE_SRC;
             script.async = true;
+            script.integrity = AXE_CORE_INTEGRITY;
+            script.crossOrigin = 'anonymous';
             script.setAttribute('data-acc-axe-core', 'true');
             document.head.appendChild(script);
           }
@@ -1989,6 +2009,9 @@ var AccessibleWebWidget = (function () {
 
     };
 
+    /** @typedef {import('./index.js').default} AccessibleWebWidget */
+
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
     const uiMethods = {
 
       translate(label) {
@@ -2875,8 +2898,14 @@ var AccessibleWebWidget = (function () {
       }
     }
 
+    /** @typedef {typeof stateMethods & typeof styleMethods & typeof featureMethods & typeof uiMethods} WidgetMixedMethods */
+    /** @typedef {AccessibleWebWidget & WidgetMixedMethods} AccessibleWebWidgetInstance */
+
+    /** @type {AccessibleWebWidget['prototype'] & WidgetMixedMethods} */
+    const widgetPrototype = AccessibleWebWidget.prototype;
+
     Object.assign(
-      AccessibleWebWidget.prototype,
+      widgetPrototype,
       stateMethods,
       styleMethods,
       featureMethods,
@@ -2888,6 +2917,7 @@ var AccessibleWebWidget = (function () {
     }
 
     if (typeof document !== 'undefined') {
+      /** @type {AccessibleWebWidgetInstance} */
       const widgetInstance = new AccessibleWebWidget();
       if (document.readyState === 'complete' || document.readyState === 'interactive') {
         widgetInstance.startAccessibleWebWidget();

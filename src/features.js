@@ -1,3 +1,10 @@
+/** @typedef {import('./index.js').default} AccessibleWebWidget */
+
+const AXE_CORE_VERSION = '4.11.1';
+const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
+const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
+
+/** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
 export const featureMethods = {
 
   ensureSkipLink() {
@@ -423,10 +430,17 @@ export const featureMethods = {
         return;
       }
   
+      if (script && !script.src.includes(`/axe-core@${AXE_CORE_VERSION}/`)) {
+        script.remove();
+        script = null;
+      }
+
       if (!script) {
         script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/axe-core@latest/axe.min.js';
+        script.src = AXE_CORE_SRC;
         script.async = true;
+        script.integrity = AXE_CORE_INTEGRITY;
+        script.crossOrigin = 'anonymous';
         script.setAttribute('data-acc-axe-core', 'true');
         document.head.appendChild(script);
       }

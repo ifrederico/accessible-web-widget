@@ -1,3 +1,6 @@
+/** @typedef {import('./index.js').default} AccessibleWebWidget */
+
+/** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
 export const stateMethods = {
 
   storageAvailable() {
@@ -6,7 +9,7 @@ export const stateMethods = {
         localStorage.setItem(test, test);
         localStorage.removeItem(test);
         return true;
-      } catch (e) {
+      } catch {
         return false;
       }
     },
@@ -53,7 +56,7 @@ export const stateMethods = {
           const config = JSON.parse(cookieVal);
           if (config.lang) return config.lang;
         }
-      } catch (e) {
+      } catch {
         // Ignore parsing errors
       }
       return null;
@@ -99,7 +102,7 @@ export const stateMethods = {
       try {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get('acc-dev') === 'true';
-      } catch (e) {
+      } catch {
         return false;
       }
     },
@@ -233,7 +236,7 @@ export const stateMethods = {
       if (this.storageAvailable()) {
         try {
           localStorage.setItem(this.cookieKey, JSON.stringify(this.widgetConfig));
-        } catch (e) {
+        } catch {
           this.storeCookie(this.cookieKey, JSON.stringify(this.widgetConfig), 365);
         }
       } else {

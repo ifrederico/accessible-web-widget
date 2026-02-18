@@ -7,6 +7,9 @@ import skipLinkCSS from './styles/skip-link.css';
 const STATIC_STYLE_ID = 'acc-static-styles';
 const STATIC_STYLES = [menuCSS, widgetCSS, reportCSS, readingGuideCSS, skipLinkCSS].join('\n');
 
+/** @typedef {import('./index.js').default} AccessibleWebWidget */
+
+/** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
 export const styleMethods = {
 
   findElement(selector, parent = document) {
@@ -38,7 +41,7 @@ export const styleMethods = {
     const browserPrefixes = ['-o-', '-ms-', '-moz-', '-webkit-', ''];
     const prefixedProperties = ['filter'];
     for (let key in styles) {
-      if (!styles.hasOwnProperty(key)) continue;
+      if (!Object.prototype.hasOwnProperty.call(styles, key)) continue;
       let prefixes = prefixedProperties.includes(key) ? browserPrefixes : [""];
       prefixes.forEach(prefix => {
         css += `${prefix}${key}:${styles[key]} !important;`;

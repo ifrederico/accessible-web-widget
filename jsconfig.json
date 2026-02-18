@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "maxNodeModuleJsDepth": 0
+  },
+  "include": [
+    "src/**/*.js",
+    "types/**/*.d.ts",
+    "tests/**/*.js",
+    "rollup.config.js",
+    "playwright.config.js"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test-results"
+  ]
+}

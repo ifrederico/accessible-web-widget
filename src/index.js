@@ -173,8 +173,14 @@ class AccessibleWebWidget {
   }
 }
 
+/** @typedef {typeof stateMethods & typeof styleMethods & typeof featureMethods & typeof uiMethods} WidgetMixedMethods */
+/** @typedef {AccessibleWebWidget & WidgetMixedMethods} AccessibleWebWidgetInstance */
+
+/** @type {AccessibleWebWidget['prototype'] & WidgetMixedMethods} */
+const widgetPrototype = AccessibleWebWidget.prototype;
+
 Object.assign(
-  AccessibleWebWidget.prototype,
+  widgetPrototype,
   stateMethods,
   styleMethods,
   featureMethods,
@@ -186,6 +192,7 @@ if (typeof window !== 'undefined') {
 }
 
 if (typeof document !== 'undefined') {
+  /** @type {AccessibleWebWidgetInstance} */
   const widgetInstance = new AccessibleWebWidget();
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     widgetInstance.startAccessibleWebWidget();

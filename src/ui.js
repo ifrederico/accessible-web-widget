@@ -1,3 +1,6 @@
+/** @typedef {import('./index.js').default} AccessibleWebWidget */
+
+/** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
 export const uiMethods = {
 
   translate(label) {

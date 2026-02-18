@@ -83,6 +83,7 @@ All optional, via `data-` attributes on a `<div>`.
 ### Dev mode
 
 Append `?acc-dev=true` to the page URL to expose a built-in axe-core report in the widget menu.
+The widget loads a pinned `axe-core` build (`4.11.1`) from jsDelivr for stable results.
 
 ## Browser support
 

@@ -25,5 +25,5 @@ jobs:
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
 
-      - name: Build and smoke test
+      - name: Lint, build, and smoke test
         run: npm run ci
