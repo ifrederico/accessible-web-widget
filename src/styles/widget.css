@@ -1,0 +1,55 @@
+  /* Base styles for the widget */
+  .acc-widget, .acc-menu {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  .acc-widget *, .acc-menu * { 
+    box-sizing: border-box !important; 
+  }
+  
+  /* Accessibility toggle button */
+  .acc-toggle-btn {
+    position: fixed;
+    z-index: var(--acc-widget-z-index, 100000);
+    left: 30px;
+    bottom: 30px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    width: var(--acc-button-size, 34px);
+    height: var(--acc-button-size, 34px);
+    display: flex;
+    cursor: pointer;
+    outline: 4px solid var(--acc-primary-color, #1976d2) !important;
+    border: 3px solid white !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+    background: var(--acc-primary-color, #1976d2) !important;
+    transition: transform 0.2s ease;
+  }
+  
+  .acc-toggle-btn svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
+  }
+  
+  .acc-toggle-btn:hover {
+    transform: scale(1.04);
+  }
+
+  .acc-toggle-btn:focus {
+    outline: 3px solid var(--acc-primary-color, #1976d2) !important;
+    outline-offset: 2px;
+
+}
+  
+  @media (prefers-reduced-motion: reduce) {
+    .acc-toggle-btn {
+      transition: none;
+    }
+  }

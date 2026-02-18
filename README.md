@@ -52,7 +52,7 @@ Always get the latest version:
 
 Or use a specific version:
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.0.0/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.0/dist/accessible-web-widget.min.js"></script>
 ```
 
 ### Method 2: Download
@@ -81,6 +81,30 @@ Control where the widget button appears:
 <div data-acc-position="center-left"></div>
 ```
 
+### Widget Offset
+
+Control X/Y offset in pixels from the selected position:
+
+```html
+<!-- x, y -->
+<div data-acc-offset="24,24"></div>
+
+<!-- single value applies to both x and y -->
+<div data-acc-offset="16"></div>
+```
+
+### Widget Button Size
+
+Control the launcher button size:
+
+```html
+<!-- numeric values are interpreted as px -->
+<div data-acc-size="44"></div>
+
+<!-- units are also supported -->
+<div data-acc-size="2.75rem"></div>
+```
+
 ### Language
 
 Set the default language:
@@ -88,6 +112,71 @@ Set the default language:
 ```html
 <div data-acc-lang="en"></div>
 ```
+
+### Dev Mode (Accessibility Report)
+
+To expose the built-in axe-core report tool in the widget menu, add `?acc-dev=true` to the page URL.
+
+Example:
+`https://example.com/?acc-dev=true`
+
+## Development
+
+Source entrypoint for contributors is `src/index.js`.
+
+Architecture summary:
+
+- Source code is modular under `src/` (not a single source file anymore)
+- Rollup builds IIFE bundles into `dist/`
+- Production/browser usage should consume files from `dist/`
+- Dist artifacts are committed intentionally for release/CDN workflows
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Build distributable files:
+
+```bash
+npm run build
+```
+
+Watch mode for local development:
+
+```bash
+npm run dev
+```
+
+Run smoke tests:
+
+```bash
+npm run test:smoke
+```
+
+Run full local CI flow:
+
+```bash
+npm run ci
+```
+
+Build outputs:
+
+- `dist/accessible-web-widget.js` (IIFE, unminified)
+- `dist/accessible-web-widget.min.js` (IIFE, minified)
+- `dist/accessible-web-widget.min.js.map` (minified sourcemap)
+
+Local demo after building:
+
+```bash
+npx http-server . -p 4173 -c-1
+```
+
+Then open:
+
+- `http://127.0.0.1:4173/examples/index.html`
+- `http://127.0.0.1:4173/examples/index.html?acc-dev=true`
 
 ## Browser Support
 

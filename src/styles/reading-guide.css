@@ -1,0 +1,15 @@
+.acc-rg {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: calc(var(--acc-widget-z-index, 100000) + 1);
+}
+.acc-rg-top {
+  top: 0;
+}
+.acc-rg-bottom {
+  bottom: 0;
+}
