@@ -1,0 +1,28 @@
+.acc-skip-link {
+  font-family: inherit;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  background: var(--acc-card-bg, #ffffff);
+  color: var(--acc-text-color, #222222);
+  border: 3px solid var(--acc-primary-color, #1976d2);
+  border-radius: var(--acc-button-border-radius, 0.4rem);
+  padding: 8px 16px;
+  z-index: calc(var(--acc-widget-z-index, 100000) + 2);
+  transform: translateY(-140%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 600;
+  background-clip: padding-box;
+}
+.acc-skip-link:focus,
+.acc-skip-link:active {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  outline: var(--acc-focus-outline-width, 3px) solid var(--acc-focus-ring-color, #1976d2);
+  outline-offset: var(--acc-focus-outline-offset, 2px);
+}

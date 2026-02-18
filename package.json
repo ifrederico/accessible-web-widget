@@ -1,0 +1,22 @@
+{
+  "name": "accessible-web-widget",
+  "version": "1.1.0",
+  "description": "A lightweight, customizable accessibility widget for websites.",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c --watch",
+    "test:smoke": "playwright test",
+    "test": "npm run test:smoke",
+    "ci": "npm run build && npm run test:smoke"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "http-server": "^14.1.1",
+    "rollup": "^4.34.0",
+    "rollup-plugin-string": "^3.0.0"
+  }
+}
