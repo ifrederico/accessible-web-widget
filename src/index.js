@@ -69,14 +69,13 @@ class AccessibleWebWidget {
         requiresSpeechSynthesis: true
       },
       { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
-      { label: 'Focus Mode', key: 'focus-mode', icon: this.widgetIcons.focusMode },
       { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout }
     ];
 
     // Add dev-only tools (?acc-dev=true)
     if (this.isDevMode()) {
       this.accessTools.push(
-        { label: 'Page Annotations', key: 'annotations', icon: this.widgetIcons.annotations },
+        { label: 'Annotations', key: 'annotations', icon: this.widgetIcons.annotations },
         {
           label: 'Accessibility Report',
           key: 'accessibility-report',
@@ -121,16 +120,6 @@ class AccessibleWebWidget {
     this.ttsSessionId = 0;
     this.ttsVoice = null;
 
-    // Focus mode state
-    this.focusModeActive = false;
-    this.focusModeOverlay = null;
-    this.focusModeHint = null;
-    this.focusModeSections = [];
-    this.focusModeIndex = -1;
-    this.focusModeKeyHandler = null;
-    this.focusModeResizeHandler = null;
-    this.focusModeMutationObserver = null;
-    this.focusModeTarget = null;
 
     // Simplify layout state
     this.simpleLayoutRoot = null;

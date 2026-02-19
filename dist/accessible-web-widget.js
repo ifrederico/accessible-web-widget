@@ -73,12 +73,11 @@ var AccessibleWebWidget = (function () {
           adjustFontSize: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 4v3h5v12h3V7h5V4H2m19 5h-9v3h3v7h3v-7h3V9Z"/></svg>',
           language: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/></svg>',
           hideImages: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m840-234-80-80v-446H314l-80-80h526q33 0 56.5 23.5T840-760v526ZM792-56l-64-64H200q-33 0-56.5-23.5T120-200v-528l-64-64 56-56 736 736-56 56ZM240-280l120-160 90 120 33-44-283-283v447h447l-80-80H240Zm297-257ZM424-424Z"/></svg>',
-          accessibilityReport: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h200v-80H240v80Zm254-54 166-166-56-56-110 110-46-46-56 56 102 102ZM240-440h200v-80H240v80Zm0-160h200v-80H240v80Zm-40 400v-560 560Z"/></svg>',
-          annotations: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-134 0-227-93T160-400q0-134 93-227t227-93q134 0 227 93t93 227q0 61-21 116t-59 99L480-80Zm0-160q67 0 113.5-46.5T640-400q0-67-46.5-113.5T480-560q-67 0-113.5 46.5T320-400q0 67 46.5 113.5T480-240Zm0-80q-33 0-56.5-23.5T400-400q0-33 23.5-56.5T480-480q33 0 56.5 23.5T560-400q0 33-23.5 56.5T480-320Z"/></svg>',
-          textToSpeech: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M560-131v-82q90-26 145-99.5T760-480q0-94-55-167.5T560-747v-82q124 29 202 125.5T840-480q0 127-78 223.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm80-80h114l86 86v-252l-86 86H200v80Zm360 20v-120q25 13 40 37t15 53q0 29-15 53t-40 37v-120Zm0-220v-120q75 17 122.5 76.5T730-480q0 82-47.5 141.5T560-262v-120q28-14 44-40t16-58q0-32-16-58t-44-40Z"/></svg>',
-          focusMode: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-600v-120H240v200H120v-200q0-50 35-85t85-35h200v120H240v120h200Zm80 480v-120h200v-200h120v200q0 50-35 85t-85 35H520ZM120-240v-200h120v200h200v120H240q-50 0-85-35t-35-85Zm600-280v-200H520v-120h200q50 0 85 35t35 85v200H720Zm-240 80q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35Z"/></svg>',
+          accessibilityReport: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm221.5-198.5Q510-807 510-820t-8.5-21.5Q493-850 480-850t-21.5 8.5Q450-833 450-820t8.5 21.5Q467-790 480-790t21.5-8.5ZM200-200v-560 560Z"/></svg>',
+          annotations: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v268q-19-9-39-15.5t-41-9.5v-243H200v560h242q3 22 9.5 42t15.5 38H200Zm0-120v40-560 243-3 280Zm80-40h163q3-21 9.5-41t14.5-39H280v80Zm0-160h244q32-30 71.5-50t84.5-27v-3H280v80Zm0-160h400v-80H280v80ZM720-40q-83 0-141.5-58.5T520-240q0-83 58.5-141.5T720-440q83 0 141.5 58.5T920-240q0 83-58.5 141.5T720-40Zm-20-80h40v-100h100v-40H740v-100h-40v100H600v40h100v100Z"/></svg>',
+          textToSpeech: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320ZM400-606l-86 86H200v80h114l86 86v-252ZM300-480Z"/></svg>',
           highContrast: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93v640Z"/></svg>',
-          simplifyLayout: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-640v-200h720v200H120Zm0 260v-180h720v180H120Zm0 260v-180h720v180H120Zm80-440h560v-120H200v120Zm0 260h560v-100H200v100Zm0 260h560v-100H200v100Z"/></svg>'
+          simplifyLayout: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M760-360v-80H200v80h560Zm0-160v-80H200v80h560Zm0-160v-80H200v80h560ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm560-80v-80H200v80h560Z"/></svg>'
         };
 
     const TARGET_SELECTORS = {
@@ -88,7 +87,7 @@ var AccessibleWebWidget = (function () {
           TEXT: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', '.wsite-headline', '.wsite-content-title', 'img', 'p', 'i', 'svg', 'a', 'button:not(.acc-btn)', 'label', 'li', 'ol']
         };
 
-    const PAGE_CONTENT_SELECTOR = 'body > *:not(.acc-container)';
+    const PAGE_CONTENT_SELECTOR = 'body > *:not(.acc-container):not(.acc-rg-container):not(#acc-skip-link)';
 
     const TRANSLATIONS = {
           en: {
@@ -139,18 +138,16 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Close Report",
             "Passed Tests": "Passed Tests",
             "Items Need Review": "Items Need Review",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Text to Speech On",
             "Text to Speech Off": "Text to Speech Off",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Loading voice...": "Loading voice...",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           it: {
             "Accessibility Menu": "Menu Accessibilità",
@@ -200,17 +197,15 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Chiudi Report",
             "Passed Tests": "Test Superati",
             "Items Need Review": "Elementi da Rivedere",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Sintesi Vocale Attiva",
             "Text to Speech Off": "Sintesi Vocale Disattiva",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           fr: {
             "Accessibility Menu": "Menu Accessibilité",
@@ -260,17 +255,15 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Fermer le Rapport",
             "Passed Tests": "Tests Réussis",
             "Items Need Review": "Éléments à Vérifier",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Synthèse Vocale Activée",
             "Text to Speech Off": "Synthèse Vocale Désactivée",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           de: {
             "Accessibility Menu": "Barrierefreiheit-Menü",
@@ -320,17 +313,15 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Bericht schließen",
             "Passed Tests": "Bestandene Tests",
             "Items Need Review": "Elemente zur Überprüfung",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Sprachausgabe Ein",
             "Text to Speech Off": "Sprachausgabe Aus",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           es: {
             "Accessibility Menu": "Menú de Accesibilidad",
@@ -380,17 +371,15 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Cerrar Informe",
             "Passed Tests": "Pruebas Superadas",
             "Items Need Review": "Elementos a Revisar",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Texto a Voz Activado",
             "Text to Speech Off": "Texto a Voz Desactivado",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           ru: {
             "Accessibility Menu": "Меню доступности",
@@ -440,17 +429,15 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Закрыть отчёт",
             "Passed Tests": "Пройденные тесты",
             "Items Need Review": "Требуют проверки",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Озвучивание Включено",
             "Text to Speech Off": "Озвучивание Выключено",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           pl: {
             "Accessibility Menu": "Menu Dostępności",
@@ -500,17 +487,15 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Zamknij Raport",
             "Passed Tests": "Zaliczone Testy",
             "Items Need Review": "Elementy do Sprawdzenia",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Czytanie Tekstu Włączone",
             "Text to Speech Off": "Czytanie Tekstu Wyłączone",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           ro: {
             "Accessibility Menu": "Meniu Accesibilitate",
@@ -560,17 +545,15 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Închide Raportul",
             "Passed Tests": "Teste Trecute",
             "Items Need Review": "Elemente de Verificat",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Text to Speech Pornit",
             "Text to Speech Off": "Text to Speech Oprit",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           nl: {
             "Accessibility Menu": "Toegankelijkheidsmenu",
@@ -620,17 +603,15 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Rapport Sluiten",
             "Passed Tests": "Geslaagde Tests",
             "Items Need Review": "Items te Controleren",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Tekst naar Spraak Aan",
             "Text to Speech Off": "Tekst naar Spraak Uit",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           uk: {
             "Accessibility Menu": "Меню доступності",
@@ -680,17 +661,15 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Закрити звіт",
             "Passed Tests": "Пройдені тести",
             "Items Need Review": "Потребують перевірки",
-            "Page Annotations": "Page Annotations",
+            "Annotations": "Annotations",
             "Text to Speech": "Text to Speech",
             "Text to Speech On": "Озвучування Увімкнено",
             "Text to Speech Off": "Озвучування Вимкнено",
-            "Focus Mode": "Focus Mode",
             "Simplify Layout": "Simplify Layout",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
             "Reading...": "Reading...",
-            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           }
         };
 
@@ -1043,13 +1022,11 @@ var AccessibleWebWidget = (function () {
 
     var reportCSS = ".acc-report-panel {\n  display: none;\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 10);\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;\n}\n.acc-report-panel.acc-report-visible {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.acc-report-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.6);\n}\n.acc-report-dialog {\n  position: relative;\n  background: #fff;\n  border-radius: 12px;\n  width: 90%;\n  max-width: 800px;\n  max-height: 85vh;\n  display: flex;\n  flex-direction: column;\n  box-shadow: 0 20px 60px rgba(0,0,0,0.3);\n}\n.acc-report-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 16px 20px;\n  border-bottom: 1px solid #e0e0e0;\n}\n.acc-report-title {\n  margin: 0;\n  font-size: 18px;\n  font-weight: 600;\n  color: #1a1a1a;\n}\n.acc-report-close {\n  background: none;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  border-radius: 6px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.acc-report-close:hover {\n  background: #f0f0f0;\n}\n.acc-report-close svg {\n  width: 20px;\n  height: 20px;\n  fill: #666;\n}\n.acc-report-status {\n  padding: 8px 20px;\n  font-size: 14px;\n  color: #666;\n  background: #f8f9fa;\n}\n.acc-report-content {\n  flex: 1;\n  overflow-y: auto;\n  padding: 16px 20px;\n}\n.acc-report-loading {\n  text-align: center;\n  padding: 40px;\n  color: #666;\n}\n.acc-report-error {\n  color: #d32f2f;\n  padding: 20px;\n  text-align: center;\n}\n.acc-report-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));\n  gap: 12px;\n  margin-bottom: 20px;\n}\n.acc-report-stat {\n  background: #f8f9fa;\n  border-radius: 8px;\n  padding: 16px;\n  text-align: center;\n}\n.acc-report-stat-value {\n  font-size: 28px;\n  font-weight: 700;\n  display: block;\n}\n.acc-report-stat-label {\n  font-size: 12px;\n  color: #666;\n  text-transform: uppercase;\n  margin-top: 4px;\n}\n.acc-report-stat.critical .acc-report-stat-value { color: #d32f2f; }\n.acc-report-stat.serious .acc-report-stat-value { color: #f57c00; }\n.acc-report-stat.moderate .acc-report-stat-value { color: #fbc02d; }\n.acc-report-stat.minor .acc-report-stat-value { color: #7cb342; }\n.acc-report-stat.passed .acc-report-stat-value { color: #43a047; }\n.acc-report-section {\n  margin-bottom: 20px;\n}\n.acc-report-section-title {\n  font-size: 14px;\n  font-weight: 600;\n  color: #333;\n  margin-bottom: 12px;\n  padding-bottom: 8px;\n  border-bottom: 2px solid #e0e0e0;\n}\n.acc-report-violation {\n  background: #fff;\n  border: 1px solid #e0e0e0;\n  border-radius: 8px;\n  margin-bottom: 12px;\n  overflow: hidden;\n}\n.acc-report-violation-header {\n  padding: 12px 16px;\n  background: #f8f9fa;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n.acc-report-violation-header:hover {\n  background: #f0f0f0;\n}\n.acc-report-violation-impact {\n  font-size: 11px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding: 4px 8px;\n  border-radius: 4px;\n  color: #fff;\n}\n.acc-report-violation-impact.critical { background: #d32f2f; }\n.acc-report-violation-impact.serious { background: #f57c00; }\n.acc-report-violation-impact.moderate { background: #fbc02d; color: #333; }\n.acc-report-violation-impact.minor { background: #7cb342; }\n.acc-report-violation-title {\n  flex: 1;\n  font-weight: 500;\n  color: #333;\n}\n.acc-report-violation-count {\n  font-size: 12px;\n  color: #666;\n  background: #e0e0e0;\n  padding: 2px 8px;\n  border-radius: 12px;\n}\n.acc-report-violation-details {\n  display: none;\n  padding: 16px;\n  border-top: 1px solid #e0e0e0;\n}\n.acc-report-violation.expanded .acc-report-violation-details {\n  display: block;\n}\n.acc-report-violation-desc {\n  color: #666;\n  font-size: 14px;\n  margin-bottom: 12px;\n}\n.acc-report-violation-help {\n  font-size: 13px;\n  margin-bottom: 12px;\n}\n.acc-report-violation-help a {\n  color: #1976d2;\n}\n.acc-report-node {\n  background: #f8f9fa;\n  border-radius: 6px;\n  padding: 12px;\n  margin-top: 8px;\n}\n.acc-report-node-html {\n  font-family: monospace;\n  font-size: 12px;\n  background: #263238;\n  color: #80cbc4;\n  padding: 8px 12px;\n  border-radius: 4px;\n  overflow-x: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n.acc-report-node-fix {\n  margin-top: 8px;\n  font-size: 13px;\n  color: #333;\n}\n.acc-report-node-fix strong {\n  color: #1976d2;\n}\n.acc-report-success {\n  text-align: center;\n  padding: 40px;\n}\n.acc-report-success-icon {\n  width: 64px;\n  height: 64px;\n  background: #43a047;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin: 0 auto 16px;\n}\n.acc-report-success-icon svg {\n  width: 32px;\n  height: 32px;\n  fill: #fff;\n}\n.acc-report-footer {\n  padding: 12px 20px;\n  border-top: 1px solid #e0e0e0;\n  text-align: center;\n}\n.acc-report-powered {\n  font-size: 12px;\n  color: #999;\n}\n@media (max-width: 600px) {\n  .acc-report-dialog {\n    width: 95%;\n    max-height: 90vh;\n  }\n  .acc-report-summary {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n";
 
-    var readingGuideCSS = ".acc-rg {\n  position: fixed;\n  left: 0;\n  right: 0;\n  width: 100%;\n  pointer-events: none;\n  background-color: rgba(0, 0, 0, 0.6);\n  z-index: calc(var(--acc-widget-z-index, 100000) + 1);\n}\n.acc-rg-top {\n  top: 0;\n}\n.acc-rg-bottom {\n  bottom: 0;\n}\n";
+    var readingGuideCSS = ".acc-rg {\n  position: fixed;\n  left: 0;\n  right: 0;\n  width: 100%;\n  pointer-events: none;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: calc(var(--acc-widget-z-index, 100000) + 1);\n}\n.acc-rg-top {\n  top: 0;\n}\n.acc-rg-bottom {\n  bottom: 0;\n}\n/* Softer overlay when high contrast is active */\nbody.acc-high-contrast-mode .acc-rg {\n  background-color: rgba(0, 0, 0, 0.25);\n}\n";
 
     var skipLinkCSS = ".acc-skip-link {\n  font-family: inherit;\n  position: fixed;\n  top: 16px;\n  left: 16px;\n  background: var(--acc-card-bg, #ffffff);\n  color: var(--acc-text-color, #222222);\n  border: 3px solid var(--acc-primary-color, #1976d2);\n  border-radius: var(--acc-button-border-radius, 0.4rem);\n  padding: 8px 16px;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 2);\n  transform: translateY(-140%);\n  opacity: 0;\n  pointer-events: none;\n  transition: transform 0.2s ease, opacity 0.2s ease;\n  font-size: 16px;\n  line-height: 1.2;\n  font-weight: 600;\n  background-clip: padding-box;\n}\n.acc-skip-link:focus,\n.acc-skip-link:active {\n  transform: translateY(0);\n  opacity: 1;\n  pointer-events: auto;\n  outline: var(--acc-focus-outline-width, 3px) solid var(--acc-focus-ring-color, #1976d2);\n  outline-offset: var(--acc-focus-outline-offset, 2px);\n}\n";
 
-    var annotationsCSS = ".acc-annotation-layer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 0;\n  height: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 5);\n  pointer-events: none;\n}\n\n.acc-annotation-marker {\n  position: absolute;\n  width: 20px;\n  height: 20px;\n  border: 2px solid #fff;\n  border-radius: 999px;\n  color: #fff;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);\n  cursor: pointer;\n  pointer-events: auto;\n  transform: translate(-40%, -50%);\n}\n\n.acc-annotation-marker svg {\n  width: 12px;\n  height: 12px;\n  fill: currentColor;\n}\n\n.acc-annotation-marker[data-impact=\"critical\"] {\n  background: #b71c1c;\n}\n\n.acc-annotation-marker[data-impact=\"serious\"] {\n  background: #d84315;\n}\n\n.acc-annotation-marker[data-impact=\"moderate\"] {\n  background: #ef6c00;\n}\n\n.acc-annotation-marker[data-impact=\"minor\"] {\n  background: #1565c0;\n}\n\n.acc-annotation-popup {\n  position: absolute;\n  width: min(320px, 92vw);\n  background: #fff;\n  color: #1a1a1a;\n  border: 1px solid #d7d7d7;\n  border-radius: 10px;\n  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);\n  padding: 12px;\n  pointer-events: auto;\n}\n\n.acc-annotation-popup-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n}\n\n.acc-annotation-popup-title {\n  margin: 0;\n  font-size: 14px;\n  line-height: 1.3;\n}\n\n.acc-annotation-popup-close {\n  border: 0;\n  background: transparent;\n  padding: 2px;\n  width: 24px;\n  height: 24px;\n  color: #444;\n  cursor: pointer;\n}\n\n.acc-annotation-popup-close svg {\n  width: 20px;\n  height: 20px;\n  fill: currentColor;\n}\n\n.acc-annotation-popup p {\n  margin: 8px 0;\n  font-size: 13px;\n  line-height: 1.45;\n}\n\n.acc-annotation-popup a {\n  color: #0d47a1;\n  font-weight: 600;\n  text-decoration: underline;\n}\n";
-
-    var focusModeCSS = ".acc-focus-mode-active .acc-focus-section {\n  opacity: 0.22;\n  filter: grayscale(0.15);\n  pointer-events: none;\n  transition: opacity 180ms ease, filter 180ms ease;\n}\n\n.acc-focus-mode-active .acc-focus-section.acc-focus-current {\n  opacity: 1;\n  filter: none;\n  pointer-events: auto;\n  position: relative;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 2);\n}\n\n.acc-focus-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 4);\n  pointer-events: none;\n  border-radius: 8px;\n  border: 2px solid #1a73e8;\n  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85) inset, 0 0 12px rgba(26, 115, 232, 0.35);\n  background: transparent;\n  transition: top 180ms ease, left 180ms ease, width 180ms ease, height 180ms ease;\n}\n\n.acc-focus-target {\n  outline: 3px solid rgba(26, 115, 232, 0.35) !important;\n  outline-offset: 4px !important;\n  scroll-margin-top: 14vh !important;\n}\n\n.acc-focus-hint {\n  position: fixed;\n  top: 18px;\n  left: 50%;\n  transform: translateX(-50%);\n  z-index: calc(var(--acc-widget-z-index, 100000) + 7);\n  background: rgba(22, 22, 22, 0.9);\n  color: #fff;\n  padding: 8px 12px;\n  border-radius: 8px;\n  font-size: 12px;\n  line-height: 1.3;\n  pointer-events: none;\n  max-width: min(92vw, 420px);\n  text-align: center;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .acc-focus-overlay,\n  .acc-focus-mode-active .acc-focus-section {\n    transition: none;\n  }\n}\n";
+    var annotationsCSS = ".acc-annotation-layer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 0;\n  height: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 5);\n  pointer-events: none;\n}\n\n.acc-annotation-marker {\n  position: absolute;\n  width: 20px;\n  height: 20px;\n  border: none;\n  border-radius: 999px;\n  color: #fff;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);\n  cursor: pointer;\n  pointer-events: auto;\n  transform: translate(-40%, -50%);\n}\n\n.acc-annotation-marker svg {\n  width: 12px;\n  height: 12px;\n  fill: currentColor;\n}\n\n.acc-annotation-marker[data-impact=\"critical\"] {\n  background: #b71c1c;\n}\n\n.acc-annotation-marker[data-impact=\"serious\"] {\n  background: #d84315;\n}\n\n.acc-annotation-marker[data-impact=\"moderate\"] {\n  background: #ef6c00;\n}\n\n.acc-annotation-marker[data-impact=\"minor\"] {\n  background: #1565c0;\n}\n\n.acc-annotation-popup {\n  position: absolute;\n  width: min(320px, 92vw);\n  background: #fff;\n  color: #1a1a1a;\n  border: 1px solid #d7d7d7;\n  border-radius: 10px;\n  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);\n  padding: 12px;\n  pointer-events: auto;\n}\n\n.acc-annotation-popup-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n}\n\n.acc-annotation-popup-title {\n  margin: 0;\n  font-size: 14px;\n  line-height: 1.3;\n}\n\n.acc-annotation-popup-close {\n  border: 0;\n  background: transparent;\n  padding: 2px;\n  width: 24px;\n  height: 24px;\n  color: #444;\n  cursor: pointer;\n}\n\n.acc-annotation-popup-close svg {\n  width: 20px;\n  height: 20px;\n  fill: currentColor;\n}\n\n.acc-annotation-popup p {\n  margin: 8px 0;\n  font-size: 13px;\n  line-height: 1.45;\n}\n\n.acc-annotation-popup a {\n  color: #0d47a1;\n  font-weight: 600;\n  text-decoration: underline;\n}\n";
 
     const STATIC_STYLE_ID = 'acc-static-styles';
     const STATIC_STYLES = [
@@ -1058,8 +1035,7 @@ var AccessibleWebWidget = (function () {
       reportCSS,
       readingGuideCSS,
       skipLinkCSS,
-      annotationsCSS,
-      focusModeCSS
+      annotationsCSS
     ].join('\n');
 
     /** @typedef {import('./index.js').default} AccessibleWebWidget */
@@ -1498,7 +1474,7 @@ var AccessibleWebWidget = (function () {
       },
 
       enableHighContrastMode(enable = false) {
-        const X = ':not(.acc-container):not(.acc-container *)';
+        const X = ':not(.acc-container):not(.acc-container *):not(.acc-rg-container):not(.acc-rg-container *)';
         const config = {
           id: 'high-contrast-mode',
           css: `
@@ -1957,6 +1933,7 @@ var AccessibleWebWidget = (function () {
       
           if (event.key === 'Escape' || event.key === 'Esc') {
             event.preventDefault();
+            event.stopPropagation();
             this.closeReportPanel();
             return;
           }
@@ -2509,7 +2486,7 @@ var AccessibleWebWidget = (function () {
         if (this.isTtsExcludedElement(block) || !this.isElementVisibleForTts(block)) return null;
 
         const text = this.normalizeReadableText(block.innerText || block.textContent || '');
-        if (text.length < 20) return null;
+        if (text.length < 2) return null;
 
         return {
           element: block,
@@ -2789,7 +2766,7 @@ var AccessibleWebWidget = (function () {
         marker.dataset.impact = annotation.impact || 'minor';
         marker.setAttribute('aria-label', annotation.title);
         marker.title = annotation.title;
-        marker.innerHTML = this.widgetIcons.annotations;
+        marker.innerHTML = '';
 
         marker.addEventListener('click', (event) => {
           event.preventDefault();
@@ -2971,187 +2948,6 @@ var AccessibleWebWidget = (function () {
         this.annotationItems = [];
       },
 
-      isFocusModeCandidate(element) {
-        if (!(element instanceof Element)) return false;
-        if (element.closest('.acc-container')) return false;
-        if (!this.isElementVisibleForTts(element)) return false;
-
-        const rect = element.getBoundingClientRect();
-        const text = this.normalizeReadableText(element.innerText || element.textContent || '');
-        const hasSubstantialText = text.length >= 40;
-        const hasSubstantialHeight = rect.height >= 80;
-        return hasSubstantialText || hasSubstantialHeight;
-      },
-
-      getFocusModeSections() {
-        if (typeof document === 'undefined') return [];
-
-        const root = this.getPrimaryContentRoot() || document.body;
-        let sections = Array.from(root.children).filter((element) => this.isFocusModeCandidate(element));
-
-        if (sections.length < 2) {
-          const selector = 'section,article,[role="region"],h1,h2,h3,p,ul,ol';
-          sections = Array.from(root.querySelectorAll(selector))
-            .filter((element) => this.isFocusModeCandidate(element));
-        }
-
-        const deduped = sections.filter((element, index, arr) =>
-          !arr.some((other, otherIndex) => otherIndex !== index && other.contains(element))
-        );
-
-        if (!deduped.length && this.isFocusModeCandidate(root)) {
-          return [root];
-        }
-
-        return deduped.slice(0, 40);
-      },
-
-      updateFocusModeOverlayPosition() {
-        if (!this.focusModeOverlay || !this.focusModeTarget) return;
-        if (!document.contains(this.focusModeTarget)) return;
-        const rect = this.focusModeTarget.getBoundingClientRect();
-        if (rect.width <= 0 || rect.height <= 0) return;
-        const padding = 8;
-        this.focusModeOverlay.style.top = `${Math.max(0, rect.top - padding)}px`;
-        this.focusModeOverlay.style.left = `${Math.max(0, rect.left - padding)}px`;
-        this.focusModeOverlay.style.width = `${rect.width + (padding * 2)}px`;
-        this.focusModeOverlay.style.height = `${rect.height + (padding * 2)}px`;
-      },
-
-      moveFocusModeToIndex(index, { scroll = true } = {}) {
-        if (!Array.isArray(this.focusModeSections) || !this.focusModeSections.length) return;
-        const sectionCount = this.focusModeSections.length;
-        const normalizedIndex = ((index % sectionCount) + sectionCount) % sectionCount;
-
-        if (this.focusModeTarget) {
-          this.focusModeTarget.classList.remove('acc-focus-current');
-          this.focusModeTarget.classList.remove('acc-focus-target');
-        }
-
-        const target = this.focusModeSections[normalizedIndex];
-        if (!target) return;
-        this.focusModeIndex = normalizedIndex;
-        this.focusModeTarget = target;
-        target.classList.add('acc-focus-current');
-        target.classList.add('acc-focus-target');
-
-        if (scroll) {
-          const reduceMotion = window.matchMedia?.(SYSTEM_PREFERS_REDUCED_MOTION)?.matches;
-          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center', inline: 'nearest' });
-        }
-
-        this.updateFocusModeOverlayPosition();
-      },
-
-      focusNextSection() {
-        this.moveFocusModeToIndex(this.focusModeIndex + 1);
-      },
-
-      focusPrevSection() {
-        this.moveFocusModeToIndex(this.focusModeIndex - 1);
-      },
-
-      enableFocusMode(enable = false) {
-        if (!enable) {
-          this.disableFocusMode();
-          return;
-        }
-
-        if (this.focusModeActive) {
-          this.updateFocusModeOverlayPosition();
-          return;
-        }
-
-        const sections = this.getFocusModeSections();
-        if (!sections.length) return;
-        this.focusModeSections = sections;
-        this.focusModeActive = true;
-        document.body?.classList.add('acc-focus-mode-active');
-        this.focusModeSections.forEach((section) => {
-          section.classList.add('acc-focus-section');
-        });
-
-        const overlay = document.createElement('div');
-        overlay.className = 'acc-focus-overlay acc-container';
-        overlay.setAttribute('aria-hidden', 'true');
-        document.body.appendChild(overlay);
-        this.focusModeOverlay = overlay;
-
-        const hint = document.createElement('div');
-        hint.className = 'acc-focus-hint acc-container';
-        hint.textContent = this.translate('Press Escape to exit focus mode');
-        document.body.appendChild(hint);
-        this.focusModeHint = hint;
-
-        this.focusModeKeyHandler = (event) => {
-          if (!this.focusModeActive) return;
-          if (event.key === 'Escape' || event.key === 'Esc') {
-            event.preventDefault();
-            this.updateState({ 'focus-mode': false });
-            this.disableFocusMode();
-            const focusButton = document.querySelector('.acc-btn[data-key="focus-mode"]');
-            if (focusButton) {
-              focusButton.classList.remove('acc-selected');
-              focusButton.setAttribute('aria-pressed', 'false');
-            }
-            return;
-          }
-          if (event.key === 'ArrowDown' || event.key === 'ArrowRight' || (event.key === 'Tab' && !event.shiftKey)) {
-            event.preventDefault();
-            this.focusNextSection();
-            return;
-          }
-          if (event.key === 'ArrowUp' || event.key === 'ArrowLeft' || (event.key === 'Tab' && event.shiftKey)) {
-            event.preventDefault();
-            this.focusPrevSection();
-          }
-        };
-        document.addEventListener('keydown', this.focusModeKeyHandler, true);
-
-        this.focusModeResizeHandler = this.throttle(() => this.updateFocusModeOverlayPosition(), 80);
-        window.addEventListener('resize', this.focusModeResizeHandler, { passive: true });
-        window.addEventListener('scroll', this.focusModeResizeHandler, { passive: true });
-
-        this.moveFocusModeToIndex(0, { scroll: false });
-      },
-
-      disableFocusMode() {
-        if (this.focusModeTarget) {
-          this.focusModeTarget.classList.remove('acc-focus-current');
-          this.focusModeTarget.classList.remove('acc-focus-target');
-          this.focusModeTarget = null;
-        }
-
-        if (this.focusModeOverlay) {
-          this.focusModeOverlay.remove();
-          this.focusModeOverlay = null;
-        }
-
-        if (this.focusModeHint) {
-          this.focusModeHint.remove();
-          this.focusModeHint = null;
-        }
-
-        if (this.focusModeKeyHandler) {
-          document.removeEventListener('keydown', this.focusModeKeyHandler, true);
-          this.focusModeKeyHandler = null;
-        }
-
-        if (this.focusModeResizeHandler) {
-          window.removeEventListener('resize', this.focusModeResizeHandler);
-          window.removeEventListener('scroll', this.focusModeResizeHandler);
-          this.focusModeResizeHandler = null;
-        }
-
-        this.focusModeSections.forEach((section) => {
-          section.classList.remove('acc-focus-section');
-          section.classList.remove('acc-focus-current');
-        });
-        document.body?.classList.remove('acc-focus-mode-active');
-        this.focusModeSections = [];
-        this.focusModeIndex = -1;
-        this.focusModeActive = false;
-      },
 
       clearSimpleLayoutDomMutations() {
         if (this.simpleLayoutRoot) {
@@ -3465,7 +3261,6 @@ var AccessibleWebWidget = (function () {
           this.enableHighContrastMode(states && states['high-contrast-mode']);
           this.enableAnnotations(states && states['annotations']);
           this.enableTextToSpeech(states && states['text-to-speech']);
-          this.enableFocusMode(states && states['focus-mode']);
           this.enableSimpleLayout(states && states['simple-layout']);
         },
 
@@ -3522,6 +3317,62 @@ var AccessibleWebWidget = (function () {
           this.activeColorFilterKey = activeKey;
         },
 
+      computeFilteredBodyColor(filterKey) {
+          const bg = window.getComputedStyle(document.body).backgroundColor;
+          const m = bg.match(/rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)/);
+          if (!m) return null;
+          let r = +m[1], g = +m[2], b = +m[3];
+          const clamp = (v) => Math.min(255, Math.max(0, Math.round(v)));
+
+          switch (filterKey) {
+            case 'invert-colors':
+              r = 255 - r; g = 255 - g; b = 255 - b;
+              break;
+            case 'dark-contrast': {
+              // filter: contrast(150%) brightness(0.8) — applied left to right
+              r = 128 + (r - 128) * 1.5; g = 128 + (g - 128) * 1.5; b = 128 + (b - 128) * 1.5;
+              r *= 0.8; g *= 0.8; b *= 0.8;
+              break;
+            }
+            case 'light-contrast': {
+              // filter: contrast(125%) brightness(1.2)
+              r = 128 + (r - 128) * 1.25; g = 128 + (g - 128) * 1.25; b = 128 + (b - 128) * 1.25;
+              r *= 1.2; g *= 1.2; b *= 1.2;
+              break;
+            }
+            case 'low-saturation': {
+              // filter: saturate(50%) — use standard saturate matrix with s=0.5
+              const s = 0.5;
+              const nr = (0.213 + 0.787 * s) * r + (0.715 - 0.715 * s) * g + (0.072 - 0.072 * s) * b;
+              const ng = (0.213 - 0.213 * s) * r + (0.715 + 0.285 * s) * g + (0.072 - 0.072 * s) * b;
+              const nb = (0.213 - 0.213 * s) * r + (0.715 - 0.715 * s) * g + (0.072 + 0.928 * s) * b;
+              r = nr; g = ng; b = nb;
+              break;
+            }
+            case 'monochrome': {
+              // filter: grayscale(100%) — luminance-weighted
+              const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+              r = lum; g = lum; b = lum;
+              break;
+            }
+            case 'high-saturation': {
+              // filter: saturate(200%) — use standard saturate matrix with s=2
+              const s2 = 2;
+              const hr = (0.213 + 0.787 * s2) * r + (0.715 - 0.715 * s2) * g + (0.072 - 0.072 * s2) * b;
+              const hg = (0.213 - 0.213 * s2) * r + (0.715 + 0.285 * s2) * g + (0.072 - 0.072 * s2) * b;
+              const hb = (0.213 - 0.213 * s2) * r + (0.715 - 0.715 * s2) * g + (0.072 + 0.928 * s2) * b;
+              r = hr; g = hg; b = hb;
+              break;
+            }
+            default:
+              return null;
+          }
+          r = clamp(r); g = clamp(g); b = clamp(b);
+          // Skip if the result is the same as the original (no visible change)
+          if (r === +m[1] && g === +m[2] && b === +m[3]) return null;
+          return `rgb(${r},${g},${b})`;
+        },
+
       applyVisualFilters() {
           const { states } = this.loadConfig();
           const activeKey = this.getActiveColorFilterKey(states);
@@ -3540,9 +3391,17 @@ var AccessibleWebWidget = (function () {
           }
           const adjustedFilter = {
             ...filter,
-            selector: filter.selector || 'body > *:not(.acc-container)'
+            selector: filter.selector || 'body > *:not(.acc-container):not(.acc-rg-container):not(#acc-skip-link)'
           };
-          const css = this.buildCSS(adjustedFilter);
+          let css = this.buildCSS(adjustedFilter);
+
+          // Compute a filtered body background so the body itself matches
+          // the visual filter applied to its children.
+          const filteredBg = this.computeFilteredBodyColor(activeKey);
+          if (filteredBg) {
+            css += `body{background-color:${filteredBg}!important;}`;
+          }
+
           this.injectStyle('acc-filter-style', css);
         },
 
@@ -3685,11 +3544,10 @@ var AccessibleWebWidget = (function () {
           this.disableAnnotations();
           this.stopSpeech();
           this.stopTtsClickMode();
-          this.disableFocusMode();
           this.clearSystemPreferenceListeners();
           this.detectSystemPreferences();
           this.setupMediaQueryListeners();
-          this.updateViolationBubble({ violations: [] });
+          this.updateViolationBubble(this.axeScanResults);
         },
 
     };
@@ -4314,9 +4172,10 @@ var AccessibleWebWidget = (function () {
             document.addEventListener('click', (e) => {
               if (!btn) return;
               const clickedToggle = e.target === btn || btn.contains(e.target);
+              const clickedInsideWidget = e.target.closest('.acc-container');
               if (menu && this.activeMenuContainer === menu && menu.style.display !== 'none') {
                 const clickedInsideMenu = menu.contains(e.target);
-                if (!clickedToggle && !clickedInsideMenu) {
+                if (!clickedToggle && !clickedInsideMenu && !clickedInsideWidget) {
                   this.closeMenu(menu, btn);
                 }
               } else if (!clickedToggle) {
@@ -4477,14 +4336,13 @@ var AccessibleWebWidget = (function () {
             requiresSpeechSynthesis: true
           },
           { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
-          { label: 'Focus Mode', key: 'focus-mode', icon: this.widgetIcons.focusMode },
           { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout }
         ];
 
         // Add dev-only tools (?acc-dev=true)
         if (this.isDevMode()) {
           this.accessTools.push(
-            { label: 'Page Annotations', key: 'annotations', icon: this.widgetIcons.annotations },
+            { label: 'Annotations', key: 'annotations', icon: this.widgetIcons.annotations },
             {
               label: 'Accessibility Report',
               key: 'accessibility-report',
@@ -4529,16 +4387,6 @@ var AccessibleWebWidget = (function () {
         this.ttsSessionId = 0;
         this.ttsVoice = null;
 
-        // Focus mode state
-        this.focusModeActive = false;
-        this.focusModeOverlay = null;
-        this.focusModeHint = null;
-        this.focusModeSections = [];
-        this.focusModeIndex = -1;
-        this.focusModeKeyHandler = null;
-        this.focusModeResizeHandler = null;
-        this.focusModeMutationObserver = null;
-        this.focusModeTarget = null;
 
         // Simplify layout state
         this.simpleLayoutRoot = null;

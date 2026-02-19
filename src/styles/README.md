@@ -10,7 +10,6 @@ CSS for widget/menu/report/reading guide/skip link.
 - `reading-guide.css`
 - `skip-link.css`
 - `annotations.css`
-- `focus-mode.css`
 
 ## Conventions
 

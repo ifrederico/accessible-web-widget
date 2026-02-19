@@ -15,10 +15,11 @@ We support the accessibility community's stance in the [Overlay Factsheet](https
 ## Features
 
 - **Text** - Font size (3 levels), bold, line height, letter spacing
-- **Color** - Dark/light contrast, invert, high/low saturation, monochrome
-- **Reading** - Dyslexia-friendly font (OpenDyslexic), reading guide, link/title highlighting
+- **Color** - Dark/light contrast, invert, high/low saturation, monochrome, high contrast mode
+- **Reading** - Dyslexia-friendly font (OpenDyslexic), reading guide, link/title highlighting, simplify layout (reader mode), text-to-speech (native browser voices)
 - **Interaction** - Large cursor, pause animations, hide images
-- **Other** - Multi-language support, persistent settings, keyboard accessible, mobile friendly
+- **Dev tools** - Inline annotation markers and full accessibility report via axe-core (enable with `?acc-dev=true`)
+- **Other** - 10 languages, persistent settings, system preference detection, keyboard accessible, mobile friendly
 
 ## Quick start
 
@@ -88,14 +89,14 @@ The widget loads a pinned `axe-core` build (`4.11.1`) from jsDelivr for stable r
 ### Native voice tuning
 
 `Text to Speech` uses native browser voices only.
-When enabled, it waits for the user to click a text block (`h1`/`p`/`li`/etc.) and reads that block.
+When enabled, it waits for the user to click any text block (`h1`-`h6`, `p`, `li`, `div`, `section`, etc.) and reads it aloud.
 
 ```html
 <script>
   window.AccessibleWebWidgetOptions = {
     ttsNativeVoiceName: "Samantha",  // best-effort match by name
     ttsNativeVoiceLang: "en-US",     // optional language preference
-    ttsRate: 0.9,                    // 0.5 - 2.0
+    ttsRate: 1.0,                    // 0.5 - 2.0
     ttsPitch: 1.0                    // 0 - 2.0
   };
 </script>

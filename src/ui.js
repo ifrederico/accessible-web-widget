@@ -618,9 +618,10 @@ export const uiMethods = {
         document.addEventListener('click', (e) => {
           if (!btn) return;
           const clickedToggle = e.target === btn || btn.contains(e.target);
+          const clickedInsideWidget = e.target.closest('.acc-container');
           if (menu && this.activeMenuContainer === menu && menu.style.display !== 'none') {
             const clickedInsideMenu = menu.contains(e.target);
-            if (!clickedToggle && !clickedInsideMenu) {
+            if (!clickedToggle && !clickedInsideMenu && !clickedInsideWidget) {
               this.closeMenu(menu, btn);
             }
           } else if (!clickedToggle) {

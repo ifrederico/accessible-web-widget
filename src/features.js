@@ -322,7 +322,7 @@ export const featureMethods = {
   },
 
   enableHighContrastMode(enable = false) {
-    const X = ':not(.acc-container):not(.acc-container *)';
+    const X = ':not(.acc-container):not(.acc-container *):not(.acc-rg-container):not(.acc-rg-container *)';
     const config = {
       id: 'high-contrast-mode',
       css: `
@@ -781,6 +781,7 @@ export const featureMethods = {
   
       if (event.key === 'Escape' || event.key === 'Esc') {
         event.preventDefault();
+        event.stopPropagation();
         this.closeReportPanel();
         return;
       }
@@ -1333,7 +1334,7 @@ export const featureMethods = {
     if (this.isTtsExcludedElement(block) || !this.isElementVisibleForTts(block)) return null;
 
     const text = this.normalizeReadableText(block.innerText || block.textContent || '');
-    if (text.length < 20) return null;
+    if (text.length < 2) return null;
 
     return {
       element: block,
@@ -1613,7 +1614,7 @@ export const featureMethods = {
     marker.dataset.impact = annotation.impact || 'minor';
     marker.setAttribute('aria-label', annotation.title);
     marker.title = annotation.title;
-    marker.innerHTML = this.widgetIcons.annotations;
+    marker.innerHTML = '';
 
     marker.addEventListener('click', (event) => {
       event.preventDefault();
@@ -1795,187 +1796,6 @@ export const featureMethods = {
     this.annotationItems = [];
   },
 
-  isFocusModeCandidate(element) {
-    if (!(element instanceof Element)) return false;
-    if (element.closest('.acc-container')) return false;
-    if (!this.isElementVisibleForTts(element)) return false;
-
-    const rect = element.getBoundingClientRect();
-    const text = this.normalizeReadableText(element.innerText || element.textContent || '');
-    const hasSubstantialText = text.length >= 40;
-    const hasSubstantialHeight = rect.height >= 80;
-    return hasSubstantialText || hasSubstantialHeight;
-  },
-
-  getFocusModeSections() {
-    if (typeof document === 'undefined') return [];
-
-    const root = this.getPrimaryContentRoot() || document.body;
-    let sections = Array.from(root.children).filter((element) => this.isFocusModeCandidate(element));
-
-    if (sections.length < 2) {
-      const selector = 'section,article,[role="region"],h1,h2,h3,p,ul,ol';
-      sections = Array.from(root.querySelectorAll(selector))
-        .filter((element) => this.isFocusModeCandidate(element));
-    }
-
-    const deduped = sections.filter((element, index, arr) =>
-      !arr.some((other, otherIndex) => otherIndex !== index && other.contains(element))
-    );
-
-    if (!deduped.length && this.isFocusModeCandidate(root)) {
-      return [root];
-    }
-
-    return deduped.slice(0, 40);
-  },
-
-  updateFocusModeOverlayPosition() {
-    if (!this.focusModeOverlay || !this.focusModeTarget) return;
-    if (!document.contains(this.focusModeTarget)) return;
-    const rect = this.focusModeTarget.getBoundingClientRect();
-    if (rect.width <= 0 || rect.height <= 0) return;
-    const padding = 8;
-    this.focusModeOverlay.style.top = `${Math.max(0, rect.top - padding)}px`;
-    this.focusModeOverlay.style.left = `${Math.max(0, rect.left - padding)}px`;
-    this.focusModeOverlay.style.width = `${rect.width + (padding * 2)}px`;
-    this.focusModeOverlay.style.height = `${rect.height + (padding * 2)}px`;
-  },
-
-  moveFocusModeToIndex(index, { scroll = true } = {}) {
-    if (!Array.isArray(this.focusModeSections) || !this.focusModeSections.length) return;
-    const sectionCount = this.focusModeSections.length;
-    const normalizedIndex = ((index % sectionCount) + sectionCount) % sectionCount;
-
-    if (this.focusModeTarget) {
-      this.focusModeTarget.classList.remove('acc-focus-current');
-      this.focusModeTarget.classList.remove('acc-focus-target');
-    }
-
-    const target = this.focusModeSections[normalizedIndex];
-    if (!target) return;
-    this.focusModeIndex = normalizedIndex;
-    this.focusModeTarget = target;
-    target.classList.add('acc-focus-current');
-    target.classList.add('acc-focus-target');
-
-    if (scroll) {
-      const reduceMotion = window.matchMedia?.(SYSTEM_PREFERS_REDUCED_MOTION)?.matches;
-      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center', inline: 'nearest' });
-    }
-
-    this.updateFocusModeOverlayPosition();
-  },
-
-  focusNextSection() {
-    this.moveFocusModeToIndex(this.focusModeIndex + 1);
-  },
-
-  focusPrevSection() {
-    this.moveFocusModeToIndex(this.focusModeIndex - 1);
-  },
-
-  enableFocusMode(enable = false) {
-    if (!enable) {
-      this.disableFocusMode();
-      return;
-    }
-
-    if (this.focusModeActive) {
-      this.updateFocusModeOverlayPosition();
-      return;
-    }
-
-    const sections = this.getFocusModeSections();
-    if (!sections.length) return;
-    this.focusModeSections = sections;
-    this.focusModeActive = true;
-    document.body?.classList.add('acc-focus-mode-active');
-    this.focusModeSections.forEach((section) => {
-      section.classList.add('acc-focus-section');
-    });
-
-    const overlay = document.createElement('div');
-    overlay.className = 'acc-focus-overlay acc-container';
-    overlay.setAttribute('aria-hidden', 'true');
-    document.body.appendChild(overlay);
-    this.focusModeOverlay = overlay;
-
-    const hint = document.createElement('div');
-    hint.className = 'acc-focus-hint acc-container';
-    hint.textContent = this.translate('Press Escape to exit focus mode');
-    document.body.appendChild(hint);
-    this.focusModeHint = hint;
-
-    this.focusModeKeyHandler = (event) => {
-      if (!this.focusModeActive) return;
-      if (event.key === 'Escape' || event.key === 'Esc') {
-        event.preventDefault();
-        this.updateState({ 'focus-mode': false });
-        this.disableFocusMode();
-        const focusButton = document.querySelector('.acc-btn[data-key="focus-mode"]');
-        if (focusButton) {
-          focusButton.classList.remove('acc-selected');
-          focusButton.setAttribute('aria-pressed', 'false');
-        }
-        return;
-      }
-      if (event.key === 'ArrowDown' || event.key === 'ArrowRight' || (event.key === 'Tab' && !event.shiftKey)) {
-        event.preventDefault();
-        this.focusNextSection();
-        return;
-      }
-      if (event.key === 'ArrowUp' || event.key === 'ArrowLeft' || (event.key === 'Tab' && event.shiftKey)) {
-        event.preventDefault();
-        this.focusPrevSection();
-      }
-    };
-    document.addEventListener('keydown', this.focusModeKeyHandler, true);
-
-    this.focusModeResizeHandler = this.throttle(() => this.updateFocusModeOverlayPosition(), 80);
-    window.addEventListener('resize', this.focusModeResizeHandler, { passive: true });
-    window.addEventListener('scroll', this.focusModeResizeHandler, { passive: true });
-
-    this.moveFocusModeToIndex(0, { scroll: false });
-  },
-
-  disableFocusMode() {
-    if (this.focusModeTarget) {
-      this.focusModeTarget.classList.remove('acc-focus-current');
-      this.focusModeTarget.classList.remove('acc-focus-target');
-      this.focusModeTarget = null;
-    }
-
-    if (this.focusModeOverlay) {
-      this.focusModeOverlay.remove();
-      this.focusModeOverlay = null;
-    }
-
-    if (this.focusModeHint) {
-      this.focusModeHint.remove();
-      this.focusModeHint = null;
-    }
-
-    if (this.focusModeKeyHandler) {
-      document.removeEventListener('keydown', this.focusModeKeyHandler, true);
-      this.focusModeKeyHandler = null;
-    }
-
-    if (this.focusModeResizeHandler) {
-      window.removeEventListener('resize', this.focusModeResizeHandler);
-      window.removeEventListener('scroll', this.focusModeResizeHandler);
-      this.focusModeResizeHandler = null;
-    }
-
-    this.focusModeSections.forEach((section) => {
-      section.classList.remove('acc-focus-section');
-      section.classList.remove('acc-focus-current');
-    });
-    document.body?.classList.remove('acc-focus-mode-active');
-    this.focusModeSections = [];
-    this.focusModeIndex = -1;
-    this.focusModeActive = false;
-  },
 
   clearSimpleLayoutDomMutations() {
     if (this.simpleLayoutRoot) {
@@ -2289,7 +2109,6 @@ export const featureMethods = {
       this.enableHighContrastMode(states && states['high-contrast-mode']);
       this.enableAnnotations(states && states['annotations']);
       this.enableTextToSpeech(states && states['text-to-speech']);
-      this.enableFocusMode(states && states['focus-mode']);
       this.enableSimpleLayout(states && states['simple-layout']);
     },
 
@@ -2346,6 +2165,62 @@ export const featureMethods = {
       this.activeColorFilterKey = activeKey;
     },
 
+  computeFilteredBodyColor(filterKey) {
+      const bg = window.getComputedStyle(document.body).backgroundColor;
+      const m = bg.match(/rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)/);
+      if (!m) return null;
+      let r = +m[1], g = +m[2], b = +m[3];
+      const clamp = (v) => Math.min(255, Math.max(0, Math.round(v)));
+
+      switch (filterKey) {
+        case 'invert-colors':
+          r = 255 - r; g = 255 - g; b = 255 - b;
+          break;
+        case 'dark-contrast': {
+          // filter: contrast(150%) brightness(0.8) — applied left to right
+          r = 128 + (r - 128) * 1.5; g = 128 + (g - 128) * 1.5; b = 128 + (b - 128) * 1.5;
+          r *= 0.8; g *= 0.8; b *= 0.8;
+          break;
+        }
+        case 'light-contrast': {
+          // filter: contrast(125%) brightness(1.2)
+          r = 128 + (r - 128) * 1.25; g = 128 + (g - 128) * 1.25; b = 128 + (b - 128) * 1.25;
+          r *= 1.2; g *= 1.2; b *= 1.2;
+          break;
+        }
+        case 'low-saturation': {
+          // filter: saturate(50%) — use standard saturate matrix with s=0.5
+          const s = 0.5;
+          const nr = (0.213 + 0.787 * s) * r + (0.715 - 0.715 * s) * g + (0.072 - 0.072 * s) * b;
+          const ng = (0.213 - 0.213 * s) * r + (0.715 + 0.285 * s) * g + (0.072 - 0.072 * s) * b;
+          const nb = (0.213 - 0.213 * s) * r + (0.715 - 0.715 * s) * g + (0.072 + 0.928 * s) * b;
+          r = nr; g = ng; b = nb;
+          break;
+        }
+        case 'monochrome': {
+          // filter: grayscale(100%) — luminance-weighted
+          const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          r = lum; g = lum; b = lum;
+          break;
+        }
+        case 'high-saturation': {
+          // filter: saturate(200%) — use standard saturate matrix with s=2
+          const s2 = 2;
+          const hr = (0.213 + 0.787 * s2) * r + (0.715 - 0.715 * s2) * g + (0.072 - 0.072 * s2) * b;
+          const hg = (0.213 - 0.213 * s2) * r + (0.715 + 0.285 * s2) * g + (0.072 - 0.072 * s2) * b;
+          const hb = (0.213 - 0.213 * s2) * r + (0.715 - 0.715 * s2) * g + (0.072 + 0.928 * s2) * b;
+          r = hr; g = hg; b = hb;
+          break;
+        }
+        default:
+          return null;
+      }
+      r = clamp(r); g = clamp(g); b = clamp(b);
+      // Skip if the result is the same as the original (no visible change)
+      if (r === +m[1] && g === +m[2] && b === +m[3]) return null;
+      return `rgb(${r},${g},${b})`;
+    },
+
   applyVisualFilters() {
       const { states } = this.loadConfig();
       const activeKey = this.getActiveColorFilterKey(states);
@@ -2364,9 +2239,17 @@ export const featureMethods = {
       }
       const adjustedFilter = {
         ...filter,
-        selector: filter.selector || 'body > *:not(.acc-container)'
+        selector: filter.selector || 'body > *:not(.acc-container):not(.acc-rg-container):not(#acc-skip-link)'
       };
-      const css = this.buildCSS(adjustedFilter);
+      let css = this.buildCSS(adjustedFilter);
+
+      // Compute a filtered body background so the body itself matches
+      // the visual filter applied to its children.
+      const filteredBg = this.computeFilteredBodyColor(activeKey);
+      if (filteredBg) {
+        css += `body{background-color:${filteredBg}!important;}`;
+      }
+
       this.injectStyle('acc-filter-style', css);
     },
 
@@ -2509,11 +2392,10 @@ export const featureMethods = {
       this.disableAnnotations();
       this.stopSpeech();
       this.stopTtsClickMode();
-      this.disableFocusMode();
       this.clearSystemPreferenceListeners();
       this.detectSystemPreferences();
       this.setupMediaQueryListeners();
-      this.updateViolationBubble({ violations: [] });
+      this.updateViolationBubble(this.axeScanResults);
     },
 
 };

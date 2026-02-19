@@ -4,7 +4,7 @@
   right: 0;
   width: 100%;
   pointer-events: none;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: calc(var(--acc-widget-z-index, 100000) + 1);
 }
 .acc-rg-top {
@@ -12,4 +12,8 @@
 }
 .acc-rg-bottom {
   bottom: 0;
+}
+/* Softer overlay when high contrast is active */
+body.acc-high-contrast-mode .acc-rg {
+  background-color: rgba(0, 0, 0, 0.25);
 }

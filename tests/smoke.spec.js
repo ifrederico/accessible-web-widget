@@ -314,15 +314,6 @@ test('text-to-speech uses configured native voice and has no control bar', async
   await expect(page.locator('.acc-tts-bar')).toHaveCount(0);
 });
 
-test('focus mode overlay appears and Escape exits focus mode', async ({ page }) => {
-  await page.goto('index.html');
-  await page.locator('.acc-toggle-btn').click();
-  await page.locator('.acc-btn[data-key="focus-mode"]').click();
-  await expect(page.locator('.acc-focus-overlay')).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(page.locator('.acc-focus-overlay')).toHaveCount(0);
-});
-
 test('simplify layout isolates primary content root', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
