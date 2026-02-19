@@ -61,27 +61,83 @@ class AccessibleWebWidget {
     this.accessTools = [
       { label: 'Big Cursor', key: 'large-pointer', icon: this.widgetIcons.largePointer },
       { label: 'Stop Animations', key: 'pause-motion', icon: this.widgetIcons.pauseMotion },
-      { label: 'Reading Guide', key: 'reading-aid', icon: this.widgetIcons.readingAid }
+      { label: 'Reading Guide', key: 'reading-aid', icon: this.widgetIcons.readingAid },
+      {
+        label: 'Text to Speech',
+        key: 'text-to-speech',
+        icon: this.widgetIcons.textToSpeech,
+        requiresSpeechSynthesis: true
+      },
+      { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
+      { label: 'Focus Mode', key: 'focus-mode', icon: this.widgetIcons.focusMode },
+      { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout }
     ];
 
-    // Add Accessibility Report only in dev mode (?acc-dev=true)
+    // Add dev-only tools (?acc-dev=true)
     if (this.isDevMode()) {
-      this.accessTools.push({
-        label: 'Accessibility Report',
-        key: 'accessibility-report',
-        icon: this.widgetIcons.accessibilityReport,
-        isAction: true
-      });
+      this.accessTools.push(
+        { label: 'Page Annotations', key: 'annotations', icon: this.widgetIcons.annotations },
+        {
+          label: 'Accessibility Report',
+          key: 'accessibility-report',
+          icon: this.widgetIcons.accessibilityReport,
+          isAction: true
+        }
+      );
     }
 
     // axe-core state
     this.axeCoreLoaded = false;
     this.axeCoreLoading = false;
     this.axeCorePromise = null;
+    this.axeScanResults = null;
+    this.axeScanPromise = null;
+    this.violationBubble = null;
 
     // Accessibility report modal state
     this.reportPreviousFocus = null;
     this.reportKeyListener = null;
+
+    // System preference state
+    this.systemPreferenceListeners = [];
+    this.systemPreferenceMediaQueries = {};
+
+    // Annotation state
+    this.annotationLayer = null;
+    this.annotationItems = [];
+    this.annotationPopup = null;
+    this.annotationRepositionHandler = null;
+    this.annotationOutsideHandler = null;
+    this.annotationRequestId = 0;
+
+    // Text-to-speech state
+    this.ttsUtterance = null;
+    this.ttsClickListener = null;
+    this.ttsActiveTarget = null;
+    this.ttsTextCache = '';
+    this.ttsStatus = 'stopped';
+    this.ttsQueue = [];
+    this.ttsQueueIndex = 0;
+    this.ttsSessionId = 0;
+    this.ttsVoice = null;
+
+    // Focus mode state
+    this.focusModeActive = false;
+    this.focusModeOverlay = null;
+    this.focusModeHint = null;
+    this.focusModeSections = [];
+    this.focusModeIndex = -1;
+    this.focusModeKeyHandler = null;
+    this.focusModeResizeHandler = null;
+    this.focusModeMutationObserver = null;
+    this.focusModeTarget = null;
+
+    // Simplify layout state
+    this.simpleLayoutRoot = null;
+    this.simpleLayoutHiddenElements = [];
+
+    // Track direct user toggles for features that have side effects.
+    this.userInitiatedToggleKey = null;
 
     // Font size cycling
     this.textScaleIndex = 0;
@@ -159,6 +215,31 @@ class AccessibleWebWidget {
       ...options
     };
 
+    const normalizeTtsRate = (value) => {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return 1;
+      return Math.min(2, Math.max(0.5, numeric));
+    };
+
+    const normalizeTtsPitch = (value) => {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return 1;
+      return Math.min(2, Math.max(0, numeric));
+    };
+
+    this.nativeTtsConfig = {
+      preferredVoiceName: (
+        typeof options.ttsNativeVoiceName === 'string' &&
+        options.ttsNativeVoiceName.trim()
+      ) ? options.ttsNativeVoiceName.trim() : '',
+      preferredVoiceLang: (
+        typeof options.ttsNativeVoiceLang === 'string' &&
+        options.ttsNativeVoiceLang.trim()
+      ) ? options.ttsNativeVoiceLang.trim() : '',
+      rate: normalizeTtsRate(options.ttsRate),
+      pitch: normalizeTtsPitch(options.ttsPitch)
+    };
+
     if (this.options.offset) {
       this.options.offset = this.normalizeOffset(this.options.offset);
     }
@@ -192,8 +273,14 @@ if (typeof window !== 'undefined') {
 }
 
 if (typeof document !== 'undefined') {
+  const globalAutoInitOptions = (
+    typeof window !== 'undefined' &&
+    window.AccessibleWebWidgetOptions &&
+    typeof window.AccessibleWebWidgetOptions === 'object'
+  ) ? window.AccessibleWebWidgetOptions : {};
+
   /** @type {AccessibleWebWidgetInstance} */
-  const widgetInstance = new AccessibleWebWidget();
+  const widgetInstance = new AccessibleWebWidget(globalAutoInitOptions);
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     widgetInstance.startAccessibleWebWidget();
   } else {

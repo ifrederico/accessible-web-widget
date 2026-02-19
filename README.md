@@ -85,6 +85,22 @@ All optional, via `data-` attributes on a `<div>`.
 Append `?acc-dev=true` to the page URL to expose a built-in axe-core report in the widget menu.
 The widget loads a pinned `axe-core` build (`4.11.1`) from jsDelivr for stable results.
 
+### Native voice tuning
+
+`Text to Speech` uses native browser voices only.
+When enabled, it waits for the user to click a text block (`h1`/`p`/`li`/etc.) and reads that block.
+
+```html
+<script>
+  window.AccessibleWebWidgetOptions = {
+    ttsNativeVoiceName: "Samantha",  // best-effort match by name
+    ttsNativeVoiceLang: "en-US",     // optional language preference
+    ttsRate: 0.9,                    // 0.5 - 2.0
+    ttsPitch: 1.0                    // 0 - 2.0
+  };
+</script>
+```
+
 ## Browser support
 
 Chrome/Edge 88+, Firefox 78+, Safari 14+, iOS Safari 14+, Chrome for Android.

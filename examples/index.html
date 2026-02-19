@@ -201,12 +201,22 @@
         
         <p>To add this widget to your own website, simply add this script tag before the closing <code>&lt;/body&gt;</code> tag:</p>
         
-        <pre><code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@latest/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code></pre>
+        <pre><code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.0/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code></pre>
         
         <p>The widget will automatically initialize and appear on your page.</p>
     </div>
 
     <!-- AccessibleWeb Widget -->
+    <script>
+      window.AccessibleWebWidgetOptions = {
+        lang: "en",
+        ttsNativeVoiceName: "Samantha",
+        ttsNativeVoiceLang: "en-US",
+        ttsRate: 0.9,
+        ttsPitch: 1,
+        ...(window.AccessibleWebWidgetOptions || {})
+      };
+    </script>
     <script src="../dist/accessible-web-widget.js"></script>
 </body>
 </html>

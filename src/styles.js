@@ -3,9 +3,19 @@ import widgetCSS from './styles/widget.css';
 import reportCSS from './styles/report.css';
 import readingGuideCSS from './styles/reading-guide.css';
 import skipLinkCSS from './styles/skip-link.css';
+import annotationsCSS from './styles/annotations.css';
+import focusModeCSS from './styles/focus-mode.css';
 
 const STATIC_STYLE_ID = 'acc-static-styles';
-const STATIC_STYLES = [menuCSS, widgetCSS, reportCSS, readingGuideCSS, skipLinkCSS].join('\n');
+const STATIC_STYLES = [
+  menuCSS,
+  widgetCSS,
+  reportCSS,
+  readingGuideCSS,
+  skipLinkCSS,
+  annotationsCSS,
+  focusModeCSS
+].join('\n');
 
 /** @typedef {import('./index.js').default} AccessibleWebWidget */
 

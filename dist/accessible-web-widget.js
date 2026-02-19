@@ -22,7 +22,7 @@ var AccessibleWebWidget = (function () {
           textColorInverted: '#ffffff',
           
           // UI elements
-          buttonSize: '34px',
+          buttonSize: '48px',
           cardBackground: '#ffffff',
           borderColor: '#d1d5db',
           focusRingColor: '#1976d2',      // Match primary
@@ -49,7 +49,7 @@ var AccessibleWebWidget = (function () {
         };
 
     const WIDGET_ICONS = {
-          accessibility: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="M480-720q-33 0-56.5-23.5T400-800q0-33 23.5-56.5T480-880q33 0 56.5 23.5T560-800q0 33-23.5 56.5T480-720ZM360-80v-520q-60-5-122-15t-118-25l20-80q78 21 166 30.5t174 9.5q86 0 174-9.5T820-720l20 80q-56 15-118 25t-122 15v520h-80v-240h-80v240h-80Z"/></svg>',
+          accessibility: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-720q-33 0-56.5-23.5T400-800q0-33 23.5-56.5T480-880q33 0 56.5 23.5T560-800q0 33-23.5 56.5T480-720ZM360-80v-520q-60-5-122-15t-118-25l20-80q78 21 166 30.5t174 9.5q86 0 174-9.5T820-720l20 80q-56 15-118 25t-122 15v520h-80v-240h-80v240h-80Z"/></svg>',
           largePointer: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m320-410 79-110h170L320-716v306ZM551-80 406-392 240-160v-720l560 440H516l144 309-109 51ZM399-520Z"/></svg>',
           pauseMotion: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m791-55-91-91q-49 32-104.5 49T480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 17-115.5T146-700l-91-91 57-57 736 736-57 57ZM480-160q43 0 83.5-11t78.5-33L204-642q-22 38-33 78.5T160-480q0 133 93.5 226.5T480-160Zm334-100-58-58q22-38 33-78.5t11-83.5q0-133-93.5-226.5T480-800q-43 0-83.5 11T318-756l-58-58q49-32 104.5-49T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 60-17 115.5T814-260ZM537-537ZM423-423Z"/></svg>',
           readingAid: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M320-80v-440l-80-120v-240h480v240l-80 120v440H320Zm160-260q-25 0-42.5-17.5T420-400q0-25 17.5-42.5T480-460q25 0 42.5 17.5T540-400q0 25-17.5 42.5T480-340ZM320-760h320v-40H320v40Zm320 80H320v16l80 120v384h160v-384l80-120v-16ZM480-480Z"/></svg>',
@@ -73,7 +73,12 @@ var AccessibleWebWidget = (function () {
           adjustFontSize: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 4v3h5v12h3V7h5V4H2m19 5h-9v3h3v7h3v-7h3V9Z"/></svg>',
           language: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/></svg>',
           hideImages: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m840-234-80-80v-446H314l-80-80h526q33 0 56.5 23.5T840-760v526ZM792-56l-64-64H200q-33 0-56.5-23.5T120-200v-528l-64-64 56-56 736 736-56 56ZM240-280l120-160 90 120 33-44-283-283v447h447l-80-80H240Zm297-257ZM424-424Z"/></svg>',
-          accessibilityReport: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h200v-80H240v80Zm254-54 166-166-56-56-110 110-46-46-56 56 102 102ZM240-440h200v-80H240v80Zm0-160h200v-80H240v80Zm-40 400v-560 560Z"/></svg>'
+          accessibilityReport: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm40-80h200v-80H240v80Zm254-54 166-166-56-56-110 110-46-46-56 56 102 102ZM240-440h200v-80H240v80Zm0-160h200v-80H240v80Zm-40 400v-560 560Z"/></svg>',
+          annotations: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-134 0-227-93T160-400q0-134 93-227t227-93q134 0 227 93t93 227q0 61-21 116t-59 99L480-80Zm0-160q67 0 113.5-46.5T640-400q0-67-46.5-113.5T480-560q-67 0-113.5 46.5T320-400q0 67 46.5 113.5T480-240Zm0-80q-33 0-56.5-23.5T400-400q0-33 23.5-56.5T480-480q33 0 56.5 23.5T560-400q0 33-23.5 56.5T480-320Z"/></svg>',
+          textToSpeech: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M560-131v-82q90-26 145-99.5T760-480q0-94-55-167.5T560-747v-82q124 29 202 125.5T840-480q0 127-78 223.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm80-80h114l86 86v-252l-86 86H200v80Zm360 20v-120q25 13 40 37t15 53q0 29-15 53t-40 37v-120Zm0-220v-120q75 17 122.5 76.5T730-480q0 82-47.5 141.5T560-262v-120q28-14 44-40t16-58q0-32-16-58t-44-40Z"/></svg>',
+          focusMode: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-600v-120H240v200H120v-200q0-50 35-85t85-35h200v120H240v120h200Zm80 480v-120h200v-200h120v200q0 50-35 85t-85 35H520ZM120-240v-200h120v200h200v120H240q-50 0-85-35t-35-85Zm600-280v-200H520v-120h200q50 0 85 35t35 85v200H720Zm-240 80q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35Z"/></svg>',
+          highContrast: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93v640Z"/></svg>',
+          simplifyLayout: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-640v-200h720v200H120Zm0 260v-180h720v180H120Zm0 260v-180h720v180H120Zm80-440h560v-120H200v120Zm0 260h560v-100H200v100Zm0 260h560v-100H200v100Z"/></svg>'
         };
 
     const TARGET_SELECTORS = {
@@ -133,7 +138,19 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "How to Fix",
             "Close Report": "Close Report",
             "Passed Tests": "Passed Tests",
-            "Items Need Review": "Items Need Review"
+            "Items Need Review": "Items Need Review",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Text to Speech On",
+            "Text to Speech Off": "Text to Speech Off",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Loading voice...": "Loading voice...",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           it: {
             "Accessibility Menu": "Menu Accessibilità",
@@ -182,7 +199,18 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "Come Risolvere",
             "Close Report": "Chiudi Report",
             "Passed Tests": "Test Superati",
-            "Items Need Review": "Elementi da Rivedere"
+            "Items Need Review": "Elementi da Rivedere",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Sintesi Vocale Attiva",
+            "Text to Speech Off": "Sintesi Vocale Disattiva",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           fr: {
             "Accessibility Menu": "Menu Accessibilité",
@@ -231,7 +259,18 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "Comment Corriger",
             "Close Report": "Fermer le Rapport",
             "Passed Tests": "Tests Réussis",
-            "Items Need Review": "Éléments à Vérifier"
+            "Items Need Review": "Éléments à Vérifier",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Synthèse Vocale Activée",
+            "Text to Speech Off": "Synthèse Vocale Désactivée",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           de: {
             "Accessibility Menu": "Barrierefreiheit-Menü",
@@ -280,7 +319,18 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "Lösung",
             "Close Report": "Bericht schließen",
             "Passed Tests": "Bestandene Tests",
-            "Items Need Review": "Elemente zur Überprüfung"
+            "Items Need Review": "Elemente zur Überprüfung",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Sprachausgabe Ein",
+            "Text to Speech Off": "Sprachausgabe Aus",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           es: {
             "Accessibility Menu": "Menú de Accesibilidad",
@@ -329,7 +379,18 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "Cómo Solucionarlo",
             "Close Report": "Cerrar Informe",
             "Passed Tests": "Pruebas Superadas",
-            "Items Need Review": "Elementos a Revisar"
+            "Items Need Review": "Elementos a Revisar",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Texto a Voz Activado",
+            "Text to Speech Off": "Texto a Voz Desactivado",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           ru: {
             "Accessibility Menu": "Меню доступности",
@@ -378,7 +439,18 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "Как исправить",
             "Close Report": "Закрыть отчёт",
             "Passed Tests": "Пройденные тесты",
-            "Items Need Review": "Требуют проверки"
+            "Items Need Review": "Требуют проверки",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Озвучивание Включено",
+            "Text to Speech Off": "Озвучивание Выключено",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           pl: {
             "Accessibility Menu": "Menu Dostępności",
@@ -427,7 +499,18 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "Jak Naprawić",
             "Close Report": "Zamknij Raport",
             "Passed Tests": "Zaliczone Testy",
-            "Items Need Review": "Elementy do Sprawdzenia"
+            "Items Need Review": "Elementy do Sprawdzenia",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Czytanie Tekstu Włączone",
+            "Text to Speech Off": "Czytanie Tekstu Wyłączone",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           ro: {
             "Accessibility Menu": "Meniu Accesibilitate",
@@ -476,7 +559,18 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "Cum se Remediază",
             "Close Report": "Închide Raportul",
             "Passed Tests": "Teste Trecute",
-            "Items Need Review": "Elemente de Verificat"
+            "Items Need Review": "Elemente de Verificat",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Text to Speech Pornit",
+            "Text to Speech Off": "Text to Speech Oprit",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           nl: {
             "Accessibility Menu": "Toegankelijkheidsmenu",
@@ -525,7 +619,18 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "Hoe op te lossen",
             "Close Report": "Rapport Sluiten",
             "Passed Tests": "Geslaagde Tests",
-            "Items Need Review": "Items te Controleren"
+            "Items Need Review": "Items te Controleren",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Tekst naar Spraak Aan",
+            "Text to Speech Off": "Tekst naar Spraak Uit",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           },
           uk: {
             "Accessibility Menu": "Меню доступності",
@@ -574,7 +679,18 @@ var AccessibleWebWidget = (function () {
             "How to Fix": "Як виправити",
             "Close Report": "Закрити звіт",
             "Passed Tests": "Пройдені тести",
-            "Items Need Review": "Потребують перевірки"
+            "Items Need Review": "Потребують перевірки",
+            "Page Annotations": "Page Annotations",
+            "Text to Speech": "Text to Speech",
+            "Text to Speech On": "Озвучування Увімкнено",
+            "Text to Speech Off": "Озвучування Вимкнено",
+            "Focus Mode": "Focus Mode",
+            "Simplify Layout": "Simplify Layout",
+            "Play": "Play",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Reading...": "Reading...",
+            "Press Escape to exit focus mode": "Press Escape to exit focus mode"
           }
         };
 
@@ -786,7 +902,7 @@ var AccessibleWebWidget = (function () {
         },
 
       normalizeButtonSize(value) {
-          const fallback = this.widgetTheme?.buttonSize || '34px';
+          const fallback = this.widgetTheme?.buttonSize || '48px';
           if (typeof value === 'number' && Number.isFinite(value)) {
             return `${Math.max(24, Math.round(value))}px`;
           }
@@ -816,8 +932,50 @@ var AccessibleWebWidget = (function () {
           }
         },
 
-      updateState(payload) {
-          const updatedConfig = { ...this.widgetConfig, states: { ...this.widgetConfig.states, ...payload } };
+      isSystemControlledPreference(key) {
+          const systemDefaults = this.widgetConfig?.systemDefaults || {};
+          return Object.prototype.hasOwnProperty.call(systemDefaults, key);
+        },
+
+      hasExplicitStatePreference(key) {
+          const states = this.widgetConfig?.states || {};
+          if (!Object.prototype.hasOwnProperty.call(states, key)) {
+            return false;
+          }
+          return !this.isSystemControlledPreference(key);
+        },
+
+      hasExplicitColorFilterPreference() {
+          const states = this.widgetConfig?.states || {};
+          const systemDefaults = this.widgetConfig?.systemDefaults || {};
+          const keys = Array.isArray(this.colorFilterKeys) ? this.colorFilterKeys : [];
+          return keys.some((key) =>
+            Object.prototype.hasOwnProperty.call(states, key) &&
+            !Object.prototype.hasOwnProperty.call(systemDefaults, key)
+          );
+        },
+
+      updateState(payload, options = {}) {
+          const source = options.source || 'user';
+          const previousStates = this.widgetConfig.states || {};
+          const previousSystemDefaults = this.widgetConfig.systemDefaults || {};
+          const nextStates = { ...previousStates, ...payload };
+          const nextSystemDefaults = { ...previousSystemDefaults };
+          const keys = Object.keys(payload || {});
+
+          if (source === 'system') {
+            keys.forEach((key) => {
+              nextSystemDefaults[key] = payload[key];
+            });
+          } else {
+            keys.forEach((key) => {
+              if (Object.prototype.hasOwnProperty.call(nextSystemDefaults, key)) {
+                delete nextSystemDefaults[key];
+              }
+            });
+          }
+
+          const updatedConfig = { ...this.widgetConfig, states: nextStates, systemDefaults: nextSystemDefaults };
           this.saveConfig(updatedConfig);
           return updatedConfig;
         },
@@ -881,7 +1039,7 @@ var AccessibleWebWidget = (function () {
 
     var menuCSS = "/* Base styles */\n.acc-menu {\n  position: fixed;\n  left: 0;\n  top: 0;\n  box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);\n  opacity: 1;\n  transition: 0.3s;\n  z-index: var(--acc-widget-z-index, 100000);\n  overflow: hidden;\n  background: var(--acc-bg-color);\n  width: 500px;\n  line-height: 1.5;\n  font-size: 16px;\n  height: 100%;\n  letter-spacing: 0.015em;\n  color: var(--acc-text-color);\n}\n\n/* Ensure all elements inherit proper colors for accessibility */\n.acc-menu * {\n  color: var(--acc-text-color);\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n  padding: 0;\n  margin: 0;\n  line-height: 1.5 !important;\n  letter-spacing: normal !important;\n}\n\n/* Header section */\n.acc-menu-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding-left: 16px;\n  padding-right: 16px;\n  height: var(--acc-header-height);\n  font-weight: 700 !important;\n  background-color: var(--acc-primary-color) !important;\n}\n\n.acc-menu-title {\n  font-size: 18px !important;\n  color: var(--acc-text-color-inverted) !important;\n  font-weight: bold;\n}\n\n.acc-header-back {\n  display: flex;\n  align-items: center;\n}\n\n.acc-back-btn {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: transparent;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--acc-text-color-inverted) !important;\n  transition: background-color 0.2s;\n  border-radius: 4px;\n  visibility: hidden;\n}\n\n.acc-back-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-back-btn.visible {\n    visibility: visible;\n  }\n\n  .acc-back-btn:hover {\n    background-color: rgba(255, 255, 255, 0.2);\n  }\n\n  .acc-back-btn:focus {\n    outline: 2px solid var(--acc-text-color-inverted);\n    outline-offset: 1px;\n  }\n\n  .acc-back-btn svg {\n    fill: var(--acc-text-color-inverted) !important;\n    width: 24px !important;\n    height: 24px !important;\n  }\n\n  .acc-menu-title-dynamic {\n    display: none !important;\n  }\n\n  .acc-menu-title-dynamic.visible {\n    display: block !important;\n  }\n\n  .acc-menu-title-default {\n    display: block !important;\n  }\n\n  .acc-menu-title-default.hidden {\n    display: none !important;\n  }\n\n.acc-menu-header svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n}\n\n.acc-menu-header > div {\n  display: flex;\n  align-items: center;\n}\n\n/* Interactive elements */\n.acc-menu-header div[role=\"button\"] {\n  cursor: pointer;\n  padding: 8px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n}\n\n.acc-menu-header div[role=\"button\"]:hover {\n  background-color: rgba(255, 255, 255, 0.2);\n}\n\n.acc-menu-header div[role=\"button\"]:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n\n.acc-menu-header .acc-header-actions {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.acc-lang-toggle {\n  cursor: pointer;\n  background: transparent;\n  border: none;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 4px;\n  border-radius: 50%;\n  color: var(--acc-text-color-inverted);\n}\n\n.acc-lang-toggle:hover {\n  background-color: rgba(255, 255, 255, 0.2);\n}\n\n.acc-lang-toggle:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-lang-toggle svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n}\n\n.acc-lang-panel {\n  position: absolute;\n  top: var(--acc-header-height);\n  right: 0;\n  width: 100%;\n  height: 100%;\n  max-height: calc(100% - var(--acc-header-height)) !important;\n  background: var(--acc-bg-color);\n  z-index: 100;\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n  overflow-y: auto;\n  display: none;\n\n}\n\n.acc-lang-panel.open {\n  display: block;\n}\n\n.acc-lang-current-container {\n  padding: 16px;\n}\n\n.acc-lang-current {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 16px;\n  border: 2px solid var(--acc-primary-color);\n  border-radius: var(--acc-button-border-radius);\n  margin-top: 8px;\n  color: var(--acc-primary-color);\n  font-weight: 600;\n  background: white;\n}\n\n.acc-lang-search-wrapper {\n  padding: 0 16px 8px;\n}\n\n.acc-lang-search {\n  width: 100%;\n  padding: 10px 16px;\n  border: 2px solid var(--acc-border-color);\n  border-radius: var(--acc-button-border-radius);\n  font-size: 16px;\n  background-color: var(--acc-card-bg);\n}\n\n.acc-lang-search:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-lang-list {\n  padding: 6px 16px 16px;\n  max-height: 300px;\n  overflow-y: auto;\n}\n\n.acc-lang-item {\n  display: block;\n  width: 100%;\n  text-align: left;\n  padding: 12px 16px;\n  margin-bottom: 4px;\n  background-color: transparent;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  cursor: pointer;\n  font-size: 16px;\n  color: var(--acc-text-color);\n}\n\n.acc-lang-item:hover {\n  background-color: rgba(0, 0, 0, 0.05);\n}\n\n.acc-lang-item:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-item.selected {\n  background-color: rgba(0, 0, 0, 0.05);\n  font-weight: 600;\n}\n\n.acc-icon-check {\n  display: inline-block;\n  width: 18px;\n  height: 18px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23886f60' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\");\n  background-repeat: no-repeat;\n  background-position: center;\n}\n\n\n\n/* Content sections */\n.acc-section {\n  margin: 0 16px 24px;\n}\n\n.acc-section-title {\n  font-size: 16px !important;\n  padding: 16px 14px;\n  font-weight: 600 !important;\n  color: var(--acc-text-color);\n}\n\n.acc-menu .acc-lang-select {\n  width: 100% !important;\n  padding: 0 16px !important;\n  font-size: 16px !important;\n  font-family: inherit !important;\n  font-weight: 600 !important;\n  border-radius: var(--acc-button-border-radius) !important;\n  background: var(--acc-card-bg) !important;\n  border: 2px solid var(--acc-border-color) !important;\n  min-height: 48px !important;\n  max-height: 48px !important;\n  height: 48px !important;\n  color: var(--acc-text-color) !important;\n  color: var(--acc-text-color) !important;\n  -webkit-appearance: none !important;\n  -moz-appearance: none !important;\n  appearance: none !important;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0%20-960%20960%20960' width='24px' fill='%231f1f1f'%3E%3Cpath d='M480-344%20240-584l56-56%20184 184%20184-184%2056 56-240 240Z'/%3E%3C/svg%3E\") !important;\n  background-repeat: no-repeat !important;\n  background-position: right 12px center !important;\n  background-size: 20px !important;\n  padding-right: 44px !important;\n}\n\n/* Hide default arrows in Firefox and IE */\n.acc-menu .acc-lang-select::-ms-expand {\n  display: none !important;\n}\n\n.acc-menu .acc-lang-select:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n/* Option grid layout */\n.acc-options {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 16px;\n}\n\n/* Button styling */\n.acc-btn {\n  aspect-ratio: 6 / 5;\n  border-radius: var(--acc-border-radius);\n  padding: 12px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  text-align: center;\n  font-size: 16px !important;\n  background: var(--acc-card-bg) !important;\n  border: 2px solid var(--acc-border-color) !important;\n  transition: all 0.2s ease;\n  cursor: pointer;\n  word-break: break-word;\n  gap: 8px;\n  position: relative;\n}\n\n.acc-btn:hover {\n  border-color: var(--acc-hover-color) !important;\n}\n\n.acc-btn:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn .acc-label, .acc-text-adjust .acc-label div {\n  font-size: 14px !important;\n  font-weight: 600 !important;\n}\n\n/* SVG icons */\n.acc-text-adjust svg {\n  width: 24px !important;\n  height: 24px !important;\n  min-width: 24px !important;\n  min-height: 24px !important;\n  max-width: 24px !important;\n  max-height: 24px !important;\n}\n\n.acc-btn svg {\n  width: 34px !important;\n  height: 34px !important;\n  min-width: 34px !important;\n  min-height: 34px !important;\n  max-width: 34px !important;\n  max-height: 34px !important;\n  fill: var(--acc-text-color);\n}\n\n/* Selected state */\n.acc-btn.acc-selected {\n  background-color: var(--acc-primary-color) !important;\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected .acc-progress-dot {\n  background-color: rgba(255, 255, 255, 0.5);\n}\n\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-btn.acc-selected svg, \n.acc-btn.acc-selected span,\n.acc-btn.acc-selected .acc-label {\n  fill: var(--acc-text-color-inverted) !important;\n  color: var(--acc-text-color-inverted) !important;\n}\n\n/* Reset All Settings button */\n\n.acc-reset-container {\n  margin: 24px 16px;\n  display: flex;\n  justify-content: center;\n}\n\n.acc-reset-btn {\n  display: flex;\n  width: 100%;\n  align-items: center;\n  justify-content: center;\n  text-align: center;\n  padding: 12px 24px;\n  background-color: var(--acc-primary-color) !important;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  font-weight: 600 !important;\n  font-size: 16px !important;\n  cursor: pointer;\n  transition: all 0.2s ease;\n}\n\n.acc-reset-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-reset-btn:hover {\n  background-color: var(--acc-primary-color-dark) !important;\n}\n\n.acc-reset-btn:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-reset-btn svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 24px !important;\n  height: 24px !important;\n  margin-right: 8px;\n}\n\n/* Footer section */\n.acc-footer {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background: var(--acc-card-bg);\n  padding: 16px;\n  text-align: center;\n  border-top: 1px solid var(--acc-border-color);\n  z-index: 100;\n}\n\n.acc-footer a {\n  font-size: 14px !important;\n  text-decoration: none !important;\n  color: var(--acc-text-color) !important;\n  background: transparent !important;\n  font-weight: 600 !important;\n  padding: 8px;\n  border-radius: 4px;\n}\n\n.acc-footer a:hover {\n  text-decoration: underline !important;\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-footer a:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Content area */\n.acc-menu-content {\n  overflow: auto;\n  max-height: calc(100% - 80px);\n  padding: 24px 0 36px;\n}\n\n/* Text adjustments */\n.acc-text-adjust {\n  background: var(--acc-card-bg);\n  padding: 20px;\n  margin-bottom: 20px;\n  border-radius: var(--acc-border-radius);\n  border: 2px solid var(--acc-border-color);\n}\n\n.acc-text-adjust .acc-label {\n  display: flex;\n  justify-content: flex-start;\n}\n\n.acc-text-adjust > div {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 20px;\n  align-items: center;\n  font-size: 16px;\n}\n\n.acc-text-adjust .acc-label div {\n  font-size: 16px !important;\n}\n\n.acc-text-adjust div[role=\"button\"] {\n  background: var(--acc-bg-color) !important;\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  border: 2px solid var(--acc-border-color);\n}\n\n.acc-text-adjust div[role=\"button\"]:hover {\n  border-color: var(--acc-hover-color);\n}\n\n.acc-text-adjust div[role=\"button\"]:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Overlay */\n.acc-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: calc(var(--acc-widget-z-index, 100000) - 1);\n}\n\n/* Progress indicator */\n.acc-progress-indicator {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  margin-top: 8px;\n  height: 8px;\n}\n\n.acc-progress-dot {\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  background-color: var(--acc-border-color);\n  transition: background-color 0.2s ease;\n}\n\n.acc-progress-dot.active {\n  background-color: var(--acc-primary-color);\n}\n\n/* Selected state updates indicator colors */\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-bg-color);\n}\n\n/* Responsive adjustments */\n@media only screen and (max-width: 560px) {\n  .acc-menu { width: 100%; }\n}\n\n@media only screen and (max-width: 420px) {\n  .acc-options { \n    grid-template-columns: repeat(2, minmax(0, 1fr)); \n    gap: 12px; \n  }\n  .acc-btn {\n    padding: 8px;\n  }\n}\n\n/* Ensure proper focus visibility for assistive technology */\n@media (prefers-reduced-motion: reduce) {\n  .acc-menu,\n  .acc-btn,\n  .acc-lang-select,\n  .acc-progress-dot,\n  .acc-menu-header div[role=\"button\"],\n  .acc-reset-btn {\n    transition: none;\n  }\n}\n";
 
-    var widgetCSS = "  /* Base styles for the widget */\n  .acc-widget, .acc-menu {\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n  }\n  \n  .acc-widget *, .acc-menu * { \n    box-sizing: border-box !important; \n  }\n  \n  /* Accessibility toggle button */\n  .acc-toggle-btn {\n    position: fixed;\n    z-index: var(--acc-widget-z-index, 100000);\n    left: 30px;\n    bottom: 30px;\n    border-radius: 50%;\n    align-items: center;\n    justify-content: center;\n    width: var(--acc-button-size, 34px);\n    height: var(--acc-button-size, 34px);\n    display: flex;\n    cursor: pointer;\n    outline: 4px solid var(--acc-primary-color, #1976d2) !important;\n    border: 3px solid white !important;\n    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;\n    background: var(--acc-primary-color, #1976d2) !important;\n    transition: transform 0.2s ease;\n  }\n  \n  .acc-toggle-btn svg {\n    width: 28px;\n    height: 28px;\n    fill: white;\n  }\n  \n  .acc-toggle-btn:hover {\n    transform: scale(1.04);\n  }\n\n  .acc-toggle-btn:focus {\n    outline: 3px solid var(--acc-primary-color, #1976d2) !important;\n    outline-offset: 2px;\n\n}\n  \n  @media (prefers-reduced-motion: reduce) {\n    .acc-toggle-btn {\n      transition: none;\n    }\n  }\n";
+    var widgetCSS = "  /* Base styles for the widget */\n  .acc-widget, .acc-menu {\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n  }\n  \n  .acc-widget *, .acc-menu * { \n    box-sizing: border-box !important; \n  }\n  \n  /* Accessibility toggle button */\n  .acc-toggle-btn {\n    position: fixed;\n    z-index: var(--acc-widget-z-index, 100000);\n    left: 30px;\n    bottom: 30px;\n    border-radius: 50%;\n    align-items: center;\n    justify-content: center;\n    width: var(--acc-button-size, 48px);\n    height: var(--acc-button-size, 48px);\n    display: flex;\n    cursor: pointer;\n    outline: none !important;\n    border: none !important;\n    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 2px 5px rgba(0,0,0,0.2) !important;\n    background: var(--acc-primary-color, #1976d2) !important;\n    transition: transform 0.2s ease;\n    overflow: visible;\n  }\n  \n  .acc-toggle-btn svg {\n    width: 60%;\n    height: 60%;\n    fill: white;\n  }\n  \n  .acc-toggle-btn:hover {\n    transform: none;\n  }\n\n  .acc-violation-bubble {\n    position: absolute;\n    top: -8px;\n    right: -8px;\n    min-width: 24px;\n    height: 24px;\n    border-radius: 12px;\n    font-size: 11px;\n    font-weight: 700;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 0 4px;\n    pointer-events: none;\n    z-index: 1;\n    color: #fff;\n    border: none;\n    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  }\n\n  .acc-violation-bubble[data-severity=\"critical\"] {\n    background: #fbc02c;\n    color: #222;\n  }\n\n  .acc-violation-bubble[data-severity=\"serious\"] {\n    background: #ffab32;\n    color: #222;\n  }\n\n  .acc-violation-bubble[data-severity=\"moderate\"] {\n    background: #fbc02c;\n    color: #000;\n  }\n\n  .acc-violation-bubble[hidden] {\n    display: none;\n  }\n\n  .acc-toggle-btn:focus {\n    outline: none !important;\n  }\n\n  .acc-toggle-btn:focus-visible {\n    outline: 3px solid var(--acc-primary-color, #1976d2) !important;\n    outline-offset: 2px;\n  }\n\n  body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {\n    cursor: pointer;\n  }\n\n  .acc-tts-active-block {\n    outline: 2px solid var(--acc-primary-color, #1976d2) !important;\n    outline-offset: 3px !important;\n    border-radius: 4px;\n  }\n  \n  @media (prefers-reduced-motion: reduce) {\n    .acc-toggle-btn {\n      transition: none;\n    }\n  }\n";
 
     var reportCSS = ".acc-report-panel {\n  display: none;\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 10);\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;\n}\n.acc-report-panel.acc-report-visible {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.acc-report-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.6);\n}\n.acc-report-dialog {\n  position: relative;\n  background: #fff;\n  border-radius: 12px;\n  width: 90%;\n  max-width: 800px;\n  max-height: 85vh;\n  display: flex;\n  flex-direction: column;\n  box-shadow: 0 20px 60px rgba(0,0,0,0.3);\n}\n.acc-report-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 16px 20px;\n  border-bottom: 1px solid #e0e0e0;\n}\n.acc-report-title {\n  margin: 0;\n  font-size: 18px;\n  font-weight: 600;\n  color: #1a1a1a;\n}\n.acc-report-close {\n  background: none;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  border-radius: 6px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.acc-report-close:hover {\n  background: #f0f0f0;\n}\n.acc-report-close svg {\n  width: 20px;\n  height: 20px;\n  fill: #666;\n}\n.acc-report-status {\n  padding: 8px 20px;\n  font-size: 14px;\n  color: #666;\n  background: #f8f9fa;\n}\n.acc-report-content {\n  flex: 1;\n  overflow-y: auto;\n  padding: 16px 20px;\n}\n.acc-report-loading {\n  text-align: center;\n  padding: 40px;\n  color: #666;\n}\n.acc-report-error {\n  color: #d32f2f;\n  padding: 20px;\n  text-align: center;\n}\n.acc-report-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));\n  gap: 12px;\n  margin-bottom: 20px;\n}\n.acc-report-stat {\n  background: #f8f9fa;\n  border-radius: 8px;\n  padding: 16px;\n  text-align: center;\n}\n.acc-report-stat-value {\n  font-size: 28px;\n  font-weight: 700;\n  display: block;\n}\n.acc-report-stat-label {\n  font-size: 12px;\n  color: #666;\n  text-transform: uppercase;\n  margin-top: 4px;\n}\n.acc-report-stat.critical .acc-report-stat-value { color: #d32f2f; }\n.acc-report-stat.serious .acc-report-stat-value { color: #f57c00; }\n.acc-report-stat.moderate .acc-report-stat-value { color: #fbc02d; }\n.acc-report-stat.minor .acc-report-stat-value { color: #7cb342; }\n.acc-report-stat.passed .acc-report-stat-value { color: #43a047; }\n.acc-report-section {\n  margin-bottom: 20px;\n}\n.acc-report-section-title {\n  font-size: 14px;\n  font-weight: 600;\n  color: #333;\n  margin-bottom: 12px;\n  padding-bottom: 8px;\n  border-bottom: 2px solid #e0e0e0;\n}\n.acc-report-violation {\n  background: #fff;\n  border: 1px solid #e0e0e0;\n  border-radius: 8px;\n  margin-bottom: 12px;\n  overflow: hidden;\n}\n.acc-report-violation-header {\n  padding: 12px 16px;\n  background: #f8f9fa;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n.acc-report-violation-header:hover {\n  background: #f0f0f0;\n}\n.acc-report-violation-impact {\n  font-size: 11px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding: 4px 8px;\n  border-radius: 4px;\n  color: #fff;\n}\n.acc-report-violation-impact.critical { background: #d32f2f; }\n.acc-report-violation-impact.serious { background: #f57c00; }\n.acc-report-violation-impact.moderate { background: #fbc02d; color: #333; }\n.acc-report-violation-impact.minor { background: #7cb342; }\n.acc-report-violation-title {\n  flex: 1;\n  font-weight: 500;\n  color: #333;\n}\n.acc-report-violation-count {\n  font-size: 12px;\n  color: #666;\n  background: #e0e0e0;\n  padding: 2px 8px;\n  border-radius: 12px;\n}\n.acc-report-violation-details {\n  display: none;\n  padding: 16px;\n  border-top: 1px solid #e0e0e0;\n}\n.acc-report-violation.expanded .acc-report-violation-details {\n  display: block;\n}\n.acc-report-violation-desc {\n  color: #666;\n  font-size: 14px;\n  margin-bottom: 12px;\n}\n.acc-report-violation-help {\n  font-size: 13px;\n  margin-bottom: 12px;\n}\n.acc-report-violation-help a {\n  color: #1976d2;\n}\n.acc-report-node {\n  background: #f8f9fa;\n  border-radius: 6px;\n  padding: 12px;\n  margin-top: 8px;\n}\n.acc-report-node-html {\n  font-family: monospace;\n  font-size: 12px;\n  background: #263238;\n  color: #80cbc4;\n  padding: 8px 12px;\n  border-radius: 4px;\n  overflow-x: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n.acc-report-node-fix {\n  margin-top: 8px;\n  font-size: 13px;\n  color: #333;\n}\n.acc-report-node-fix strong {\n  color: #1976d2;\n}\n.acc-report-success {\n  text-align: center;\n  padding: 40px;\n}\n.acc-report-success-icon {\n  width: 64px;\n  height: 64px;\n  background: #43a047;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin: 0 auto 16px;\n}\n.acc-report-success-icon svg {\n  width: 32px;\n  height: 32px;\n  fill: #fff;\n}\n.acc-report-footer {\n  padding: 12px 20px;\n  border-top: 1px solid #e0e0e0;\n  text-align: center;\n}\n.acc-report-powered {\n  font-size: 12px;\n  color: #999;\n}\n@media (max-width: 600px) {\n  .acc-report-dialog {\n    width: 95%;\n    max-height: 90vh;\n  }\n  .acc-report-summary {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n";
 
@@ -889,8 +1047,20 @@ var AccessibleWebWidget = (function () {
 
     var skipLinkCSS = ".acc-skip-link {\n  font-family: inherit;\n  position: fixed;\n  top: 16px;\n  left: 16px;\n  background: var(--acc-card-bg, #ffffff);\n  color: var(--acc-text-color, #222222);\n  border: 3px solid var(--acc-primary-color, #1976d2);\n  border-radius: var(--acc-button-border-radius, 0.4rem);\n  padding: 8px 16px;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 2);\n  transform: translateY(-140%);\n  opacity: 0;\n  pointer-events: none;\n  transition: transform 0.2s ease, opacity 0.2s ease;\n  font-size: 16px;\n  line-height: 1.2;\n  font-weight: 600;\n  background-clip: padding-box;\n}\n.acc-skip-link:focus,\n.acc-skip-link:active {\n  transform: translateY(0);\n  opacity: 1;\n  pointer-events: auto;\n  outline: var(--acc-focus-outline-width, 3px) solid var(--acc-focus-ring-color, #1976d2);\n  outline-offset: var(--acc-focus-outline-offset, 2px);\n}\n";
 
+    var annotationsCSS = ".acc-annotation-layer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 0;\n  height: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 5);\n  pointer-events: none;\n}\n\n.acc-annotation-marker {\n  position: absolute;\n  width: 20px;\n  height: 20px;\n  border: 2px solid #fff;\n  border-radius: 999px;\n  color: #fff;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);\n  cursor: pointer;\n  pointer-events: auto;\n  transform: translate(-40%, -50%);\n}\n\n.acc-annotation-marker svg {\n  width: 12px;\n  height: 12px;\n  fill: currentColor;\n}\n\n.acc-annotation-marker[data-impact=\"critical\"] {\n  background: #b71c1c;\n}\n\n.acc-annotation-marker[data-impact=\"serious\"] {\n  background: #d84315;\n}\n\n.acc-annotation-marker[data-impact=\"moderate\"] {\n  background: #ef6c00;\n}\n\n.acc-annotation-marker[data-impact=\"minor\"] {\n  background: #1565c0;\n}\n\n.acc-annotation-popup {\n  position: absolute;\n  width: min(320px, 92vw);\n  background: #fff;\n  color: #1a1a1a;\n  border: 1px solid #d7d7d7;\n  border-radius: 10px;\n  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);\n  padding: 12px;\n  pointer-events: auto;\n}\n\n.acc-annotation-popup-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n}\n\n.acc-annotation-popup-title {\n  margin: 0;\n  font-size: 14px;\n  line-height: 1.3;\n}\n\n.acc-annotation-popup-close {\n  border: 0;\n  background: transparent;\n  padding: 2px;\n  width: 24px;\n  height: 24px;\n  color: #444;\n  cursor: pointer;\n}\n\n.acc-annotation-popup-close svg {\n  width: 20px;\n  height: 20px;\n  fill: currentColor;\n}\n\n.acc-annotation-popup p {\n  margin: 8px 0;\n  font-size: 13px;\n  line-height: 1.45;\n}\n\n.acc-annotation-popup a {\n  color: #0d47a1;\n  font-weight: 600;\n  text-decoration: underline;\n}\n";
+
+    var focusModeCSS = ".acc-focus-mode-active .acc-focus-section {\n  opacity: 0.22;\n  filter: grayscale(0.15);\n  pointer-events: none;\n  transition: opacity 180ms ease, filter 180ms ease;\n}\n\n.acc-focus-mode-active .acc-focus-section.acc-focus-current {\n  opacity: 1;\n  filter: none;\n  pointer-events: auto;\n  position: relative;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 2);\n}\n\n.acc-focus-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 4);\n  pointer-events: none;\n  border-radius: 8px;\n  border: 2px solid #1a73e8;\n  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85) inset, 0 0 12px rgba(26, 115, 232, 0.35);\n  background: transparent;\n  transition: top 180ms ease, left 180ms ease, width 180ms ease, height 180ms ease;\n}\n\n.acc-focus-target {\n  outline: 3px solid rgba(26, 115, 232, 0.35) !important;\n  outline-offset: 4px !important;\n  scroll-margin-top: 14vh !important;\n}\n\n.acc-focus-hint {\n  position: fixed;\n  top: 18px;\n  left: 50%;\n  transform: translateX(-50%);\n  z-index: calc(var(--acc-widget-z-index, 100000) + 7);\n  background: rgba(22, 22, 22, 0.9);\n  color: #fff;\n  padding: 8px 12px;\n  border-radius: 8px;\n  font-size: 12px;\n  line-height: 1.3;\n  pointer-events: none;\n  max-width: min(92vw, 420px);\n  text-align: center;\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .acc-focus-overlay,\n  .acc-focus-mode-active .acc-focus-section {\n    transition: none;\n  }\n}\n";
+
     const STATIC_STYLE_ID = 'acc-static-styles';
-    const STATIC_STYLES = [menuCSS, widgetCSS, reportCSS, readingGuideCSS, skipLinkCSS].join('\n');
+    const STATIC_STYLES = [
+      menuCSS,
+      widgetCSS,
+      reportCSS,
+      readingGuideCSS,
+      skipLinkCSS,
+      annotationsCSS,
+      focusModeCSS
+    ].join('\n');
 
     /** @typedef {import('./index.js').default} AccessibleWebWidget */
 
@@ -1009,6 +1179,13 @@ var AccessibleWebWidget = (function () {
     const AXE_CORE_VERSION = '4.11.1';
     const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
     const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
+    const AXE_RUN_OPTIONS = {
+      runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
+    };
+    const MAX_ANNOTATIONS = 50;
+    const SYSTEM_PREFERS_REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
+    const SYSTEM_PREFERS_DARK_SCHEME = '(prefers-color-scheme: dark)';
+    const SYSTEM_PREFERS_MORE_CONTRAST = '(prefers-contrast: more)';
 
     /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
     const featureMethods = {
@@ -1320,6 +1497,73 @@ var AccessibleWebWidget = (function () {
         this.applyToolStyle({ ...config, enable });
       },
 
+      enableHighContrastMode(enable = false) {
+        const X = ':not(.acc-container):not(.acc-container *)';
+        const config = {
+          id: 'high-contrast-mode',
+          css: `
+        /* ── Base: force black on white ── */
+        body.acc-high-contrast-mode *${X} {
+          color: #000 !important;
+          background-color: #fff !important;
+          background-image: none !important;
+          text-shadow: none !important;
+          box-shadow: none !important;
+        }
+
+        body.acc-high-contrast-mode {
+          background: #fff !important;
+        }
+
+        /* ── Borders: solid and visible ── */
+        body.acc-high-contrast-mode *${X} {
+          border-color: #000 !important;
+        }
+
+        /* ── Links: underlined, distinct color ── */
+        body.acc-high-contrast-mode a${X} {
+          color: #00e !important;
+          text-decoration: underline !important;
+        }
+
+        body.acc-high-contrast-mode a:visited${X} {
+          color: #551a8b !important;
+        }
+
+        /* ── Headings: bold black ── */
+        body.acc-high-contrast-mode :where(h1,h2,h3,h4,h5,h6)${X} {
+          color: #000 !important;
+          font-weight: 700 !important;
+        }
+
+        /* ── Images: keep visible, add border ── */
+        body.acc-high-contrast-mode img${X} {
+          border: 1px solid #000 !important;
+        }
+
+        /* ── Inputs & buttons: high-contrast borders ── */
+        body.acc-high-contrast-mode :where(input, textarea, select, button)${X} {
+          border: 2px solid #000 !important;
+          background: #fff !important;
+          color: #000 !important;
+        }
+
+        /* ── Focus rings: thick, high-visibility ── */
+        body.acc-high-contrast-mode :focus-visible${X} {
+          outline: 3px solid #000 !important;
+          outline-offset: 2px !important;
+        }
+
+        /* ── Tables: visible cell borders ── */
+        body.acc-high-contrast-mode :where(table, th, td)${X} {
+          border: 1px solid #000 !important;
+        }
+      `
+        };
+        this.applyToolStyle({ ...config, enable });
+        document.body?.classList.toggle('acc-high-contrast-mode', !!enable);
+      },
+
       enableReadingAid(enable = false) {
         try {
           let container = this.findElement('.acc-rg-container');
@@ -1461,6 +1705,198 @@ var AccessibleWebWidget = (function () {
         return this.axeCorePromise;
       },
 
+      getAxeRunOptions() {
+        return { ...AXE_RUN_OPTIONS };
+      },
+
+      getViolationCounts(results = {}) {
+        const counts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
+        const violations = Array.isArray(results.violations) ? results.violations : [];
+        violations.forEach((violation) => {
+          const impact = violation?.impact;
+          if (impact && counts[impact] !== undefined) {
+            counts[impact] += Array.isArray(violation.nodes) ? violation.nodes.length : 0;
+          }
+        });
+        return counts;
+      },
+
+      updateViolationBubble(results = null) {
+        const bubble = this.violationBubble || this.findElement('.acc-violation-bubble');
+        if (!bubble) return;
+
+        const counts = this.getViolationCounts(results || this.axeScanResults || {});
+        const devMode = this.isDevMode();
+
+        let displayCount = 0;
+        let severity = '';
+
+        if (counts.critical > 0) {
+          displayCount = counts.critical;
+          severity = 'critical';
+        } else if (devMode && counts.serious > 0) {
+          displayCount = counts.serious;
+          severity = 'serious';
+        } else if (devMode && counts.moderate > 0) {
+          displayCount = counts.moderate;
+          severity = 'moderate';
+        }
+
+        if (displayCount <= 0) {
+          bubble.textContent = '';
+          bubble.hidden = true;
+          bubble.removeAttribute('data-severity');
+          return;
+        }
+
+        bubble.hidden = false;
+        bubble.dataset.severity = severity;
+        bubble.textContent = displayCount > 99 ? '99+' : String(displayCount);
+      },
+
+      async runBackgroundAxeScan({ force = false } = {}) {
+        if (!force && this.axeScanResults) {
+          this.updateViolationBubble(this.axeScanResults);
+          return this.axeScanResults;
+        }
+
+        if (!force && this.axeScanPromise) {
+          return this.axeScanPromise;
+        }
+
+        this.axeScanPromise = (async () => {
+          try {
+            const axe = await this.loadAxeCore();
+            const results = await axe.run(document, this.getAxeRunOptions());
+            this.axeScanResults = results;
+            this.updateViolationBubble(results);
+            return results;
+          } catch (error) {
+            this.updateViolationBubble({ violations: [] });
+            throw error;
+          } finally {
+            this.axeScanPromise = null;
+          }
+        })();
+
+        return this.axeScanPromise;
+      },
+
+      ensureMediaQuery(query) {
+        if (!query || typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+          return null;
+        }
+        if (!this.systemPreferenceMediaQueries) {
+          this.systemPreferenceMediaQueries = {};
+        }
+        if (!this.systemPreferenceMediaQueries[query]) {
+          this.systemPreferenceMediaQueries[query] = window.matchMedia(query);
+        }
+        return this.systemPreferenceMediaQueries[query];
+      },
+
+      applySystemMotionPreference(shouldEnable) {
+        this.loadConfig();
+        if (this.hasExplicitStatePreference('pause-motion')) {
+          return false;
+        }
+
+        const currentValue = !!this.retrieveState('pause-motion');
+        if (currentValue === shouldEnable && this.isSystemControlledPreference('pause-motion')) {
+          return false;
+        }
+
+        this.updateState({ 'pause-motion': shouldEnable }, { source: 'system' });
+        return true;
+      },
+
+      applySystemDarkContrastPreference(shouldEnable) {
+        this.loadConfig();
+        const explicitColorPreference = this.hasExplicitColorFilterPreference();
+        const darkContrastIsUserControlled = this.hasExplicitStatePreference('dark-contrast');
+        if (explicitColorPreference || darkContrastIsUserControlled) {
+          return false;
+        }
+
+        const nextActiveKey = shouldEnable ? 'dark-contrast' : null;
+        const currentActiveKey = this.getActiveColorFilterKey(this.widgetConfig.states);
+        const isSystemControlled = this.isSystemControlledPreference('dark-contrast');
+        if (currentActiveKey === nextActiveKey && (isSystemControlled || !shouldEnable)) {
+          return false;
+        }
+
+        this.updateColorFilterState(nextActiveKey, 'system');
+        return true;
+      },
+
+      detectSystemPreferences() {
+        if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+
+        const reducedMotionQuery = this.ensureMediaQuery(SYSTEM_PREFERS_REDUCED_MOTION);
+        const darkSchemeQuery = this.ensureMediaQuery(SYSTEM_PREFERS_DARK_SCHEME);
+        const highContrastQuery = this.ensureMediaQuery(SYSTEM_PREFERS_MORE_CONTRAST);
+
+        const shouldPauseMotion = !!reducedMotionQuery?.matches;
+        const shouldEnableDarkContrast = !!darkSchemeQuery?.matches || !!highContrastQuery?.matches;
+
+        const motionChanged = this.applySystemMotionPreference(shouldPauseMotion);
+        const contrastChanged = this.applySystemDarkContrastPreference(shouldEnableDarkContrast);
+
+        if (motionChanged || contrastChanged) {
+          this.applyEnhancements();
+          this.applyVisualFilters();
+        }
+      },
+
+      clearSystemPreferenceListeners() {
+        const listeners = Array.isArray(this.systemPreferenceListeners) ? this.systemPreferenceListeners : [];
+        listeners.forEach((remove) => {
+          if (typeof remove === 'function') {
+            remove();
+          }
+        });
+        this.systemPreferenceListeners = [];
+      },
+
+      setupMediaQueryListeners() {
+        this.clearSystemPreferenceListeners();
+        if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+
+        const reducedMotionQuery = this.ensureMediaQuery(SYSTEM_PREFERS_REDUCED_MOTION);
+        const darkSchemeQuery = this.ensureMediaQuery(SYSTEM_PREFERS_DARK_SCHEME);
+        const highContrastQuery = this.ensureMediaQuery(SYSTEM_PREFERS_MORE_CONTRAST);
+
+        const listen = (mediaQuery, handler) => {
+          if (!mediaQuery || typeof handler !== 'function') return;
+          if (typeof mediaQuery.addEventListener === 'function') {
+            mediaQuery.addEventListener('change', handler);
+            this.systemPreferenceListeners.push(() => mediaQuery.removeEventListener('change', handler));
+          } else if (typeof mediaQuery.addListener === 'function') {
+            mediaQuery.addListener(handler);
+            this.systemPreferenceListeners.push(() => mediaQuery.removeListener(handler));
+          }
+        };
+
+        const onReducedMotionChange = (event) => {
+          const changed = this.applySystemMotionPreference(!!event.matches);
+          if (changed) {
+            this.applyEnhancements();
+          }
+        };
+
+        const onContrastChange = () => {
+          const shouldEnableDarkContrast = !!darkSchemeQuery?.matches || !!highContrastQuery?.matches;
+          const changed = this.applySystemDarkContrastPreference(shouldEnableDarkContrast);
+          if (changed) {
+            this.applyVisualFilters();
+          }
+        };
+
+        listen(reducedMotionQuery, onReducedMotionChange);
+        listen(darkSchemeQuery, onContrastChange);
+        listen(highContrastQuery, onContrastChange);
+      },
+
       async runAccessibilityReport() {
         // Create or get report panel
         let panel = this.findElement('.acc-report-panel');
@@ -1480,13 +1916,8 @@ var AccessibleWebWidget = (function () {
         contentArea.innerHTML = `<div class="acc-report-loading">${this.translate('Analyzing page...')}</div>`;
       
         try {
-          const axe = await this.loadAxeCore();
-      
-          // Run axe analysis
-          const results = await axe.run(document, {
-            runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
-          });
-      
+          const results = await this.runBackgroundAxeScan({ force: true });
+
           this.displayReportResults(panel, results);
       
         } catch (error) {
@@ -1768,6 +2199,1241 @@ var AccessibleWebWidget = (function () {
         }
       },
 
+      supportsSpeechSynthesis() {
+        if (typeof window === 'undefined') return false;
+        return (
+          'speechSynthesis' in window &&
+          typeof window.SpeechSynthesisUtterance !== 'undefined'
+        );
+      },
+
+      supportsTextToSpeech() {
+        return this.supportsSpeechSynthesis();
+      },
+
+      normalizeSpeechLanguage(languageCode = 'en') {
+        const code = String(languageCode || 'en').toLowerCase();
+        const languageMap = {
+          en: 'en-US',
+          it: 'it-IT',
+          fr: 'fr-FR',
+          de: 'de-DE',
+          es: 'es-ES',
+          ru: 'ru-RU',
+          pl: 'pl-PL',
+          ro: 'ro-RO',
+          nl: 'nl-NL',
+          uk: 'uk-UA'
+        };
+        return languageMap[code] || code;
+      },
+
+      getNativeTtsRate() {
+        const configured = Number(this.nativeTtsConfig?.rate);
+        if (!Number.isFinite(configured)) return 1;
+        return Math.min(2, Math.max(0.5, configured));
+      },
+
+      getNativeTtsPitch() {
+        const configured = Number(this.nativeTtsConfig?.pitch);
+        if (!Number.isFinite(configured)) return 1;
+        return Math.min(2, Math.max(0, configured));
+      },
+
+      isElementVisibleForTts(element) {
+        if (!(element instanceof Element)) return false;
+        const style = window.getComputedStyle(element);
+        if (style.display === 'none' || style.visibility === 'hidden') {
+          return false;
+        }
+        const rect = element.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+      },
+
+      isTtsExcludedElement(element) {
+        if (!(element instanceof Element)) return true;
+        if (element.closest('.acc-container')) return true;
+        if (element.closest('script,style,noscript,template')) return true;
+        if (element.closest('[aria-hidden="true"]')) return true;
+        if (
+          element.closest(
+            'nav,header,footer,aside,form,dialog,[role="navigation"],[role="complementary"],[role="search"],[role="menu"],[role="dialog"],[role="alert"],[aria-live]'
+          )
+        ) {
+          return true;
+        }
+        return false;
+      },
+
+      normalizeReadableText(text = '') {
+        return String(text)
+          .replace(/\s+/g, ' ')
+          .replace(/[ \t]+([,.;!?])/g, '$1')
+          .trim();
+      },
+
+      getTtsCandidateRoots() {
+        const selectors = [
+          'article',
+          'main',
+          '[role="main"]',
+          '.content',
+          '.post',
+          '.entry-content',
+          '#content'
+        ];
+        const roots = [];
+        const seen = new Set();
+
+        selectors.forEach((selector) => {
+          document.querySelectorAll(selector).forEach((element) => {
+            if (!(element instanceof Element)) return;
+            if (this.isTtsExcludedElement(element) || !this.isElementVisibleForTts(element)) return;
+            if (seen.has(element)) return;
+            seen.add(element);
+            roots.push(element);
+          });
+        });
+
+        return roots;
+      },
+
+      getPrimaryContentRoot() {
+        if (typeof document === 'undefined') return null;
+        const candidates = this.getTtsCandidateRoots();
+        if (!candidates.length) {
+          const explicitCandidates = Array.from(
+            document.querySelectorAll('main,article,[role="main"],#content,.content,.post,.entry-content')
+          ).filter((element) =>
+            element instanceof Element &&
+            !this.isTtsExcludedElement(element) &&
+            this.isElementVisibleForTts(element)
+          );
+
+          if (explicitCandidates.length) {
+            let explicitBest = explicitCandidates[0];
+            let explicitBestScore = -1;
+            explicitCandidates.forEach((candidate) => {
+              const textLength = this.normalizeReadableText(candidate.innerText || candidate.textContent || '').length;
+              const rect = candidate.getBoundingClientRect();
+              const score = textLength + (rect.width * rect.height * 0.0025);
+              if (score > explicitBestScore) {
+                explicitBestScore = score;
+                explicitBest = candidate;
+              }
+            });
+            return explicitBest;
+          }
+
+          if (document.body) {
+            const topLevelCandidates = Array.from(document.body.children).filter((element) =>
+              element instanceof Element &&
+              !element.classList.contains('acc-container') &&
+              this.isElementVisibleForTts(element)
+            );
+
+            if (topLevelCandidates.length) {
+              let best = topLevelCandidates[0];
+              let bestScore = -1;
+              topLevelCandidates.forEach((candidate) => {
+                const textLength = this.normalizeReadableText(candidate.innerText || candidate.textContent || '').length;
+                const rect = candidate.getBoundingClientRect();
+                const score = textLength + (rect.width * rect.height * 0.0025);
+                if (score > bestScore) {
+                  bestScore = score;
+                  best = candidate;
+                }
+              });
+              return best;
+            }
+          }
+
+          return document.body;
+        }
+
+        let bestRoot = candidates[0];
+        let bestScore = -1;
+        candidates.forEach((candidate) => {
+          const blocks = this.extractReadableBlocks(candidate);
+          const score = blocks.join(' ').length;
+          if (score > bestScore) {
+            bestScore = score;
+            bestRoot = candidate;
+          }
+        });
+        return bestRoot;
+      },
+
+      extractReadableBlocks(root) {
+        if (!(root instanceof Element)) return [];
+        const blockSelector = 'h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,caption,th,td';
+        const blocks = [];
+        root.querySelectorAll(blockSelector).forEach((element) => {
+          if (!(element instanceof Element)) return;
+          if (this.isTtsExcludedElement(element) || !this.isElementVisibleForTts(element)) return;
+          const text = this.normalizeReadableText(element.innerText || element.textContent || '');
+          if (text.length < 15) return;
+          blocks.push(text);
+        });
+        return blocks;
+      },
+
+      getReadableContent() {
+        if (typeof document === 'undefined') return '';
+        const candidateRoots = this.getTtsCandidateRoots();
+        let bestBlocks = [];
+        let bestScore = -1;
+
+        candidateRoots.forEach((root) => {
+          const blocks = this.extractReadableBlocks(root);
+          if (!blocks.length) return;
+          const characterCount = blocks.join(' ').length;
+          const score = (blocks.length * 60) + characterCount;
+          if (score > bestScore) {
+            bestScore = score;
+            bestBlocks = blocks;
+          }
+        });
+
+        if (!bestBlocks.length && document.body) {
+          bestBlocks = this.extractReadableBlocks(document.body);
+        }
+
+        if (!bestBlocks.length && document.body) {
+          const fallback = this.normalizeReadableText(document.body.innerText || document.body.textContent || '');
+          return fallback.slice(0, 30000);
+        }
+
+        return bestBlocks.join('\n\n').slice(0, 30000);
+      },
+
+      splitLongSpeechSegment(segment, maxLength = 240) {
+        if (!segment) return [];
+        if (segment.length <= maxLength) return [segment];
+
+        const parts = [];
+        let remaining = segment;
+        while (remaining.length > maxLength) {
+          let splitIndex = remaining.lastIndexOf(',', maxLength);
+          if (splitIndex < Math.floor(maxLength * 0.5)) {
+            splitIndex = remaining.lastIndexOf(' ', maxLength);
+          }
+          if (splitIndex < Math.floor(maxLength * 0.5)) {
+            splitIndex = maxLength;
+          }
+          parts.push(remaining.slice(0, splitIndex).trim());
+          remaining = remaining.slice(splitIndex).trim();
+        }
+        if (remaining.length) {
+          parts.push(remaining);
+        }
+        return parts.filter(Boolean);
+      },
+
+      buildSpeechQueue(text = '') {
+        const normalized = this.normalizeReadableText(text);
+        if (!normalized) return [];
+
+        const paragraphCandidates = text
+          .split(/\n{2,}/)
+          .map((paragraph) => this.normalizeReadableText(paragraph))
+          .filter(Boolean);
+
+        const paragraphs = paragraphCandidates.length ? paragraphCandidates : [normalized];
+        const queue = [];
+
+        paragraphs.forEach((paragraph) => {
+          const sentences = paragraph.split(/(?<=[.!?])\s+/).filter(Boolean);
+          const sentenceList = sentences.length ? sentences : [paragraph];
+          let chunk = '';
+
+          sentenceList.forEach((sentence) => {
+            const next = chunk ? `${chunk} ${sentence}` : sentence;
+            if (next.length <= 240) {
+              chunk = next;
+              return;
+            }
+            if (chunk) {
+              queue.push(...this.splitLongSpeechSegment(chunk, 240));
+            }
+            chunk = sentence;
+          });
+
+          if (chunk) {
+            queue.push(...this.splitLongSpeechSegment(chunk, 240));
+          }
+        });
+
+        return queue.slice(0, 300);
+      },
+
+      resolveSpeechVoice(languageCode) {
+        if (!this.supportsSpeechSynthesis()) return null;
+        const synth = window.speechSynthesis;
+        const voices = synth.getVoices?.() || [];
+        if (!voices.length) return null;
+
+        const preferredVoiceName = String(this.nativeTtsConfig?.preferredVoiceName || '').trim().toLowerCase();
+        if (preferredVoiceName) {
+          const byExactName = voices.find((voice) => String(voice.name || '').trim().toLowerCase() === preferredVoiceName);
+          if (byExactName) return byExactName;
+          const byNameContains = voices.find((voice) => String(voice.name || '').toLowerCase().includes(preferredVoiceName));
+          if (byNameContains) return byNameContains;
+        }
+
+        const configuredVoiceLang = String(this.nativeTtsConfig?.preferredVoiceLang || '').trim();
+        const targetLanguage = configuredVoiceLang || languageCode;
+        const normalized = this.normalizeSpeechLanguage(targetLanguage).toLowerCase();
+        const primary = normalized.split('-')[0];
+        const localExact = voices.find((voice) => (
+          voice.localService &&
+          String(voice.lang || '').toLowerCase() === normalized
+        ));
+        const exact = voices.find((voice) => String(voice.lang || '').toLowerCase() === normalized);
+        const localByPrimary = voices.find((voice) => (
+          voice.localService &&
+          String(voice.lang || '').toLowerCase().startsWith(primary)
+        ));
+        const byPrimary = voices.find((voice) => String(voice.lang || '').toLowerCase().startsWith(primary));
+        const defaultVoice = voices.find((voice) => voice.default);
+        return localExact || exact || localByPrimary || byPrimary || defaultVoice || voices[0];
+      },
+
+      getSpeechTargetFromEvent(event) {
+        const target = event?.target;
+        if (!(target instanceof Element)) return null;
+        if (target.closest('.acc-container')) return null;
+
+        const block = target.closest('h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,caption,th,td,div,section');
+        if (!(block instanceof Element)) return null;
+        if (this.isTtsExcludedElement(block) || !this.isElementVisibleForTts(block)) return null;
+
+        const text = this.normalizeReadableText(block.innerText || block.textContent || '');
+        if (text.length < 20) return null;
+
+        return {
+          element: block,
+          text: text.slice(0, 30000)
+        };
+      },
+
+      setActiveSpeechTarget(element = null) {
+        if (this.ttsActiveTarget && this.ttsActiveTarget !== element) {
+          this.ttsActiveTarget.classList.remove('acc-tts-active-block');
+        }
+        this.ttsActiveTarget = element;
+        if (this.ttsActiveTarget) {
+          this.ttsActiveTarget.classList.add('acc-tts-active-block');
+        }
+      },
+
+      startTtsClickMode() {
+        if (typeof document === 'undefined' || this.ttsClickListener) return;
+        this.ttsClickListener = (event) => {
+          this.handleTtsClick(event);
+        };
+        document.addEventListener('click', this.ttsClickListener, true);
+        document.body?.classList.add('acc-tts-click-mode');
+      },
+
+      stopTtsClickMode() {
+        if (typeof document === 'undefined') return;
+        if (this.ttsClickListener) {
+          document.removeEventListener('click', this.ttsClickListener, true);
+          this.ttsClickListener = null;
+        }
+        document.body?.classList.remove('acc-tts-click-mode');
+        this.setActiveSpeechTarget(null);
+      },
+
+      handleTtsClick(event) {
+        if (!this.retrieveState('text-to-speech')) return;
+        const target = this.getSpeechTargetFromEvent(event);
+        if (!target) return;
+
+        this.setActiveSpeechTarget(target.element);
+        this.ttsTextCache = target.text;
+        this.startSpeechPlayback({ restart: true });
+      },
+
+      ensureTtsQueue() {
+        const text = this.ttsTextCache || this.getReadableContent();
+        if (!text) {
+          this.ttsQueue = [];
+          this.ttsQueueIndex = 0;
+          return false;
+        }
+        this.ttsTextCache = text;
+        this.ttsQueue = this.buildSpeechQueue(text);
+        this.ttsQueueIndex = 0;
+        return this.ttsQueue.length > 0;
+      },
+
+      speakNextTtsChunk(sessionId) {
+        if (!this.supportsSpeechSynthesis()) return;
+        if (sessionId !== this.ttsSessionId) return;
+
+        if (this.ttsQueueIndex >= this.ttsQueue.length) {
+          this.ttsStatus = 'stopped';
+          this.setActiveSpeechTarget(null);
+          return;
+        }
+
+        const synth = window.speechSynthesis;
+        const chunk = this.ttsQueue[this.ttsQueueIndex];
+        if (!chunk) {
+          this.ttsQueueIndex += 1;
+          this.speakNextTtsChunk(sessionId);
+          return;
+        }
+
+        const utterance = new window.SpeechSynthesisUtterance(chunk);
+        utterance.lang = this.normalizeSpeechLanguage(this.loadConfig().lang || 'en');
+        if (!this.ttsVoice || this.ttsVoice.lang?.toLowerCase() !== utterance.lang.toLowerCase()) {
+          this.ttsVoice = this.resolveSpeechVoice(utterance.lang);
+        }
+        if (this.ttsVoice) {
+          utterance.voice = this.ttsVoice;
+        }
+        utterance.rate = this.getNativeTtsRate();
+        utterance.pitch = this.getNativeTtsPitch();
+
+        utterance.onstart = () => {
+          if (sessionId !== this.ttsSessionId) return;
+          this.ttsStatus = 'reading';
+        };
+        utterance.onpause = () => {
+          if (sessionId !== this.ttsSessionId) return;
+          this.ttsStatus = 'paused';
+        };
+        utterance.onresume = () => {
+          if (sessionId !== this.ttsSessionId) return;
+          this.ttsStatus = 'reading';
+        };
+        utterance.onend = () => {
+          if (sessionId !== this.ttsSessionId) return;
+          this.ttsQueueIndex += 1;
+          this.speakNextTtsChunk(sessionId);
+        };
+        utterance.onerror = () => {
+          if (sessionId !== this.ttsSessionId) return;
+          this.ttsStatus = 'stopped';
+          this.setActiveSpeechTarget(null);
+        };
+
+        this.ttsUtterance = utterance;
+        synth.speak(utterance);
+      },
+
+      startNativeSpeechPlayback({ restart = false } = {}) {
+        if (!this.supportsSpeechSynthesis()) return;
+        const synth = window.speechSynthesis;
+
+        if (!restart && synth.paused) {
+          synth.resume();
+          this.ttsStatus = 'reading';
+          return;
+        }
+
+        const hasQueue = restart || !this.ttsQueue.length || this.ttsQueueIndex >= this.ttsQueue.length
+          ? this.ensureTtsQueue()
+          : true;
+        if (!hasQueue) {
+          this.stopSpeech();
+          return;
+        }
+
+        const sessionId = this.ttsSessionId + 1;
+        this.ttsSessionId = sessionId;
+        synth.cancel();
+        this.ttsStatus = 'reading';
+        this.speakNextTtsChunk(sessionId);
+      },
+
+      startSpeechPlayback({ restart = false } = {}) {
+        this.startNativeSpeechPlayback({ restart });
+      },
+
+      pauseSpeech() {
+        if (!this.supportsSpeechSynthesis()) return;
+        const synth = window.speechSynthesis;
+        if (synth.speaking && !synth.paused) {
+          synth.pause();
+          this.ttsStatus = 'paused';
+        }
+      },
+
+      resumeSpeech() {
+        if (!this.supportsSpeechSynthesis()) return;
+        const synth = window.speechSynthesis;
+        if (synth.paused) {
+          synth.resume();
+          this.ttsStatus = 'reading';
+          return;
+        }
+        this.startSpeechPlayback({ restart: false });
+      },
+
+      stopSpeech() {
+        const synth = this.supportsSpeechSynthesis() ? window.speechSynthesis : null;
+        this.ttsSessionId += 1;
+        if (synth && (synth.speaking || synth.paused)) {
+          synth.cancel();
+        }
+        this.ttsUtterance = null;
+        this.ttsQueueIndex = 0;
+        this.ttsStatus = 'stopped';
+        this.setActiveSpeechTarget(null);
+      },
+
+      enableTextToSpeech(enable = false) {
+        if (!this.supportsTextToSpeech()) return;
+        const isUserToggle = this.userInitiatedToggleKey === 'text-to-speech';
+
+        if (!enable) {
+          if (isUserToggle) this.announceTtsState(false);
+          this.stopSpeech();
+          this.stopTtsClickMode();
+          return;
+        }
+
+        const synth = window.speechSynthesis;
+        if (synth?.getVoices) {
+          synth.getVoices();
+        }
+
+        this.startTtsClickMode();
+        this.ttsStatus = 'idle';
+        if (isUserToggle) this.announceTtsState(true);
+      },
+
+      announceTtsState(active) {
+        if (!this.supportsTextToSpeech()) return;
+        const synth = window.speechSynthesis;
+        if (!synth) return;
+        const msg = active
+          ? this.translate('Text to Speech On')
+          : this.translate('Text to Speech Off');
+        synth.cancel();
+        const utterance = new SpeechSynthesisUtterance(msg);
+        const lang = this.normalizeSpeechLanguage(this.loadConfig().lang || 'en');
+        utterance.lang = lang;
+        const voice = this.resolveSpeechVoice(lang);
+        if (voice) {
+          utterance.voice = voice;
+        }
+        utterance.rate = this.getNativeTtsRate();
+        utterance.pitch = this.getNativeTtsPitch();
+        synth.speak(utterance);
+      },
+
+      ensureAnnotationLayer() {
+        if (this.annotationLayer && document.body.contains(this.annotationLayer)) {
+          return this.annotationLayer;
+        }
+        const layer = document.createElement('div');
+        layer.className = 'acc-annotation-layer acc-container';
+        layer.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(layer);
+        this.annotationLayer = layer;
+        return layer;
+      },
+
+      resolveAnnotationTarget(selector) {
+        if (!selector || typeof selector !== 'string') return null;
+        try {
+          const element = document.querySelector(selector);
+          if (!element || element.closest('.acc-container')) return null;
+          return element;
+        } catch {
+          return null;
+        }
+      },
+
+      buildAnnotationEntries(results = {}) {
+        const violations = Array.isArray(results.violations) ? results.violations : [];
+        const entries = [];
+        const seen = new Set();
+
+        violations.forEach((violation) => {
+          const nodes = Array.isArray(violation.nodes) ? violation.nodes : [];
+          nodes.forEach((node) => {
+            const targets = Array.isArray(node.target) ? node.target : [];
+            const selector = targets.find((target) => typeof target === 'string' && target.trim().length);
+            if (!selector) return;
+            const key = `${selector}::${violation.id || violation.help || ''}`;
+            if (seen.has(key)) return;
+
+            const element = this.resolveAnnotationTarget(selector);
+            if (!element) return;
+            seen.add(key);
+            entries.push({
+              selector,
+              element,
+              impact: violation.impact || 'minor',
+              title: violation.help || this.translate('Issue'),
+              description: violation.description || '',
+              helpUrl: violation.helpUrl || '',
+              failureSummary: node.failureSummary || ''
+            });
+          });
+        });
+
+        return entries.slice(0, MAX_ANNOTATIONS);
+      },
+
+      createAnnotationMarker(annotation) {
+        const marker = document.createElement('button');
+        marker.type = 'button';
+        marker.className = 'acc-annotation-marker';
+        marker.dataset.impact = annotation.impact || 'minor';
+        marker.setAttribute('aria-label', annotation.title);
+        marker.title = annotation.title;
+        marker.innerHTML = this.widgetIcons.annotations;
+
+        marker.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          this.showAnnotationPopup(annotation, marker);
+        });
+
+        return marker;
+      },
+
+      positionAnnotationPopup(popup, marker) {
+        if (!popup || !marker) return;
+        const markerRect = marker.getBoundingClientRect();
+        const popupWidth = popup.offsetWidth || 300;
+        const popupHeight = popup.offsetHeight || 180;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const gap = 10;
+
+        let left = window.scrollX + markerRect.left + gap;
+        let top = window.scrollY + markerRect.bottom + gap;
+
+        if (left + popupWidth > window.scrollX + viewportWidth - gap) {
+          left = window.scrollX + viewportWidth - popupWidth - gap;
+        }
+        if (left < window.scrollX + gap) {
+          left = window.scrollX + gap;
+        }
+
+        if (top + popupHeight > window.scrollY + viewportHeight - gap) {
+          top = window.scrollY + markerRect.top - popupHeight - gap;
+        }
+        if (top < window.scrollY + gap) {
+          top = window.scrollY + gap;
+        }
+
+        popup.style.left = `${left}px`;
+        popup.style.top = `${top}px`;
+      },
+
+      clearAnnotationPopup() {
+        if (this.annotationPopup) {
+          this.annotationPopup.remove();
+          this.annotationPopup = null;
+        }
+      },
+
+      showAnnotationPopup(annotation, marker) {
+        if (!annotation || !marker || !this.annotationLayer) return;
+        this.clearAnnotationPopup();
+
+        const popup = document.createElement('div');
+        popup.className = 'acc-annotation-popup';
+        popup.innerHTML = `
+      <div class="acc-annotation-popup-header">
+        <h3 class="acc-annotation-popup-title">${this.escapeHtml(annotation.title)}</h3>
+        <button type="button" class="acc-annotation-popup-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
+      </div>
+      <p><strong>${this.translate(this.capitalizeFirst(annotation.impact))}</strong></p>
+      <p>${this.escapeHtml(annotation.description)}</p>
+      ${annotation.failureSummary ? `<p><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(annotation.failureSummary)}</p>` : ''}
+      ${annotation.helpUrl ? `<p><a href="${annotation.helpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a></p>` : ''}
+    `;
+        popup.__accMarker = marker;
+
+        const closeButton = popup.querySelector('.acc-annotation-popup-close');
+        closeButton?.addEventListener('click', () => this.clearAnnotationPopup());
+
+        this.annotationLayer.appendChild(popup);
+        this.annotationPopup = popup;
+        this.positionAnnotationPopup(popup, marker);
+      },
+
+      positionAnnotations() {
+        if (!Array.isArray(this.annotationItems) || !this.annotationItems.length) return;
+
+        this.annotationItems.forEach((item) => {
+          if (!item?.target || !item?.marker) return;
+          if (!document.contains(item.target)) {
+            item.marker.hidden = true;
+            return;
+          }
+
+          const rect = item.target.getBoundingClientRect();
+          const outOfView = (
+            rect.width <= 0 ||
+            rect.height <= 0 ||
+            rect.bottom < 0 ||
+            rect.top > window.innerHeight ||
+            rect.right < 0 ||
+            rect.left > window.innerWidth
+          );
+
+          if (outOfView) {
+            item.marker.hidden = true;
+            return;
+          }
+
+          item.marker.hidden = false;
+          item.marker.style.top = `${window.scrollY + rect.top + Math.min(16, rect.height / 2)}px`;
+          item.marker.style.left = `${window.scrollX + rect.right}px`;
+        });
+
+        if (this.annotationPopup?.__accMarker && !this.annotationPopup.__accMarker.hidden) {
+          this.positionAnnotationPopup(this.annotationPopup, this.annotationPopup.__accMarker);
+        }
+      },
+
+      enableAnnotations(enable = false) {
+        if (!enable) {
+          this.disableAnnotations();
+          return;
+        }
+
+        const requestId = ++this.annotationRequestId;
+        this.disableAnnotations({ cancelPending: false });
+        const layer = this.ensureAnnotationLayer();
+
+        this.runBackgroundAxeScan()
+          .then((results) => {
+            if (requestId !== this.annotationRequestId || !this.retrieveState('annotations')) {
+              return;
+            }
+            const annotations = this.buildAnnotationEntries(results);
+            this.annotationItems = annotations.map((annotation) => {
+              const marker = this.createAnnotationMarker(annotation);
+              layer.appendChild(marker);
+              return {
+                marker,
+                target: annotation.element,
+                data: annotation
+              };
+            });
+
+            if (!this.annotationRepositionHandler) {
+              this.annotationRepositionHandler = this.throttle(() => this.positionAnnotations(), 80);
+            }
+            window.addEventListener('scroll', this.annotationRepositionHandler, { passive: true });
+            window.addEventListener('resize', this.annotationRepositionHandler, { passive: true });
+
+            if (!this.annotationOutsideHandler) {
+              this.annotationOutsideHandler = (event) => {
+                if (!this.annotationPopup) return;
+                const clickedPopup = this.annotationPopup.contains(event.target);
+                const clickedMarker = event.target?.closest?.('.acc-annotation-marker');
+                if (!clickedPopup && !clickedMarker) {
+                  this.clearAnnotationPopup();
+                }
+              };
+            }
+            document.addEventListener('click', this.annotationOutsideHandler, true);
+
+            this.positionAnnotations();
+          })
+          .catch((error) => {
+            console.warn('Failed to render annotations:', error);
+          });
+      },
+
+      disableAnnotations({ cancelPending = true } = {}) {
+        if (cancelPending) {
+          this.annotationRequestId += 1;
+        }
+        this.clearAnnotationPopup();
+
+        if (this.annotationOutsideHandler) {
+          document.removeEventListener('click', this.annotationOutsideHandler, true);
+        }
+        if (this.annotationRepositionHandler) {
+          window.removeEventListener('scroll', this.annotationRepositionHandler);
+          window.removeEventListener('resize', this.annotationRepositionHandler);
+        }
+
+        if (this.annotationLayer) {
+          this.annotationLayer.remove();
+          this.annotationLayer = null;
+        }
+
+        this.annotationItems = [];
+      },
+
+      isFocusModeCandidate(element) {
+        if (!(element instanceof Element)) return false;
+        if (element.closest('.acc-container')) return false;
+        if (!this.isElementVisibleForTts(element)) return false;
+
+        const rect = element.getBoundingClientRect();
+        const text = this.normalizeReadableText(element.innerText || element.textContent || '');
+        const hasSubstantialText = text.length >= 40;
+        const hasSubstantialHeight = rect.height >= 80;
+        return hasSubstantialText || hasSubstantialHeight;
+      },
+
+      getFocusModeSections() {
+        if (typeof document === 'undefined') return [];
+
+        const root = this.getPrimaryContentRoot() || document.body;
+        let sections = Array.from(root.children).filter((element) => this.isFocusModeCandidate(element));
+
+        if (sections.length < 2) {
+          const selector = 'section,article,[role="region"],h1,h2,h3,p,ul,ol';
+          sections = Array.from(root.querySelectorAll(selector))
+            .filter((element) => this.isFocusModeCandidate(element));
+        }
+
+        const deduped = sections.filter((element, index, arr) =>
+          !arr.some((other, otherIndex) => otherIndex !== index && other.contains(element))
+        );
+
+        if (!deduped.length && this.isFocusModeCandidate(root)) {
+          return [root];
+        }
+
+        return deduped.slice(0, 40);
+      },
+
+      updateFocusModeOverlayPosition() {
+        if (!this.focusModeOverlay || !this.focusModeTarget) return;
+        if (!document.contains(this.focusModeTarget)) return;
+        const rect = this.focusModeTarget.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) return;
+        const padding = 8;
+        this.focusModeOverlay.style.top = `${Math.max(0, rect.top - padding)}px`;
+        this.focusModeOverlay.style.left = `${Math.max(0, rect.left - padding)}px`;
+        this.focusModeOverlay.style.width = `${rect.width + (padding * 2)}px`;
+        this.focusModeOverlay.style.height = `${rect.height + (padding * 2)}px`;
+      },
+
+      moveFocusModeToIndex(index, { scroll = true } = {}) {
+        if (!Array.isArray(this.focusModeSections) || !this.focusModeSections.length) return;
+        const sectionCount = this.focusModeSections.length;
+        const normalizedIndex = ((index % sectionCount) + sectionCount) % sectionCount;
+
+        if (this.focusModeTarget) {
+          this.focusModeTarget.classList.remove('acc-focus-current');
+          this.focusModeTarget.classList.remove('acc-focus-target');
+        }
+
+        const target = this.focusModeSections[normalizedIndex];
+        if (!target) return;
+        this.focusModeIndex = normalizedIndex;
+        this.focusModeTarget = target;
+        target.classList.add('acc-focus-current');
+        target.classList.add('acc-focus-target');
+
+        if (scroll) {
+          const reduceMotion = window.matchMedia?.(SYSTEM_PREFERS_REDUCED_MOTION)?.matches;
+          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center', inline: 'nearest' });
+        }
+
+        this.updateFocusModeOverlayPosition();
+      },
+
+      focusNextSection() {
+        this.moveFocusModeToIndex(this.focusModeIndex + 1);
+      },
+
+      focusPrevSection() {
+        this.moveFocusModeToIndex(this.focusModeIndex - 1);
+      },
+
+      enableFocusMode(enable = false) {
+        if (!enable) {
+          this.disableFocusMode();
+          return;
+        }
+
+        if (this.focusModeActive) {
+          this.updateFocusModeOverlayPosition();
+          return;
+        }
+
+        const sections = this.getFocusModeSections();
+        if (!sections.length) return;
+        this.focusModeSections = sections;
+        this.focusModeActive = true;
+        document.body?.classList.add('acc-focus-mode-active');
+        this.focusModeSections.forEach((section) => {
+          section.classList.add('acc-focus-section');
+        });
+
+        const overlay = document.createElement('div');
+        overlay.className = 'acc-focus-overlay acc-container';
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(overlay);
+        this.focusModeOverlay = overlay;
+
+        const hint = document.createElement('div');
+        hint.className = 'acc-focus-hint acc-container';
+        hint.textContent = this.translate('Press Escape to exit focus mode');
+        document.body.appendChild(hint);
+        this.focusModeHint = hint;
+
+        this.focusModeKeyHandler = (event) => {
+          if (!this.focusModeActive) return;
+          if (event.key === 'Escape' || event.key === 'Esc') {
+            event.preventDefault();
+            this.updateState({ 'focus-mode': false });
+            this.disableFocusMode();
+            const focusButton = document.querySelector('.acc-btn[data-key="focus-mode"]');
+            if (focusButton) {
+              focusButton.classList.remove('acc-selected');
+              focusButton.setAttribute('aria-pressed', 'false');
+            }
+            return;
+          }
+          if (event.key === 'ArrowDown' || event.key === 'ArrowRight' || (event.key === 'Tab' && !event.shiftKey)) {
+            event.preventDefault();
+            this.focusNextSection();
+            return;
+          }
+          if (event.key === 'ArrowUp' || event.key === 'ArrowLeft' || (event.key === 'Tab' && event.shiftKey)) {
+            event.preventDefault();
+            this.focusPrevSection();
+          }
+        };
+        document.addEventListener('keydown', this.focusModeKeyHandler, true);
+
+        this.focusModeResizeHandler = this.throttle(() => this.updateFocusModeOverlayPosition(), 80);
+        window.addEventListener('resize', this.focusModeResizeHandler, { passive: true });
+        window.addEventListener('scroll', this.focusModeResizeHandler, { passive: true });
+
+        this.moveFocusModeToIndex(0, { scroll: false });
+      },
+
+      disableFocusMode() {
+        if (this.focusModeTarget) {
+          this.focusModeTarget.classList.remove('acc-focus-current');
+          this.focusModeTarget.classList.remove('acc-focus-target');
+          this.focusModeTarget = null;
+        }
+
+        if (this.focusModeOverlay) {
+          this.focusModeOverlay.remove();
+          this.focusModeOverlay = null;
+        }
+
+        if (this.focusModeHint) {
+          this.focusModeHint.remove();
+          this.focusModeHint = null;
+        }
+
+        if (this.focusModeKeyHandler) {
+          document.removeEventListener('keydown', this.focusModeKeyHandler, true);
+          this.focusModeKeyHandler = null;
+        }
+
+        if (this.focusModeResizeHandler) {
+          window.removeEventListener('resize', this.focusModeResizeHandler);
+          window.removeEventListener('scroll', this.focusModeResizeHandler);
+          this.focusModeResizeHandler = null;
+        }
+
+        this.focusModeSections.forEach((section) => {
+          section.classList.remove('acc-focus-section');
+          section.classList.remove('acc-focus-current');
+        });
+        document.body?.classList.remove('acc-focus-mode-active');
+        this.focusModeSections = [];
+        this.focusModeIndex = -1;
+        this.focusModeActive = false;
+      },
+
+      clearSimpleLayoutDomMutations() {
+        if (this.simpleLayoutRoot) {
+          this.simpleLayoutRoot.classList.remove('acc-simple-layout-root');
+          this.simpleLayoutRoot = null;
+        }
+
+        if (Array.isArray(this.simpleLayoutHiddenElements)) {
+          this.simpleLayoutHiddenElements.forEach((element) => {
+            if (element && element.classList) {
+              element.classList.remove('acc-simple-layout-hidden');
+            }
+          });
+        }
+        this.simpleLayoutHiddenElements = [];
+      },
+
+      applySimpleLayoutDomMutations() {
+        const root = this.getPrimaryContentRoot();
+        if (!root || !document.body) return;
+
+        this.simpleLayoutRoot = root;
+        root.classList.add('acc-simple-layout-root');
+
+        const hiddenElements = [];
+        Array.from(document.body.children).forEach((child) => {
+          if (!(child instanceof Element)) return;
+          if (child.classList.contains('acc-container')) return;
+          if (child === root || child.contains(root)) return;
+          child.classList.add('acc-simple-layout-hidden');
+          hiddenElements.push(child);
+        });
+
+        const clutterSelectors = [
+          'aside',
+          'nav',
+          'form',
+          'footer',
+          '[role="complementary"]',
+          '[role="search"]',
+          '[role="contentinfo"]',
+          '[aria-hidden="true"]',
+          '[class*="cookie"]',
+          '[id*="cookie"]',
+          '[class*="banner"]',
+          '[id*="banner"]',
+          '[class*="popup"]',
+          '[id*="popup"]',
+          '[class*="modal"]',
+          '[id*="modal"]',
+          '[class*="advert"]',
+          '[id*="advert"]',
+          '[class*="ads"]',
+          '[id*="ads"]',
+          '[class*="sidebar"]',
+          '[id*="sidebar"]',
+          '[class*="social"]',
+          '[id*="social"]',
+          '[class*="share"]',
+          '[id*="share"]',
+          '[class*="newsletter"]',
+          '[id*="newsletter"]',
+          '[class*="related"]',
+          '[id*="related"]',
+          '[class*="comment"]',
+          '[id*="comment"]',
+          '[class*="footer"]',
+          '[id*="footer"]',
+          '[class*="promo"]',
+          '[id*="promo"]'
+        ].join(',');
+
+        root.querySelectorAll(clutterSelectors).forEach((element) => {
+          if (!(element instanceof Element)) return;
+          if (element.closest('.acc-container')) return;
+          if (element === root) return;
+          element.classList.add('acc-simple-layout-hidden');
+          hiddenElements.push(element);
+        });
+
+        this.simpleLayoutHiddenElements = hiddenElements;
+      },
+
+      enableSimpleLayout(enable = false) {
+        const S = 'body.acc-simple-layout-enabled';
+        const R = `${S} .acc-simple-layout-root`;
+        const X = ':not(.acc-container):not(.acc-container *)';
+        const config = {
+          id: 'simple-layout',
+          css: `
+        /* ── Body & root container ── */
+        ${S} {
+          background: #fff !important;
+        }
+
+        ${S} .acc-simple-layout-hidden {
+          display: none !important;
+        }
+
+        ${R} {
+          max-width: 72ch !important;
+          margin: 0 auto !important;
+          padding: clamp(20px, 4vw, 40px) 20px !important;
+          position: relative !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+        }
+
+        /* ── Universal decoration strip ── */
+        ${R} :where(*)${X} {
+          background-color: transparent !important;
+          background-image: none !important;
+          box-shadow: none !important;
+          text-shadow: none !important;
+          border-color: transparent !important;
+        }
+
+        /* ── Layout linearization ── */
+        ${R} :where(div, section, article, header, main, footer, figure, figcaption, details, summary, hgroup, search)${X} {
+          display: block !important;
+          position: static !important;
+          float: none !important;
+          transform: none !important;
+          columns: auto !important;
+          column-count: auto !important;
+          width: auto !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+
+        /* ── Color reset ── */
+        ${R} :where(h1, h2, h3, h4, h5, h6)${X} {
+          color: #111 !important;
+        }
+
+        ${R} :where(p, li, dt, dd, td, th, span, blockquote, figcaption, label, summary, details)${X} {
+          color: #222 !important;
+        }
+
+        ${R} :where(a)${X} {
+          color: #1a0dab !important;
+        }
+
+        ${R} :where(a:visited)${X} {
+          color: #681da8 !important;
+        }
+
+        /* ── Typography ── */
+        ${R} :where(*)${X} {
+          font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+        }
+
+        ${R} :where(p, li, dt, dd, blockquote, figcaption, td, th, label, summary)${X} {
+          font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem) !important;
+          line-height: 1.8 !important;
+          letter-spacing: 0.01em !important;
+          max-width: 70ch !important;
+        }
+
+        ${R} :where(h1)${X} {
+          font-size: 2em !important;
+          line-height: 1.2 !important;
+          margin: 0.67em 0 !important;
+          font-weight: 700 !important;
+        }
+
+        ${R} :where(h2)${X} {
+          font-size: 1.5em !important;
+          line-height: 1.25 !important;
+          margin: 0.83em 0 !important;
+          font-weight: 700 !important;
+        }
+
+        ${R} :where(h3)${X} {
+          font-size: 1.25em !important;
+          line-height: 1.3 !important;
+          margin: 1em 0 !important;
+          font-weight: 600 !important;
+        }
+
+        ${R} :where(h4, h5, h6)${X} {
+          font-size: 1.1em !important;
+          line-height: 1.35 !important;
+          margin: 1em 0 !important;
+          font-weight: 600 !important;
+        }
+
+        /* ── Decorative images hidden ── */
+        ${R} :where(img[role="presentation"], img[alt=""], img:not([alt]), svg[aria-hidden="true"])${X} {
+          display: none !important;
+        }
+
+        /* ── Meaningful borders restored ── */
+        ${R} :where(hr)${X} {
+          border: none !important;
+          border-top: 1px solid #d1d5db !important;
+          margin: 1.5em 0 !important;
+        }
+
+        ${R} :where(blockquote)${X} {
+          border-left: 4px solid #d1d5db !important;
+          padding-left: 1em !important;
+          margin-left: 0 !important;
+          font-style: italic !important;
+        }
+
+        ${R} :where(table)${X} {
+          border-collapse: collapse !important;
+          max-width: 100% !important;
+          overflow-x: auto !important;
+          display: table !important;
+        }
+
+        ${R} :where(th, td)${X} {
+          border: 1px solid #d1d5db !important;
+          padding: 8px 12px !important;
+          text-align: left !important;
+        }
+
+        ${R} :where(th)${X} {
+          font-weight: 600 !important;
+          background: #f8f9fa !important;
+        }
+
+        /* ── Lists ── */
+        ${R} :where(ul, ol)${X} {
+          padding-left: 1.5em !important;
+          margin: 0.75em 0 !important;
+        }
+
+        ${R} :where(li)${X} {
+          display: list-item !important;
+          margin: 0.25em 0 !important;
+        }
+
+        /* ── Code blocks ── */
+        ${R} :where(pre)${X} {
+          background: #f6f8fa !important;
+          border-radius: 6px !important;
+          padding: 1em !important;
+          overflow-x: auto !important;
+          max-width: 100% !important;
+        }
+
+        ${R} :where(code, kbd, samp)${X} {
+          font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
+          font-size: 0.9em !important;
+        }
+
+        ${R} :where(code):not(pre code)${X} {
+          background: #f0f2f5 !important;
+          padding: 0.15em 0.4em !important;
+          border-radius: 3px !important;
+        }
+
+        /* ── Empty wrapper collapse ── */
+        ${R} :where(div:empty)${X} {
+          display: none !important;
+        }
+
+        /* ── Media ── */
+        ${R} :where(img, video, iframe)${X} {
+          max-width: 100% !important;
+          height: auto !important;
+          border-radius: 4px !important;
+        }
+      `
+        };
+
+        this.applyToolStyle({ ...config, enable });
+        document.body?.classList.toggle('acc-simple-layout-enabled', !!enable);
+
+        this.clearSimpleLayoutDomMutations();
+        if (enable) {
+          this.applySimpleLayoutDomMutations();
+        }
+      },
+
       applyEnhancements() {
           const { states } = this.loadConfig();
           // Handle font size scaling
@@ -1796,6 +3462,11 @@ var AccessibleWebWidget = (function () {
           this.enableReadingAid(states && states['reading-aid']);
           this.pauseMotion(states && states['pause-motion']);
           this.enableLargePointer(states && states['large-pointer']);
+          this.enableHighContrastMode(states && states['high-contrast-mode']);
+          this.enableAnnotations(states && states['annotations']);
+          this.enableTextToSpeech(states && states['text-to-speech']);
+          this.enableFocusMode(states && states['focus-mode']);
+          this.enableSimpleLayout(states && states['simple-layout']);
         },
 
       isColorFilterKey(key) {
@@ -1824,7 +3495,7 @@ var AccessibleWebWidget = (function () {
           });
         },
 
-      updateColorFilterState(activeKey = null) {
+      updateColorFilterState(activeKey = null, source = 'user') {
           if (!this.colorFilterKeys || !this.colorFilterKeys.length) {
             this.activeColorFilterKey = null;
             return;
@@ -1846,7 +3517,7 @@ var AccessibleWebWidget = (function () {
             }
           });
           if (requiresUpdate) {
-            this.updateState(payload);
+            this.updateState(payload, { source });
           }
           this.activeColorFilterKey = activeKey;
         },
@@ -1939,7 +3610,7 @@ var AccessibleWebWidget = (function () {
         },
 
       resetEnhancements() {
-          this.saveConfig({ states: {} });
+          this.saveConfig({ states: {}, systemDefaults: {} });
           this.textScaleIndex = 0;
           this.activeColorFilterKey = null;
           Object.keys(this.multiLevelFeatures).forEach(key => {
@@ -1970,12 +3641,14 @@ var AccessibleWebWidget = (function () {
             'acc-readable-text',
             'acc-pause-motion',
             'acc-hide-images',
-            'acc-filter-style'
+            'acc-filter-style',
+            'acc-simple-layout'
           ];
           styleIds.forEach(id => {
             const style = document.getElementById(id);
             if (style) style.remove();
           });
+          this.clearSimpleLayoutDomMutations();
           document.documentElement.classList.remove(
             'acc-filter',
             'acc-saturation',
@@ -1987,8 +3660,12 @@ var AccessibleWebWidget = (function () {
             'acc-highlight-title',
             'acc-readable-text',
             'acc-pause-motion',
-            'acc-hide-images'
+            'acc-hide-images',
+            'acc-high-contrast-mode',
+            'acc-simple-layout'
           );
+          document.body?.classList.remove('acc-simple-layout-enabled');
+          document.body?.classList.remove('acc-high-contrast-mode');
           this.disconnectTextScaleObserver();
           this.currentTextScaleMultiplier = 1;
           const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
@@ -2005,6 +3682,14 @@ var AccessibleWebWidget = (function () {
               delete window.__accweb__scrollGuide;
             }
           }
+          this.disableAnnotations();
+          this.stopSpeech();
+          this.stopTtsClickMode();
+          this.disableFocusMode();
+          this.clearSystemPreferenceListeners();
+          this.detectSystemPreferences();
+          this.setupMediaQueryListeners();
+          this.updateViolationBubble({ violations: [] });
         },
 
     };
@@ -2167,6 +3852,8 @@ var AccessibleWebWidget = (function () {
           if (focusTarget && typeof focusTarget.focus === 'function') {
             focusTarget.focus();
           }
+
+          this.stopSpeech();
       
           this.activeMenuContainer = null;
           this.activeMenuToggle = null;
@@ -2177,6 +3864,9 @@ var AccessibleWebWidget = (function () {
           let html = '';
           for (let i = 0; i < options.length; i++) {
             const opt = options[i];
+            if (opt.requiresSpeechSynthesis && !this.supportsTextToSpeech()) {
+              continue;
+            }
             const isMultiLevel = opt.multiLevel === true;
             let progressIndicator = '';
             if (isMultiLevel) {
@@ -2477,8 +4167,13 @@ var AccessibleWebWidget = (function () {
                   const isSelected = !btn.classList.contains("acc-selected");
                   btn.classList.toggle('acc-selected', isSelected);
                   btn.setAttribute('aria-pressed', isSelected);
-                  this.updateState({ [key]: isSelected });
-                  this.applyEnhancements();
+                  this.userInitiatedToggleKey = key;
+                  try {
+                    this.updateState({ [key]: isSelected });
+                    this.applyEnhancements();
+                  } finally {
+                    this.userInitiatedToggleKey = null;
+                  }
                 }
               }
             });
@@ -2533,6 +4228,7 @@ var AccessibleWebWidget = (function () {
         <div class="acc-widget">
           <a href="#" id="accessibilityWidget" class="acc-toggle-btn" title="Open Accessibility Menu" role="button" aria-label="Open accessibility menu" aria-expanded="false">
             ${this.widgetIcons.accessibility}
+            <span class="acc-violation-bubble" data-severity="warning" hidden> </span>
           </a>
         </div>
         `;
@@ -2541,6 +4237,7 @@ var AccessibleWebWidget = (function () {
             widget.innerHTML = widgetTemplate;
             widget.classList.add("acc-container");
             const btn = this.findElement(".acc-toggle-btn", widget);
+            this.violationBubble = this.findElement('.acc-violation-bubble', widget);
       
             this.widgetToggleButton = btn;
           
@@ -2560,28 +4257,9 @@ var AccessibleWebWidget = (function () {
             }
             Object.assign(btn.style, buttonStyle);
       
-            const customButtonSizeProvided = size !== undefined && size !== null && String(size).trim() !== '';
-            const buttonSize = customButtonSizeProvided
-              ? this.normalizeButtonSize(size)
-              : this.widgetTheme.buttonSize;
-      
-            if (customButtonSizeProvided) {
-              btn.style.width = buttonSize;
-              btn.style.height = buttonSize;
-              btn.style.minWidth = buttonSize;
-              btn.style.minHeight = buttonSize;
-              btn.style.maxWidth = buttonSize;
-              btn.style.maxHeight = buttonSize;
-            }
-      
-            const icon = btn.querySelector('svg');
-            const numericButtonSize = parseInt(buttonSize, 10);
-            if (icon && Number.isFinite(numericButtonSize) && customButtonSizeProvided) {
-              const iconSize = `${Math.max(20, Math.round(numericButtonSize * 0.6))}px`;
-              ['width', 'height', 'minWidth', 'minHeight', 'maxWidth', 'maxHeight'].forEach(prop => {
-                const cssProp = prop.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`);
-                icon.style.setProperty(cssProp, iconSize, 'important');
-              });
+            if (size !== undefined && size !== null && String(size).trim() !== '') {
+              const buttonSize = this.normalizeButtonSize(size);
+              btn.style.setProperty('--acc-button-size', buttonSize);
             }
             
             let menu;
@@ -2628,6 +4306,9 @@ var AccessibleWebWidget = (function () {
             document.body.appendChild(widget);
             this.translateMenuUI(widget);
             this.ensureSkipLink();
+            this.runBackgroundAxeScan().catch(() => {
+              this.updateViolationBubble({ violations: [] });
+            });
             
             // Add a click handler to the document to blur the toggle button when clicking outside
             document.addEventListener('click', (e) => {
@@ -2689,6 +4370,8 @@ var AccessibleWebWidget = (function () {
                 
                 // First load the saved configuration
                 this.loadConfig(false);
+                this.detectSystemPreferences();
+                this.setupMediaQueryListeners();
                 const initialColorFilter = this.getActiveColorFilterKey(this.widgetConfig.states);
                 this.updateColorFilterState(initialColorFilter);
                 
@@ -2786,27 +4469,83 @@ var AccessibleWebWidget = (function () {
         this.accessTools = [
           { label: 'Big Cursor', key: 'large-pointer', icon: this.widgetIcons.largePointer },
           { label: 'Stop Animations', key: 'pause-motion', icon: this.widgetIcons.pauseMotion },
-          { label: 'Reading Guide', key: 'reading-aid', icon: this.widgetIcons.readingAid }
+          { label: 'Reading Guide', key: 'reading-aid', icon: this.widgetIcons.readingAid },
+          {
+            label: 'Text to Speech',
+            key: 'text-to-speech',
+            icon: this.widgetIcons.textToSpeech,
+            requiresSpeechSynthesis: true
+          },
+          { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
+          { label: 'Focus Mode', key: 'focus-mode', icon: this.widgetIcons.focusMode },
+          { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout }
         ];
 
-        // Add Accessibility Report only in dev mode (?acc-dev=true)
+        // Add dev-only tools (?acc-dev=true)
         if (this.isDevMode()) {
-          this.accessTools.push({
-            label: 'Accessibility Report',
-            key: 'accessibility-report',
-            icon: this.widgetIcons.accessibilityReport,
-            isAction: true
-          });
+          this.accessTools.push(
+            { label: 'Page Annotations', key: 'annotations', icon: this.widgetIcons.annotations },
+            {
+              label: 'Accessibility Report',
+              key: 'accessibility-report',
+              icon: this.widgetIcons.accessibilityReport,
+              isAction: true
+            }
+          );
         }
 
         // axe-core state
         this.axeCoreLoaded = false;
         this.axeCoreLoading = false;
         this.axeCorePromise = null;
+        this.axeScanResults = null;
+        this.axeScanPromise = null;
+        this.violationBubble = null;
 
         // Accessibility report modal state
         this.reportPreviousFocus = null;
         this.reportKeyListener = null;
+
+        // System preference state
+        this.systemPreferenceListeners = [];
+        this.systemPreferenceMediaQueries = {};
+
+        // Annotation state
+        this.annotationLayer = null;
+        this.annotationItems = [];
+        this.annotationPopup = null;
+        this.annotationRepositionHandler = null;
+        this.annotationOutsideHandler = null;
+        this.annotationRequestId = 0;
+
+        // Text-to-speech state
+        this.ttsUtterance = null;
+        this.ttsClickListener = null;
+        this.ttsActiveTarget = null;
+        this.ttsTextCache = '';
+        this.ttsStatus = 'stopped';
+        this.ttsQueue = [];
+        this.ttsQueueIndex = 0;
+        this.ttsSessionId = 0;
+        this.ttsVoice = null;
+
+        // Focus mode state
+        this.focusModeActive = false;
+        this.focusModeOverlay = null;
+        this.focusModeHint = null;
+        this.focusModeSections = [];
+        this.focusModeIndex = -1;
+        this.focusModeKeyHandler = null;
+        this.focusModeResizeHandler = null;
+        this.focusModeMutationObserver = null;
+        this.focusModeTarget = null;
+
+        // Simplify layout state
+        this.simpleLayoutRoot = null;
+        this.simpleLayoutHiddenElements = [];
+
+        // Track direct user toggles for features that have side effects.
+        this.userInitiatedToggleKey = null;
 
         // Font size cycling
         this.textScaleIndex = 0;
@@ -2884,6 +4623,31 @@ var AccessibleWebWidget = (function () {
           ...options
         };
 
+        const normalizeTtsRate = (value) => {
+          const numeric = Number(value);
+          if (!Number.isFinite(numeric)) return 1;
+          return Math.min(2, Math.max(0.5, numeric));
+        };
+
+        const normalizeTtsPitch = (value) => {
+          const numeric = Number(value);
+          if (!Number.isFinite(numeric)) return 1;
+          return Math.min(2, Math.max(0, numeric));
+        };
+
+        this.nativeTtsConfig = {
+          preferredVoiceName: (
+            typeof options.ttsNativeVoiceName === 'string' &&
+            options.ttsNativeVoiceName.trim()
+          ) ? options.ttsNativeVoiceName.trim() : '',
+          preferredVoiceLang: (
+            typeof options.ttsNativeVoiceLang === 'string' &&
+            options.ttsNativeVoiceLang.trim()
+          ) ? options.ttsNativeVoiceLang.trim() : '',
+          rate: normalizeTtsRate(options.ttsRate),
+          pitch: normalizeTtsPitch(options.ttsPitch)
+        };
+
         if (this.options.offset) {
           this.options.offset = this.normalizeOffset(this.options.offset);
         }
@@ -2917,8 +4681,14 @@ var AccessibleWebWidget = (function () {
     }
 
     if (typeof document !== 'undefined') {
+      const globalAutoInitOptions = (
+        typeof window !== 'undefined' &&
+        window.AccessibleWebWidgetOptions &&
+        typeof window.AccessibleWebWidgetOptions === 'object'
+      ) ? window.AccessibleWebWidgetOptions : {};
+
       /** @type {AccessibleWebWidgetInstance} */
-      const widgetInstance = new AccessibleWebWidget();
+      const widgetInstance = new AccessibleWebWidget(globalAutoInitOptions);
       if (document.readyState === 'complete' || document.readyState === 'interactive') {
         widgetInstance.startAccessibleWebWidget();
       } else {

@@ -156,6 +156,8 @@ export const uiMethods = {
       if (focusTarget && typeof focusTarget.focus === 'function') {
         focusTarget.focus();
       }
+
+      this.stopSpeech();
   
       this.activeMenuContainer = null;
       this.activeMenuToggle = null;
@@ -166,6 +168,9 @@ export const uiMethods = {
       let html = '';
       for (let i = 0; i < options.length; i++) {
         const opt = options[i];
+        if (opt.requiresSpeechSynthesis && !this.supportsTextToSpeech()) {
+          continue;
+        }
         const isMultiLevel = opt.multiLevel === true;
         let progressIndicator = '';
         if (isMultiLevel) {
@@ -466,8 +471,13 @@ export const uiMethods = {
               const isSelected = !btn.classList.contains("acc-selected");
               btn.classList.toggle('acc-selected', isSelected);
               btn.setAttribute('aria-pressed', isSelected);
-              this.updateState({ [key]: isSelected });
-              this.applyEnhancements();
+              this.userInitiatedToggleKey = key;
+              try {
+                this.updateState({ [key]: isSelected });
+                this.applyEnhancements();
+              } finally {
+                this.userInitiatedToggleKey = null;
+              }
             }
           }
         });
@@ -522,6 +532,7 @@ export const uiMethods = {
         <div class="acc-widget">
           <a href="#" id="accessibilityWidget" class="acc-toggle-btn" title="Open Accessibility Menu" role="button" aria-label="Open accessibility menu" aria-expanded="false">
             ${this.widgetIcons.accessibility}
+            <span class="acc-violation-bubble" data-severity="warning" hidden> </span>
           </a>
         </div>
         `;
@@ -530,6 +541,7 @@ export const uiMethods = {
         widget.innerHTML = widgetTemplate;
         widget.classList.add("acc-container");
         const btn = this.findElement(".acc-toggle-btn", widget);
+        this.violationBubble = this.findElement('.acc-violation-bubble', widget);
   
         this.widgetToggleButton = btn;
       
@@ -549,28 +561,9 @@ export const uiMethods = {
         }
         Object.assign(btn.style, buttonStyle);
   
-        const customButtonSizeProvided = size !== undefined && size !== null && String(size).trim() !== '';
-        const buttonSize = customButtonSizeProvided
-          ? this.normalizeButtonSize(size)
-          : this.widgetTheme.buttonSize;
-  
-        if (customButtonSizeProvided) {
-          btn.style.width = buttonSize;
-          btn.style.height = buttonSize;
-          btn.style.minWidth = buttonSize;
-          btn.style.minHeight = buttonSize;
-          btn.style.maxWidth = buttonSize;
-          btn.style.maxHeight = buttonSize;
-        }
-  
-        const icon = btn.querySelector('svg');
-        const numericButtonSize = parseInt(buttonSize, 10);
-        if (icon && Number.isFinite(numericButtonSize) && customButtonSizeProvided) {
-          const iconSize = `${Math.max(20, Math.round(numericButtonSize * 0.6))}px`;
-          ['width', 'height', 'minWidth', 'minHeight', 'maxWidth', 'maxHeight'].forEach(prop => {
-            const cssProp = prop.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`);
-            icon.style.setProperty(cssProp, iconSize, 'important');
-          });
+        if (size !== undefined && size !== null && String(size).trim() !== '') {
+          const buttonSize = this.normalizeButtonSize(size);
+          btn.style.setProperty('--acc-button-size', buttonSize);
         }
         
         let menu;
@@ -617,6 +610,9 @@ export const uiMethods = {
         document.body.appendChild(widget);
         this.translateMenuUI(widget);
         this.ensureSkipLink();
+        this.runBackgroundAxeScan().catch(() => {
+          this.updateViolationBubble({ violations: [] });
+        });
         
         // Add a click handler to the document to blur the toggle button when clicking outside
         document.addEventListener('click', (e) => {
@@ -678,6 +674,8 @@ export const uiMethods = {
             
             // First load the saved configuration
             this.loadConfig(false);
+            this.detectSystemPreferences();
+            this.setupMediaQueryListeners();
             const initialColorFilter = this.getActiveColorFilterKey(this.widgetConfig.states);
             this.updateColorFilterState(initialColorFilter);
             

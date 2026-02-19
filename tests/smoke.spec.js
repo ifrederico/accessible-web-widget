@@ -50,18 +50,319 @@ test('data attributes for position, offset, and size are applied', async ({ page
 
   const computed = await toggle.evaluate((element) => {
     const style = element.style;
+    const cs = window.getComputedStyle(element);
     return {
       top: style.top,
       right: style.right,
       left: style.left,
-      width: style.width,
-      height: style.height
+      width: cs.width,
+      height: cs.height,
+      buttonSizeVar: style.getPropertyValue('--acc-button-size').trim()
     };
   });
 
   expect(computed.top).toBe('40px');
   expect(computed.right).toBe('32px');
   expect(computed.left).toBe('auto');
+  expect(computed.buttonSizeVar).toBe('58px');
   expect(computed.width).toBe('58px');
   expect(computed.height).toBe('58px');
+});
+
+test('violation bubble appears for serious and critical issues', async ({ page }) => {
+  await page.goto('index.html?acc-dev=true');
+  await page.evaluate(() => {
+    window.AccessibleWebWidget.prototype.runBackgroundAxeScan = async function () {
+      const results = {
+        violations: [
+          { impact: 'critical', nodes: [{}, {}] },
+          { impact: 'serious', nodes: [{}] }
+        ]
+      };
+      this.axeScanResults = results;
+      this.updateViolationBubble(results);
+      return results;
+    };
+  });
+
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="accessibility-report"]').click();
+  const bubble = page.locator('.acc-violation-bubble');
+  await expect(bubble).toBeVisible();
+  await expect(bubble).toHaveAttribute('data-severity', 'critical');
+  await expect(bubble).toHaveText('2');
+});
+
+test('violation bubble stays hidden when no violations exist', async ({ page }) => {
+  await page.goto('index.html?acc-dev=true');
+  await page.evaluate(() => {
+    window.AccessibleWebWidget.prototype.runBackgroundAxeScan = async function () {
+      const results = { violations: [] };
+      this.axeScanResults = results;
+      this.updateViolationBubble(results);
+      return results;
+    };
+  });
+
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="accessibility-report"]').click();
+  await expect(page.locator('.acc-violation-bubble')).toBeHidden();
+});
+
+test('annotation markers render when page annotations is enabled', async ({ page }) => {
+  await page.goto('index.html?acc-dev=true');
+  await page.evaluate(() => {
+    window.AccessibleWebWidget.prototype.runBackgroundAxeScan = async function () {
+      const results = {
+        violations: [{
+          id: 'mock-id',
+          impact: 'moderate',
+          help: 'Mock heading issue',
+          description: 'Mock issue description',
+          helpUrl: 'https://example.com/help',
+          nodes: [{ target: ['.container h1'], failureSummary: 'Mock failure summary' }]
+        }]
+      };
+      this.axeScanResults = results;
+      this.updateViolationBubble(results);
+      return results;
+    };
+  });
+
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="annotations"]').click();
+  await expect(page.locator('.acc-annotation-marker')).toHaveCount(1);
+});
+
+test('text-to-speech tool is hidden when speech synthesis is unsupported', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'speechSynthesis', {
+      configurable: true,
+      get: () => undefined
+    });
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', {
+      configurable: true,
+      writable: true,
+      value: undefined
+    });
+  });
+
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-btn[data-key="text-to-speech"]')).toHaveCount(0);
+});
+
+test('text-to-speech waits for click and does not auto-play', async ({ page }) => {
+  await page.addInitScript(() => {
+    class MockUtterance {
+      constructor(text) {
+        this.text = text;
+        this.lang = '';
+        this.voice = null;
+        this.rate = 1;
+        this.pitch = 1;
+        this.onstart = null;
+        this.onpause = null;
+        this.onresume = null;
+        this.onend = null;
+        this.onerror = null;
+      }
+    }
+
+    window.__nativeSpeakPayloads = [];
+    const synth = {
+      speaking: false,
+      paused: false,
+      getVoices: () => [{ name: 'Samantha', lang: 'en-US', default: true, localService: true }],
+      speak: (utterance) => {
+        window.__nativeSpeakPayloads.push({
+          text: utterance.text,
+          lang: utterance.lang,
+          voice: utterance.voice?.name || '',
+          rate: utterance.rate,
+          pitch: utterance.pitch
+        });
+        synth.speaking = true;
+        if (typeof utterance.onstart === 'function') utterance.onstart();
+        setTimeout(() => {
+          synth.speaking = false;
+          if (typeof utterance.onend === 'function') utterance.onend();
+        }, 0);
+      },
+      cancel: () => {
+        synth.speaking = false;
+      },
+      pause: () => {
+        synth.paused = true;
+      },
+      resume: () => {
+        synth.paused = false;
+      }
+    };
+
+    Object.defineProperty(window, 'speechSynthesis', {
+      configurable: true,
+      get: () => synth
+    });
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', {
+      configurable: true,
+      writable: true,
+      value: MockUtterance
+    });
+  });
+
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="text-to-speech"]').click();
+  await page.keyboard.press('Escape');
+
+  await page.waitForTimeout(200);
+  // The announcement ("Text to Speech On") may have fired; record the count
+  const countBeforeClick = await page.evaluate(() => window.__nativeSpeakPayloads.length);
+
+  await page.locator('.container h1').click();
+  await expect.poll(async () => page.evaluate(() => window.__nativeSpeakPayloads.length)).toBeGreaterThan(countBeforeClick);
+});
+
+test('text-to-speech uses configured native voice and has no control bar', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.AccessibleWebWidgetOptions = {
+      ttsNativeVoiceName: 'Samantha',
+      ttsNativeVoiceLang: 'en-US',
+      ttsRate: 0.9,
+      ttsPitch: 1
+    };
+
+    class MockUtterance {
+      constructor(text) {
+        this.text = text;
+        this.lang = '';
+        this.voice = null;
+        this.rate = 1;
+        this.pitch = 1;
+        this.onstart = null;
+        this.onpause = null;
+        this.onresume = null;
+        this.onend = null;
+        this.onerror = null;
+      }
+    }
+
+    const voices = [
+      { name: 'Thomas', lang: 'fr-FR', default: false, localService: true },
+      { name: 'Samantha', lang: 'en-US', default: true, localService: true }
+    ];
+
+    window.__nativeSpeakPayloads = [];
+    const synth = {
+      speaking: false,
+      paused: false,
+      getVoices: () => voices,
+      speak: (utterance) => {
+        window.__nativeSpeakPayloads.push({
+          text: utterance.text,
+          lang: utterance.lang,
+          voice: utterance.voice?.name || '',
+          rate: utterance.rate,
+          pitch: utterance.pitch
+        });
+        synth.speaking = true;
+        if (typeof utterance.onstart === 'function') utterance.onstart();
+        setTimeout(() => {
+          synth.speaking = false;
+          if (typeof utterance.onend === 'function') utterance.onend();
+        }, 0);
+      },
+      cancel: () => {
+        synth.speaking = false;
+      },
+      pause: () => {
+        synth.paused = true;
+      },
+      resume: () => {
+        synth.paused = false;
+      }
+    };
+
+    Object.defineProperty(window, 'speechSynthesis', {
+      configurable: true,
+      get: () => synth
+    });
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', {
+      configurable: true,
+      writable: true,
+      value: MockUtterance
+    });
+  });
+
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="text-to-speech"]').click();
+  await page.keyboard.press('Escape');
+  // Record count after announcement, then click content
+  const countBeforeClick = await page.evaluate(() => window.__nativeSpeakPayloads.length);
+  await page.locator('.container p').first().click();
+
+  await expect.poll(async () => page.evaluate(() => window.__nativeSpeakPayloads.length)).toBeGreaterThan(countBeforeClick);
+
+  const payload = await page.evaluate((idx) => window.__nativeSpeakPayloads[idx], countBeforeClick);
+  expect(payload.voice).toBe('Samantha');
+  expect(payload.lang).toBe('en-US');
+  expect(payload.rate).toBeCloseTo(0.9, 1);
+  expect(payload.pitch).toBe(1);
+
+  await expect(page.locator('.acc-tts-bar')).toHaveCount(0);
+});
+
+test('focus mode overlay appears and Escape exits focus mode', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="focus-mode"]').click();
+  await expect(page.locator('.acc-focus-overlay')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.acc-focus-overlay')).toHaveCount(0);
+});
+
+test('simplify layout isolates primary content root', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="simple-layout"]').click();
+
+  await expect(page.locator('body')).toHaveClass(/acc-simple-layout-enabled/);
+  await expect(page.locator('.container')).toHaveClass(/acc-simple-layout-root/);
+  const rootStyles = await page.locator('.container').evaluate((element) => {
+    const styles = window.getComputedStyle(element);
+    return {
+      maxWidth: styles.maxWidth,
+      background: styles.backgroundColor
+    };
+  });
+  expect(parseFloat(rootStyles.maxWidth)).toBeGreaterThan(600);
+});
+
+test('system preferences enable pause motion and dark contrast defaults', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.matchMedia = (query) => {
+      const normalized = String(query || '');
+      const matches = (
+        normalized === '(prefers-reduced-motion: reduce)' ||
+        normalized === '(prefers-color-scheme: dark)'
+      );
+      return {
+        media: normalized,
+        matches,
+        onchange: null,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        addListener: () => {},
+        removeListener: () => {},
+        dispatchEvent: () => false
+      };
+    };
+  });
+
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-btn[data-key="pause-motion"]')).toHaveClass(/acc-selected/);
+  await expect(page.locator('.acc-btn[data-key="dark-contrast"]')).toHaveClass(/acc-selected/);
 });

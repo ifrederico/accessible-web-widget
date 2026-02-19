@@ -195,7 +195,7 @@ export const stateMethods = {
     },
 
   normalizeButtonSize(value) {
-      const fallback = this.widgetTheme?.buttonSize || '34px';
+      const fallback = this.widgetTheme?.buttonSize || '48px';
       if (typeof value === 'number' && Number.isFinite(value)) {
         return `${Math.max(24, Math.round(value))}px`;
       }
@@ -225,8 +225,50 @@ export const stateMethods = {
       }
     },
 
-  updateState(payload) {
-      const updatedConfig = { ...this.widgetConfig, states: { ...this.widgetConfig.states, ...payload } };
+  isSystemControlledPreference(key) {
+      const systemDefaults = this.widgetConfig?.systemDefaults || {};
+      return Object.prototype.hasOwnProperty.call(systemDefaults, key);
+    },
+
+  hasExplicitStatePreference(key) {
+      const states = this.widgetConfig?.states || {};
+      if (!Object.prototype.hasOwnProperty.call(states, key)) {
+        return false;
+      }
+      return !this.isSystemControlledPreference(key);
+    },
+
+  hasExplicitColorFilterPreference() {
+      const states = this.widgetConfig?.states || {};
+      const systemDefaults = this.widgetConfig?.systemDefaults || {};
+      const keys = Array.isArray(this.colorFilterKeys) ? this.colorFilterKeys : [];
+      return keys.some((key) =>
+        Object.prototype.hasOwnProperty.call(states, key) &&
+        !Object.prototype.hasOwnProperty.call(systemDefaults, key)
+      );
+    },
+
+  updateState(payload, options = {}) {
+      const source = options.source || 'user';
+      const previousStates = this.widgetConfig.states || {};
+      const previousSystemDefaults = this.widgetConfig.systemDefaults || {};
+      const nextStates = { ...previousStates, ...payload };
+      const nextSystemDefaults = { ...previousSystemDefaults };
+      const keys = Object.keys(payload || {});
+
+      if (source === 'system') {
+        keys.forEach((key) => {
+          nextSystemDefaults[key] = payload[key];
+        });
+      } else {
+        keys.forEach((key) => {
+          if (Object.prototype.hasOwnProperty.call(nextSystemDefaults, key)) {
+            delete nextSystemDefaults[key];
+          }
+        });
+      }
+
+      const updatedConfig = { ...this.widgetConfig, states: nextStates, systemDefaults: nextSystemDefaults };
       this.saveConfig(updatedConfig);
       return updatedConfig;
     },

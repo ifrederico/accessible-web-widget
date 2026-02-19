@@ -1,0 +1,57 @@
+.acc-focus-mode-active .acc-focus-section {
+  opacity: 0.22;
+  filter: grayscale(0.15);
+  pointer-events: none;
+  transition: opacity 180ms ease, filter 180ms ease;
+}
+
+.acc-focus-mode-active .acc-focus-section.acc-focus-current {
+  opacity: 1;
+  filter: none;
+  pointer-events: auto;
+  position: relative;
+  z-index: calc(var(--acc-widget-z-index, 100000) + 2);
+}
+
+.acc-focus-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: calc(var(--acc-widget-z-index, 100000) + 4);
+  pointer-events: none;
+  border-radius: 8px;
+  border: 2px solid #1a73e8;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85) inset, 0 0 12px rgba(26, 115, 232, 0.35);
+  background: transparent;
+  transition: top 180ms ease, left 180ms ease, width 180ms ease, height 180ms ease;
+}
+
+.acc-focus-target {
+  outline: 3px solid rgba(26, 115, 232, 0.35) !important;
+  outline-offset: 4px !important;
+  scroll-margin-top: 14vh !important;
+}
+
+.acc-focus-hint {
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: calc(var(--acc-widget-z-index, 100000) + 7);
+  background: rgba(22, 22, 22, 0.9);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.3;
+  pointer-events: none;
+  max-width: min(92vw, 420px);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .acc-focus-overlay,
+  .acc-focus-mode-active .acc-focus-section {
+    transition: none;
+  }
+}

@@ -21,32 +21,85 @@
     border-radius: 50%;
     align-items: center;
     justify-content: center;
-    width: var(--acc-button-size, 34px);
-    height: var(--acc-button-size, 34px);
+    width: var(--acc-button-size, 48px);
+    height: var(--acc-button-size, 48px);
     display: flex;
     cursor: pointer;
-    outline: 4px solid var(--acc-primary-color, #1976d2) !important;
-    border: 3px solid white !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+    outline: none !important;
+    border: none !important;
+    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 2px 5px rgba(0,0,0,0.2) !important;
     background: var(--acc-primary-color, #1976d2) !important;
     transition: transform 0.2s ease;
+    overflow: visible;
   }
   
   .acc-toggle-btn svg {
-    width: 28px;
-    height: 28px;
+    width: 60%;
+    height: 60%;
     fill: white;
   }
   
   .acc-toggle-btn:hover {
-    transform: scale(1.04);
+    transform: none;
+  }
+
+  .acc-violation-bubble {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    pointer-events: none;
+    z-index: 1;
+    color: #fff;
+    border: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .acc-violation-bubble[data-severity="critical"] {
+    background: #fbc02c;
+    color: #222;
+  }
+
+  .acc-violation-bubble[data-severity="serious"] {
+    background: #ffab32;
+    color: #222;
+  }
+
+  .acc-violation-bubble[data-severity="moderate"] {
+    background: #fbc02c;
+    color: #000;
+  }
+
+  .acc-violation-bubble[hidden] {
+    display: none;
   }
 
   .acc-toggle-btn:focus {
+    outline: none !important;
+  }
+
+  .acc-toggle-btn:focus-visible {
     outline: 3px solid var(--acc-primary-color, #1976d2) !important;
     outline-offset: 2px;
+  }
 
-}
+  body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {
+    cursor: pointer;
+  }
+
+  .acc-tts-active-block {
+    outline: 2px solid var(--acc-primary-color, #1976d2) !important;
+    outline-offset: 3px !important;
+    border-radius: 4px;
+  }
   
   @media (prefers-reduced-motion: reduce) {
     .acc-toggle-btn {

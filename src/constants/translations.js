@@ -46,7 +46,19 @@ export const TRANSLATIONS = {
         "How to Fix": "How to Fix",
         "Close Report": "Close Report",
         "Passed Tests": "Passed Tests",
-        "Items Need Review": "Items Need Review"
+        "Items Need Review": "Items Need Review",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Text to Speech On",
+        "Text to Speech Off": "Text to Speech Off",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Loading voice...": "Loading voice...",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       },
       it: {
         "Accessibility Menu": "Menu Accessibilità",
@@ -95,7 +107,18 @@ export const TRANSLATIONS = {
         "How to Fix": "Come Risolvere",
         "Close Report": "Chiudi Report",
         "Passed Tests": "Test Superati",
-        "Items Need Review": "Elementi da Rivedere"
+        "Items Need Review": "Elementi da Rivedere",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Sintesi Vocale Attiva",
+        "Text to Speech Off": "Sintesi Vocale Disattiva",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       },
       fr: {
         "Accessibility Menu": "Menu Accessibilité",
@@ -144,7 +167,18 @@ export const TRANSLATIONS = {
         "How to Fix": "Comment Corriger",
         "Close Report": "Fermer le Rapport",
         "Passed Tests": "Tests Réussis",
-        "Items Need Review": "Éléments à Vérifier"
+        "Items Need Review": "Éléments à Vérifier",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Synthèse Vocale Activée",
+        "Text to Speech Off": "Synthèse Vocale Désactivée",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       },
       de: {
         "Accessibility Menu": "Barrierefreiheit-Menü",
@@ -193,7 +227,18 @@ export const TRANSLATIONS = {
         "How to Fix": "Lösung",
         "Close Report": "Bericht schließen",
         "Passed Tests": "Bestandene Tests",
-        "Items Need Review": "Elemente zur Überprüfung"
+        "Items Need Review": "Elemente zur Überprüfung",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Sprachausgabe Ein",
+        "Text to Speech Off": "Sprachausgabe Aus",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       },
       es: {
         "Accessibility Menu": "Menú de Accesibilidad",
@@ -242,7 +287,18 @@ export const TRANSLATIONS = {
         "How to Fix": "Cómo Solucionarlo",
         "Close Report": "Cerrar Informe",
         "Passed Tests": "Pruebas Superadas",
-        "Items Need Review": "Elementos a Revisar"
+        "Items Need Review": "Elementos a Revisar",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Texto a Voz Activado",
+        "Text to Speech Off": "Texto a Voz Desactivado",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       },
       ru: {
         "Accessibility Menu": "Меню доступности",
@@ -291,7 +347,18 @@ export const TRANSLATIONS = {
         "How to Fix": "Как исправить",
         "Close Report": "Закрыть отчёт",
         "Passed Tests": "Пройденные тесты",
-        "Items Need Review": "Требуют проверки"
+        "Items Need Review": "Требуют проверки",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Озвучивание Включено",
+        "Text to Speech Off": "Озвучивание Выключено",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       },
       pl: {
         "Accessibility Menu": "Menu Dostępności",
@@ -340,7 +407,18 @@ export const TRANSLATIONS = {
         "How to Fix": "Jak Naprawić",
         "Close Report": "Zamknij Raport",
         "Passed Tests": "Zaliczone Testy",
-        "Items Need Review": "Elementy do Sprawdzenia"
+        "Items Need Review": "Elementy do Sprawdzenia",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Czytanie Tekstu Włączone",
+        "Text to Speech Off": "Czytanie Tekstu Wyłączone",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       },
       ro: {
         "Accessibility Menu": "Meniu Accesibilitate",
@@ -389,7 +467,18 @@ export const TRANSLATIONS = {
         "How to Fix": "Cum se Remediază",
         "Close Report": "Închide Raportul",
         "Passed Tests": "Teste Trecute",
-        "Items Need Review": "Elemente de Verificat"
+        "Items Need Review": "Elemente de Verificat",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Text to Speech Pornit",
+        "Text to Speech Off": "Text to Speech Oprit",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       },
       nl: {
         "Accessibility Menu": "Toegankelijkheidsmenu",
@@ -438,7 +527,18 @@ export const TRANSLATIONS = {
         "How to Fix": "Hoe op te lossen",
         "Close Report": "Rapport Sluiten",
         "Passed Tests": "Geslaagde Tests",
-        "Items Need Review": "Items te Controleren"
+        "Items Need Review": "Items te Controleren",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Tekst naar Spraak Aan",
+        "Text to Speech Off": "Tekst naar Spraak Uit",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       },
       uk: {
         "Accessibility Menu": "Меню доступності",
@@ -487,7 +587,18 @@ export const TRANSLATIONS = {
         "How to Fix": "Як виправити",
         "Close Report": "Закрити звіт",
         "Passed Tests": "Пройдені тести",
-        "Items Need Review": "Потребують перевірки"
+        "Items Need Review": "Потребують перевірки",
+        "Page Annotations": "Page Annotations",
+        "Text to Speech": "Text to Speech",
+        "Text to Speech On": "Озвучування Увімкнено",
+        "Text to Speech Off": "Озвучування Вимкнено",
+        "Focus Mode": "Focus Mode",
+        "Simplify Layout": "Simplify Layout",
+        "Play": "Play",
+        "Pause": "Pause",
+        "Stop": "Stop",
+        "Reading...": "Reading...",
+        "Press Escape to exit focus mode": "Press Escape to exit focus mode"
       }
     };
 

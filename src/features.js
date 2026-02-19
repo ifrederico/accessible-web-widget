@@ -3,6 +3,13 @@
 const AXE_CORE_VERSION = '4.11.1';
 const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
 const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
+const AXE_RUN_OPTIONS = {
+  runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
+};
+const MAX_ANNOTATIONS = 50;
+const SYSTEM_PREFERS_REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
+const SYSTEM_PREFERS_DARK_SCHEME = '(prefers-color-scheme: dark)';
+const SYSTEM_PREFERS_MORE_CONTRAST = '(prefers-contrast: more)';
 
 /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
 export const featureMethods = {
@@ -314,6 +321,73 @@ export const featureMethods = {
     this.applyToolStyle({ ...config, enable });
   },
 
+  enableHighContrastMode(enable = false) {
+    const X = ':not(.acc-container):not(.acc-container *)';
+    const config = {
+      id: 'high-contrast-mode',
+      css: `
+        /* ── Base: force black on white ── */
+        body.acc-high-contrast-mode *${X} {
+          color: #000 !important;
+          background-color: #fff !important;
+          background-image: none !important;
+          text-shadow: none !important;
+          box-shadow: none !important;
+        }
+
+        body.acc-high-contrast-mode {
+          background: #fff !important;
+        }
+
+        /* ── Borders: solid and visible ── */
+        body.acc-high-contrast-mode *${X} {
+          border-color: #000 !important;
+        }
+
+        /* ── Links: underlined, distinct color ── */
+        body.acc-high-contrast-mode a${X} {
+          color: #00e !important;
+          text-decoration: underline !important;
+        }
+
+        body.acc-high-contrast-mode a:visited${X} {
+          color: #551a8b !important;
+        }
+
+        /* ── Headings: bold black ── */
+        body.acc-high-contrast-mode :where(h1,h2,h3,h4,h5,h6)${X} {
+          color: #000 !important;
+          font-weight: 700 !important;
+        }
+
+        /* ── Images: keep visible, add border ── */
+        body.acc-high-contrast-mode img${X} {
+          border: 1px solid #000 !important;
+        }
+
+        /* ── Inputs & buttons: high-contrast borders ── */
+        body.acc-high-contrast-mode :where(input, textarea, select, button)${X} {
+          border: 2px solid #000 !important;
+          background: #fff !important;
+          color: #000 !important;
+        }
+
+        /* ── Focus rings: thick, high-visibility ── */
+        body.acc-high-contrast-mode :focus-visible${X} {
+          outline: 3px solid #000 !important;
+          outline-offset: 2px !important;
+        }
+
+        /* ── Tables: visible cell borders ── */
+        body.acc-high-contrast-mode :where(table, th, td)${X} {
+          border: 1px solid #000 !important;
+        }
+      `
+    };
+    this.applyToolStyle({ ...config, enable });
+    document.body?.classList.toggle('acc-high-contrast-mode', !!enable);
+  },
+
   enableReadingAid(enable = false) {
     try {
       let container = this.findElement('.acc-rg-container');
@@ -455,6 +529,198 @@ export const featureMethods = {
     return this.axeCorePromise;
   },
 
+  getAxeRunOptions() {
+    return { ...AXE_RUN_OPTIONS };
+  },
+
+  getViolationCounts(results = {}) {
+    const counts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
+    const violations = Array.isArray(results.violations) ? results.violations : [];
+    violations.forEach((violation) => {
+      const impact = violation?.impact;
+      if (impact && counts[impact] !== undefined) {
+        counts[impact] += Array.isArray(violation.nodes) ? violation.nodes.length : 0;
+      }
+    });
+    return counts;
+  },
+
+  updateViolationBubble(results = null) {
+    const bubble = this.violationBubble || this.findElement('.acc-violation-bubble');
+    if (!bubble) return;
+
+    const counts = this.getViolationCounts(results || this.axeScanResults || {});
+    const devMode = this.isDevMode();
+
+    let displayCount = 0;
+    let severity = '';
+
+    if (counts.critical > 0) {
+      displayCount = counts.critical;
+      severity = 'critical';
+    } else if (devMode && counts.serious > 0) {
+      displayCount = counts.serious;
+      severity = 'serious';
+    } else if (devMode && counts.moderate > 0) {
+      displayCount = counts.moderate;
+      severity = 'moderate';
+    }
+
+    if (displayCount <= 0) {
+      bubble.textContent = '';
+      bubble.hidden = true;
+      bubble.removeAttribute('data-severity');
+      return;
+    }
+
+    bubble.hidden = false;
+    bubble.dataset.severity = severity;
+    bubble.textContent = displayCount > 99 ? '99+' : String(displayCount);
+  },
+
+  async runBackgroundAxeScan({ force = false } = {}) {
+    if (!force && this.axeScanResults) {
+      this.updateViolationBubble(this.axeScanResults);
+      return this.axeScanResults;
+    }
+
+    if (!force && this.axeScanPromise) {
+      return this.axeScanPromise;
+    }
+
+    this.axeScanPromise = (async () => {
+      try {
+        const axe = await this.loadAxeCore();
+        const results = await axe.run(document, this.getAxeRunOptions());
+        this.axeScanResults = results;
+        this.updateViolationBubble(results);
+        return results;
+      } catch (error) {
+        this.updateViolationBubble({ violations: [] });
+        throw error;
+      } finally {
+        this.axeScanPromise = null;
+      }
+    })();
+
+    return this.axeScanPromise;
+  },
+
+  ensureMediaQuery(query) {
+    if (!query || typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      return null;
+    }
+    if (!this.systemPreferenceMediaQueries) {
+      this.systemPreferenceMediaQueries = {};
+    }
+    if (!this.systemPreferenceMediaQueries[query]) {
+      this.systemPreferenceMediaQueries[query] = window.matchMedia(query);
+    }
+    return this.systemPreferenceMediaQueries[query];
+  },
+
+  applySystemMotionPreference(shouldEnable) {
+    this.loadConfig();
+    if (this.hasExplicitStatePreference('pause-motion')) {
+      return false;
+    }
+
+    const currentValue = !!this.retrieveState('pause-motion');
+    if (currentValue === shouldEnable && this.isSystemControlledPreference('pause-motion')) {
+      return false;
+    }
+
+    this.updateState({ 'pause-motion': shouldEnable }, { source: 'system' });
+    return true;
+  },
+
+  applySystemDarkContrastPreference(shouldEnable) {
+    this.loadConfig();
+    const explicitColorPreference = this.hasExplicitColorFilterPreference();
+    const darkContrastIsUserControlled = this.hasExplicitStatePreference('dark-contrast');
+    if (explicitColorPreference || darkContrastIsUserControlled) {
+      return false;
+    }
+
+    const nextActiveKey = shouldEnable ? 'dark-contrast' : null;
+    const currentActiveKey = this.getActiveColorFilterKey(this.widgetConfig.states);
+    const isSystemControlled = this.isSystemControlledPreference('dark-contrast');
+    if (currentActiveKey === nextActiveKey && (isSystemControlled || !shouldEnable)) {
+      return false;
+    }
+
+    this.updateColorFilterState(nextActiveKey, 'system');
+    return true;
+  },
+
+  detectSystemPreferences() {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+
+    const reducedMotionQuery = this.ensureMediaQuery(SYSTEM_PREFERS_REDUCED_MOTION);
+    const darkSchemeQuery = this.ensureMediaQuery(SYSTEM_PREFERS_DARK_SCHEME);
+    const highContrastQuery = this.ensureMediaQuery(SYSTEM_PREFERS_MORE_CONTRAST);
+
+    const shouldPauseMotion = !!reducedMotionQuery?.matches;
+    const shouldEnableDarkContrast = !!darkSchemeQuery?.matches || !!highContrastQuery?.matches;
+
+    const motionChanged = this.applySystemMotionPreference(shouldPauseMotion);
+    const contrastChanged = this.applySystemDarkContrastPreference(shouldEnableDarkContrast);
+
+    if (motionChanged || contrastChanged) {
+      this.applyEnhancements();
+      this.applyVisualFilters();
+    }
+  },
+
+  clearSystemPreferenceListeners() {
+    const listeners = Array.isArray(this.systemPreferenceListeners) ? this.systemPreferenceListeners : [];
+    listeners.forEach((remove) => {
+      if (typeof remove === 'function') {
+        remove();
+      }
+    });
+    this.systemPreferenceListeners = [];
+  },
+
+  setupMediaQueryListeners() {
+    this.clearSystemPreferenceListeners();
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+
+    const reducedMotionQuery = this.ensureMediaQuery(SYSTEM_PREFERS_REDUCED_MOTION);
+    const darkSchemeQuery = this.ensureMediaQuery(SYSTEM_PREFERS_DARK_SCHEME);
+    const highContrastQuery = this.ensureMediaQuery(SYSTEM_PREFERS_MORE_CONTRAST);
+
+    const listen = (mediaQuery, handler) => {
+      if (!mediaQuery || typeof handler !== 'function') return;
+      if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', handler);
+        this.systemPreferenceListeners.push(() => mediaQuery.removeEventListener('change', handler));
+      } else if (typeof mediaQuery.addListener === 'function') {
+        mediaQuery.addListener(handler);
+        this.systemPreferenceListeners.push(() => mediaQuery.removeListener(handler));
+      }
+    };
+
+    const onReducedMotionChange = (event) => {
+      const changed = this.applySystemMotionPreference(!!event.matches);
+      if (changed) {
+        this.applyEnhancements();
+      }
+    };
+
+    const onContrastChange = () => {
+      const shouldEnableDarkContrast = !!darkSchemeQuery?.matches || !!highContrastQuery?.matches;
+      const changed = this.applySystemDarkContrastPreference(shouldEnableDarkContrast);
+      if (changed) {
+        this.applyVisualFilters();
+      }
+    };
+
+    listen(reducedMotionQuery, onReducedMotionChange);
+    listen(darkSchemeQuery, onContrastChange);
+    listen(highContrastQuery, onContrastChange);
+  },
+
   async runAccessibilityReport() {
     // Create or get report panel
     let panel = this.findElement('.acc-report-panel');
@@ -474,13 +740,8 @@ export const featureMethods = {
     contentArea.innerHTML = `<div class="acc-report-loading">${this.translate('Analyzing page...')}</div>`;
   
     try {
-      const axe = await this.loadAxeCore();
-  
-      // Run axe analysis
-      const results = await axe.run(document, {
-        runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
-      });
-  
+      const results = await this.runBackgroundAxeScan({ force: true });
+
       this.displayReportResults(panel, results);
   
     } catch (error) {
@@ -762,6 +1023,1241 @@ export const featureMethods = {
     }
   },
 
+  supportsSpeechSynthesis() {
+    if (typeof window === 'undefined') return false;
+    return (
+      'speechSynthesis' in window &&
+      typeof window.SpeechSynthesisUtterance !== 'undefined'
+    );
+  },
+
+  supportsTextToSpeech() {
+    return this.supportsSpeechSynthesis();
+  },
+
+  normalizeSpeechLanguage(languageCode = 'en') {
+    const code = String(languageCode || 'en').toLowerCase();
+    const languageMap = {
+      en: 'en-US',
+      it: 'it-IT',
+      fr: 'fr-FR',
+      de: 'de-DE',
+      es: 'es-ES',
+      ru: 'ru-RU',
+      pl: 'pl-PL',
+      ro: 'ro-RO',
+      nl: 'nl-NL',
+      uk: 'uk-UA'
+    };
+    return languageMap[code] || code;
+  },
+
+  getNativeTtsRate() {
+    const configured = Number(this.nativeTtsConfig?.rate);
+    if (!Number.isFinite(configured)) return 1;
+    return Math.min(2, Math.max(0.5, configured));
+  },
+
+  getNativeTtsPitch() {
+    const configured = Number(this.nativeTtsConfig?.pitch);
+    if (!Number.isFinite(configured)) return 1;
+    return Math.min(2, Math.max(0, configured));
+  },
+
+  isElementVisibleForTts(element) {
+    if (!(element instanceof Element)) return false;
+    const style = window.getComputedStyle(element);
+    if (style.display === 'none' || style.visibility === 'hidden') {
+      return false;
+    }
+    const rect = element.getBoundingClientRect();
+    return rect.width > 0 && rect.height > 0;
+  },
+
+  isTtsExcludedElement(element) {
+    if (!(element instanceof Element)) return true;
+    if (element.closest('.acc-container')) return true;
+    if (element.closest('script,style,noscript,template')) return true;
+    if (element.closest('[aria-hidden="true"]')) return true;
+    if (
+      element.closest(
+        'nav,header,footer,aside,form,dialog,[role="navigation"],[role="complementary"],[role="search"],[role="menu"],[role="dialog"],[role="alert"],[aria-live]'
+      )
+    ) {
+      return true;
+    }
+    return false;
+  },
+
+  normalizeReadableText(text = '') {
+    return String(text)
+      .replace(/\s+/g, ' ')
+      .replace(/[ \t]+([,.;!?])/g, '$1')
+      .trim();
+  },
+
+  getTtsCandidateRoots() {
+    const selectors = [
+      'article',
+      'main',
+      '[role="main"]',
+      '.content',
+      '.post',
+      '.entry-content',
+      '#content'
+    ];
+    const roots = [];
+    const seen = new Set();
+
+    selectors.forEach((selector) => {
+      document.querySelectorAll(selector).forEach((element) => {
+        if (!(element instanceof Element)) return;
+        if (this.isTtsExcludedElement(element) || !this.isElementVisibleForTts(element)) return;
+        if (seen.has(element)) return;
+        seen.add(element);
+        roots.push(element);
+      });
+    });
+
+    return roots;
+  },
+
+  getPrimaryContentRoot() {
+    if (typeof document === 'undefined') return null;
+    const candidates = this.getTtsCandidateRoots();
+    if (!candidates.length) {
+      const explicitCandidates = Array.from(
+        document.querySelectorAll('main,article,[role="main"],#content,.content,.post,.entry-content')
+      ).filter((element) =>
+        element instanceof Element &&
+        !this.isTtsExcludedElement(element) &&
+        this.isElementVisibleForTts(element)
+      );
+
+      if (explicitCandidates.length) {
+        let explicitBest = explicitCandidates[0];
+        let explicitBestScore = -1;
+        explicitCandidates.forEach((candidate) => {
+          const textLength = this.normalizeReadableText(candidate.innerText || candidate.textContent || '').length;
+          const rect = candidate.getBoundingClientRect();
+          const score = textLength + (rect.width * rect.height * 0.0025);
+          if (score > explicitBestScore) {
+            explicitBestScore = score;
+            explicitBest = candidate;
+          }
+        });
+        return explicitBest;
+      }
+
+      if (document.body) {
+        const topLevelCandidates = Array.from(document.body.children).filter((element) =>
+          element instanceof Element &&
+          !element.classList.contains('acc-container') &&
+          this.isElementVisibleForTts(element)
+        );
+
+        if (topLevelCandidates.length) {
+          let best = topLevelCandidates[0];
+          let bestScore = -1;
+          topLevelCandidates.forEach((candidate) => {
+            const textLength = this.normalizeReadableText(candidate.innerText || candidate.textContent || '').length;
+            const rect = candidate.getBoundingClientRect();
+            const score = textLength + (rect.width * rect.height * 0.0025);
+            if (score > bestScore) {
+              bestScore = score;
+              best = candidate;
+            }
+          });
+          return best;
+        }
+      }
+
+      return document.body;
+    }
+
+    let bestRoot = candidates[0];
+    let bestScore = -1;
+    candidates.forEach((candidate) => {
+      const blocks = this.extractReadableBlocks(candidate);
+      const score = blocks.join(' ').length;
+      if (score > bestScore) {
+        bestScore = score;
+        bestRoot = candidate;
+      }
+    });
+    return bestRoot;
+  },
+
+  extractReadableBlocks(root) {
+    if (!(root instanceof Element)) return [];
+    const blockSelector = 'h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,caption,th,td';
+    const blocks = [];
+    root.querySelectorAll(blockSelector).forEach((element) => {
+      if (!(element instanceof Element)) return;
+      if (this.isTtsExcludedElement(element) || !this.isElementVisibleForTts(element)) return;
+      const text = this.normalizeReadableText(element.innerText || element.textContent || '');
+      if (text.length < 15) return;
+      blocks.push(text);
+    });
+    return blocks;
+  },
+
+  getReadableContent() {
+    if (typeof document === 'undefined') return '';
+    const candidateRoots = this.getTtsCandidateRoots();
+    let bestBlocks = [];
+    let bestScore = -1;
+
+    candidateRoots.forEach((root) => {
+      const blocks = this.extractReadableBlocks(root);
+      if (!blocks.length) return;
+      const characterCount = blocks.join(' ').length;
+      const score = (blocks.length * 60) + characterCount;
+      if (score > bestScore) {
+        bestScore = score;
+        bestBlocks = blocks;
+      }
+    });
+
+    if (!bestBlocks.length && document.body) {
+      bestBlocks = this.extractReadableBlocks(document.body);
+    }
+
+    if (!bestBlocks.length && document.body) {
+      const fallback = this.normalizeReadableText(document.body.innerText || document.body.textContent || '');
+      return fallback.slice(0, 30000);
+    }
+
+    return bestBlocks.join('\n\n').slice(0, 30000);
+  },
+
+  splitLongSpeechSegment(segment, maxLength = 240) {
+    if (!segment) return [];
+    if (segment.length <= maxLength) return [segment];
+
+    const parts = [];
+    let remaining = segment;
+    while (remaining.length > maxLength) {
+      let splitIndex = remaining.lastIndexOf(',', maxLength);
+      if (splitIndex < Math.floor(maxLength * 0.5)) {
+        splitIndex = remaining.lastIndexOf(' ', maxLength);
+      }
+      if (splitIndex < Math.floor(maxLength * 0.5)) {
+        splitIndex = maxLength;
+      }
+      parts.push(remaining.slice(0, splitIndex).trim());
+      remaining = remaining.slice(splitIndex).trim();
+    }
+    if (remaining.length) {
+      parts.push(remaining);
+    }
+    return parts.filter(Boolean);
+  },
+
+  buildSpeechQueue(text = '') {
+    const normalized = this.normalizeReadableText(text);
+    if (!normalized) return [];
+
+    const paragraphCandidates = text
+      .split(/\n{2,}/)
+      .map((paragraph) => this.normalizeReadableText(paragraph))
+      .filter(Boolean);
+
+    const paragraphs = paragraphCandidates.length ? paragraphCandidates : [normalized];
+    const queue = [];
+
+    paragraphs.forEach((paragraph) => {
+      const sentences = paragraph.split(/(?<=[.!?])\s+/).filter(Boolean);
+      const sentenceList = sentences.length ? sentences : [paragraph];
+      let chunk = '';
+
+      sentenceList.forEach((sentence) => {
+        const next = chunk ? `${chunk} ${sentence}` : sentence;
+        if (next.length <= 240) {
+          chunk = next;
+          return;
+        }
+        if (chunk) {
+          queue.push(...this.splitLongSpeechSegment(chunk, 240));
+        }
+        chunk = sentence;
+      });
+
+      if (chunk) {
+        queue.push(...this.splitLongSpeechSegment(chunk, 240));
+      }
+    });
+
+    return queue.slice(0, 300);
+  },
+
+  resolveSpeechVoice(languageCode) {
+    if (!this.supportsSpeechSynthesis()) return null;
+    const synth = window.speechSynthesis;
+    const voices = synth.getVoices?.() || [];
+    if (!voices.length) return null;
+
+    const preferredVoiceName = String(this.nativeTtsConfig?.preferredVoiceName || '').trim().toLowerCase();
+    if (preferredVoiceName) {
+      const byExactName = voices.find((voice) => String(voice.name || '').trim().toLowerCase() === preferredVoiceName);
+      if (byExactName) return byExactName;
+      const byNameContains = voices.find((voice) => String(voice.name || '').toLowerCase().includes(preferredVoiceName));
+      if (byNameContains) return byNameContains;
+    }
+
+    const configuredVoiceLang = String(this.nativeTtsConfig?.preferredVoiceLang || '').trim();
+    const targetLanguage = configuredVoiceLang || languageCode;
+    const normalized = this.normalizeSpeechLanguage(targetLanguage).toLowerCase();
+    const primary = normalized.split('-')[0];
+    const localExact = voices.find((voice) => (
+      voice.localService &&
+      String(voice.lang || '').toLowerCase() === normalized
+    ));
+    const exact = voices.find((voice) => String(voice.lang || '').toLowerCase() === normalized);
+    const localByPrimary = voices.find((voice) => (
+      voice.localService &&
+      String(voice.lang || '').toLowerCase().startsWith(primary)
+    ));
+    const byPrimary = voices.find((voice) => String(voice.lang || '').toLowerCase().startsWith(primary));
+    const defaultVoice = voices.find((voice) => voice.default);
+    return localExact || exact || localByPrimary || byPrimary || defaultVoice || voices[0];
+  },
+
+  getSpeechTargetFromEvent(event) {
+    const target = event?.target;
+    if (!(target instanceof Element)) return null;
+    if (target.closest('.acc-container')) return null;
+
+    const block = target.closest('h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,caption,th,td,div,section');
+    if (!(block instanceof Element)) return null;
+    if (this.isTtsExcludedElement(block) || !this.isElementVisibleForTts(block)) return null;
+
+    const text = this.normalizeReadableText(block.innerText || block.textContent || '');
+    if (text.length < 20) return null;
+
+    return {
+      element: block,
+      text: text.slice(0, 30000)
+    };
+  },
+
+  setActiveSpeechTarget(element = null) {
+    if (this.ttsActiveTarget && this.ttsActiveTarget !== element) {
+      this.ttsActiveTarget.classList.remove('acc-tts-active-block');
+    }
+    this.ttsActiveTarget = element;
+    if (this.ttsActiveTarget) {
+      this.ttsActiveTarget.classList.add('acc-tts-active-block');
+    }
+  },
+
+  startTtsClickMode() {
+    if (typeof document === 'undefined' || this.ttsClickListener) return;
+    this.ttsClickListener = (event) => {
+      this.handleTtsClick(event);
+    };
+    document.addEventListener('click', this.ttsClickListener, true);
+    document.body?.classList.add('acc-tts-click-mode');
+  },
+
+  stopTtsClickMode() {
+    if (typeof document === 'undefined') return;
+    if (this.ttsClickListener) {
+      document.removeEventListener('click', this.ttsClickListener, true);
+      this.ttsClickListener = null;
+    }
+    document.body?.classList.remove('acc-tts-click-mode');
+    this.setActiveSpeechTarget(null);
+  },
+
+  handleTtsClick(event) {
+    if (!this.retrieveState('text-to-speech')) return;
+    const target = this.getSpeechTargetFromEvent(event);
+    if (!target) return;
+
+    this.setActiveSpeechTarget(target.element);
+    this.ttsTextCache = target.text;
+    this.startSpeechPlayback({ restart: true });
+  },
+
+  ensureTtsQueue() {
+    const text = this.ttsTextCache || this.getReadableContent();
+    if (!text) {
+      this.ttsQueue = [];
+      this.ttsQueueIndex = 0;
+      return false;
+    }
+    this.ttsTextCache = text;
+    this.ttsQueue = this.buildSpeechQueue(text);
+    this.ttsQueueIndex = 0;
+    return this.ttsQueue.length > 0;
+  },
+
+  speakNextTtsChunk(sessionId) {
+    if (!this.supportsSpeechSynthesis()) return;
+    if (sessionId !== this.ttsSessionId) return;
+
+    if (this.ttsQueueIndex >= this.ttsQueue.length) {
+      this.ttsStatus = 'stopped';
+      this.setActiveSpeechTarget(null);
+      return;
+    }
+
+    const synth = window.speechSynthesis;
+    const chunk = this.ttsQueue[this.ttsQueueIndex];
+    if (!chunk) {
+      this.ttsQueueIndex += 1;
+      this.speakNextTtsChunk(sessionId);
+      return;
+    }
+
+    const utterance = new window.SpeechSynthesisUtterance(chunk);
+    utterance.lang = this.normalizeSpeechLanguage(this.loadConfig().lang || 'en');
+    if (!this.ttsVoice || this.ttsVoice.lang?.toLowerCase() !== utterance.lang.toLowerCase()) {
+      this.ttsVoice = this.resolveSpeechVoice(utterance.lang);
+    }
+    if (this.ttsVoice) {
+      utterance.voice = this.ttsVoice;
+    }
+    utterance.rate = this.getNativeTtsRate();
+    utterance.pitch = this.getNativeTtsPitch();
+
+    utterance.onstart = () => {
+      if (sessionId !== this.ttsSessionId) return;
+      this.ttsStatus = 'reading';
+    };
+    utterance.onpause = () => {
+      if (sessionId !== this.ttsSessionId) return;
+      this.ttsStatus = 'paused';
+    };
+    utterance.onresume = () => {
+      if (sessionId !== this.ttsSessionId) return;
+      this.ttsStatus = 'reading';
+    };
+    utterance.onend = () => {
+      if (sessionId !== this.ttsSessionId) return;
+      this.ttsQueueIndex += 1;
+      this.speakNextTtsChunk(sessionId);
+    };
+    utterance.onerror = () => {
+      if (sessionId !== this.ttsSessionId) return;
+      this.ttsStatus = 'stopped';
+      this.setActiveSpeechTarget(null);
+    };
+
+    this.ttsUtterance = utterance;
+    synth.speak(utterance);
+  },
+
+  startNativeSpeechPlayback({ restart = false } = {}) {
+    if (!this.supportsSpeechSynthesis()) return;
+    const synth = window.speechSynthesis;
+
+    if (!restart && synth.paused) {
+      synth.resume();
+      this.ttsStatus = 'reading';
+      return;
+    }
+
+    const hasQueue = restart || !this.ttsQueue.length || this.ttsQueueIndex >= this.ttsQueue.length
+      ? this.ensureTtsQueue()
+      : true;
+    if (!hasQueue) {
+      this.stopSpeech();
+      return;
+    }
+
+    const sessionId = this.ttsSessionId + 1;
+    this.ttsSessionId = sessionId;
+    synth.cancel();
+    this.ttsStatus = 'reading';
+    this.speakNextTtsChunk(sessionId);
+  },
+
+  startSpeechPlayback({ restart = false } = {}) {
+    this.startNativeSpeechPlayback({ restart });
+  },
+
+  pauseSpeech() {
+    if (!this.supportsSpeechSynthesis()) return;
+    const synth = window.speechSynthesis;
+    if (synth.speaking && !synth.paused) {
+      synth.pause();
+      this.ttsStatus = 'paused';
+    }
+  },
+
+  resumeSpeech() {
+    if (!this.supportsSpeechSynthesis()) return;
+    const synth = window.speechSynthesis;
+    if (synth.paused) {
+      synth.resume();
+      this.ttsStatus = 'reading';
+      return;
+    }
+    this.startSpeechPlayback({ restart: false });
+  },
+
+  stopSpeech() {
+    const synth = this.supportsSpeechSynthesis() ? window.speechSynthesis : null;
+    this.ttsSessionId += 1;
+    if (synth && (synth.speaking || synth.paused)) {
+      synth.cancel();
+    }
+    this.ttsUtterance = null;
+    this.ttsQueueIndex = 0;
+    this.ttsStatus = 'stopped';
+    this.setActiveSpeechTarget(null);
+  },
+
+  enableTextToSpeech(enable = false) {
+    if (!this.supportsTextToSpeech()) return;
+    const isUserToggle = this.userInitiatedToggleKey === 'text-to-speech';
+
+    if (!enable) {
+      if (isUserToggle) this.announceTtsState(false);
+      this.stopSpeech();
+      this.stopTtsClickMode();
+      return;
+    }
+
+    const synth = window.speechSynthesis;
+    if (synth?.getVoices) {
+      synth.getVoices();
+    }
+
+    this.startTtsClickMode();
+    this.ttsStatus = 'idle';
+    if (isUserToggle) this.announceTtsState(true);
+  },
+
+  announceTtsState(active) {
+    if (!this.supportsTextToSpeech()) return;
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    const msg = active
+      ? this.translate('Text to Speech On')
+      : this.translate('Text to Speech Off');
+    synth.cancel();
+    const utterance = new SpeechSynthesisUtterance(msg);
+    const lang = this.normalizeSpeechLanguage(this.loadConfig().lang || 'en');
+    utterance.lang = lang;
+    const voice = this.resolveSpeechVoice(lang);
+    if (voice) {
+      utterance.voice = voice;
+    }
+    utterance.rate = this.getNativeTtsRate();
+    utterance.pitch = this.getNativeTtsPitch();
+    synth.speak(utterance);
+  },
+
+  ensureAnnotationLayer() {
+    if (this.annotationLayer && document.body.contains(this.annotationLayer)) {
+      return this.annotationLayer;
+    }
+    const layer = document.createElement('div');
+    layer.className = 'acc-annotation-layer acc-container';
+    layer.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(layer);
+    this.annotationLayer = layer;
+    return layer;
+  },
+
+  resolveAnnotationTarget(selector) {
+    if (!selector || typeof selector !== 'string') return null;
+    try {
+      const element = document.querySelector(selector);
+      if (!element || element.closest('.acc-container')) return null;
+      return element;
+    } catch {
+      return null;
+    }
+  },
+
+  buildAnnotationEntries(results = {}) {
+    const violations = Array.isArray(results.violations) ? results.violations : [];
+    const entries = [];
+    const seen = new Set();
+
+    violations.forEach((violation) => {
+      const nodes = Array.isArray(violation.nodes) ? violation.nodes : [];
+      nodes.forEach((node) => {
+        const targets = Array.isArray(node.target) ? node.target : [];
+        const selector = targets.find((target) => typeof target === 'string' && target.trim().length);
+        if (!selector) return;
+        const key = `${selector}::${violation.id || violation.help || ''}`;
+        if (seen.has(key)) return;
+
+        const element = this.resolveAnnotationTarget(selector);
+        if (!element) return;
+        seen.add(key);
+        entries.push({
+          selector,
+          element,
+          impact: violation.impact || 'minor',
+          title: violation.help || this.translate('Issue'),
+          description: violation.description || '',
+          helpUrl: violation.helpUrl || '',
+          failureSummary: node.failureSummary || ''
+        });
+      });
+    });
+
+    return entries.slice(0, MAX_ANNOTATIONS);
+  },
+
+  createAnnotationMarker(annotation) {
+    const marker = document.createElement('button');
+    marker.type = 'button';
+    marker.className = 'acc-annotation-marker';
+    marker.dataset.impact = annotation.impact || 'minor';
+    marker.setAttribute('aria-label', annotation.title);
+    marker.title = annotation.title;
+    marker.innerHTML = this.widgetIcons.annotations;
+
+    marker.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.showAnnotationPopup(annotation, marker);
+    });
+
+    return marker;
+  },
+
+  positionAnnotationPopup(popup, marker) {
+    if (!popup || !marker) return;
+    const markerRect = marker.getBoundingClientRect();
+    const popupWidth = popup.offsetWidth || 300;
+    const popupHeight = popup.offsetHeight || 180;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const gap = 10;
+
+    let left = window.scrollX + markerRect.left + gap;
+    let top = window.scrollY + markerRect.bottom + gap;
+
+    if (left + popupWidth > window.scrollX + viewportWidth - gap) {
+      left = window.scrollX + viewportWidth - popupWidth - gap;
+    }
+    if (left < window.scrollX + gap) {
+      left = window.scrollX + gap;
+    }
+
+    if (top + popupHeight > window.scrollY + viewportHeight - gap) {
+      top = window.scrollY + markerRect.top - popupHeight - gap;
+    }
+    if (top < window.scrollY + gap) {
+      top = window.scrollY + gap;
+    }
+
+    popup.style.left = `${left}px`;
+    popup.style.top = `${top}px`;
+  },
+
+  clearAnnotationPopup() {
+    if (this.annotationPopup) {
+      this.annotationPopup.remove();
+      this.annotationPopup = null;
+    }
+  },
+
+  showAnnotationPopup(annotation, marker) {
+    if (!annotation || !marker || !this.annotationLayer) return;
+    this.clearAnnotationPopup();
+
+    const popup = document.createElement('div');
+    popup.className = 'acc-annotation-popup';
+    popup.innerHTML = `
+      <div class="acc-annotation-popup-header">
+        <h3 class="acc-annotation-popup-title">${this.escapeHtml(annotation.title)}</h3>
+        <button type="button" class="acc-annotation-popup-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
+      </div>
+      <p><strong>${this.translate(this.capitalizeFirst(annotation.impact))}</strong></p>
+      <p>${this.escapeHtml(annotation.description)}</p>
+      ${annotation.failureSummary ? `<p><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(annotation.failureSummary)}</p>` : ''}
+      ${annotation.helpUrl ? `<p><a href="${annotation.helpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a></p>` : ''}
+    `;
+    popup.__accMarker = marker;
+
+    const closeButton = popup.querySelector('.acc-annotation-popup-close');
+    closeButton?.addEventListener('click', () => this.clearAnnotationPopup());
+
+    this.annotationLayer.appendChild(popup);
+    this.annotationPopup = popup;
+    this.positionAnnotationPopup(popup, marker);
+  },
+
+  positionAnnotations() {
+    if (!Array.isArray(this.annotationItems) || !this.annotationItems.length) return;
+
+    this.annotationItems.forEach((item) => {
+      if (!item?.target || !item?.marker) return;
+      if (!document.contains(item.target)) {
+        item.marker.hidden = true;
+        return;
+      }
+
+      const rect = item.target.getBoundingClientRect();
+      const outOfView = (
+        rect.width <= 0 ||
+        rect.height <= 0 ||
+        rect.bottom < 0 ||
+        rect.top > window.innerHeight ||
+        rect.right < 0 ||
+        rect.left > window.innerWidth
+      );
+
+      if (outOfView) {
+        item.marker.hidden = true;
+        return;
+      }
+
+      item.marker.hidden = false;
+      item.marker.style.top = `${window.scrollY + rect.top + Math.min(16, rect.height / 2)}px`;
+      item.marker.style.left = `${window.scrollX + rect.right}px`;
+    });
+
+    if (this.annotationPopup?.__accMarker && !this.annotationPopup.__accMarker.hidden) {
+      this.positionAnnotationPopup(this.annotationPopup, this.annotationPopup.__accMarker);
+    }
+  },
+
+  enableAnnotations(enable = false) {
+    if (!enable) {
+      this.disableAnnotations();
+      return;
+    }
+
+    const requestId = ++this.annotationRequestId;
+    this.disableAnnotations({ cancelPending: false });
+    const layer = this.ensureAnnotationLayer();
+
+    this.runBackgroundAxeScan()
+      .then((results) => {
+        if (requestId !== this.annotationRequestId || !this.retrieveState('annotations')) {
+          return;
+        }
+        const annotations = this.buildAnnotationEntries(results);
+        this.annotationItems = annotations.map((annotation) => {
+          const marker = this.createAnnotationMarker(annotation);
+          layer.appendChild(marker);
+          return {
+            marker,
+            target: annotation.element,
+            data: annotation
+          };
+        });
+
+        if (!this.annotationRepositionHandler) {
+          this.annotationRepositionHandler = this.throttle(() => this.positionAnnotations(), 80);
+        }
+        window.addEventListener('scroll', this.annotationRepositionHandler, { passive: true });
+        window.addEventListener('resize', this.annotationRepositionHandler, { passive: true });
+
+        if (!this.annotationOutsideHandler) {
+          this.annotationOutsideHandler = (event) => {
+            if (!this.annotationPopup) return;
+            const clickedPopup = this.annotationPopup.contains(event.target);
+            const clickedMarker = event.target?.closest?.('.acc-annotation-marker');
+            if (!clickedPopup && !clickedMarker) {
+              this.clearAnnotationPopup();
+            }
+          };
+        }
+        document.addEventListener('click', this.annotationOutsideHandler, true);
+
+        this.positionAnnotations();
+      })
+      .catch((error) => {
+        console.warn('Failed to render annotations:', error);
+      });
+  },
+
+  disableAnnotations({ cancelPending = true } = {}) {
+    if (cancelPending) {
+      this.annotationRequestId += 1;
+    }
+    this.clearAnnotationPopup();
+
+    if (this.annotationOutsideHandler) {
+      document.removeEventListener('click', this.annotationOutsideHandler, true);
+    }
+    if (this.annotationRepositionHandler) {
+      window.removeEventListener('scroll', this.annotationRepositionHandler);
+      window.removeEventListener('resize', this.annotationRepositionHandler);
+    }
+
+    if (this.annotationLayer) {
+      this.annotationLayer.remove();
+      this.annotationLayer = null;
+    }
+
+    this.annotationItems = [];
+  },
+
+  isFocusModeCandidate(element) {
+    if (!(element instanceof Element)) return false;
+    if (element.closest('.acc-container')) return false;
+    if (!this.isElementVisibleForTts(element)) return false;
+
+    const rect = element.getBoundingClientRect();
+    const text = this.normalizeReadableText(element.innerText || element.textContent || '');
+    const hasSubstantialText = text.length >= 40;
+    const hasSubstantialHeight = rect.height >= 80;
+    return hasSubstantialText || hasSubstantialHeight;
+  },
+
+  getFocusModeSections() {
+    if (typeof document === 'undefined') return [];
+
+    const root = this.getPrimaryContentRoot() || document.body;
+    let sections = Array.from(root.children).filter((element) => this.isFocusModeCandidate(element));
+
+    if (sections.length < 2) {
+      const selector = 'section,article,[role="region"],h1,h2,h3,p,ul,ol';
+      sections = Array.from(root.querySelectorAll(selector))
+        .filter((element) => this.isFocusModeCandidate(element));
+    }
+
+    const deduped = sections.filter((element, index, arr) =>
+      !arr.some((other, otherIndex) => otherIndex !== index && other.contains(element))
+    );
+
+    if (!deduped.length && this.isFocusModeCandidate(root)) {
+      return [root];
+    }
+
+    return deduped.slice(0, 40);
+  },
+
+  updateFocusModeOverlayPosition() {
+    if (!this.focusModeOverlay || !this.focusModeTarget) return;
+    if (!document.contains(this.focusModeTarget)) return;
+    const rect = this.focusModeTarget.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+    const padding = 8;
+    this.focusModeOverlay.style.top = `${Math.max(0, rect.top - padding)}px`;
+    this.focusModeOverlay.style.left = `${Math.max(0, rect.left - padding)}px`;
+    this.focusModeOverlay.style.width = `${rect.width + (padding * 2)}px`;
+    this.focusModeOverlay.style.height = `${rect.height + (padding * 2)}px`;
+  },
+
+  moveFocusModeToIndex(index, { scroll = true } = {}) {
+    if (!Array.isArray(this.focusModeSections) || !this.focusModeSections.length) return;
+    const sectionCount = this.focusModeSections.length;
+    const normalizedIndex = ((index % sectionCount) + sectionCount) % sectionCount;
+
+    if (this.focusModeTarget) {
+      this.focusModeTarget.classList.remove('acc-focus-current');
+      this.focusModeTarget.classList.remove('acc-focus-target');
+    }
+
+    const target = this.focusModeSections[normalizedIndex];
+    if (!target) return;
+    this.focusModeIndex = normalizedIndex;
+    this.focusModeTarget = target;
+    target.classList.add('acc-focus-current');
+    target.classList.add('acc-focus-target');
+
+    if (scroll) {
+      const reduceMotion = window.matchMedia?.(SYSTEM_PREFERS_REDUCED_MOTION)?.matches;
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center', inline: 'nearest' });
+    }
+
+    this.updateFocusModeOverlayPosition();
+  },
+
+  focusNextSection() {
+    this.moveFocusModeToIndex(this.focusModeIndex + 1);
+  },
+
+  focusPrevSection() {
+    this.moveFocusModeToIndex(this.focusModeIndex - 1);
+  },
+
+  enableFocusMode(enable = false) {
+    if (!enable) {
+      this.disableFocusMode();
+      return;
+    }
+
+    if (this.focusModeActive) {
+      this.updateFocusModeOverlayPosition();
+      return;
+    }
+
+    const sections = this.getFocusModeSections();
+    if (!sections.length) return;
+    this.focusModeSections = sections;
+    this.focusModeActive = true;
+    document.body?.classList.add('acc-focus-mode-active');
+    this.focusModeSections.forEach((section) => {
+      section.classList.add('acc-focus-section');
+    });
+
+    const overlay = document.createElement('div');
+    overlay.className = 'acc-focus-overlay acc-container';
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(overlay);
+    this.focusModeOverlay = overlay;
+
+    const hint = document.createElement('div');
+    hint.className = 'acc-focus-hint acc-container';
+    hint.textContent = this.translate('Press Escape to exit focus mode');
+    document.body.appendChild(hint);
+    this.focusModeHint = hint;
+
+    this.focusModeKeyHandler = (event) => {
+      if (!this.focusModeActive) return;
+      if (event.key === 'Escape' || event.key === 'Esc') {
+        event.preventDefault();
+        this.updateState({ 'focus-mode': false });
+        this.disableFocusMode();
+        const focusButton = document.querySelector('.acc-btn[data-key="focus-mode"]');
+        if (focusButton) {
+          focusButton.classList.remove('acc-selected');
+          focusButton.setAttribute('aria-pressed', 'false');
+        }
+        return;
+      }
+      if (event.key === 'ArrowDown' || event.key === 'ArrowRight' || (event.key === 'Tab' && !event.shiftKey)) {
+        event.preventDefault();
+        this.focusNextSection();
+        return;
+      }
+      if (event.key === 'ArrowUp' || event.key === 'ArrowLeft' || (event.key === 'Tab' && event.shiftKey)) {
+        event.preventDefault();
+        this.focusPrevSection();
+      }
+    };
+    document.addEventListener('keydown', this.focusModeKeyHandler, true);
+
+    this.focusModeResizeHandler = this.throttle(() => this.updateFocusModeOverlayPosition(), 80);
+    window.addEventListener('resize', this.focusModeResizeHandler, { passive: true });
+    window.addEventListener('scroll', this.focusModeResizeHandler, { passive: true });
+
+    this.moveFocusModeToIndex(0, { scroll: false });
+  },
+
+  disableFocusMode() {
+    if (this.focusModeTarget) {
+      this.focusModeTarget.classList.remove('acc-focus-current');
+      this.focusModeTarget.classList.remove('acc-focus-target');
+      this.focusModeTarget = null;
+    }
+
+    if (this.focusModeOverlay) {
+      this.focusModeOverlay.remove();
+      this.focusModeOverlay = null;
+    }
+
+    if (this.focusModeHint) {
+      this.focusModeHint.remove();
+      this.focusModeHint = null;
+    }
+
+    if (this.focusModeKeyHandler) {
+      document.removeEventListener('keydown', this.focusModeKeyHandler, true);
+      this.focusModeKeyHandler = null;
+    }
+
+    if (this.focusModeResizeHandler) {
+      window.removeEventListener('resize', this.focusModeResizeHandler);
+      window.removeEventListener('scroll', this.focusModeResizeHandler);
+      this.focusModeResizeHandler = null;
+    }
+
+    this.focusModeSections.forEach((section) => {
+      section.classList.remove('acc-focus-section');
+      section.classList.remove('acc-focus-current');
+    });
+    document.body?.classList.remove('acc-focus-mode-active');
+    this.focusModeSections = [];
+    this.focusModeIndex = -1;
+    this.focusModeActive = false;
+  },
+
+  clearSimpleLayoutDomMutations() {
+    if (this.simpleLayoutRoot) {
+      this.simpleLayoutRoot.classList.remove('acc-simple-layout-root');
+      this.simpleLayoutRoot = null;
+    }
+
+    if (Array.isArray(this.simpleLayoutHiddenElements)) {
+      this.simpleLayoutHiddenElements.forEach((element) => {
+        if (element && element.classList) {
+          element.classList.remove('acc-simple-layout-hidden');
+        }
+      });
+    }
+    this.simpleLayoutHiddenElements = [];
+  },
+
+  applySimpleLayoutDomMutations() {
+    const root = this.getPrimaryContentRoot();
+    if (!root || !document.body) return;
+
+    this.simpleLayoutRoot = root;
+    root.classList.add('acc-simple-layout-root');
+
+    const hiddenElements = [];
+    Array.from(document.body.children).forEach((child) => {
+      if (!(child instanceof Element)) return;
+      if (child.classList.contains('acc-container')) return;
+      if (child === root || child.contains(root)) return;
+      child.classList.add('acc-simple-layout-hidden');
+      hiddenElements.push(child);
+    });
+
+    const clutterSelectors = [
+      'aside',
+      'nav',
+      'form',
+      'footer',
+      '[role="complementary"]',
+      '[role="search"]',
+      '[role="contentinfo"]',
+      '[aria-hidden="true"]',
+      '[class*="cookie"]',
+      '[id*="cookie"]',
+      '[class*="banner"]',
+      '[id*="banner"]',
+      '[class*="popup"]',
+      '[id*="popup"]',
+      '[class*="modal"]',
+      '[id*="modal"]',
+      '[class*="advert"]',
+      '[id*="advert"]',
+      '[class*="ads"]',
+      '[id*="ads"]',
+      '[class*="sidebar"]',
+      '[id*="sidebar"]',
+      '[class*="social"]',
+      '[id*="social"]',
+      '[class*="share"]',
+      '[id*="share"]',
+      '[class*="newsletter"]',
+      '[id*="newsletter"]',
+      '[class*="related"]',
+      '[id*="related"]',
+      '[class*="comment"]',
+      '[id*="comment"]',
+      '[class*="footer"]',
+      '[id*="footer"]',
+      '[class*="promo"]',
+      '[id*="promo"]'
+    ].join(',');
+
+    root.querySelectorAll(clutterSelectors).forEach((element) => {
+      if (!(element instanceof Element)) return;
+      if (element.closest('.acc-container')) return;
+      if (element === root) return;
+      element.classList.add('acc-simple-layout-hidden');
+      hiddenElements.push(element);
+    });
+
+    this.simpleLayoutHiddenElements = hiddenElements;
+  },
+
+  enableSimpleLayout(enable = false) {
+    const S = 'body.acc-simple-layout-enabled';
+    const R = `${S} .acc-simple-layout-root`;
+    const X = ':not(.acc-container):not(.acc-container *)';
+    const config = {
+      id: 'simple-layout',
+      css: `
+        /* ── Body & root container ── */
+        ${S} {
+          background: #fff !important;
+        }
+
+        ${S} .acc-simple-layout-hidden {
+          display: none !important;
+        }
+
+        ${R} {
+          max-width: 72ch !important;
+          margin: 0 auto !important;
+          padding: clamp(20px, 4vw, 40px) 20px !important;
+          position: relative !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+        }
+
+        /* ── Universal decoration strip ── */
+        ${R} :where(*)${X} {
+          background-color: transparent !important;
+          background-image: none !important;
+          box-shadow: none !important;
+          text-shadow: none !important;
+          border-color: transparent !important;
+        }
+
+        /* ── Layout linearization ── */
+        ${R} :where(div, section, article, header, main, footer, figure, figcaption, details, summary, hgroup, search)${X} {
+          display: block !important;
+          position: static !important;
+          float: none !important;
+          transform: none !important;
+          columns: auto !important;
+          column-count: auto !important;
+          width: auto !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+
+        /* ── Color reset ── */
+        ${R} :where(h1, h2, h3, h4, h5, h6)${X} {
+          color: #111 !important;
+        }
+
+        ${R} :where(p, li, dt, dd, td, th, span, blockquote, figcaption, label, summary, details)${X} {
+          color: #222 !important;
+        }
+
+        ${R} :where(a)${X} {
+          color: #1a0dab !important;
+        }
+
+        ${R} :where(a:visited)${X} {
+          color: #681da8 !important;
+        }
+
+        /* ── Typography ── */
+        ${R} :where(*)${X} {
+          font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+        }
+
+        ${R} :where(p, li, dt, dd, blockquote, figcaption, td, th, label, summary)${X} {
+          font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem) !important;
+          line-height: 1.8 !important;
+          letter-spacing: 0.01em !important;
+          max-width: 70ch !important;
+        }
+
+        ${R} :where(h1)${X} {
+          font-size: 2em !important;
+          line-height: 1.2 !important;
+          margin: 0.67em 0 !important;
+          font-weight: 700 !important;
+        }
+
+        ${R} :where(h2)${X} {
+          font-size: 1.5em !important;
+          line-height: 1.25 !important;
+          margin: 0.83em 0 !important;
+          font-weight: 700 !important;
+        }
+
+        ${R} :where(h3)${X} {
+          font-size: 1.25em !important;
+          line-height: 1.3 !important;
+          margin: 1em 0 !important;
+          font-weight: 600 !important;
+        }
+
+        ${R} :where(h4, h5, h6)${X} {
+          font-size: 1.1em !important;
+          line-height: 1.35 !important;
+          margin: 1em 0 !important;
+          font-weight: 600 !important;
+        }
+
+        /* ── Decorative images hidden ── */
+        ${R} :where(img[role="presentation"], img[alt=""], img:not([alt]), svg[aria-hidden="true"])${X} {
+          display: none !important;
+        }
+
+        /* ── Meaningful borders restored ── */
+        ${R} :where(hr)${X} {
+          border: none !important;
+          border-top: 1px solid #d1d5db !important;
+          margin: 1.5em 0 !important;
+        }
+
+        ${R} :where(blockquote)${X} {
+          border-left: 4px solid #d1d5db !important;
+          padding-left: 1em !important;
+          margin-left: 0 !important;
+          font-style: italic !important;
+        }
+
+        ${R} :where(table)${X} {
+          border-collapse: collapse !important;
+          max-width: 100% !important;
+          overflow-x: auto !important;
+          display: table !important;
+        }
+
+        ${R} :where(th, td)${X} {
+          border: 1px solid #d1d5db !important;
+          padding: 8px 12px !important;
+          text-align: left !important;
+        }
+
+        ${R} :where(th)${X} {
+          font-weight: 600 !important;
+          background: #f8f9fa !important;
+        }
+
+        /* ── Lists ── */
+        ${R} :where(ul, ol)${X} {
+          padding-left: 1.5em !important;
+          margin: 0.75em 0 !important;
+        }
+
+        ${R} :where(li)${X} {
+          display: list-item !important;
+          margin: 0.25em 0 !important;
+        }
+
+        /* ── Code blocks ── */
+        ${R} :where(pre)${X} {
+          background: #f6f8fa !important;
+          border-radius: 6px !important;
+          padding: 1em !important;
+          overflow-x: auto !important;
+          max-width: 100% !important;
+        }
+
+        ${R} :where(code, kbd, samp)${X} {
+          font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
+          font-size: 0.9em !important;
+        }
+
+        ${R} :where(code):not(pre code)${X} {
+          background: #f0f2f5 !important;
+          padding: 0.15em 0.4em !important;
+          border-radius: 3px !important;
+        }
+
+        /* ── Empty wrapper collapse ── */
+        ${R} :where(div:empty)${X} {
+          display: none !important;
+        }
+
+        /* ── Media ── */
+        ${R} :where(img, video, iframe)${X} {
+          max-width: 100% !important;
+          height: auto !important;
+          border-radius: 4px !important;
+        }
+      `
+    };
+
+    this.applyToolStyle({ ...config, enable });
+    document.body?.classList.toggle('acc-simple-layout-enabled', !!enable);
+
+    this.clearSimpleLayoutDomMutations();
+    if (enable) {
+      this.applySimpleLayoutDomMutations();
+    }
+  },
+
   applyEnhancements() {
       const { states } = this.loadConfig();
       // Handle font size scaling
@@ -790,6 +2286,11 @@ export const featureMethods = {
       this.enableReadingAid(states && states['reading-aid']);
       this.pauseMotion(states && states['pause-motion']);
       this.enableLargePointer(states && states['large-pointer']);
+      this.enableHighContrastMode(states && states['high-contrast-mode']);
+      this.enableAnnotations(states && states['annotations']);
+      this.enableTextToSpeech(states && states['text-to-speech']);
+      this.enableFocusMode(states && states['focus-mode']);
+      this.enableSimpleLayout(states && states['simple-layout']);
     },
 
   isColorFilterKey(key) {
@@ -818,7 +2319,7 @@ export const featureMethods = {
       });
     },
 
-  updateColorFilterState(activeKey = null) {
+  updateColorFilterState(activeKey = null, source = 'user') {
       if (!this.colorFilterKeys || !this.colorFilterKeys.length) {
         this.activeColorFilterKey = null;
         return;
@@ -840,7 +2341,7 @@ export const featureMethods = {
         }
       });
       if (requiresUpdate) {
-        this.updateState(payload);
+        this.updateState(payload, { source });
       }
       this.activeColorFilterKey = activeKey;
     },
@@ -933,7 +2434,7 @@ export const featureMethods = {
     },
 
   resetEnhancements() {
-      this.saveConfig({ states: {} });
+      this.saveConfig({ states: {}, systemDefaults: {} });
       this.textScaleIndex = 0;
       this.activeColorFilterKey = null;
       Object.keys(this.multiLevelFeatures).forEach(key => {
@@ -964,12 +2465,14 @@ export const featureMethods = {
         'acc-readable-text',
         'acc-pause-motion',
         'acc-hide-images',
-        'acc-filter-style'
+        'acc-filter-style',
+        'acc-simple-layout'
       ];
       styleIds.forEach(id => {
         const style = document.getElementById(id);
         if (style) style.remove();
       });
+      this.clearSimpleLayoutDomMutations();
       document.documentElement.classList.remove(
         'acc-filter',
         'acc-saturation',
@@ -981,8 +2484,12 @@ export const featureMethods = {
         'acc-highlight-title',
         'acc-readable-text',
         'acc-pause-motion',
-        'acc-hide-images'
+        'acc-hide-images',
+        'acc-high-contrast-mode',
+        'acc-simple-layout'
       );
+      document.body?.classList.remove('acc-simple-layout-enabled');
+      document.body?.classList.remove('acc-high-contrast-mode');
       this.disconnectTextScaleObserver();
       this.currentTextScaleMultiplier = 1;
       const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
@@ -999,6 +2506,14 @@ export const featureMethods = {
           delete window.__accweb__scrollGuide;
         }
       }
+      this.disableAnnotations();
+      this.stopSpeech();
+      this.stopTtsClickMode();
+      this.disableFocusMode();
+      this.clearSystemPreferenceListeners();
+      this.detectSystemPreferences();
+      this.setupMediaQueryListeners();
+      this.updateViolationBubble({ violations: [] });
     },
 
 };

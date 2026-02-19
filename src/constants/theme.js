@@ -8,7 +8,7 @@ export const WIDGET_THEME = {
       textColorInverted: '#ffffff',
       
       // UI elements
-      buttonSize: '34px',
+      buttonSize: '48px',
       cardBackground: '#ffffff',
       borderColor: '#d1d5db',
       focusRingColor: '#1976d2',      // Match primary
