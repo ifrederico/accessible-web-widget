@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.1.0
+ * AccessibleWeb Widget v1.1.1
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
@@ -4274,7 +4274,7 @@ var AccessibleWebWidget = (function () {
     };
 
     /*!
-     * AccessibleWeb Widget v1.1.0
+     * AccessibleWeb Widget v1.1.1
      * https://github.com/ifrederico/accessible-web-widget
      *
      * Copyright (c) 2025 ifrederico

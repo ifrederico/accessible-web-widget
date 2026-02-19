@@ -34,7 +34,7 @@ The widget initializes on page load. No config required.
 ### Pin a specific version
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.0/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.1/dist/accessible-web-widget.min.js"></script>
 ```
 
 ### Self-host
