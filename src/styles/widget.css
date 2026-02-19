@@ -40,7 +40,7 @@
   }
   
   .acc-toggle-btn:hover {
-    transform: none;
+    transform: scale(1.12);
   }
 
   .acc-violation-bubble {

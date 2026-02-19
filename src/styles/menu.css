@@ -3,7 +3,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
   opacity: 1;
   transition: 0.3s;
   z-index: var(--acc-widget-z-index, 100000);
@@ -61,7 +61,7 @@
   font-size: 16px;
   font-weight: 600;
   color: var(--acc-text-color-inverted) !important;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease;
   border-radius: 4px;
   visibility: hidden;
 }
@@ -71,39 +71,39 @@
 }
 
 .acc-back-btn.visible {
-    visibility: visible;
-  }
+  visibility: visible;
+}
 
-  .acc-back-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
+.acc-back-btn:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+}
 
-  .acc-back-btn:focus {
-    outline: 2px solid var(--acc-text-color-inverted);
-    outline-offset: 1px;
-  }
+.acc-back-btn:focus {
+  outline: 2px solid var(--acc-text-color-inverted);
+  outline-offset: 1px;
+}
 
-  .acc-back-btn svg {
-    fill: var(--acc-text-color-inverted) !important;
-    width: 24px !important;
-    height: 24px !important;
-  }
+.acc-back-btn svg {
+  fill: var(--acc-text-color-inverted) !important;
+  width: 24px !important;
+  height: 24px !important;
+}
 
-  .acc-menu-title-dynamic {
-    display: none !important;
-  }
+.acc-menu-title-dynamic {
+  display: none !important;
+}
 
-  .acc-menu-title-dynamic.visible {
-    display: block !important;
-  }
+.acc-menu-title-dynamic.visible {
+  display: block !important;
+}
 
-  .acc-menu-title-default {
-    display: block !important;
-  }
+.acc-menu-title-default {
+  display: block !important;
+}
 
-  .acc-menu-title-default.hidden {
-    display: none !important;
-  }
+.acc-menu-title-default.hidden {
+  display: none !important;
+}
 
 .acc-menu-header svg {
   fill: var(--acc-text-color-inverted) !important;
@@ -130,17 +130,17 @@
   justify-content: center;
   width: 36px;
   height: 36px;
+  transition: background-color 0.2s ease;
 }
 
 .acc-menu-header div[role="button"]:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.18);
 }
 
 .acc-menu-header div[role="button"]:focus {
   outline: 2px solid var(--acc-text-color-inverted);
   outline-offset: 1px;
 }
-
 
 .acc-menu-header .acc-header-actions {
   display: flex;
@@ -158,10 +158,11 @@
   padding: 4px;
   border-radius: 50%;
   color: var(--acc-text-color-inverted);
+  transition: background-color 0.2s ease;
 }
 
 .acc-lang-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.18);
 }
 
 .acc-lang-toggle:focus {
@@ -184,10 +185,9 @@
   max-height: calc(100% - var(--acc-header-height)) !important;
   background: var(--acc-bg-color);
   z-index: 100;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
   overflow-y: auto;
   display: none;
-
 }
 
 .acc-lang-panel.open {
@@ -203,12 +203,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  border: 2px solid var(--acc-primary-color);
+  border: 1.5px solid var(--acc-primary-color);
   border-radius: var(--acc-button-border-radius);
   margin-top: 8px;
   color: var(--acc-primary-color);
   font-weight: 600;
-  background: white;
+  background: var(--acc-card-bg);
 }
 
 .acc-lang-search-wrapper {
@@ -218,10 +218,11 @@
 .acc-lang-search {
   width: 100%;
   padding: 10px 16px;
-  border: 2px solid var(--acc-border-color);
+  border: 1.5px solid var(--acc-border-color);
   border-radius: var(--acc-button-border-radius);
   font-size: 16px;
   background-color: var(--acc-card-bg);
+  transition: border-color 0.2s ease;
 }
 
 .acc-lang-search:focus {
@@ -240,18 +241,19 @@
   display: block;
   width: 100%;
   text-align: left;
-  padding: 12px 16px;
-  margin-bottom: 4px;
+  padding: 11px 16px;
+  margin-bottom: 2px;
   background-color: transparent;
   border: none;
   border-radius: var(--acc-button-border-radius);
   cursor: pointer;
   font-size: 16px;
   color: var(--acc-text-color);
+  transition: background-color 0.12s ease;
 }
 
 .acc-lang-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(25, 118, 210, 0.06);
 }
 
 .acc-lang-item:focus {
@@ -260,7 +262,7 @@
 }
 
 .acc-lang-item.selected {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(25, 118, 210, 0.08);
   font-weight: 600;
 }
 
@@ -273,18 +275,16 @@
   background-position: center;
 }
 
-
-
 /* Content sections */
 .acc-section {
   margin: 0 16px 24px;
 }
 
-.acc-section-title {
-  font-size: 16px !important;
-  padding: 16px 14px;
-  font-weight: 600 !important;
-  color: var(--acc-text-color);
+.acc-menu .acc-section-title {
+  font-size: 18px !important;
+  padding: 0 2px 12px;
+  font-weight: 500 !important;
+  color: var(--acc-text-color) !important;
 }
 
 .acc-menu .acc-lang-select {
@@ -295,11 +295,10 @@
   font-weight: 600 !important;
   border-radius: var(--acc-button-border-radius) !important;
   background: var(--acc-card-bg) !important;
-  border: 2px solid var(--acc-border-color) !important;
+  border: 1.5px solid var(--acc-border-color) !important;
   min-height: 48px !important;
   max-height: 48px !important;
   height: 48px !important;
-  color: var(--acc-text-color) !important;
   color: var(--acc-text-color) !important;
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
@@ -341,8 +340,8 @@
   text-align: center;
   font-size: 16px !important;
   background: var(--acc-card-bg) !important;
-  border: 2px solid var(--acc-border-color) !important;
-  transition: all 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  transition: background-color 0.2s ease;
   cursor: pointer;
   word-break: break-word;
   gap: 8px;
@@ -351,6 +350,7 @@
 
 .acc-btn:hover {
   border-color: var(--acc-hover-color) !important;
+  border-width: 2px !important;
 }
 
 .acc-btn:focus {
@@ -366,21 +366,21 @@
 
 /* SVG icons */
 .acc-text-adjust svg {
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  min-height: 24px !important;
-  max-width: 24px !important;
-  max-height: 24px !important;
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  max-width: 20px !important;
+  max-height: 20px !important;
 }
 
 .acc-btn svg {
-  width: 34px !important;
-  height: 34px !important;
-  min-width: 34px !important;
-  min-height: 34px !important;
-  max-width: 34px !important;
-  max-height: 34px !important;
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  min-height: 26px !important;
+  max-width: 26px !important;
+  max-height: 26px !important;
   fill: var(--acc-text-color);
 }
 
@@ -398,7 +398,7 @@
   background-color: var(--acc-text-color-inverted) !important;
 }
 
-.acc-btn.acc-selected svg, 
+.acc-btn.acc-selected svg,
 .acc-btn.acc-selected span,
 .acc-btn.acc-selected .acc-label {
   fill: var(--acc-text-color-inverted) !important;
@@ -406,9 +406,8 @@
 }
 
 /* Reset All Settings button */
-
 .acc-reset-container {
-  margin: 24px 16px;
+  margin: 20px 16px 24px;
   display: flex;
   justify-content: center;
 }
@@ -419,14 +418,14 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 12px 24px;
+  padding: 13px 24px;
   background-color: var(--acc-primary-color) !important;
   border: none;
   border-radius: var(--acc-button-border-radius);
   font-weight: 600 !important;
   font-size: 16px !important;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .acc-reset-btn > span {
@@ -456,24 +455,26 @@
   left: 0;
   right: 0;
   background: var(--acc-card-bg);
-  padding: 16px;
+  padding: 12px 16px;
   text-align: center;
   border-top: 1px solid var(--acc-border-color);
   z-index: 100;
 }
 
 .acc-footer a {
-  font-size: 14px !important;
+  font-size: 12px !important;
   text-decoration: none !important;
-  color: var(--acc-text-color) !important;
+  color: #6b7280 !important;
   background: transparent !important;
-  font-weight: 600 !important;
-  padding: 8px;
+  font-weight: 500 !important;
+  padding: 6px 8px;
   border-radius: 4px;
+  transition: color 0.15s ease;
+  letter-spacing: 0.01em !important;
 }
 
 .acc-footer a:hover {
-  text-decoration: underline !important;
+  text-decoration: none !important;
   color: var(--acc-primary-color) !important;
 }
 
@@ -492,10 +493,10 @@
 /* Text adjustments */
 .acc-text-adjust {
   background: var(--acc-card-bg);
-  padding: 20px;
+  padding: 18px 20px;
   margin-bottom: 20px;
   border-radius: var(--acc-border-radius);
-  border: 2px solid var(--acc-border-color);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .acc-text-adjust .acc-label {
@@ -524,11 +525,12 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 2px solid var(--acc-border-color);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: border-color 0.2s ease;
 }
 
 .acc-text-adjust div[role="button"]:hover {
-  border-color: var(--acc-hover-color);
+  border-color: var(--acc-primary-color);
 }
 
 .acc-text-adjust div[role="button"]:focus {
@@ -557,8 +559,8 @@
 }
 
 .acc-progress-dot {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background-color: var(--acc-border-color);
   transition: background-color 0.2s ease;
@@ -579,9 +581,9 @@
 }
 
 @media only screen and (max-width: 420px) {
-  .acc-options { 
-    grid-template-columns: repeat(2, minmax(0, 1fr)); 
-    gap: 12px; 
+  .acc-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
   .acc-btn {
     padding: 8px;
@@ -595,7 +597,10 @@
   .acc-lang-select,
   .acc-progress-dot,
   .acc-menu-header div[role="button"],
-  .acc-reset-btn {
+  .acc-lang-toggle,
+  .acc-back-btn,
+  .acc-reset-btn,
+  .acc-text-adjust div[role="button"] {
     transition: none;
   }
 }
