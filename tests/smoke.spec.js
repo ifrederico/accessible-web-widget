@@ -366,3 +366,56 @@ test('system preferences enable pause motion and dark contrast defaults', async 
   await expect(page.locator('.acc-btn[data-key="pause-motion"]')).toHaveClass(/acc-selected/);
   await expect(page.locator('.acc-btn[data-key="dark-contrast"]')).toHaveClass(/acc-selected/);
 });
+
+test('high contrast mode applies styles and toggles cleanly', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  // Enable high contrast
+  await page.locator('.acc-btn[data-key="high-contrast-mode"]').click();
+  await expect(page.locator('body')).toHaveClass(/acc-high-contrast-mode/);
+
+  // Verify CSS overrides on page content
+  const styles = await page.locator('.container p').first().evaluate((el) => {
+    const cs = window.getComputedStyle(el);
+    return { color: cs.color, backgroundColor: cs.backgroundColor };
+  });
+  expect(styles.color).toBe('rgb(0, 0, 0)');
+  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)');
+
+  // Widget menu should NOT be affected
+  const menuStyles = await page.locator('.acc-menu').evaluate((el) => {
+    const cs = window.getComputedStyle(el);
+    return { color: cs.color };
+  });
+  expect(menuStyles.color).not.toBe('rgb(0, 0, 0)');
+
+  // Toggle off
+  await page.locator('.acc-btn[data-key="high-contrast-mode"]').click();
+  await expect(page.locator('body')).not.toHaveClass(/acc-high-contrast-mode/);
+});
+
+test('high contrast mode persists and works with other features', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  // Enable high contrast + bold text + highlight links simultaneously
+  await page.locator('.acc-btn[data-key="high-contrast-mode"]').click();
+  await page.locator('.acc-btn[data-key="bold-text"]').click();
+  await page.locator('.acc-btn[data-key="highlight-links"]').click();
+
+  await expect(page.locator('.acc-btn[data-key="high-contrast-mode"]')).toHaveClass(/acc-selected/);
+  await expect(page.locator('.acc-btn[data-key="bold-text"]')).toHaveClass(/acc-selected/);
+  await expect(page.locator('.acc-btn[data-key="highlight-links"]')).toHaveClass(/acc-selected/);
+
+  // Persists after reload
+  await page.reload();
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-btn[data-key="high-contrast-mode"]')).toHaveClass(/acc-selected/);
+  await expect(page.locator('body')).toHaveClass(/acc-high-contrast-mode/);
+
+  // Reset clears everything
+  await page.locator('.acc-reset-btn').click();
+  await expect(page.locator('body')).not.toHaveClass(/acc-high-contrast-mode/);
+  await expect(page.locator('.acc-btn[data-key="high-contrast-mode"]')).not.toHaveClass(/acc-selected/);
+});
