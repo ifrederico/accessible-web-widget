@@ -8,8 +8,6 @@ const AXE_RUN_OPTIONS = {
 };
 const MAX_ANNOTATIONS = 50;
 const SYSTEM_PREFERS_REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
-const SYSTEM_PREFERS_DARK_SCHEME = '(prefers-color-scheme: dark)';
-const SYSTEM_PREFERS_MORE_CONTRAST = '(prefers-contrast: more)';
 
 /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
 export const featureMethods = {
@@ -634,41 +632,15 @@ export const featureMethods = {
     return true;
   },
 
-  applySystemDarkContrastPreference(shouldEnable) {
-    this.loadConfig();
-    const explicitColorPreference = this.hasExplicitColorFilterPreference();
-    const darkContrastIsUserControlled = this.hasExplicitStatePreference('dark-contrast');
-    if (explicitColorPreference || darkContrastIsUserControlled) {
-      return false;
-    }
-
-    const nextActiveKey = shouldEnable ? 'dark-contrast' : null;
-    const currentActiveKey = this.getActiveColorFilterKey(this.widgetConfig.states);
-    const isSystemControlled = this.isSystemControlledPreference('dark-contrast');
-    if (currentActiveKey === nextActiveKey && (isSystemControlled || !shouldEnable)) {
-      return false;
-    }
-
-    this.updateColorFilterState(nextActiveKey, 'system');
-    return true;
-  },
-
   detectSystemPreferences() {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
 
     const reducedMotionQuery = this.ensureMediaQuery(SYSTEM_PREFERS_REDUCED_MOTION);
-    const darkSchemeQuery = this.ensureMediaQuery(SYSTEM_PREFERS_DARK_SCHEME);
-    const highContrastQuery = this.ensureMediaQuery(SYSTEM_PREFERS_MORE_CONTRAST);
-
     const shouldPauseMotion = !!reducedMotionQuery?.matches;
-    const shouldEnableDarkContrast = !!darkSchemeQuery?.matches || !!highContrastQuery?.matches;
-
     const motionChanged = this.applySystemMotionPreference(shouldPauseMotion);
-    const contrastChanged = this.applySystemDarkContrastPreference(shouldEnableDarkContrast);
 
-    if (motionChanged || contrastChanged) {
+    if (motionChanged) {
       this.applyEnhancements();
-      this.applyVisualFilters();
     }
   },
 
@@ -687,8 +659,6 @@ export const featureMethods = {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
 
     const reducedMotionQuery = this.ensureMediaQuery(SYSTEM_PREFERS_REDUCED_MOTION);
-    const darkSchemeQuery = this.ensureMediaQuery(SYSTEM_PREFERS_DARK_SCHEME);
-    const highContrastQuery = this.ensureMediaQuery(SYSTEM_PREFERS_MORE_CONTRAST);
 
     const listen = (mediaQuery, handler) => {
       if (!mediaQuery || typeof handler !== 'function') return;
@@ -708,17 +678,7 @@ export const featureMethods = {
       }
     };
 
-    const onContrastChange = () => {
-      const shouldEnableDarkContrast = !!darkSchemeQuery?.matches || !!highContrastQuery?.matches;
-      const changed = this.applySystemDarkContrastPreference(shouldEnableDarkContrast);
-      if (changed) {
-        this.applyVisualFilters();
-      }
-    };
-
     listen(reducedMotionQuery, onReducedMotionChange);
-    listen(darkSchemeQuery, onContrastChange);
-    listen(highContrastQuery, onContrastChange);
   },
 
   async runAccessibilityReport() {

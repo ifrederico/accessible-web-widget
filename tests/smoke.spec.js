@@ -120,7 +120,7 @@ test('annotation markers render when page annotations is enabled', async ({ page
           help: 'Mock heading issue',
           description: 'Mock issue description',
           helpUrl: 'https://example.com/help',
-          nodes: [{ target: ['.container h1'], failureSummary: 'Mock failure summary' }]
+          nodes: [{ target: ['h1'], failureSummary: 'Mock failure summary' }]
         }]
       };
       this.axeScanResults = results;
@@ -220,7 +220,7 @@ test('text-to-speech waits for click and does not auto-play', async ({ page }) =
   // The announcement ("Text to Speech On") may have fired; record the count
   const countBeforeClick = await page.evaluate(() => window.__nativeSpeakPayloads.length);
 
-  await page.locator('.container h1').click();
+  await page.locator('h1').first().click();
   await expect.poll(async () => page.evaluate(() => window.__nativeSpeakPayloads.length)).toBeGreaterThan(countBeforeClick);
 });
 
@@ -331,7 +331,7 @@ test('simplify layout isolates primary content root', async ({ page }) => {
   expect(parseFloat(rootStyles.maxWidth)).toBeGreaterThan(600);
 });
 
-test('system preferences enable pause motion and dark contrast defaults', async ({ page }) => {
+test('system preferences only auto-enable pause motion', async ({ page }) => {
   await page.addInitScript(() => {
     window.matchMedia = (query) => {
       const normalized = String(query || '');
@@ -355,7 +355,11 @@ test('system preferences enable pause motion and dark contrast defaults', async 
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
   await expect(page.locator('.acc-btn[data-key="pause-motion"]')).toHaveClass(/acc-selected/);
-  await expect(page.locator('.acc-btn[data-key="dark-contrast"]')).toHaveClass(/acc-selected/);
+  await expect(page.locator('.acc-btn[data-key="dark-contrast"]')).not.toHaveClass(/acc-selected/);
+
+  await page.locator('.acc-reset-btn').click();
+  await expect(page.locator('.acc-btn[data-key="pause-motion"]')).toHaveClass(/acc-selected/);
+  await expect(page.locator('.acc-btn[data-key="dark-contrast"]')).not.toHaveClass(/acc-selected/);
 });
 
 test('high contrast mode applies styles and toggles cleanly', async ({ page }) => {
