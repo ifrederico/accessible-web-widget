@@ -220,7 +220,7 @@ test('text-to-speech waits for click and does not auto-play', async ({ page }) =
   // The announcement ("Text to Speech On") may have fired; record the count
   const countBeforeClick = await page.evaluate(() => window.__nativeSpeakPayloads.length);
 
-  await page.locator('h1').first().click();
+  await page.locator('.container p').first().click();
   await expect.poll(async () => page.evaluate(() => window.__nativeSpeakPayloads.length)).toBeGreaterThan(countBeforeClick);
 });
 
