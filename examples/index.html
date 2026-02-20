@@ -41,12 +41,6 @@
             font-weight: 500;
             display: flex;
             align-items: center;
-            transition: opacity 0.2s;
-        }
-
-        .nav-link:hover {
-            text-decoration: underline;
-            text-underline-offset: 4px;
         }
 
         .nav-link svg {
@@ -63,7 +57,6 @@
             text-decoration: none;
             font-size: 15px;
             font-weight: 500;
-            transition: background-color 0.2s;
         }
 
         .btn-primary:hover {
@@ -72,7 +65,7 @@
 
         .container {
             padding: 40px 48px;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -148,7 +141,6 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            transition: background-color 0.2s, color 0.2s;
             margin-left: 8px;
         }
 
@@ -195,7 +187,8 @@
             color: #854d0e;
             padding: 20px 24px;
             border-radius: 8px;
-            margin: 0 0 48px;
+            margin: 0 auto 48px;
+            max-width: 1000px;
             font-size: 15px;
             line-height: 1.6;
         }
@@ -206,14 +199,362 @@
 
         .warning a {
             color: #713f12;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
-            border-bottom: 1px solid #fde047;
-            transition: border-color 0.2s;
         }
 
         .warning a:hover {
-            border-color: #854d0e;
+            color: #854d0e;
+        }
+
+        .section-header {
+            font-family: "Georgia", serif;
+            font-size: 44px;
+            font-weight: 400;
+            color: #0f172a;
+            margin: 60px auto 32px;
+            text-align: left;
+            max-width: 1000px;
+            letter-spacing: -1px;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 0 auto 60px;
+            max-width: 1000px;
+        }
+
+        .feature {
+            background-color: #f1f5f9;
+            padding: 40px;
+            border-radius: 16px;
+            border: none;
+        }
+
+        .feature h3 {
+            font-size: 22px;
+            font-weight: 500;
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 24px;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .feature ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 16px;
+            color: #334155;
+            font-size: 15px;
+        }
+
+        .feature li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .content-section {
+            margin: 0 auto 60px;
+            max-width: 1000px;
+        }
+
+        .content-section h2,
+        .content-section h3 {
+            color: #0f172a;
+            margin-top: 32px;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .content-section h2:first-child {
+            margin-top: 0;
+            margin-bottom: 24px;
+            font-size: 32px;
+            font-family: "Georgia", serif;
+            font-weight: 400;
+            letter-spacing: -1px;
+        }
+
+        .test-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px;
+        }
+
+        .test-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+            color: #334155;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .test-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #64748b;
+        }
+
+        .implementation-section {
+            margin: 0 auto 80px;
+            max-width: 1000px;
+        }
+
+        .implementation-section p {
+            color: #334155;
+            font-size: 17px;
+            line-height: 1.7;
+            margin: 0 0 28px;
+        }
+
+        .implementation-code {
+            background-color: #0f172a;
+            border-radius: 12px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .implementation-code code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 14px;
+            color: #e2e8f0;
+            line-height: 1.6;
+            white-space: nowrap;
+            overflow-x: auto;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .implementation-code .copy-btn {
+            color: #94a3b8;
+            flex-shrink: 0;
+            margin-left: 0;
+        }
+
+        .implementation-code .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+        }
+
+        .implementation-note {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 16px;
+            line-height: 1.6;
+        }
+
+        /* Tablet */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 16px 24px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-link {
+                font-size: 14px;
+            }
+
+            .btn-primary {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+
+            .hero {
+                padding: 48px 16px 32px;
+            }
+
+            .hero-title {
+                font-size: 40px;
+            }
+
+            .hero-subtitle {
+                font-size: 17px;
+            }
+
+            .code-snippet {
+                margin-bottom: 40px;
+            }
+
+            .code-snippet code {
+                font-size: 12px;
+            }
+
+            .container {
+                padding: 32px 24px;
+            }
+
+            .section-header {
+                font-size: 34px;
+                margin: 40px auto 24px;
+                padding: 0 24px;
+            }
+
+            .feature-list {
+                padding: 0 24px;
+                gap: 16px;
+            }
+
+            .feature {
+                padding: 28px;
+            }
+
+            .warning {
+                margin-left: 24px;
+                margin-right: 24px;
+            }
+
+            .hero-image {
+                margin-bottom: 40px;
+            }
+
+            .implementation-section {
+                padding: 0 24px;
+            }
+
+            .implementation-code {
+                padding: 16px 20px;
+            }
+
+            .implementation-code code {
+                font-size: 12px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 12px 16px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-link:not([aria-label]) {
+                display: none;
+            }
+
+            .btn-primary {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+
+            .hero {
+                padding: 32px 16px 24px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+                letter-spacing: -0.5px;
+            }
+
+            .hero-subtitle {
+                font-size: 15px;
+                margin-bottom: 28px;
+            }
+
+            .code-snippet {
+                padding: 6px 8px 6px 14px;
+                margin-bottom: 32px;
+            }
+
+            .code-snippet code {
+                font-size: 11px;
+            }
+
+            .container {
+                padding: 24px 16px;
+            }
+
+            .section-header {
+                font-size: 28px;
+                margin: 32px auto 20px;
+                padding: 0 16px;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+                padding: 0 16px;
+            }
+
+            .feature {
+                padding: 24px;
+            }
+
+            .feature h3 {
+                font-size: 18px;
+                margin-bottom: 16px;
+            }
+
+            .warning {
+                margin-left: 16px;
+                margin-right: 16px;
+                padding: 16px;
+                font-size: 14px;
+            }
+
+            .hero-image {
+                margin-bottom: 32px;
+                border-radius: 8px;
+            }
+
+            .implementation-section {
+                padding: 0 16px;
+                margin-bottom: 60px;
+            }
+
+            .implementation-section p {
+                font-size: 15px;
+            }
+
+            .implementation-code {
+                padding: 14px 16px;
+                border-radius: 8px;
+            }
+
+            .implementation-code code {
+                font-size: 11px;
+            }
+
+            .content-section h2:first-child {
+                font-size: 26px;
+            }
+
+            .content-section h2,
+            .content-section h3 {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -229,8 +570,8 @@
                         d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                 </svg>
             </a>
-            <a href="#controls" class="nav-link">Controls</a>
-            <a href="#get-widget" class="btn-primary">Get Widget</a>
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#implementation" class="btn-primary">Get Widget</a>
         </div>
     </nav>
 
@@ -241,7 +582,7 @@
             required, fully customizable, and community-driven.</p>
 
         <div class="code-snippet">
-            <code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.1/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
+            <code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.2/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
             <button aria-label="Copy code" class="copy-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
@@ -271,12 +612,13 @@
             other accessibility standards.
             <br><br>
             Proper accessibility must be built into your website's code. This tool is not an automated "overlay"
-            solution. Learn more: <a href="https://overlayfactsheet.com/" target="_blank" rel="noopener">Overlay
+            solution. Learn more: <a href="https://overlayfactsheet.com/" target="_blank" rel="noopener"
+                style="font-weight: 600;">Overlay
                 Factsheet</a> | <a href="https://github.com/ifrederico/accessible-web-widget/blob/main/DISCLAIMER.md"
-                target="_blank" rel="noopener">Full Disclaimer</a>
+                target="_blank" rel="noopener" style="font-weight: 600;">Full Disclaimer</a>
         </div>
 
-        <h2>Available Features</h2>
+        <h2 id="features" class="section-header">Available Features</h2>
 
         <div class="feature-list">
             <div class="feature">
@@ -315,35 +657,72 @@
             </div>
         </div>
 
-        <h2>Test Content</h2>
+        <h2 class="section-header">Test Content</h2>
 
-        <p>This is a paragraph of text to test the various accessibility features. Try enabling different options from
-            the accessibility menu to see how they affect this content.</p>
+        <div class="content-section">
+            <h3>Rich Text Testing</h3>
 
-        <p>Here's a <a href="#demo">link to test</a> the link highlighting feature, and here's <a
-                href="#another">another link</a> to see how multiple links are styled.</p>
+            <p style="color: #334155; line-height: 1.7; margin-bottom: 20px;">This is a paragraph of text to test the
+                various accessibility features. Try enabling different options from the accessibility menu to see how
+                they affect this content.</p>
 
-        <h3>Subheading for Testing</h3>
+            <p style="color: #334155; line-height: 1.7; margin-bottom: 20px;">Here's a <a href="#demo"
+                    style="color: #0f172a; font-weight: 500; text-decoration: none;">link to test</a> the link
+                highlighting feature, and here's <a href="#another"
+                    style="color: #0f172a; font-weight: 500; text-decoration: none;">another link</a> to see how
+                multiple links are styled.</p>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+            <h3 style="margin-top: 32px;">Subheading for Testing</h3>
 
-        <ul>
-            <li>List item one</li>
-            <li>List item two</li>
-            <li>List item three with a <a href="#list-link">link inside</a></li>
-        </ul>
+            <p style="color: #334155; line-height: 1.7; margin-bottom: 20px;">Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                veniam, quis nostrud exercitation ullamco laboris.</p>
 
-        <h2>Implementation</h2>
+            <ul class="test-list">
+                <li>List item one</li>
+                <li>List item two</li>
+                <li>List item three with a <a href="#list-link"
+                        style="color: #0f172a; font-weight: 500; text-decoration: none;">link inside</a></li>
+            </ul>
+        </div>
 
-        <p>To add this widget to your own website, simply add this script tag before the closing
-            <code>&lt;/body&gt;</code> tag:
-        </p>
+        <h2 id="implementation" class="section-header">Implementation</h2>
 
-        <pre><code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.1/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code></pre>
+        <div class="implementation-section">
+            <p>To add this widget to your own website, simply add this script tag before the closing &lt;/body&gt; tag:</p>
 
-        <p>The widget will automatically initialize and appear on your page.</p>
+            <div class="implementation-code">
+                <code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.2/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
+                <button aria-label="Copy code" class="copy-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+            </div>
+            <p class="implementation-note">The widget will automatically initialize and appear on your page.</p>
+        </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.copy-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var code = btn.closest('.code-snippet, .implementation-code').querySelector('code');
+                var text = code.textContent;
+                navigator.clipboard.writeText(text).then(function () {
+                    var svg = btn.querySelector('svg');
+                    var original = svg.innerHTML;
+                    svg.innerHTML = '<polyline points="20 6 9 17 4 12" />';
+                    btn.style.color = '#22c55e';
+                    setTimeout(function () {
+                        svg.innerHTML = original;
+                        btn.style.color = '';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
 
     <!-- AccessibleWeb Widget -->
     <script>

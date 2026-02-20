@@ -34,7 +34,7 @@ The widget initializes on page load. No config required.
 ### Pin a specific version
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.1/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.2/dist/accessible-web-widget.min.js"></script>
 ```
 
 ### Self-host
@@ -49,16 +49,16 @@ The widget initializes on page load. No config required.
 
 ## Release checklist (for jsDelivr)
 
-To make versioned CDN URLs work (for example `@1.1.1`), publish a matching Git tag:
+To make versioned CDN URLs work (for example `@1.1.2`), publish a matching Git tag:
 
 1. Run `npm run build`
 2. Commit `dist/` changes
-3. Create and push a version tag (example): `git tag v1.1.1 && git push origin v1.1.1`
+3. Create and push a version tag (example): `git tag v1.1.2 && git push origin v1.1.2`
 
 jsDelivr will then resolve:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.1/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.2/dist/accessible-web-widget.min.js"></script>
 ```
 
 ## Configuration
