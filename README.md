@@ -47,6 +47,20 @@ The widget initializes on page load. No config required.
 <script src="/path/to/accessible-web-widget.min.js"></script>
 ```
 
+## Release checklist (for jsDelivr)
+
+To make versioned CDN URLs work (for example `@1.1.1`), publish a matching Git tag:
+
+1. Run `npm run build`
+2. Commit `dist/` changes
+3. Create and push a version tag (example): `git tag v1.1.1 && git push origin v1.1.1`
+
+jsDelivr will then resolve:
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.1/dist/accessible-web-widget.min.js"></script>
+```
+
 ## Configuration
 
 All optional, via `data-` attributes on a `<div>`.
@@ -108,7 +122,7 @@ Chrome/Edge 88+, Firefox 78+, Safari 14+, iOS Safari 14+, Chrome for Android.
 
 ## Demo
 
-[https://ifrederico.github.io/accessible-web-widget/examples/](https://ifrederico.github.io/accessible-web-widget/examples/)
+[https://accessibleweb.pages.dev/](https://accessibleweb.pages.dev/)
 
 ## Legal
 

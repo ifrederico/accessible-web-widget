@@ -1,149 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AccessibleWeb Widget Example</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <style>
-        /* Prevent horizontal scroll */
-        * {
-            box-sizing: border-box;
-        }
-        
-        html, body {
-            overflow-x: hidden;
-            margin: 0;
-            padding: 0;
-        }
-        
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f4f4;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
-        
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 48px;
+        }
+
+        .logo {
+            font-family: "Georgia", serif;
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #111;
+            font-size: 15px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            transition: opacity 0.2s;
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .nav-link svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .btn-primary {
+            background-color: #111;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #333;
+        }
+
         .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 40px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        
-        h1 {
-            color: #333;
-            border-bottom: 3px solid #1976d2;
-            padding-bottom: 10px;
+
+        .hero {
+            padding: 80px 20px 40px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
         }
-        
-        h2 {
-            color: #555;
-            margin-top: 30px;
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e2e8f0;
+            color: #334155;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 24px;
         }
-        
-        .feature-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
+
+        .hero-title {
+            font-family: "Georgia", serif;
+            font-size: 56px;
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            margin: 0 0 24px;
+            color: #0f172a;
         }
-        
-        .feature {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-            border-left: 4px solid #1976d2;
+
+        .hero-title span {
+            display: block;
+            margin-top: 8px;
         }
-        
-        .warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
+
+        .hero-subtitle {
+            font-size: 19px;
+            color: #334155;
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 0 auto 40px;
         }
-        
-        a {
-            color: #1976d2;
-        }
-        
-        a:hover {
-            color: #0d47a1;
-        }
-        
-        code {
-            background-color: #f0f0f0;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-family: monospace;
-        }
-        
-        /* Fix for responsive code blocks */
-        pre {
-            background-color: #f0f0f0;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+
+        .code-snippet {
+            display: inline-flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 8px 12px 8px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            margin-bottom: 60px;
             max-width: 100%;
         }
-        
-        pre code {
-            display: block;
-            padding: 0;
-            background: none;
-            white-space: pre-wrap;
-            word-break: break-all;
+
+        .code-snippet code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 14px;
+            color: #0f172a;
+            white-space: nowrap;
+            overflow-x: auto;
         }
-        
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            h2 {
-                font-size: 1.3rem;
-            }
-            
-            .feature-list {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            pre {
-                font-size: 0.85rem;
-            }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s, color 0.2s;
+            margin-left: 8px;
+        }
+
+        .copy-btn:hover {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .hero-image {
+            max-width: 1000px;
+            margin: 0 auto 60px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            background: white;
+            border: 1px solid #eaeaea;
+        }
+
+        .placeholder-img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+            gap: 16px;
+        }
+
+        .placeholder-img span {
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .warning {
+            background-color: #fefce8;
+            border: 1px solid #fef08a;
+            color: #854d0e;
+            padding: 20px 24px;
+            border-radius: 8px;
+            margin: 0 0 48px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .warning strong {
+            color: #713f12;
+        }
+
+        .warning a {
+            color: #713f12;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid #fde047;
+            transition: border-color 0.2s;
+        }
+
+        .warning a:hover {
+            border-color: #854d0e;
         }
     </style>
 </head>
+
 <body>
+    <nav class="navbar">
+        <div class="logo">AccessibleWeb</div>
+        <div class="nav-links">
+            <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener"
+                class="nav-link" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
+            </a>
+            <a href="#controls" class="nav-link">Controls</a>
+            <a href="#get-widget" class="btn-primary">Get Widget</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-badge">Open Source & Free Forever</div>
+        <h1 class="hero-title">Website, meet<br><span>Accessibility Widget.</span></h1>
+        <p class="hero-subtitle">Start your accessibility journey with a lightweight, always-on widget. No sign-ups
+            required, fully customizable, and community-driven.</p>
+
+        <div class="code-snippet">
+            <code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.1/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
+            <button aria-label="Copy code" class="copy-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="hero-image">
+        <div class="placeholder-img">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            <span>Widget Preview Placeholder</span>
+        </div>
+    </div>
+
     <div class="container">
-        <h1>AccessibleWeb Widget Demo</h1>
-        
-        <p>This page demonstrates the AccessibleWeb Widget. Look for the accessibility button in the bottom-left corner of your screen.</p>
-        
         <div class="warning">
-            <strong>⚠️ Important:</strong> This widget provides user preference controls only (similar to browser settings). It does <strong>NOT</strong> make your website accessible or ensure compliance with WCAG, ADA, or other accessibility standards. 
+            <strong>⚠️ Important:</strong> This widget provides user preference controls only (similar to browser
+            settings). It does <strong>NOT</strong> make your website accessible or ensure compliance with WCAG, ADA, or
+            other accessibility standards.
             <br><br>
-            Proper accessibility must be built into your website's code. This tool is not an automated "overlay" solution. Learn more: <a href="https://overlayfactsheet.com/" target="_blank" rel="noopener">Overlay Factsheet</a> | <a href="https://github.com/ifrederico/accessible-web-widget/blob/main/DISCLAIMER.md" target="_blank" rel="noopener">Full Disclaimer</a>
+            Proper accessibility must be built into your website's code. This tool is not an automated "overlay"
+            solution. Learn more: <a href="https://overlayfactsheet.com/" target="_blank" rel="noopener">Overlay
+                Factsheet</a> | <a href="https://github.com/ifrederico/accessible-web-widget/blob/main/DISCLAIMER.md"
+                target="_blank" rel="noopener">Full Disclaimer</a>
         </div>
 
         <h2>Available Features</h2>
-        
+
         <div class="feature-list">
             <div class="feature">
                 <h3>Content Adjustments</h3>
@@ -156,7 +290,7 @@
                     <li>Hide images</li>
                 </ul>
             </div>
-            
+
             <div class="feature">
                 <h3>Color Adjustments</h3>
                 <ul>
@@ -168,7 +302,7 @@
                     <li>Monochrome</li>
                 </ul>
             </div>
-            
+
             <div class="feature">
                 <h3>Navigation Tools</h3>
                 <ul>
@@ -182,15 +316,18 @@
         </div>
 
         <h2>Test Content</h2>
-        
-        <p>This is a paragraph of text to test the various accessibility features. Try enabling different options from the accessibility menu to see how they affect this content.</p>
-        
-        <p>Here's a <a href="#demo">link to test</a> the link highlighting feature, and here's <a href="#another">another link</a> to see how multiple links are styled.</p>
-        
+
+        <p>This is a paragraph of text to test the various accessibility features. Try enabling different options from
+            the accessibility menu to see how they affect this content.</p>
+
+        <p>Here's a <a href="#demo">link to test</a> the link highlighting feature, and here's <a
+                href="#another">another link</a> to see how multiple links are styled.</p>
+
         <h3>Subheading for Testing</h3>
-        
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-        
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+
         <ul>
             <li>List item one</li>
             <li>List item two</li>
@@ -198,25 +335,28 @@
         </ul>
 
         <h2>Implementation</h2>
-        
-        <p>To add this widget to your own website, simply add this script tag before the closing <code>&lt;/body&gt;</code> tag:</p>
-        
+
+        <p>To add this widget to your own website, simply add this script tag before the closing
+            <code>&lt;/body&gt;</code> tag:
+        </p>
+
         <pre><code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.1/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code></pre>
-        
+
         <p>The widget will automatically initialize and appear on your page.</p>
     </div>
 
     <!-- AccessibleWeb Widget -->
     <script>
-      window.AccessibleWebWidgetOptions = {
-        lang: "en",
-        ttsNativeVoiceName: "Samantha",
-        ttsNativeVoiceLang: "en-US",
-        ttsRate: 0.9,
-        ttsPitch: 1,
-        ...(window.AccessibleWebWidgetOptions || {})
-      };
+        window.AccessibleWebWidgetOptions = {
+            lang: "en",
+            ttsNativeVoiceName: "Samantha",
+            ttsNativeVoiceLang: "en-US",
+            ttsRate: 0.9,
+            ttsPitch: 1,
+            ...(window.AccessibleWebWidgetOptions || {})
+        };
     </script>
     <script src="../dist/accessible-web-widget.js"></script>
 </body>
+
 </html>
