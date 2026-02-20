@@ -31,7 +31,7 @@ Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widg
 ## What you get
 
 - **Text** — Font size, bold, line height, letter spacing
-- **Color** — Dark/light contrast, invert, saturation controls, monochrome, high contrast
+- **Color** — Contrast (light/dark), invert, saturation controls, high contrast
 - **Reading** — OpenDyslexic font, reading guide, link/title highlighting, reader mode, text-to-speech
 - **Interaction** — Large cursor, pause animations, hide images
 
@@ -44,8 +44,8 @@ Everything below is optional. The widget works with zero config.
 ### Position and offset
 
 ```html
-<div data-acc-position="bottom-left"></div>   <!-- default -->
-<div data-acc-position="bottom-right"></div>
+<div data-acc-position="bottom-right"></div>  <!-- default -->
+<div data-acc-position="bottom-left"></div>
 <div data-acc-position="top-left"></div>
 <div data-acc-position="top-right"></div>
 <div data-acc-position="center-left"></div>

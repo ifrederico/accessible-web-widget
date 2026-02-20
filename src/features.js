@@ -12,6 +12,68 @@ const SYSTEM_PREFERS_REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
 export const featureMethods = {
 
+  getContrastToggleDisplay(index) {
+      if (index === 0) {
+        return { key: 'light-contrast', label: 'Light Contrast', icon: this.widgetIcons.lightContrast };
+      }
+      if (index === 1) {
+        return { key: 'dark-contrast', label: 'Dark Contrast', icon: this.widgetIcons.darkContrast };
+      }
+      return { key: null, label: 'Contrast', icon: this.widgetIcons.contrast };
+    },
+
+  updateContrastToggleButton(button, index) {
+      if (!button) return;
+      const display = this.getContrastToggleDisplay(index);
+      const iconNode = button.querySelector('svg');
+      if (iconNode) {
+        iconNode.outerHTML = display.icon;
+      } else {
+        button.insertAdjacentHTML('afterbegin', display.icon);
+      }
+
+      const translatedLabel = this.translate(display.label);
+      const labelNode = button.querySelector('.acc-label');
+      if (labelNode) {
+        labelNode.setAttribute('data-acc-text', display.label);
+        labelNode.innerText = translatedLabel;
+      }
+      button.setAttribute('title', translatedLabel);
+      button.setAttribute('aria-label', translatedLabel);
+      button.setAttribute('data-contrast-mode', display.key || 'off');
+    },
+
+  getSaturationToggleDisplay(index) {
+      if (index === 0) {
+        return { key: 'low-saturation', label: 'Low Saturation', icon: this.widgetIcons.lowSaturation };
+      }
+      if (index === 1) {
+        return { key: 'high-saturation', label: 'High Saturation', icon: this.widgetIcons.highSaturation };
+      }
+      return { key: null, label: 'Saturation', icon: this.widgetIcons.saturation };
+    },
+
+  updateSaturationToggleButton(button, index) {
+      if (!button) return;
+      const display = this.getSaturationToggleDisplay(index);
+      const iconNode = button.querySelector('svg');
+      if (iconNode) {
+        iconNode.outerHTML = display.icon;
+      } else {
+        button.insertAdjacentHTML('afterbegin', display.icon);
+      }
+
+      const translatedLabel = this.translate(display.label);
+      const labelNode = button.querySelector('.acc-label');
+      if (labelNode) {
+        labelNode.setAttribute('data-acc-text', display.label);
+        labelNode.innerText = translatedLabel;
+      }
+      button.setAttribute('title', translatedLabel);
+      button.setAttribute('aria-label', translatedLabel);
+      button.setAttribute('data-saturation-mode', display.key || 'off');
+    },
+
   ensureSkipLink() {
       if (typeof document === 'undefined') return null;
       if (this.skipLinkElement && document.body.contains(this.skipLinkElement)) {
@@ -1035,12 +1097,13 @@ export const featureMethods = {
     return rect.width > 0 && rect.height > 0;
   },
 
-  isTtsExcludedElement(element) {
+  isTtsExcludedElement(element, { allowLandmarkRegions = false } = {}) {
     if (!(element instanceof Element)) return true;
     if (element.closest('.acc-container')) return true;
     if (element.closest('script,style,noscript,template')) return true;
     if (element.closest('[aria-hidden="true"]')) return true;
     if (
+      !allowLandmarkRegions &&
       element.closest(
         'nav,header,footer,aside,form,dialog,[role="navigation"],[role="complementary"],[role="search"],[role="menu"],[role="dialog"],[role="alert"],[aria-live]'
       )
@@ -1291,7 +1354,7 @@ export const featureMethods = {
 
     const block = target.closest('h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,caption,th,td,div,section');
     if (!(block instanceof Element)) return null;
-    if (this.isTtsExcludedElement(block) || !this.isElementVisibleForTts(block)) return null;
+    if (this.isTtsExcludedElement(block, { allowLandmarkRegions: true }) || !this.isElementVisibleForTts(block)) return null;
 
     const text = this.normalizeReadableText(block.innerText || block.textContent || '');
     if (text.length < 2) return null;
@@ -2089,6 +2152,44 @@ export const featureMethods = {
 
   setColorFilterUI(menu, activeKey = null) {
       if (!menu || !menu.querySelectorAll) return;
+      const contrastFeature = this.multiLevelFeatures?.['contrast-toggle'];
+      const contrastButton = menu.querySelector('.acc-btn[data-key="contrast-toggle"]');
+      if (contrastFeature) {
+        const contrastIndex = contrastFeature.values.indexOf(activeKey);
+        contrastFeature.currentIndex = contrastIndex;
+        this.updateContrastToggleButton(contrastButton, contrastIndex);
+        if (contrastButton) {
+          const isContrastActive = contrastIndex >= 0;
+          contrastButton.classList.toggle('acc-selected', isContrastActive);
+          contrastButton.setAttribute('aria-pressed', isContrastActive ? 'true' : 'false');
+          const indicator = contrastButton.querySelector('.acc-progress-indicator[data-feature="contrast-toggle"]');
+          if (indicator) {
+            const dots = indicator.querySelectorAll('.acc-progress-dot');
+            dots.forEach((dot, index) => {
+              dot.classList.toggle('active', index === contrastIndex);
+            });
+          }
+        }
+      }
+      const saturationFeature = this.multiLevelFeatures?.['saturation-toggle'];
+      const saturationButton = menu.querySelector('.acc-btn[data-key="saturation-toggle"]');
+      if (saturationFeature) {
+        const saturationIndex = saturationFeature.values.indexOf(activeKey);
+        saturationFeature.currentIndex = saturationIndex;
+        this.updateSaturationToggleButton(saturationButton, saturationIndex);
+        if (saturationButton) {
+          const isSaturationActive = saturationIndex >= 0;
+          saturationButton.classList.toggle('acc-selected', isSaturationActive);
+          saturationButton.setAttribute('aria-pressed', isSaturationActive ? 'true' : 'false');
+          const indicator = saturationButton.querySelector('.acc-progress-indicator[data-feature="saturation-toggle"]');
+          if (indicator) {
+            const dots = indicator.querySelectorAll('.acc-progress-dot');
+            dots.forEach((dot, index) => {
+              dot.classList.toggle('active', index === saturationIndex);
+            });
+          }
+        }
+      }
       this.colorFilterKeys.forEach(filterKey => {
         const button = menu.querySelector(`.acc-btn[data-key="${filterKey}"]`);
         if (!button) return;
@@ -2155,12 +2256,6 @@ export const featureMethods = {
           const ng = (0.213 - 0.213 * s) * r + (0.715 + 0.285 * s) * g + (0.072 - 0.072 * s) * b;
           const nb = (0.213 - 0.213 * s) * r + (0.715 - 0.715 * s) * g + (0.072 + 0.928 * s) * b;
           r = nr; g = ng; b = nb;
-          break;
-        }
-        case 'monochrome': {
-          // filter: grayscale(100%) — luminance-weighted
-          const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-          r = lum; g = lum; b = lum;
           break;
         }
         case 'high-saturation': {
@@ -2240,8 +2335,18 @@ export const featureMethods = {
     },
 
   cycleMultiLevelFeature(featureKey, button) {
-      // Only text-scale remains as a multi-level feature.
       const feature = this.multiLevelFeatures[featureKey];
+      if (!feature || !button) return;
+
+      if (featureKey === 'contrast-toggle' || featureKey === 'saturation-toggle') {
+        const newIndex = feature.currentIndex + 1;
+        const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
+        this.updateColorFilterState(newActiveKey);
+        this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
+        this.applyVisualFilters();
+        return;
+      }
+
       const newIndex = feature.currentIndex + 1;
       if (newIndex >= feature.levels) {
         feature.currentIndex = -1;
@@ -2293,6 +2398,10 @@ export const featureMethods = {
         const dots = indicator.querySelectorAll('.acc-progress-dot');
         dots.forEach(dot => dot.classList.remove('active'));
       });
+      const menu = document.querySelector('.acc-menu');
+      if (menu) {
+        this.setColorFilterUI(menu, null);
+      }
       
       // Remove focus from active element to fix the persistent focus ring bug
       if (document.activeElement) {

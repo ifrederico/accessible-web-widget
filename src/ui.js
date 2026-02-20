@@ -9,6 +9,50 @@ export const uiMethods = {
       return dictionary[label] || label;
     },
 
+  getLanguageCountryLabel(languageCode) {
+      const countryByLanguage = {
+        en: 'USA',
+        it: 'Italy',
+        fr: 'France',
+        de: 'Germany',
+        es: 'Spain',
+        ru: 'Russia',
+        pl: 'Poland',
+        ro: 'Romania',
+        nl: 'Netherlands',
+        uk: 'Ukraine'
+      };
+      return countryByLanguage[languageCode] || String(languageCode || '').toUpperCase();
+    },
+
+  getLanguageFlag(languageCode) {
+      const countryCodeByLanguage = {
+        en: 'US',
+        it: 'IT',
+        fr: 'FR',
+        de: 'DE',
+        es: 'ES',
+        ru: 'RU',
+        pl: 'PL',
+        ro: 'RO',
+        nl: 'NL',
+        uk: 'UA'
+      };
+      const countryCode = (countryCodeByLanguage[languageCode] || String(languageCode || '').slice(0, 2)).toUpperCase();
+      if (!/^[A-Z]{2}$/.test(countryCode)) {
+        return '';
+      }
+      return String.fromCodePoint(...countryCode.split('').map(char => 127397 + char.charCodeAt(0)));
+    },
+
+  formatLanguageLabel(language) {
+      if (!language) return 'English (USA)';
+      const baseName = String(language.label || language.code || '')
+        .split('(')[0]
+        .trim() || String(language.code || 'en').toUpperCase();
+      return `${baseName} (${this.getLanguageCountryLabel(language.code)})`;
+    },
+
   throttle(func, limit) {
       let inThrottle;
       return function (...args) {
@@ -116,31 +160,20 @@ export const uiMethods = {
         menu.setAttribute('aria-hidden', 'true');
         menu.setAttribute('aria-modal', 'false');
       }
-  
-      const langPanel = this.findElement('#acc-lang-panel', targetContainer);
-      if (langPanel) {
-        langPanel.classList.remove('open');
-        if (langPanel.__accwebTrapFocus) {
-          document.removeEventListener('keydown', langPanel.__accwebTrapFocus);
-          delete langPanel.__accwebTrapFocus;
-        }
+
+      const langDetails = this.findElement('.acc-lang-details', targetContainer);
+      if (langDetails) {
+        langDetails.removeAttribute('open');
       }
-      const langToggle = this.findElement('.acc-lang-toggle', targetContainer);
-      if (langToggle) {
-        langToggle.setAttribute('aria-expanded', 'false');
+
+      const langSearch = this.findElement('#acc-lang-search', targetContainer);
+      if (langSearch) {
+        langSearch.value = '';
       }
-      const backButton = this.findElement('.acc-back-btn', targetContainer);
-      if (backButton) {
-        backButton.classList.remove('visible');
-      }
-      const defaultTitle = this.findElement('.acc-menu-title-default', targetContainer);
-      if (defaultTitle) {
-        defaultTitle.classList.remove('hidden');
-      }
-      const langTitle = this.findElement('.acc-menu-title-dynamic', targetContainer);
-      if (langTitle) {
-        langTitle.classList.remove('visible');
-      }
+
+      targetContainer.querySelectorAll('.acc-lang-item').forEach(item => {
+        item.style.display = '';
+      });
   
       if (this.menuKeyListener) {
         document.removeEventListener('keydown', this.menuKeyListener, true);
@@ -228,66 +261,59 @@ export const uiMethods = {
         this.applyThemeVariables();
         this.registerStaticStyles();
 
+        const activeLanguageCode = String(lang || 'en').split(/[_-]/)[0].toLowerCase();
+        const activeLanguage = this.supportedLanguages.find(language => language.code === activeLanguageCode) || this.supportedLanguages[0];
+        const activeLanguageLabel = this.formatLanguageLabel(activeLanguage);
+        const activeLanguageFlag = this.getLanguageFlag(activeLanguage?.code);
+
         const menuTemplate = `
         <div class="acc-menu" role="dialog" aria-labelledby="accessibility-title">
           <div class="acc-menu-header">
-            <div class="acc-header-back">
-              <button type="button" class="acc-back-btn" aria-label="Back to accessibility menu">
-                ${this.widgetIcons.arrowBack}
-                <span>Back</span>
-              </button>
-            </div>
-            <div id="accessibility-title" class="acc-menu-title acc-menu-title-default acc-label">Accessibility Menu</div>
-            <div id="language-settings-title" class="acc-menu-title acc-menu-title-dynamic acc-label">Language Settings</div>
+            <div id="accessibility-title" class="acc-menu-title acc-label">Accessibility Menu</div>
             <div class="acc-header-actions">
-              <button type="button" class="acc-lang-toggle" aria-expanded="false" aria-label="Language settings" title="Language settings">
-                ${this.widgetIcons.language}
-              </button>
               <div role="button" class="acc-menu-close" title="Close" aria-label="Close accessibility menu" tabindex="0">
                 ${this.widgetIcons.close}
               </div>
             </div>
           </div>
-          <div id="acc-lang-panel" class="acc-lang-panel">
-            <div class="acc-lang-current-container">
-              <div class="acc-lang-current">
-                <span id="acc-current-language">${this.supportedLanguages.find(l => l.code === (lang || "en"))?.label || "English (English)"}</span>
-                <span class="acc-icon-check"></span>
-              </div>
-            </div>
-            <div>
-              <div class="acc-section-title">All Languages</div>
-              <div class="acc-lang-search-wrapper">
-                <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
-              </div>
-              <div class="acc-lang-list">
-                ${this.supportedLanguages.map(l => 
-                  `<button type="button" class="acc-lang-item${l.code === (lang || "en") ? ' selected' : ''}" data-lang="${l.code}">${l.label}</button>`
-                ).join('')}
-              </div>
-            </div>
-            </div>
           <div id="acc-menu-content" class="acc-menu-content">
-            <div class="acc-section">
-              <div class="acc-section-title">Content Adjustments</div>
-              <div class="acc-options content"> </div>
+            <div class="acc-language-container">
+              <details class="acc-lang-details">
+                <summary class="acc-lang-summary" aria-label="Language" title="Language">
+                  <span class="acc-lang-summary-main">
+                    <span id="acc-current-language-flag" class="acc-lang-flag" aria-hidden="true">${activeLanguageFlag}</span>
+                    <span id="acc-current-language" class="acc-lang-current-label">${activeLanguageLabel}</span>
+                  </span>
+                  <span class="acc-lang-summary-arrow" aria-hidden="true"> </span>
+                </summary>
+                <div class="acc-lang-details-panel">
+                  <div class="acc-section-title">All Languages</div>
+                  <div class="acc-lang-search-wrapper">
+                    <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
+                  </div>
+                  <div class="acc-lang-list">
+                    ${this.supportedLanguages.map(language => {
+                      const languageLabel = this.formatLanguageLabel(language);
+                      const languageFlag = this.getLanguageFlag(language.code);
+                      return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
+                        <span class="acc-lang-item-main">
+                          <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
+                          <span class="acc-lang-item-label">${languageLabel}</span>
+                        </span>
+                        <span class="acc-icon-check" aria-hidden="true"> </span>
+                      </button>`;
+                    }).join('')}
+                  </div>
+                </div>
+              </details>
             </div>
-            <div class="acc-section">
-              <div class="acc-section-title">Color Adjustments</div>
-              <div class="acc-options filters"> </div>
-            </div>
-            <div class="acc-section">
-              <div class="acc-section-title">Tools</div>
-              <div class="acc-options tools"> </div>
-            </div>
-            <div class="acc-reset-container">
-              <button class="acc-reset-btn" title="Reset All Settings" aria-label="Reset all accessibility settings" tabindex="0">
-                ${this.widgetIcons.reset}
-                <span>Reset All Settings</span>
-              </button>
-            </div>
+            <div class="acc-options acc-options-all"> </div>
           </div>
           <div class="acc-footer">
+            <button type="button" class="acc-footer-reset" title="Reset settings" aria-label="Reset settings">
+              ${this.widgetIcons.reset}
+              <span class="acc-label">Reset settings</span>
+            </button>
             <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>
           </div>
         </div>
@@ -311,102 +337,51 @@ export const uiMethods = {
           menu.style.right = 'auto';
         }
   
-        menu.querySelector(".content").innerHTML = this.renderOptions(this.contentOptions);
-        menu.querySelector(".tools").innerHTML = this.renderOptions(this.accessTools, 'acc-tools');
-        menu.querySelector(".filters").innerHTML = this.renderOptions(this.colorOptions, 'acc-filter');
-        const langToggle = this.findElement(".acc-lang-toggle", menu);
-        const langPanel = this.findElement("#acc-lang-panel", menu);
+        const pinnedTopToolKeys = ['text-to-speech', 'high-contrast-mode', 'simple-layout'];
+        const pinnedTopTools = [];
+        const remainingTools = [];
+        this.accessTools.forEach(tool => {
+          if (pinnedTopToolKeys.includes(tool.key)) {
+            pinnedTopTools.push(tool);
+          } else {
+            remainingTools.push(tool);
+          }
+        });
+
+        const allOptions = [
+          this.renderOptions(pinnedTopTools, 'acc-tools'),
+          this.renderOptions(this.contentOptions),
+          this.renderOptions(this.colorOptions, 'acc-filter'),
+          this.renderOptions(remainingTools, 'acc-tools')
+        ].join('');
+        menu.querySelector(".acc-options-all").innerHTML = allOptions;
+        const langDetails = this.findElement(".acc-lang-details", menu);
         const langSearch = this.findElement("#acc-lang-search", menu);
         const langItems = menu.querySelectorAll(".acc-lang-item");
-        const backButton = this.findElement(".acc-back-btn", menu);
-        const defaultTitle = this.findElement(".acc-menu-title-default", menu);
-        const langTitle = this.findElement(".acc-menu-title-dynamic", menu);
-  
-  
-        // Focus trapping for language panel
-        const trapFocus = (e) => {
-          if (!langPanel.classList.contains('open')) return;
-          
-          const focusableElements = this.getFocusableElements(langPanel);
-          if (backButton.classList.contains('visible') && !focusableElements.includes(backButton)) {
-            focusableElements.unshift(backButton);
-          }
-          if (!focusableElements.length) return;
-          const firstElement = focusableElements[0];
-          const lastElement = focusableElements[focusableElements.length - 1];
-  
-          if (e.key === 'Tab') {
-            if (e.shiftKey) {
-              if (document.activeElement === firstElement) {
-                e.preventDefault();
-                lastElement.focus();
+        if (langDetails) {
+          langDetails.addEventListener('toggle', () => {
+            if (langDetails.open) {
+              if (langSearch) {
+                langSearch.focus();
               }
-            } else {
-              if (document.activeElement === lastElement) {
-                e.preventDefault();
-                firstElement.focus();
-              }
+              return;
             }
-          }
-          
-          if (e.key === 'Escape' || e.key === 'Esc') {
-            e.preventDefault();
-            e.stopPropagation();
-            closeLanguagePanel();
-          }
-        };
-  
-        const closeLanguagePanel = (returnFocus = true) => {
-          langPanel.classList.remove('open');
-          langToggle.setAttribute('aria-expanded', 'false');
-          document.removeEventListener('keydown', trapFocus);
-          delete langPanel.__accwebTrapFocus;
-          backButton.classList.remove('visible');
-          defaultTitle.classList.remove('hidden');
-          langTitle.classList.remove('visible');
-          if (returnFocus) {
-            langToggle.focus();
-          }
-        };
-  
-        langToggle.addEventListener("click", () => {
-          const isExpanded = langToggle.getAttribute('aria-expanded') === 'true';
-          langToggle.setAttribute('aria-expanded', !isExpanded);
-          langPanel.classList.toggle('open');
-          
-          backButton.classList.toggle('visible', !isExpanded);
-          defaultTitle.classList.toggle('hidden', !isExpanded);
-          langTitle.classList.toggle('visible', !isExpanded);
-          
-          if (!isExpanded) {
-            langSearch.focus();
-            document.addEventListener('keydown', trapFocus);
-            langPanel.__accwebTrapFocus = trapFocus;
-          } else {
-            closeLanguagePanel(false);
-          }
-        });
-  
-        backButton.addEventListener("click", () => {
-          closeLanguagePanel();
-        });
-  
-        // Close language panel if clicking outside
-        document.addEventListener("click", (e) => {
-            if (langPanel.classList.contains('open') && 
-                !langPanel.contains(e.target) && 
-                !langToggle.contains(e.target) &&
-                !backButton.contains(e.target)) {
-              closeLanguagePanel(false);
+            if (langSearch) {
+              langSearch.value = '';
             }
+            langItems.forEach(item => {
+              item.style.display = '';
+            });
           });
+        }
   
         // Handle language search
         langSearch.addEventListener("input", () => {
           const searchValue = langSearch.value.toLowerCase();
           langItems.forEach(item => {
-            const text = item.textContent.toLowerCase();
-            item.style.display = text.includes(searchValue) ? "block" : "none";
+            const labelElement = item.querySelector('.acc-lang-item-label');
+            const text = (labelElement?.textContent || item.textContent).toLowerCase();
+            item.style.display = text.includes(searchValue) ? '' : 'none';
           });
         });
   
@@ -414,7 +389,10 @@ export const uiMethods = {
         langItems.forEach(item => {
           item.addEventListener("click", () => {
             const langCode = item.getAttribute("data-lang");
-            const langLabel = item.textContent;
+            if (!langCode) return;
+            const selectedLanguage = this.supportedLanguages.find(language => language.code === langCode);
+            const langLabel = this.formatLanguageLabel(selectedLanguage);
+            const langFlag = this.getLanguageFlag(langCode);
             
             // Update selected language
             langItems.forEach(i => i.classList.remove("selected"));
@@ -425,9 +403,14 @@ export const uiMethods = {
             if (currentLang) {
               currentLang.textContent = langLabel;
             }
+            const currentLangFlag = this.findElement("#acc-current-language-flag", menu);
+            if (currentLangFlag) {
+              currentLangFlag.textContent = langFlag;
+            }
             
-            // Close panel
-            closeLanguagePanel(false);
+            if (langDetails) {
+              langDetails.open = false;
+            }
             
             // Save language preference and update UI
             this.saveConfig({ lang: langCode });
@@ -443,7 +426,7 @@ export const uiMethods = {
             this.closeMenu(menuContainer);
             return;
           }
-          if (target.classList.contains('acc-reset-btn')) {
+          if (target.classList.contains('acc-footer-reset')) {
             this.resetEnhancements();
             return;
           }
@@ -454,8 +437,8 @@ export const uiMethods = {
             if (key === 'accessibility-report') {
               this.runAccessibilityReport();
             }
-            // Handle multi-level feature for text-scale.
-            else if (key === 'text-scale') {
+            // Handle multi-level features (font size, contrast).
+            else if (this.multiLevelFeatures[key]) {
               this.cycleMultiLevelFeature(key, btn);
             }
             // For color adjustments, deselect any other active color filter.
@@ -545,7 +528,7 @@ export const uiMethods = {
   
         this.widgetToggleButton = btn;
       
-        const { position = "bottom-left", offset = [20, 20], size } = options;
+        const { position = "bottom-right", offset = [20, 20], size } = options;
         const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
         const offsetX = normalizedOffset[0] ?? 20;
         const offsetY = normalizedOffset[1] ?? 25;
@@ -658,7 +641,7 @@ export const uiMethods = {
               "en";
             baseOptions.lang = lang;
   
-            baseOptions.position = baseOptions.position || "bottom-left";
+            baseOptions.position = baseOptions.position || "bottom-right";
   
             if (baseOptions.offset) {
               baseOptions.offset = this.normalizeOffset(baseOptions.offset);
@@ -693,7 +676,7 @@ export const uiMethods = {
 
   launchWidget(args = {}) {
           try {
-            let options = { lang: this.getDefaultLanguage(), position: 'bottom-left', offset: [20, 20] };
+            let options = { lang: this.getDefaultLanguage(), position: 'bottom-right', offset: [20, 20] };
             
             // Load the saved configuration
             try {

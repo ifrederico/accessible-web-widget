@@ -45,10 +45,6 @@ class AccessibleWebWidget {
         styles: { 'filter': 'saturate(50%)' },
         selector: PAGE_CONTENT_SELECTOR
       },
-      'monochrome': {
-        styles: { 'filter': 'grayscale(100%)' },
-        selector: PAGE_CONTENT_SELECTOR
-      },
       'high-saturation': {
         styles: { 'filter': 'saturate(200%)' },
         selector: PAGE_CONTENT_SELECTOR
@@ -131,6 +127,8 @@ class AccessibleWebWidget {
     // Font size cycling
     this.textScaleIndex = 0;
     this.textScaleValues = [1.2, 1.4, 1.6];
+    this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
+    this.saturationFilterValues = ['low-saturation', 'high-saturation'];
 
     this.contentOptions = [
       { label: 'Font Weight', key: 'bold-text', icon: this.widgetIcons.boldText },
@@ -154,6 +152,16 @@ class AccessibleWebWidget {
         levels: this.textScaleValues.length,
         currentIndex: -1,
         values: this.textScaleValues
+      },
+      'contrast-toggle': {
+        levels: this.contrastFilterValues.length,
+        currentIndex: -1,
+        values: this.contrastFilterValues
+      },
+      'saturation-toggle': {
+        levels: this.saturationFilterValues.length,
+        currentIndex: -1,
+        values: this.saturationFilterValues
       }
     };
 
@@ -163,14 +171,23 @@ class AccessibleWebWidget {
     `;
 
     this.colorOptions = [
-      { label: 'Dark Contrast', key: 'dark-contrast', icon: this.widgetIcons.darkContrast },
-      { label: 'Light Contrast', key: 'light-contrast', icon: this.widgetIcons.lightContrast },
+      {
+        label: 'Contrast',
+        key: 'contrast-toggle',
+        icon: this.widgetIcons.contrast,
+        multiLevel: true,
+        levels: this.contrastFilterValues.length
+      },
       { label: 'Invert Colors', key: 'invert-colors', icon: this.widgetIcons.invertColors },
-      { label: 'Low Saturation', key: 'low-saturation', icon: this.widgetIcons.lowSaturation },
-      { label: 'Monochrome', key: 'monochrome', icon: this.widgetIcons.monochrome },
-      { label: 'High Saturation', key: 'high-saturation', icon: this.widgetIcons.highSaturation }
+      {
+        label: 'Saturation',
+        key: 'saturation-toggle',
+        icon: this.widgetIcons.saturation,
+        multiLevel: true,
+        levels: this.saturationFilterValues.length
+      }
     ];
-    this.colorFilterKeys = this.colorOptions.map(option => option.key);
+    this.colorFilterKeys = Object.keys(this.visualFilters);
     this.activeColorFilterKey = null;
 
     this.textScaleSelectors = 'h1,h2,h3,h4,h5,h6,p,a,dl,dt,li,ol,th,td,span,blockquote,.acc-text';
@@ -199,7 +216,7 @@ class AccessibleWebWidget {
 
     this.options = {
       lang: this.getDefaultLanguage(),
-      position: 'bottom-left',
+      position: 'bottom-right',
       ...this.dataOptions,
       ...options
     };

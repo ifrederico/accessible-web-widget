@@ -21,6 +21,19 @@ test('menu opens and closes with Escape', async ({ page }) => {
   await expect(menu).toBeHidden();
 });
 
+test('language selector renders as expandable row in menu content', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  await expect(page.locator('.acc-lang-toggle')).toHaveCount(0);
+  const languageDetails = page.locator('.acc-lang-details');
+  await expect(languageDetails).toHaveCount(1);
+
+  await page.locator('.acc-lang-summary').click();
+  await expect(languageDetails).toHaveAttribute('open', '');
+  await expect(page.locator('.acc-lang-item').first()).toBeVisible();
+});
+
 test('state persists after reload (bold text toggle)', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
@@ -67,6 +80,137 @@ test('data attributes for position, offset, and size are applied', async ({ page
   expect(computed.buttonSizeVar).toBe('58px');
   expect(computed.width).toBe('58px');
   expect(computed.height).toBe('58px');
+});
+
+test('contrast is a single cycling tile and monochrome is removed', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  await expect(page.locator('.acc-btn[data-key="monochrome"]')).toHaveCount(0);
+  const contrastButton = page.locator('.acc-btn[data-key="contrast-toggle"]');
+  await expect(contrastButton).toHaveCount(1);
+  await expect(contrastButton.locator('.acc-progress-dot')).toHaveCount(2);
+  await expect(contrastButton).toHaveAttribute('title', 'Contrast');
+  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'off');
+
+  await contrastButton.click();
+  await expect(contrastButton).toHaveClass(/acc-selected/);
+  await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
+  await expect(contrastButton).toHaveAttribute('title', 'Light Contrast');
+  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'light-contrast');
+  let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
+  expect(states['light-contrast']).toBe(true);
+  expect(states['dark-contrast']).toBeFalsy();
+
+  await contrastButton.click();
+  await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
+  await expect(contrastButton).toHaveAttribute('title', 'Dark Contrast');
+  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'dark-contrast');
+  states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
+  expect(states['dark-contrast']).toBe(true);
+  expect(states['light-contrast']).toBeFalsy();
+
+  await contrastButton.click();
+  await expect(contrastButton).not.toHaveClass(/acc-selected/);
+  await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveCount(0);
+  await expect(contrastButton).toHaveAttribute('title', 'Contrast');
+  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'off');
+  states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
+  expect(states['dark-contrast']).toBeFalsy();
+  expect(states['light-contrast']).toBeFalsy();
+});
+
+test('saturation is a single cycling tile', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  await expect(page.locator('.acc-btn[data-key="low-saturation"]')).toHaveCount(0);
+  await expect(page.locator('.acc-btn[data-key="high-saturation"]')).toHaveCount(0);
+
+  const saturationButton = page.locator('.acc-btn[data-key="saturation-toggle"]');
+  await expect(saturationButton).toHaveCount(1);
+  await expect(saturationButton.locator('.acc-progress-dot')).toHaveCount(2);
+  await expect(saturationButton).toHaveAttribute('title', 'Saturation');
+  await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'off');
+
+  await saturationButton.click();
+  await expect(saturationButton).toHaveClass(/acc-selected/);
+  await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
+  await expect(saturationButton).toHaveAttribute('title', 'Low Saturation');
+  await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'low-saturation');
+  let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
+  expect(states['low-saturation']).toBe(true);
+  expect(states['high-saturation']).toBeFalsy();
+
+  await saturationButton.click();
+  await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
+  await expect(saturationButton).toHaveAttribute('title', 'High Saturation');
+  await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'high-saturation');
+  states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
+  expect(states['high-saturation']).toBe(true);
+  expect(states['low-saturation']).toBeFalsy();
+
+  await saturationButton.click();
+  await expect(saturationButton).not.toHaveClass(/acc-selected/);
+  await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveCount(0);
+  await expect(saturationButton).toHaveAttribute('title', 'Saturation');
+  await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'off');
+  states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
+  expect(states['low-saturation']).toBeFalsy();
+  expect(states['high-saturation']).toBeFalsy();
+});
+
+test('all option tiles share a single wrapping grid', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  await expect(page.locator('.acc-section')).toHaveCount(0);
+  await expect(page.locator('.acc-options')).toHaveCount(1);
+  await expect(page.locator('.acc-options.content')).toHaveCount(0);
+  await expect(page.locator('.acc-options.filters')).toHaveCount(0);
+  await expect(page.locator('.acc-options.tools')).toHaveCount(0);
+
+  const totalTiles = await page.locator('.acc-btn').count();
+  const gridTiles = await page.locator('.acc-options .acc-btn').count();
+  expect(gridTiles).toBe(totalTiles);
+});
+
+test('reset settings lives in footer instead of header button', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  await expect(page.locator('.acc-reset-btn')).toHaveCount(0);
+  await expect(page.locator('.acc-header-reset')).toHaveCount(0);
+  const footerReset = page.locator('.acc-footer-reset');
+  await expect(footerReset).toHaveCount(1);
+  await expect(footerReset).toBeVisible();
+  await expect(footerReset).toBeEnabled();
+});
+
+test('text-to-speech, high contrast, and simplify layout are pinned to top', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const topKeys = await page.locator('.acc-options .acc-btn').evaluateAll((buttons) => {
+    return buttons.slice(0, 3).map((button) => button.getAttribute('data-key'));
+  });
+
+  expect(topKeys).toEqual(['text-to-speech', 'high-contrast-mode', 'simple-layout']);
+});
+
+test('saturation neutral icon differs from low saturation icon', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const saturationButton = page.locator('.acc-btn[data-key="saturation-toggle"]');
+  const neutralPath = await saturationButton.locator('path').first().getAttribute('d');
+
+  await saturationButton.click();
+  const lowPath = await saturationButton.locator('path').first().getAttribute('d');
+
+  expect(neutralPath).toBeTruthy();
+  expect(lowPath).toBeTruthy();
+  expect(lowPath).not.toBe(neutralPath);
 });
 
 test('violation bubble appears for serious and critical issues', async ({ page }) => {
@@ -220,8 +364,10 @@ test('text-to-speech waits for click and does not auto-play', async ({ page }) =
   // The announcement ("Text to Speech On") may have fired; record the count
   const countBeforeClick = await page.evaluate(() => window.__nativeSpeakPayloads.length);
 
-  await page.locator('.container p').first().click();
+  await page.locator('.hero-subtitle').click();
   await expect.poll(async () => page.evaluate(() => window.__nativeSpeakPayloads.length)).toBeGreaterThan(countBeforeClick);
+  const payload = await page.evaluate((idx) => window.__nativeSpeakPayloads[idx], countBeforeClick);
+  expect(payload.text).toContain('Start your accessibility journey');
 });
 
 test('text-to-speech uses configured native voice and has no control bar', async ({ page }) => {
@@ -356,9 +502,9 @@ test('system preferences only auto-enable pause motion', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
   await expect(page.locator('.acc-btn[data-key="pause-motion"]')).toHaveClass(/acc-selected/);
-  await expect(page.locator('.acc-btn[data-key="dark-contrast"]')).not.toHaveClass(/acc-selected/);
+  await expect(page.locator('.acc-btn[data-key="contrast-toggle"]')).not.toHaveClass(/acc-selected/);
 
-  await page.locator('.acc-reset-btn').click();
+  await page.locator('.acc-footer-reset').click();
 
   const statesAfterReset = await page.evaluate(() => {
     const raw = localStorage.getItem('accweb');
@@ -366,6 +512,7 @@ test('system preferences only auto-enable pause motion', async ({ page }) => {
     return parsed.states || {};
   });
   expect(statesAfterReset['pause-motion']).toBe(true);
+  expect(statesAfterReset['light-contrast']).toBeFalsy();
   expect(statesAfterReset['dark-contrast']).toBeFalsy();
 });
 
@@ -417,7 +564,7 @@ test('high contrast mode persists and works with other features', async ({ page 
   await expect(page.locator('body')).toHaveClass(/acc-high-contrast-mode/);
 
   // Reset clears everything
-  await page.locator('.acc-reset-btn').click();
+  await page.locator('.acc-footer-reset').click();
   await expect(page.locator('body')).not.toHaveClass(/acc-high-contrast-mode/);
   await expect(page.locator('.acc-btn[data-key="high-contrast-mode"]')).not.toHaveClass(/acc-selected/);
 });

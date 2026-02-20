@@ -59,12 +59,13 @@ var AccessibleWebWidget = (function () {
           dyslexiaFont: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m131-252 165-440h79l165 440h-76l-39-112H247l-40 112h-76Zm139-176h131l-64-182h-4l-63 182Zm395 186q-51 0-81-27.5T554-342q0-44 34.5-72.5T677-443q23 0 45 4t38 11v-12q0-29-20.5-47T685-505q-23 0-42 9.5T610-468l-47-35q24-29 54.5-43t68.5-14q69 0 103 32.5t34 97.5v178h-63v-37h-4q-14 23-38 35t-53 12Zm12-54q35 0 59.5-24t24.5-56q-14-8-33.5-12.5T689-393q-32 0-50 14t-18 37q0 20 16 33t40 13Z"/></svg>',
           highlightLinks: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z"/></svg>',
           highlightTitle: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M320-280q17 0 28.5-11.5T360-320q0-17-11.5-28.5T320-360q-17 0-28.5 11.5T280-320q0 17 11.5 28.5T320-280Zm0-160q17 0 28.5-11.5T360-480q0-17-11.5-28.5T320-520q-17 0-28.5 11.5T280-480q0 17 11.5 28.5T320-440Zm0-160q17 0 28.5-11.5T360-640q0-17-11.5-28.5T320-680q-17 0-28.5 11.5T280-640q0 17 11.5 28.5T320-600Zm120 320h240v-80H440v80Zm0-160h240v-80H440v80Zm0-160h240v-80H440v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>',
+          contrast: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m480-260 60-60h100v-100l60-60-60-60v-100H540l-60-60-60 60H320v100l-60 60 60 60v100h100l60 60Zm0-100v-240q50 0 85 35t35 85q0 50-35 85t-85 35ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/></svg>',
           darkContrast: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M484-80q-84 0-157.5-32t-128-86.5Q144-253 112-326.5T80-484q0-146 93-257.5T410-880q-18 99 11 193.5T521-521q71 71 165.5 100T880-410q-26 144-138 237T484-80Zm0-80q88 0 163-44t118-121q-86-8-163-43.5T464-465q-61-61-97-138t-43-163q-77 43-120.5 118.5T160-484q0 135 94.5 229.5T484-160Zm-20-305Z"/></svg>',
           lightContrast: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-800v-120h80v120h-80Zm0 760v-120h80v120h-80Zm360-400v-80h120v80H800Zm-760 0v-80h120v80H40Zm708-252-56-56 70-72 58 58-72 70ZM198-140l-58-58 72-70 56 56-70 72Zm564 0-70-72 56-56 72 70-58 58ZM212-692l-72-70 58-58 70 72-56 56Zm268 452q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q67 0 113.5-46.5T640-480q0-67-46.5-113.5T480-640q-67 0-113.5 46.5T320-480q0 67 46.5 113.5T480-320Zm0-160Z"/></svg>',
           invertColors: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-64-24.5-122.5T706-706L254-254q45 45 103.5 69.5T480-160Zm0-160v-60h200v60H480ZM320-500h60v-80h80v-60h-80v-80h-60v80h-80v60h80v80Z"/></svg>',
+          saturation: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-120q-133 0-226.5-92.5T160-436q0-66 25-122t69-100l226-222 226 222q44 44 69 100t25 122q0 131-93.5 223.5T480-120Zm0-80v-568L310-600q-35 33-52.5 74.5T240-436q0 97 70 166.5T480-200Z"/></svg>',
           lowSaturation: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-120q-133 0-226.5-92T160-436q0-65 25-121.5T254-658l226-222 226 222q44 44 69 100.5T800-436q0 132-93.5 224T480-120ZM242-400h474q12-72-13.5-123T650-600L480-768 310-600q-27 26-53 77t-15 123Z"/></svg>',
           highSaturation: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 32.5-156t88-127Q256-817 330-848.5T488-880q80 0 151 27.5t124.5 76q53.5 48.5 85 115T880-518q0 115-70 176.5T640-280h-74q-9 0-12.5 5t-3.5 11q0 12 15 34.5t15 51.5q0 50-27.5 74T480-80Zm0-400Zm-220 40q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm120-160q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm200 0q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm120 160q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17ZM480-160q9 0 14.5-5t5.5-13q0-14-15-33t-15-57q0-42 29-67t71-25h70q66 0 113-38.5T800-518q0-121-92.5-201.5T488-800q-136 0-232 93t-96 227q0 133 93.5 226.5T480-160Z"/></svg>',
-          monochrome: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm40-83q119-15 199.5-104.5T800-480q0-123-80.5-212.5T520-797v634Z"/></svg>',
           reset: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-122q-121-15-200.5-105.5T160-440q0-66 26-126.5T260-672l57 57q-38 34-57.5 79T240-440q0 88 56 155.5T440-202v80Zm80 0v-80q87-16 143.5-83T720-440q0-100-70-170t-170-70h-3l44 44-56 56-140-140 140-140 56 56-44 44h3q134 0 227 93t93 227q0 121-79.5 211.5T520-122Z"/></svg>',
           close: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>',
           increase: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z"/></svg>',
@@ -1016,7 +1017,7 @@ var AccessibleWebWidget = (function () {
 
     };
 
-    var menuCSS = "/* Base styles */\n.acc-menu {\n  position: fixed;\n  left: 0;\n  top: 0;\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);\n  opacity: 1;\n  transition: 0.3s;\n  z-index: var(--acc-widget-z-index, 100000);\n  overflow: hidden;\n  background: var(--acc-bg-color);\n  width: 500px;\n  line-height: 1.5;\n  font-size: 16px;\n  height: 100%;\n  letter-spacing: 0.015em;\n  color: var(--acc-text-color);\n}\n\n/* Ensure all elements inherit proper colors for accessibility */\n.acc-menu * {\n  color: var(--acc-text-color);\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n  padding: 0;\n  margin: 0;\n  line-height: 1.5 !important;\n  letter-spacing: normal !important;\n}\n\n/* Header section */\n.acc-menu-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding-left: 16px;\n  padding-right: 16px;\n  height: var(--acc-header-height);\n  font-weight: 700 !important;\n  background-color: var(--acc-primary-color) !important;\n}\n\n.acc-menu-title {\n  font-size: 18px !important;\n  color: var(--acc-text-color-inverted) !important;\n  font-weight: bold;\n}\n\n.acc-header-back {\n  display: flex;\n  align-items: center;\n}\n\n.acc-back-btn {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: transparent;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--acc-text-color-inverted) !important;\n  transition: background-color 0.2s ease;\n  border-radius: 4px;\n  visibility: hidden;\n}\n\n.acc-back-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-back-btn.visible {\n  visibility: visible;\n}\n\n.acc-back-btn:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-back-btn:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-back-btn svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 24px !important;\n  height: 24px !important;\n}\n\n.acc-menu-title-dynamic {\n  display: none !important;\n}\n\n.acc-menu-title-dynamic.visible {\n  display: block !important;\n}\n\n.acc-menu-title-default {\n  display: block !important;\n}\n\n.acc-menu-title-default.hidden {\n  display: none !important;\n}\n\n.acc-menu-header svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n}\n\n.acc-menu-header > div {\n  display: flex;\n  align-items: center;\n}\n\n/* Interactive elements */\n.acc-menu-header div[role=\"button\"] {\n  cursor: pointer;\n  padding: 8px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  transition: background-color 0.2s ease;\n}\n\n.acc-menu-header div[role=\"button\"]:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-menu-header div[role=\"button\"]:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-menu-header .acc-header-actions {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.acc-lang-toggle {\n  cursor: pointer;\n  background: transparent;\n  border: none;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: 4px;\n  border-radius: 50%;\n  color: var(--acc-text-color-inverted);\n  transition: background-color 0.2s ease;\n}\n\n.acc-lang-toggle:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-lang-toggle:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-lang-toggle svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n}\n\n.acc-lang-panel {\n  position: absolute;\n  top: var(--acc-header-height);\n  right: 0;\n  width: 100%;\n  height: 100%;\n  max-height: calc(100% - var(--acc-header-height)) !important;\n  background: var(--acc-bg-color);\n  z-index: 100;\n  box-shadow: none;\n  overflow-y: auto;\n  display: none;\n}\n\n.acc-lang-panel.open {\n  display: block;\n}\n\n.acc-lang-current-container {\n  padding: 16px;\n}\n\n.acc-lang-current {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 12px 16px;\n  border: 1.5px solid var(--acc-primary-color);\n  border-radius: var(--acc-button-border-radius);\n  margin-top: 8px;\n  color: var(--acc-primary-color);\n  font-weight: 600;\n  background: var(--acc-card-bg);\n}\n\n.acc-lang-search-wrapper {\n  padding: 0 16px 8px;\n}\n\n.acc-lang-search {\n  width: 100%;\n  padding: 10px 16px;\n  border: 1.5px solid var(--acc-border-color);\n  border-radius: var(--acc-button-border-radius);\n  font-size: 16px;\n  background-color: var(--acc-card-bg);\n  transition: border-color 0.2s ease;\n}\n\n.acc-lang-search:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-lang-list {\n  padding: 6px 16px 16px;\n  max-height: 300px;\n  overflow-y: auto;\n}\n\n.acc-lang-item {\n  display: block;\n  width: 100%;\n  text-align: left;\n  padding: 11px 16px;\n  margin-bottom: 2px;\n  background-color: transparent;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  cursor: pointer;\n  font-size: 16px;\n  color: var(--acc-text-color);\n  transition: background-color 0.12s ease;\n}\n\n.acc-lang-item:hover {\n  background-color: rgba(25, 118, 210, 0.06);\n}\n\n.acc-lang-item:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-item.selected {\n  background-color: rgba(25, 118, 210, 0.08);\n  font-weight: 600;\n}\n\n.acc-icon-check {\n  display: inline-block;\n  width: 18px;\n  height: 18px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23886f60' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\");\n  background-repeat: no-repeat;\n  background-position: center;\n}\n\n/* Content sections */\n.acc-section {\n  margin: 0 16px 24px;\n}\n\n.acc-menu .acc-section-title {\n  font-size: 18px !important;\n  padding: 0 2px 12px;\n  font-weight: 500 !important;\n  color: var(--acc-text-color) !important;\n}\n\n.acc-menu .acc-lang-select {\n  width: 100% !important;\n  padding: 0 16px !important;\n  font-size: 16px !important;\n  font-family: inherit !important;\n  font-weight: 600 !important;\n  border-radius: var(--acc-button-border-radius) !important;\n  background: var(--acc-card-bg) !important;\n  border: 1.5px solid var(--acc-border-color) !important;\n  min-height: 48px !important;\n  max-height: 48px !important;\n  height: 48px !important;\n  color: var(--acc-text-color) !important;\n  -webkit-appearance: none !important;\n  -moz-appearance: none !important;\n  appearance: none !important;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0%20-960%20960%20960' width='24px' fill='%231f1f1f'%3E%3Cpath d='M480-344%20240-584l56-56%20184 184%20184-184%2056 56-240 240Z'/%3E%3C/svg%3E\") !important;\n  background-repeat: no-repeat !important;\n  background-position: right 12px center !important;\n  background-size: 20px !important;\n  padding-right: 44px !important;\n}\n\n/* Hide default arrows in Firefox and IE */\n.acc-menu .acc-lang-select::-ms-expand {\n  display: none !important;\n}\n\n.acc-menu .acc-lang-select:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n/* Option grid layout */\n.acc-options {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 16px;\n}\n\n/* Button styling */\n.acc-btn {\n  aspect-ratio: 6 / 5;\n  border-radius: var(--acc-border-radius);\n  padding: 12px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  text-align: center;\n  font-size: 16px !important;\n  background: var(--acc-card-bg) !important;\n  border: 1px solid rgba(0, 0, 0, 0.1) !important;\n  transition: background-color 0.2s ease;\n  cursor: pointer;\n  word-break: break-word;\n  gap: 8px;\n  position: relative;\n}\n\n.acc-btn:hover {\n  border-color: var(--acc-hover-color) !important;\n  border-width: 2px !important;\n}\n\n.acc-btn:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn .acc-label, .acc-text-adjust .acc-label div {\n  font-size: 14px !important;\n  font-weight: 600 !important;\n}\n\n/* SVG icons */\n.acc-text-adjust svg {\n  width: 20px !important;\n  height: 20px !important;\n  min-width: 20px !important;\n  min-height: 20px !important;\n  max-width: 20px !important;\n  max-height: 20px !important;\n}\n\n.acc-btn svg {\n  width: 26px !important;\n  height: 26px !important;\n  min-width: 26px !important;\n  min-height: 26px !important;\n  max-width: 26px !important;\n  max-height: 26px !important;\n  fill: var(--acc-text-color);\n}\n\n/* Selected state */\n.acc-btn.acc-selected {\n  background-color: var(--acc-primary-color) !important;\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected .acc-progress-dot {\n  background-color: rgba(255, 255, 255, 0.5);\n}\n\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-btn.acc-selected svg,\n.acc-btn.acc-selected span,\n.acc-btn.acc-selected .acc-label {\n  fill: var(--acc-text-color-inverted) !important;\n  color: var(--acc-text-color-inverted) !important;\n}\n\n/* Reset All Settings button */\n.acc-reset-container {\n  margin: 20px 16px 24px;\n  display: flex;\n  justify-content: center;\n}\n\n.acc-reset-btn {\n  display: flex;\n  width: 100%;\n  align-items: center;\n  justify-content: center;\n  text-align: center;\n  padding: 13px 24px;\n  background-color: var(--acc-primary-color) !important;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  font-weight: 600 !important;\n  font-size: 16px !important;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n}\n\n.acc-reset-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-reset-btn:hover {\n  background-color: var(--acc-primary-color-dark) !important;\n}\n\n.acc-reset-btn:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-reset-btn svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 24px !important;\n  height: 24px !important;\n  margin-right: 8px;\n}\n\n/* Footer section */\n.acc-footer {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background: var(--acc-card-bg);\n  padding: 12px 16px;\n  text-align: center;\n  border-top: 1px solid var(--acc-border-color);\n  z-index: 100;\n}\n\n.acc-footer a {\n  font-size: 12px !important;\n  text-decoration: none !important;\n  color: #6b7280 !important;\n  background: transparent !important;\n  font-weight: 500 !important;\n  padding: 6px 8px;\n  border-radius: 4px;\n  transition: color 0.15s ease;\n  letter-spacing: 0.01em !important;\n}\n\n.acc-footer a:hover {\n  text-decoration: none !important;\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-footer a:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Content area */\n.acc-menu-content {\n  overflow: auto;\n  max-height: calc(100% - 80px);\n  padding: 24px 0 36px;\n}\n\n/* Text adjustments */\n.acc-text-adjust {\n  background: var(--acc-card-bg);\n  padding: 18px 20px;\n  margin-bottom: 20px;\n  border-radius: var(--acc-border-radius);\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.acc-text-adjust .acc-label {\n  display: flex;\n  justify-content: flex-start;\n}\n\n.acc-text-adjust > div {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 20px;\n  align-items: center;\n  font-size: 16px;\n}\n\n.acc-text-adjust .acc-label div {\n  font-size: 16px !important;\n}\n\n.acc-text-adjust div[role=\"button\"] {\n  background: var(--acc-bg-color) !important;\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  transition: border-color 0.2s ease;\n}\n\n.acc-text-adjust div[role=\"button\"]:hover {\n  border-color: var(--acc-primary-color);\n}\n\n.acc-text-adjust div[role=\"button\"]:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Overlay */\n.acc-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: calc(var(--acc-widget-z-index, 100000) - 1);\n}\n\n/* Progress indicator */\n.acc-progress-indicator {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  margin-top: 8px;\n  height: 8px;\n}\n\n.acc-progress-dot {\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background-color: var(--acc-border-color);\n  transition: background-color 0.2s ease;\n}\n\n.acc-progress-dot.active {\n  background-color: var(--acc-primary-color);\n}\n\n/* Selected state updates indicator colors */\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-bg-color);\n}\n\n/* Responsive adjustments */\n@media only screen and (max-width: 560px) {\n  .acc-menu { width: 100%; }\n}\n\n@media only screen and (max-width: 420px) {\n  .acc-options {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 12px;\n  }\n  .acc-btn {\n    padding: 8px;\n  }\n}\n\n/* Ensure proper focus visibility for assistive technology */\n@media (prefers-reduced-motion: reduce) {\n  .acc-menu,\n  .acc-btn,\n  .acc-lang-select,\n  .acc-progress-dot,\n  .acc-menu-header div[role=\"button\"],\n  .acc-lang-toggle,\n  .acc-back-btn,\n  .acc-reset-btn,\n  .acc-text-adjust div[role=\"button\"] {\n    transition: none;\n  }\n}\n";
+    var menuCSS = "/* Base styles */\n.acc-menu {\n  position: fixed;\n  left: 0;\n  top: 0;\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);\n  opacity: 1;\n  transition: 0.3s;\n  z-index: var(--acc-widget-z-index, 100000);\n  overflow: hidden;\n  background: var(--acc-bg-color);\n  width: 500px;\n  line-height: 1.5;\n  font-size: 16px;\n  height: 100%;\n  letter-spacing: 0.015em;\n  color: var(--acc-text-color);\n  --acc-content-inline-padding: 16px;\n}\n\n/* Ensure all elements inherit proper colors for accessibility */\n.acc-menu * {\n  color: var(--acc-text-color);\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n  padding: 0;\n  margin: 0;\n  line-height: 1.5 !important;\n  letter-spacing: normal !important;\n}\n\n/* Header section */\n.acc-menu-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 var(--acc-content-inline-padding);\n  height: var(--acc-header-height);\n  font-weight: 700 !important;\n  background-color: var(--acc-primary-color) !important;\n}\n\n.acc-menu-title {\n  font-size: 18px !important;\n  color: var(--acc-text-color-inverted) !important;\n  font-weight: bold;\n}\n\n.acc-header-back {\n  display: flex;\n  align-items: center;\n}\n\n.acc-back-btn {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: transparent;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--acc-text-color-inverted) !important;\n  transition: background-color 0.2s ease;\n  border-radius: 4px;\n  visibility: hidden;\n}\n\n.acc-back-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-back-btn.visible {\n  visibility: visible;\n}\n\n.acc-back-btn:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-back-btn:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-back-btn svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 24px !important;\n  height: 24px !important;\n}\n\n.acc-menu-title-dynamic {\n  display: none !important;\n}\n\n.acc-menu-title-dynamic.visible {\n  display: block !important;\n}\n\n.acc-menu-title-default {\n  display: block !important;\n}\n\n.acc-menu-title-default.hidden {\n  display: none !important;\n}\n\n.acc-menu-header svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n}\n\n.acc-menu-header > div {\n  display: flex;\n  align-items: center;\n}\n\n/* Interactive elements */\n.acc-menu-header div[role=\"button\"] {\n  cursor: pointer;\n  padding: 8px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  transition: background-color 0.2s ease;\n}\n\n.acc-menu-header div[role=\"button\"]:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-menu-header div[role=\"button\"]:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-menu-header .acc-header-actions {\n  display: flex;\n  align-items: center;\n}\n\n.acc-language-container {\n  margin: 0 var(--acc-content-inline-padding) 24px;\n}\n\n.acc-lang-details {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  border-radius: var(--acc-button-border-radius);\n  background: var(--acc-card-bg);\n}\n\n.acc-lang-summary {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  padding: 12px 14px;\n  cursor: pointer;\n  border-radius: var(--acc-button-border-radius);\n}\n\n.acc-lang-summary::-webkit-details-marker {\n  display: none;\n}\n\n.acc-lang-summary::marker {\n  content: '';\n}\n\n.acc-lang-summary-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-current-label {\n  font-size: 16px !important;\n  font-weight: 600 !important;\n}\n\n.acc-lang-summary:hover {\n  background-color: rgba(25, 118, 210, 0.06);\n}\n\n.acc-lang-summary:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-summary-arrow {\n  width: 10px;\n  height: 10px;\n  border-right: 2px solid var(--acc-text-color);\n  border-bottom: 2px solid var(--acc-text-color);\n  transform: rotate(-45deg);\n  transition: transform 0.2s ease;\n}\n\n.acc-lang-details[open] .acc-lang-summary-arrow {\n  transform: rotate(45deg);\n}\n\n.acc-lang-details[open] .acc-lang-summary {\n  border-bottom: 1px solid var(--acc-border-color);\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.acc-lang-details-panel {\n  padding: 12px 0 8px;\n}\n\n.acc-lang-details-panel .acc-section-title {\n  font-size: 16px !important;\n  padding: 0 16px 10px;\n}\n\n.acc-lang-flag {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 22px;\n  font-size: 18px !important;\n  line-height: 1;\n}\n\n.acc-lang-search-wrapper {\n  padding: 0 16px 8px;\n}\n\n.acc-lang-search {\n  width: 100%;\n  padding: 10px 16px;\n  border: 1.5px solid var(--acc-border-color);\n  border-radius: var(--acc-button-border-radius);\n  font-size: 16px;\n  background-color: var(--acc-card-bg);\n  transition: border-color 0.2s ease;\n}\n\n.acc-lang-search:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-lang-list {\n  padding: 6px 8px 12px;\n  max-height: 280px;\n  overflow-y: auto;\n}\n\n.acc-lang-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  width: 100%;\n  text-align: left;\n  padding: 11px 10px;\n  margin-bottom: 4px;\n  background-color: transparent;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  cursor: pointer;\n  font-size: 16px;\n  color: var(--acc-text-color);\n  transition: background-color 0.12s ease;\n}\n\n.acc-lang-item:hover {\n  background-color: rgba(25, 118, 210, 0.06);\n}\n\n.acc-lang-item:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-item.selected {\n  background-color: rgba(25, 118, 210, 0.08);\n  font-weight: 600;\n}\n\n.acc-lang-item-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-item-label {\n  font-size: 16px !important;\n  line-height: 1.4 !important;\n}\n\n.acc-icon-check {\n  display: inline-block;\n  width: 18px;\n  height: 18px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23886f60' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\");\n  background-repeat: no-repeat;\n  background-position: center;\n  opacity: 0;\n  transition: opacity 0.15s ease;\n}\n\n.acc-lang-item.selected .acc-icon-check {\n  opacity: 1;\n}\n\n.acc-menu .acc-lang-select {\n  width: 100% !important;\n  padding: 0 16px !important;\n  font-size: 16px !important;\n  font-family: inherit !important;\n  font-weight: 600 !important;\n  border-radius: var(--acc-button-border-radius) !important;\n  background: var(--acc-card-bg) !important;\n  border: 1.5px solid var(--acc-border-color) !important;\n  min-height: 48px !important;\n  max-height: 48px !important;\n  height: 48px !important;\n  color: var(--acc-text-color) !important;\n  -webkit-appearance: none !important;\n  -moz-appearance: none !important;\n  appearance: none !important;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0%20-960%20960%20960' width='24px' fill='%231f1f1f'%3E%3Cpath d='M480-344%20240-584l56-56%20184 184%20184-184%2056 56-240 240Z'/%3E%3C/svg%3E\") !important;\n  background-repeat: no-repeat !important;\n  background-position: right 12px center !important;\n  background-size: 20px !important;\n  padding-right: 44px !important;\n}\n\n/* Hide default arrows in Firefox and IE */\n.acc-menu .acc-lang-select::-ms-expand {\n  display: none !important;\n}\n\n.acc-menu .acc-lang-select:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n/* Option grid layout */\n.acc-options {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 16px;\n  margin: 0 var(--acc-content-inline-padding) 24px;\n}\n\n/* Button styling */\n.acc-btn {\n  aspect-ratio: 6 / 5;\n  border-radius: var(--acc-border-radius);\n  padding: 12px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  text-align: center;\n  font-size: 16px !important;\n  background: var(--acc-card-bg) !important;\n  border: 1px solid rgba(0, 0, 0, 0.1) !important;\n  transition: background-color 0.2s ease;\n  cursor: pointer;\n  word-break: break-word;\n  gap: 8px;\n  position: relative;\n}\n\n.acc-btn:hover {\n  border-color: var(--acc-hover-color) !important;\n  border-width: 2px !important;\n}\n\n.acc-btn:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn .acc-label, .acc-text-adjust .acc-label div {\n  font-size: 14px !important;\n  font-weight: 600 !important;\n}\n\n/* SVG icons */\n.acc-text-adjust svg {\n  width: 20px !important;\n  height: 20px !important;\n  min-width: 20px !important;\n  min-height: 20px !important;\n  max-width: 20px !important;\n  max-height: 20px !important;\n}\n\n.acc-btn svg {\n  width: 26px !important;\n  height: 26px !important;\n  min-width: 26px !important;\n  min-height: 26px !important;\n  max-width: 26px !important;\n  max-height: 26px !important;\n  fill: var(--acc-text-color);\n}\n\n/* Selected state */\n.acc-btn.acc-selected {\n  background-color: var(--acc-primary-color) !important;\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected .acc-progress-dot {\n  background-color: rgba(255, 255, 255, 0.5);\n}\n\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-btn.acc-selected svg,\n.acc-btn.acc-selected span,\n.acc-btn.acc-selected .acc-label {\n  fill: var(--acc-text-color-inverted) !important;\n  color: var(--acc-text-color-inverted) !important;\n}\n\n/* Footer section */\n.acc-footer {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background: var(--acc-card-bg);\n  padding: 12px 16px;\n  display: flex;\n  flex-direction: column;\n  align-items: stretch;\n  gap: 10px;\n  border-top: 1px solid var(--acc-border-color);\n  z-index: 100;\n}\n\n.acc-footer-reset {\n  display: flex;\n  width: 100%;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  padding: 12px 16px;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  background-color: var(--acc-primary-color) !important;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n  white-space: nowrap;\n}\n\n.acc-footer-reset svg {\n  width: 24px !important;\n  height: 24px !important;\n  fill: var(--acc-text-color-inverted) !important;\n}\n\n.acc-footer-reset .acc-label {\n  font-size: 16px !important;\n  font-weight: 600 !important;\n  color: var(--acc-text-color-inverted) !important;\n  line-height: 1.2 !important;\n}\n\n.acc-footer-reset:hover {\n  background-color: var(--acc-primary-color-dark) !important;\n}\n\n.acc-footer-reset:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-footer a {\n  font-size: 12px !important;\n  text-decoration: none !important;\n  color: #6b7280 !important;\n  background: transparent !important;\n  font-weight: 500 !important;\n  padding: 6px 8px;\n  border-radius: 4px;\n  transition: color 0.15s ease;\n  letter-spacing: 0.01em !important;\n  align-self: center;\n}\n\n.acc-footer a:hover {\n  text-decoration: none !important;\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-footer a:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Content area */\n.acc-menu-content {\n  overflow: auto;\n  max-height: calc(100% - 122px);\n  padding: 24px 0 36px;\n}\n\n/* Text adjustments */\n.acc-text-adjust {\n  background: var(--acc-card-bg);\n  padding: 18px 20px;\n  margin-bottom: 20px;\n  border-radius: var(--acc-border-radius);\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.acc-text-adjust .acc-label {\n  display: flex;\n  justify-content: flex-start;\n}\n\n.acc-text-adjust > div {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 20px;\n  align-items: center;\n  font-size: 16px;\n}\n\n.acc-text-adjust .acc-label div {\n  font-size: 16px !important;\n}\n\n.acc-text-adjust div[role=\"button\"] {\n  background: var(--acc-bg-color) !important;\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  transition: border-color 0.2s ease;\n}\n\n.acc-text-adjust div[role=\"button\"]:hover {\n  border-color: var(--acc-primary-color);\n}\n\n.acc-text-adjust div[role=\"button\"]:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Overlay */\n.acc-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: calc(var(--acc-widget-z-index, 100000) - 1);\n}\n\n/* Progress indicator */\n.acc-progress-indicator {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  margin-top: 8px;\n  height: 8px;\n}\n\n.acc-progress-dot {\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background-color: var(--acc-border-color);\n  transition: background-color 0.2s ease;\n}\n\n.acc-progress-dot.active {\n  background-color: var(--acc-primary-color);\n}\n\n/* Selected state updates indicator colors */\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-bg-color);\n}\n\n/* Responsive adjustments */\n@media only screen and (max-width: 560px) {\n  .acc-menu { width: 100%; }\n}\n\n@media only screen and (max-width: 420px) {\n  .acc-options {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 12px;\n  }\n  .acc-btn {\n    padding: 8px;\n  }\n}\n\n/* Ensure proper focus visibility for assistive technology */\n@media (prefers-reduced-motion: reduce) {\n  .acc-menu,\n  .acc-btn,\n  .acc-lang-select,\n  .acc-progress-dot,\n  .acc-menu-header div[role=\"button\"],\n  .acc-lang-toggle,\n  .acc-back-btn,\n  .acc-footer-reset,\n  .acc-text-adjust div[role=\"button\"] {\n    transition: none;\n  }\n}\n";
 
     var widgetCSS = "  /* Base styles for the widget */\n  .acc-widget, .acc-menu {\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n  }\n  \n  .acc-widget *, .acc-menu * { \n    box-sizing: border-box !important; \n  }\n  \n  /* Accessibility toggle button */\n  .acc-toggle-btn {\n    position: fixed;\n    z-index: var(--acc-widget-z-index, 100000);\n    left: 30px;\n    bottom: 30px;\n    border-radius: 50%;\n    align-items: center;\n    justify-content: center;\n    width: var(--acc-button-size, 48px);\n    height: var(--acc-button-size, 48px);\n    display: flex;\n    cursor: pointer;\n    outline: none !important;\n    border: none !important;\n    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 2px 5px rgba(0,0,0,0.2) !important;\n    background: var(--acc-primary-color, #1976d2) !important;\n    transition: transform 0.2s ease;\n    overflow: visible;\n  }\n  \n  .acc-toggle-btn svg {\n    width: 60%;\n    height: 60%;\n    fill: white;\n  }\n  \n  .acc-toggle-btn:hover {\n    transform: scale(1.12);\n  }\n\n  .acc-violation-bubble {\n    position: absolute;\n    top: -8px;\n    right: -8px;\n    min-width: 24px;\n    height: 24px;\n    border-radius: 12px;\n    font-size: 11px;\n    font-weight: 700;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 0 4px;\n    pointer-events: none;\n    z-index: 1;\n    color: #fff;\n    border: none;\n    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  }\n\n  .acc-violation-bubble[data-severity=\"critical\"] {\n    background: #fbc02c;\n    color: #222;\n  }\n\n  .acc-violation-bubble[data-severity=\"serious\"] {\n    background: #ffab32;\n    color: #222;\n  }\n\n  .acc-violation-bubble[data-severity=\"moderate\"] {\n    background: #fbc02c;\n    color: #000;\n  }\n\n  .acc-violation-bubble[hidden] {\n    display: none;\n  }\n\n  .acc-toggle-btn:focus {\n    outline: none !important;\n  }\n\n  .acc-toggle-btn:focus-visible {\n    outline: 3px solid var(--acc-primary-color, #1976d2) !important;\n    outline-offset: 2px;\n  }\n\n  body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {\n    cursor: pointer;\n  }\n\n  .acc-tts-active-block {\n    outline: 2px solid var(--acc-primary-color, #1976d2) !important;\n    outline-offset: 3px !important;\n    border-radius: 4px;\n  }\n  \n  @media (prefers-reduced-motion: reduce) {\n    .acc-toggle-btn {\n      transition: none;\n    }\n  }\n";
 
@@ -1163,6 +1164,68 @@ var AccessibleWebWidget = (function () {
 
     /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
     const featureMethods = {
+
+      getContrastToggleDisplay(index) {
+          if (index === 0) {
+            return { key: 'light-contrast', label: 'Light Contrast', icon: this.widgetIcons.lightContrast };
+          }
+          if (index === 1) {
+            return { key: 'dark-contrast', label: 'Dark Contrast', icon: this.widgetIcons.darkContrast };
+          }
+          return { key: null, label: 'Contrast', icon: this.widgetIcons.contrast };
+        },
+
+      updateContrastToggleButton(button, index) {
+          if (!button) return;
+          const display = this.getContrastToggleDisplay(index);
+          const iconNode = button.querySelector('svg');
+          if (iconNode) {
+            iconNode.outerHTML = display.icon;
+          } else {
+            button.insertAdjacentHTML('afterbegin', display.icon);
+          }
+
+          const translatedLabel = this.translate(display.label);
+          const labelNode = button.querySelector('.acc-label');
+          if (labelNode) {
+            labelNode.setAttribute('data-acc-text', display.label);
+            labelNode.innerText = translatedLabel;
+          }
+          button.setAttribute('title', translatedLabel);
+          button.setAttribute('aria-label', translatedLabel);
+          button.setAttribute('data-contrast-mode', display.key || 'off');
+        },
+
+      getSaturationToggleDisplay(index) {
+          if (index === 0) {
+            return { key: 'low-saturation', label: 'Low Saturation', icon: this.widgetIcons.lowSaturation };
+          }
+          if (index === 1) {
+            return { key: 'high-saturation', label: 'High Saturation', icon: this.widgetIcons.highSaturation };
+          }
+          return { key: null, label: 'Saturation', icon: this.widgetIcons.saturation };
+        },
+
+      updateSaturationToggleButton(button, index) {
+          if (!button) return;
+          const display = this.getSaturationToggleDisplay(index);
+          const iconNode = button.querySelector('svg');
+          if (iconNode) {
+            iconNode.outerHTML = display.icon;
+          } else {
+            button.insertAdjacentHTML('afterbegin', display.icon);
+          }
+
+          const translatedLabel = this.translate(display.label);
+          const labelNode = button.querySelector('.acc-label');
+          if (labelNode) {
+            labelNode.setAttribute('data-acc-text', display.label);
+            labelNode.innerText = translatedLabel;
+          }
+          button.setAttribute('title', translatedLabel);
+          button.setAttribute('aria-label', translatedLabel);
+          button.setAttribute('data-saturation-mode', display.key || 'off');
+        },
 
       ensureSkipLink() {
           if (typeof document === 'undefined') return null;
@@ -2187,12 +2250,13 @@ var AccessibleWebWidget = (function () {
         return rect.width > 0 && rect.height > 0;
       },
 
-      isTtsExcludedElement(element) {
+      isTtsExcludedElement(element, { allowLandmarkRegions = false } = {}) {
         if (!(element instanceof Element)) return true;
         if (element.closest('.acc-container')) return true;
         if (element.closest('script,style,noscript,template')) return true;
         if (element.closest('[aria-hidden="true"]')) return true;
         if (
+          !allowLandmarkRegions &&
           element.closest(
             'nav,header,footer,aside,form,dialog,[role="navigation"],[role="complementary"],[role="search"],[role="menu"],[role="dialog"],[role="alert"],[aria-live]'
           )
@@ -2443,7 +2507,7 @@ var AccessibleWebWidget = (function () {
 
         const block = target.closest('h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,caption,th,td,div,section');
         if (!(block instanceof Element)) return null;
-        if (this.isTtsExcludedElement(block) || !this.isElementVisibleForTts(block)) return null;
+        if (this.isTtsExcludedElement(block, { allowLandmarkRegions: true }) || !this.isElementVisibleForTts(block)) return null;
 
         const text = this.normalizeReadableText(block.innerText || block.textContent || '');
         if (text.length < 2) return null;
@@ -3241,6 +3305,44 @@ var AccessibleWebWidget = (function () {
 
       setColorFilterUI(menu, activeKey = null) {
           if (!menu || !menu.querySelectorAll) return;
+          const contrastFeature = this.multiLevelFeatures?.['contrast-toggle'];
+          const contrastButton = menu.querySelector('.acc-btn[data-key="contrast-toggle"]');
+          if (contrastFeature) {
+            const contrastIndex = contrastFeature.values.indexOf(activeKey);
+            contrastFeature.currentIndex = contrastIndex;
+            this.updateContrastToggleButton(contrastButton, contrastIndex);
+            if (contrastButton) {
+              const isContrastActive = contrastIndex >= 0;
+              contrastButton.classList.toggle('acc-selected', isContrastActive);
+              contrastButton.setAttribute('aria-pressed', isContrastActive ? 'true' : 'false');
+              const indicator = contrastButton.querySelector('.acc-progress-indicator[data-feature="contrast-toggle"]');
+              if (indicator) {
+                const dots = indicator.querySelectorAll('.acc-progress-dot');
+                dots.forEach((dot, index) => {
+                  dot.classList.toggle('active', index === contrastIndex);
+                });
+              }
+            }
+          }
+          const saturationFeature = this.multiLevelFeatures?.['saturation-toggle'];
+          const saturationButton = menu.querySelector('.acc-btn[data-key="saturation-toggle"]');
+          if (saturationFeature) {
+            const saturationIndex = saturationFeature.values.indexOf(activeKey);
+            saturationFeature.currentIndex = saturationIndex;
+            this.updateSaturationToggleButton(saturationButton, saturationIndex);
+            if (saturationButton) {
+              const isSaturationActive = saturationIndex >= 0;
+              saturationButton.classList.toggle('acc-selected', isSaturationActive);
+              saturationButton.setAttribute('aria-pressed', isSaturationActive ? 'true' : 'false');
+              const indicator = saturationButton.querySelector('.acc-progress-indicator[data-feature="saturation-toggle"]');
+              if (indicator) {
+                const dots = indicator.querySelectorAll('.acc-progress-dot');
+                dots.forEach((dot, index) => {
+                  dot.classList.toggle('active', index === saturationIndex);
+                });
+              }
+            }
+          }
           this.colorFilterKeys.forEach(filterKey => {
             const button = menu.querySelector(`.acc-btn[data-key="${filterKey}"]`);
             if (!button) return;
@@ -3307,12 +3409,6 @@ var AccessibleWebWidget = (function () {
               const ng = (0.213 - 0.213 * s) * r + (0.715 + 0.285 * s) * g + (0.072 - 0.072 * s) * b;
               const nb = (0.213 - 0.213 * s) * r + (0.715 - 0.715 * s) * g + (0.072 + 0.928 * s) * b;
               r = nr; g = ng; b = nb;
-              break;
-            }
-            case 'monochrome': {
-              // filter: grayscale(100%) — luminance-weighted
-              const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-              r = lum; g = lum; b = lum;
               break;
             }
             case 'high-saturation': {
@@ -3392,8 +3488,18 @@ var AccessibleWebWidget = (function () {
         },
 
       cycleMultiLevelFeature(featureKey, button) {
-          // Only text-scale remains as a multi-level feature.
           const feature = this.multiLevelFeatures[featureKey];
+          if (!feature || !button) return;
+
+          if (featureKey === 'contrast-toggle' || featureKey === 'saturation-toggle') {
+            const newIndex = feature.currentIndex + 1;
+            const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
+            this.updateColorFilterState(newActiveKey);
+            this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
+            this.applyVisualFilters();
+            return;
+          }
+
           const newIndex = feature.currentIndex + 1;
           if (newIndex >= feature.levels) {
             feature.currentIndex = -1;
@@ -3445,6 +3551,10 @@ var AccessibleWebWidget = (function () {
             const dots = indicator.querySelectorAll('.acc-progress-dot');
             dots.forEach(dot => dot.classList.remove('active'));
           });
+          const menu = document.querySelector('.acc-menu');
+          if (menu) {
+            this.setColorFilterUI(menu, null);
+          }
           
           // Remove focus from active element to fix the persistent focus ring bug
           if (document.activeElement) {
@@ -3521,6 +3631,50 @@ var AccessibleWebWidget = (function () {
           const { lang } = this.loadConfig();
           const dictionary = this.translations[lang] || this.translations["en"];
           return dictionary[label] || label;
+        },
+
+      getLanguageCountryLabel(languageCode) {
+          const countryByLanguage = {
+            en: 'USA',
+            it: 'Italy',
+            fr: 'France',
+            de: 'Germany',
+            es: 'Spain',
+            ru: 'Russia',
+            pl: 'Poland',
+            ro: 'Romania',
+            nl: 'Netherlands',
+            uk: 'Ukraine'
+          };
+          return countryByLanguage[languageCode] || String(languageCode || '').toUpperCase();
+        },
+
+      getLanguageFlag(languageCode) {
+          const countryCodeByLanguage = {
+            en: 'US',
+            it: 'IT',
+            fr: 'FR',
+            de: 'DE',
+            es: 'ES',
+            ru: 'RU',
+            pl: 'PL',
+            ro: 'RO',
+            nl: 'NL',
+            uk: 'UA'
+          };
+          const countryCode = (countryCodeByLanguage[languageCode] || String(languageCode || '').slice(0, 2)).toUpperCase();
+          if (!/^[A-Z]{2}$/.test(countryCode)) {
+            return '';
+          }
+          return String.fromCodePoint(...countryCode.split('').map(char => 127397 + char.charCodeAt(0)));
+        },
+
+      formatLanguageLabel(language) {
+          if (!language) return 'English (USA)';
+          const baseName = String(language.label || language.code || '')
+            .split('(')[0]
+            .trim() || String(language.code || 'en').toUpperCase();
+          return `${baseName} (${this.getLanguageCountryLabel(language.code)})`;
         },
 
       throttle(func, limit) {
@@ -3630,31 +3784,20 @@ var AccessibleWebWidget = (function () {
             menu.setAttribute('aria-hidden', 'true');
             menu.setAttribute('aria-modal', 'false');
           }
-      
-          const langPanel = this.findElement('#acc-lang-panel', targetContainer);
-          if (langPanel) {
-            langPanel.classList.remove('open');
-            if (langPanel.__accwebTrapFocus) {
-              document.removeEventListener('keydown', langPanel.__accwebTrapFocus);
-              delete langPanel.__accwebTrapFocus;
-            }
+
+          const langDetails = this.findElement('.acc-lang-details', targetContainer);
+          if (langDetails) {
+            langDetails.removeAttribute('open');
           }
-          const langToggle = this.findElement('.acc-lang-toggle', targetContainer);
-          if (langToggle) {
-            langToggle.setAttribute('aria-expanded', 'false');
+
+          const langSearch = this.findElement('#acc-lang-search', targetContainer);
+          if (langSearch) {
+            langSearch.value = '';
           }
-          const backButton = this.findElement('.acc-back-btn', targetContainer);
-          if (backButton) {
-            backButton.classList.remove('visible');
-          }
-          const defaultTitle = this.findElement('.acc-menu-title-default', targetContainer);
-          if (defaultTitle) {
-            defaultTitle.classList.remove('hidden');
-          }
-          const langTitle = this.findElement('.acc-menu-title-dynamic', targetContainer);
-          if (langTitle) {
-            langTitle.classList.remove('visible');
-          }
+
+          targetContainer.querySelectorAll('.acc-lang-item').forEach(item => {
+            item.style.display = '';
+          });
       
           if (this.menuKeyListener) {
             document.removeEventListener('keydown', this.menuKeyListener, true);
@@ -3742,66 +3885,59 @@ var AccessibleWebWidget = (function () {
             this.applyThemeVariables();
             this.registerStaticStyles();
 
+            const activeLanguageCode = String(lang || 'en').split(/[_-]/)[0].toLowerCase();
+            const activeLanguage = this.supportedLanguages.find(language => language.code === activeLanguageCode) || this.supportedLanguages[0];
+            const activeLanguageLabel = this.formatLanguageLabel(activeLanguage);
+            const activeLanguageFlag = this.getLanguageFlag(activeLanguage?.code);
+
             const menuTemplate = `
         <div class="acc-menu" role="dialog" aria-labelledby="accessibility-title">
           <div class="acc-menu-header">
-            <div class="acc-header-back">
-              <button type="button" class="acc-back-btn" aria-label="Back to accessibility menu">
-                ${this.widgetIcons.arrowBack}
-                <span>Back</span>
-              </button>
-            </div>
-            <div id="accessibility-title" class="acc-menu-title acc-menu-title-default acc-label">Accessibility Menu</div>
-            <div id="language-settings-title" class="acc-menu-title acc-menu-title-dynamic acc-label">Language Settings</div>
+            <div id="accessibility-title" class="acc-menu-title acc-label">Accessibility Menu</div>
             <div class="acc-header-actions">
-              <button type="button" class="acc-lang-toggle" aria-expanded="false" aria-label="Language settings" title="Language settings">
-                ${this.widgetIcons.language}
-              </button>
               <div role="button" class="acc-menu-close" title="Close" aria-label="Close accessibility menu" tabindex="0">
                 ${this.widgetIcons.close}
               </div>
             </div>
           </div>
-          <div id="acc-lang-panel" class="acc-lang-panel">
-            <div class="acc-lang-current-container">
-              <div class="acc-lang-current">
-                <span id="acc-current-language">${this.supportedLanguages.find(l => l.code === (lang || "en"))?.label || "English (English)"}</span>
-                <span class="acc-icon-check"></span>
-              </div>
-            </div>
-            <div>
-              <div class="acc-section-title">All Languages</div>
-              <div class="acc-lang-search-wrapper">
-                <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
-              </div>
-              <div class="acc-lang-list">
-                ${this.supportedLanguages.map(l => 
-                  `<button type="button" class="acc-lang-item${l.code === (lang || "en") ? ' selected' : ''}" data-lang="${l.code}">${l.label}</button>`
-                ).join('')}
-              </div>
-            </div>
-            </div>
           <div id="acc-menu-content" class="acc-menu-content">
-            <div class="acc-section">
-              <div class="acc-section-title">Content Adjustments</div>
-              <div class="acc-options content"> </div>
+            <div class="acc-language-container">
+              <details class="acc-lang-details">
+                <summary class="acc-lang-summary" aria-label="Language" title="Language">
+                  <span class="acc-lang-summary-main">
+                    <span id="acc-current-language-flag" class="acc-lang-flag" aria-hidden="true">${activeLanguageFlag}</span>
+                    <span id="acc-current-language" class="acc-lang-current-label">${activeLanguageLabel}</span>
+                  </span>
+                  <span class="acc-lang-summary-arrow" aria-hidden="true"> </span>
+                </summary>
+                <div class="acc-lang-details-panel">
+                  <div class="acc-section-title">All Languages</div>
+                  <div class="acc-lang-search-wrapper">
+                    <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
+                  </div>
+                  <div class="acc-lang-list">
+                    ${this.supportedLanguages.map(language => {
+                      const languageLabel = this.formatLanguageLabel(language);
+                      const languageFlag = this.getLanguageFlag(language.code);
+                      return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
+                        <span class="acc-lang-item-main">
+                          <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
+                          <span class="acc-lang-item-label">${languageLabel}</span>
+                        </span>
+                        <span class="acc-icon-check" aria-hidden="true"> </span>
+                      </button>`;
+                    }).join('')}
+                  </div>
+                </div>
+              </details>
             </div>
-            <div class="acc-section">
-              <div class="acc-section-title">Color Adjustments</div>
-              <div class="acc-options filters"> </div>
-            </div>
-            <div class="acc-section">
-              <div class="acc-section-title">Tools</div>
-              <div class="acc-options tools"> </div>
-            </div>
-            <div class="acc-reset-container">
-              <button class="acc-reset-btn" title="Reset All Settings" aria-label="Reset all accessibility settings" tabindex="0">
-                ${this.widgetIcons.reset}
-                <span>Reset All Settings</span>
-              </button>
-            </div>
+            <div class="acc-options acc-options-all"> </div>
           </div>
           <div class="acc-footer">
+            <button type="button" class="acc-footer-reset" title="Reset settings" aria-label="Reset settings">
+              ${this.widgetIcons.reset}
+              <span class="acc-label">Reset settings</span>
+            </button>
             <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>
           </div>
         </div>
@@ -3825,102 +3961,51 @@ var AccessibleWebWidget = (function () {
               menu.style.right = 'auto';
             }
       
-            menu.querySelector(".content").innerHTML = this.renderOptions(this.contentOptions);
-            menu.querySelector(".tools").innerHTML = this.renderOptions(this.accessTools, 'acc-tools');
-            menu.querySelector(".filters").innerHTML = this.renderOptions(this.colorOptions, 'acc-filter');
-            const langToggle = this.findElement(".acc-lang-toggle", menu);
-            const langPanel = this.findElement("#acc-lang-panel", menu);
+            const pinnedTopToolKeys = ['text-to-speech', 'high-contrast-mode', 'simple-layout'];
+            const pinnedTopTools = [];
+            const remainingTools = [];
+            this.accessTools.forEach(tool => {
+              if (pinnedTopToolKeys.includes(tool.key)) {
+                pinnedTopTools.push(tool);
+              } else {
+                remainingTools.push(tool);
+              }
+            });
+
+            const allOptions = [
+              this.renderOptions(pinnedTopTools, 'acc-tools'),
+              this.renderOptions(this.contentOptions),
+              this.renderOptions(this.colorOptions, 'acc-filter'),
+              this.renderOptions(remainingTools, 'acc-tools')
+            ].join('');
+            menu.querySelector(".acc-options-all").innerHTML = allOptions;
+            const langDetails = this.findElement(".acc-lang-details", menu);
             const langSearch = this.findElement("#acc-lang-search", menu);
             const langItems = menu.querySelectorAll(".acc-lang-item");
-            const backButton = this.findElement(".acc-back-btn", menu);
-            const defaultTitle = this.findElement(".acc-menu-title-default", menu);
-            const langTitle = this.findElement(".acc-menu-title-dynamic", menu);
-      
-      
-            // Focus trapping for language panel
-            const trapFocus = (e) => {
-              if (!langPanel.classList.contains('open')) return;
-              
-              const focusableElements = this.getFocusableElements(langPanel);
-              if (backButton.classList.contains('visible') && !focusableElements.includes(backButton)) {
-                focusableElements.unshift(backButton);
-              }
-              if (!focusableElements.length) return;
-              const firstElement = focusableElements[0];
-              const lastElement = focusableElements[focusableElements.length - 1];
-      
-              if (e.key === 'Tab') {
-                if (e.shiftKey) {
-                  if (document.activeElement === firstElement) {
-                    e.preventDefault();
-                    lastElement.focus();
+            if (langDetails) {
+              langDetails.addEventListener('toggle', () => {
+                if (langDetails.open) {
+                  if (langSearch) {
+                    langSearch.focus();
                   }
-                } else {
-                  if (document.activeElement === lastElement) {
-                    e.preventDefault();
-                    firstElement.focus();
-                  }
+                  return;
                 }
-              }
-              
-              if (e.key === 'Escape' || e.key === 'Esc') {
-                e.preventDefault();
-                e.stopPropagation();
-                closeLanguagePanel();
-              }
-            };
-      
-            const closeLanguagePanel = (returnFocus = true) => {
-              langPanel.classList.remove('open');
-              langToggle.setAttribute('aria-expanded', 'false');
-              document.removeEventListener('keydown', trapFocus);
-              delete langPanel.__accwebTrapFocus;
-              backButton.classList.remove('visible');
-              defaultTitle.classList.remove('hidden');
-              langTitle.classList.remove('visible');
-              if (returnFocus) {
-                langToggle.focus();
-              }
-            };
-      
-            langToggle.addEventListener("click", () => {
-              const isExpanded = langToggle.getAttribute('aria-expanded') === 'true';
-              langToggle.setAttribute('aria-expanded', !isExpanded);
-              langPanel.classList.toggle('open');
-              
-              backButton.classList.toggle('visible', !isExpanded);
-              defaultTitle.classList.toggle('hidden', !isExpanded);
-              langTitle.classList.toggle('visible', !isExpanded);
-              
-              if (!isExpanded) {
-                langSearch.focus();
-                document.addEventListener('keydown', trapFocus);
-                langPanel.__accwebTrapFocus = trapFocus;
-              } else {
-                closeLanguagePanel(false);
-              }
-            });
-      
-            backButton.addEventListener("click", () => {
-              closeLanguagePanel();
-            });
-      
-            // Close language panel if clicking outside
-            document.addEventListener("click", (e) => {
-                if (langPanel.classList.contains('open') && 
-                    !langPanel.contains(e.target) && 
-                    !langToggle.contains(e.target) &&
-                    !backButton.contains(e.target)) {
-                  closeLanguagePanel(false);
+                if (langSearch) {
+                  langSearch.value = '';
                 }
+                langItems.forEach(item => {
+                  item.style.display = '';
+                });
               });
+            }
       
             // Handle language search
             langSearch.addEventListener("input", () => {
               const searchValue = langSearch.value.toLowerCase();
               langItems.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                item.style.display = text.includes(searchValue) ? "block" : "none";
+                const labelElement = item.querySelector('.acc-lang-item-label');
+                const text = (labelElement?.textContent || item.textContent).toLowerCase();
+                item.style.display = text.includes(searchValue) ? '' : 'none';
               });
             });
       
@@ -3928,7 +4013,10 @@ var AccessibleWebWidget = (function () {
             langItems.forEach(item => {
               item.addEventListener("click", () => {
                 const langCode = item.getAttribute("data-lang");
-                const langLabel = item.textContent;
+                if (!langCode) return;
+                const selectedLanguage = this.supportedLanguages.find(language => language.code === langCode);
+                const langLabel = this.formatLanguageLabel(selectedLanguage);
+                const langFlag = this.getLanguageFlag(langCode);
                 
                 // Update selected language
                 langItems.forEach(i => i.classList.remove("selected"));
@@ -3939,9 +4027,14 @@ var AccessibleWebWidget = (function () {
                 if (currentLang) {
                   currentLang.textContent = langLabel;
                 }
+                const currentLangFlag = this.findElement("#acc-current-language-flag", menu);
+                if (currentLangFlag) {
+                  currentLangFlag.textContent = langFlag;
+                }
                 
-                // Close panel
-                closeLanguagePanel(false);
+                if (langDetails) {
+                  langDetails.open = false;
+                }
                 
                 // Save language preference and update UI
                 this.saveConfig({ lang: langCode });
@@ -3957,7 +4050,7 @@ var AccessibleWebWidget = (function () {
                 this.closeMenu(menuContainer);
                 return;
               }
-              if (target.classList.contains('acc-reset-btn')) {
+              if (target.classList.contains('acc-footer-reset')) {
                 this.resetEnhancements();
                 return;
               }
@@ -3968,8 +4061,8 @@ var AccessibleWebWidget = (function () {
                 if (key === 'accessibility-report') {
                   this.runAccessibilityReport();
                 }
-                // Handle multi-level feature for text-scale.
-                else if (key === 'text-scale') {
+                // Handle multi-level features (font size, contrast).
+                else if (this.multiLevelFeatures[key]) {
                   this.cycleMultiLevelFeature(key, btn);
                 }
                 // For color adjustments, deselect any other active color filter.
@@ -4059,7 +4152,7 @@ var AccessibleWebWidget = (function () {
       
             this.widgetToggleButton = btn;
           
-            const { position = "bottom-left", offset = [20, 20], size } = options;
+            const { position = "bottom-right", offset = [20, 20], size } = options;
             const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
             const offsetX = normalizedOffset[0] ?? 20;
             const offsetY = normalizedOffset[1] ?? 25;
@@ -4172,7 +4265,7 @@ var AccessibleWebWidget = (function () {
                   "en";
                 baseOptions.lang = lang;
       
-                baseOptions.position = baseOptions.position || "bottom-left";
+                baseOptions.position = baseOptions.position || "bottom-right";
       
                 if (baseOptions.offset) {
                   baseOptions.offset = this.normalizeOffset(baseOptions.offset);
@@ -4207,7 +4300,7 @@ var AccessibleWebWidget = (function () {
 
       launchWidget(args = {}) {
               try {
-                let options = { lang: this.getDefaultLanguage(), position: 'bottom-left', offset: [20, 20] };
+                let options = { lang: this.getDefaultLanguage(), position: 'bottom-right', offset: [20, 20] };
                 
                 // Load the saved configuration
                 try {
@@ -4270,10 +4363,6 @@ var AccessibleWebWidget = (function () {
           },
           'low-saturation': {
             styles: { 'filter': 'saturate(50%)' },
-            selector: PAGE_CONTENT_SELECTOR
-          },
-          'monochrome': {
-            styles: { 'filter': 'grayscale(100%)' },
             selector: PAGE_CONTENT_SELECTOR
           },
           'high-saturation': {
@@ -4358,6 +4447,8 @@ var AccessibleWebWidget = (function () {
         // Font size cycling
         this.textScaleIndex = 0;
         this.textScaleValues = [1.2, 1.4, 1.6];
+        this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
+        this.saturationFilterValues = ['low-saturation', 'high-saturation'];
 
         this.contentOptions = [
           { label: 'Font Weight', key: 'bold-text', icon: this.widgetIcons.boldText },
@@ -4381,6 +4472,16 @@ var AccessibleWebWidget = (function () {
             levels: this.textScaleValues.length,
             currentIndex: -1,
             values: this.textScaleValues
+          },
+          'contrast-toggle': {
+            levels: this.contrastFilterValues.length,
+            currentIndex: -1,
+            values: this.contrastFilterValues
+          },
+          'saturation-toggle': {
+            levels: this.saturationFilterValues.length,
+            currentIndex: -1,
+            values: this.saturationFilterValues
           }
         };
 
@@ -4390,14 +4491,23 @@ var AccessibleWebWidget = (function () {
     `;
 
         this.colorOptions = [
-          { label: 'Dark Contrast', key: 'dark-contrast', icon: this.widgetIcons.darkContrast },
-          { label: 'Light Contrast', key: 'light-contrast', icon: this.widgetIcons.lightContrast },
+          {
+            label: 'Contrast',
+            key: 'contrast-toggle',
+            icon: this.widgetIcons.contrast,
+            multiLevel: true,
+            levels: this.contrastFilterValues.length
+          },
           { label: 'Invert Colors', key: 'invert-colors', icon: this.widgetIcons.invertColors },
-          { label: 'Low Saturation', key: 'low-saturation', icon: this.widgetIcons.lowSaturation },
-          { label: 'Monochrome', key: 'monochrome', icon: this.widgetIcons.monochrome },
-          { label: 'High Saturation', key: 'high-saturation', icon: this.widgetIcons.highSaturation }
+          {
+            label: 'Saturation',
+            key: 'saturation-toggle',
+            icon: this.widgetIcons.saturation,
+            multiLevel: true,
+            levels: this.saturationFilterValues.length
+          }
         ];
-        this.colorFilterKeys = this.colorOptions.map(option => option.key);
+        this.colorFilterKeys = Object.keys(this.visualFilters);
         this.activeColorFilterKey = null;
 
         this.textScaleSelectors = 'h1,h2,h3,h4,h5,h6,p,a,dl,dt,li,ol,th,td,span,blockquote,.acc-text';
@@ -4426,7 +4536,7 @@ var AccessibleWebWidget = (function () {
 
         this.options = {
           lang: this.getDefaultLanguage(),
-          position: 'bottom-left',
+          position: 'bottom-right',
           ...this.dataOptions,
           ...options
         };
