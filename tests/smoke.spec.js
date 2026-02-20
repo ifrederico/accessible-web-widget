@@ -320,8 +320,9 @@ test('simplify layout isolates primary content root', async ({ page }) => {
   await page.locator('.acc-btn[data-key="simple-layout"]').click();
 
   await expect(page.locator('body')).toHaveClass(/acc-simple-layout-enabled/);
-  await expect(page.locator('.container')).toHaveClass(/acc-simple-layout-root/);
-  const rootStyles = await page.locator('.container').evaluate((element) => {
+  const layoutRoot = page.locator('.acc-simple-layout-root');
+  await expect(layoutRoot).toHaveCount(1);
+  const rootStyles = await layoutRoot.first().evaluate((element) => {
     const styles = window.getComputedStyle(element);
     return {
       maxWidth: styles.maxWidth,
