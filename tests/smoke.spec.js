@@ -358,8 +358,14 @@ test('system preferences only auto-enable pause motion', async ({ page }) => {
   await expect(page.locator('.acc-btn[data-key="dark-contrast"]')).not.toHaveClass(/acc-selected/);
 
   await page.locator('.acc-reset-btn').click();
-  await expect(page.locator('.acc-btn[data-key="pause-motion"]')).toHaveClass(/acc-selected/);
-  await expect(page.locator('.acc-btn[data-key="dark-contrast"]')).not.toHaveClass(/acc-selected/);
+
+  const statesAfterReset = await page.evaluate(() => {
+    const raw = localStorage.getItem('accweb');
+    const parsed = raw ? JSON.parse(raw) : {};
+    return parsed.states || {};
+  });
+  expect(statesAfterReset['pause-motion']).toBe(true);
+  expect(statesAfterReset['dark-contrast']).toBeFalsy();
 });
 
 test('high contrast mode applies styles and toggles cleanly', async ({ page }) => {
