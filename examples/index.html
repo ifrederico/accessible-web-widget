@@ -7,9 +7,13 @@
     <title>AccessibleWeb Widget Example</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
             background-color: #f8fafc;
             color: #0f172a;
         }
@@ -22,7 +26,7 @@
         }
 
         .logo {
-            font-family: "Georgia", serif;
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 28px;
             font-weight: 400;
             letter-spacing: -0.5px;
@@ -89,7 +93,7 @@
         }
 
         .hero-title {
-            font-family: "Georgia", serif;
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 56px;
             font-weight: 400;
             line-height: 1.1;
@@ -106,7 +110,7 @@
         .hero-subtitle {
             font-size: 19px;
             color: #334155;
-            line-height: 1.5;
+            line-height: 1.6;
             max-width: 600px;
             margin: 0 auto 40px;
         }
@@ -129,6 +133,7 @@
             color: #0f172a;
             white-space: nowrap;
             overflow-x: auto;
+            scrollbar-width: none;
         }
 
         .copy-btn {
@@ -164,23 +169,6 @@
             border: 1px solid #eaeaea;
         }
 
-        .placeholder-img {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background-color: #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #334155;
-            gap: 16px;
-        }
-
-        .placeholder-img span {
-            font-weight: 500;
-            font-size: 15px;
-        }
-
         .warning {
             background-color: #fefce8;
             border: 1px solid #fef08a;
@@ -200,7 +188,9 @@
         .warning a {
             color: #713f12;
             font-weight: 600;
-            text-decoration: none;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
         }
 
         .warning a:hover {
@@ -208,7 +198,7 @@
         }
 
         .section-header {
-            font-family: "Georgia", serif;
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 44px;
             font-weight: 400;
             color: #0f172a;
@@ -234,7 +224,7 @@
         }
 
         .feature h3 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 500;
             color: #0f172a;
             margin-top: 0;
@@ -252,13 +242,18 @@
         .feature li {
             position: relative;
             padding-left: 28px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             color: #334155;
             font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .feature li:last-child {
+            margin-bottom: 0;
         }
 
         .feature li::before {
-            content: "✓";
+            content: "\2713";
             position: absolute;
             left: 0;
             color: #64748b;
@@ -270,21 +265,33 @@
             max-width: 1000px;
         }
 
-        .content-section h2,
+        .content-section p {
+            color: #334155;
+            line-height: 1.7;
+            margin: 0 0 20px;
+        }
+
+        .content-section a {
+            color: #0f172a;
+            font-weight: 500;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+        }
+
+        .content-section a:hover {
+            color: #334155;
+        }
+
         .content-section h3 {
             color: #0f172a;
-            margin-top: 32px;
+            margin: 32px 0 16px;
             font-size: 22px;
             font-weight: 500;
         }
 
-        .content-section h2:first-child {
+        .content-section h3:first-child {
             margin-top: 0;
-            margin-bottom: 24px;
-            font-size: 32px;
-            font-family: "Georgia", serif;
-            font-weight: 400;
-            letter-spacing: -1px;
         }
 
         .test-list {
@@ -310,7 +317,7 @@
             width: 6px;
             height: 6px;
             border-radius: 50%;
-            background-color: #64748b;
+            background-color: #94a3b8;
         }
 
         .implementation-section {
@@ -341,6 +348,7 @@
             line-height: 1.6;
             white-space: nowrap;
             overflow-x: auto;
+            scrollbar-width: none;
             flex: 1;
             min-width: 0;
         }
@@ -361,6 +369,36 @@
             font-size: 14px;
             margin-top: 16px;
             line-height: 1.6;
+        }
+
+        .footer {
+            border-top: 1px solid #e2e8f0;
+            padding: 32px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .footer-left {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: #64748b;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #0f172a;
         }
 
         /* Tablet */
@@ -444,6 +482,10 @@
 
             .implementation-code code {
                 font-size: 12px;
+            }
+
+            .footer {
+                padding: 24px;
             }
         }
 
@@ -547,13 +589,15 @@
                 font-size: 11px;
             }
 
-            .content-section h2:first-child {
-                font-size: 26px;
-            }
-
-            .content-section h2,
             .content-section h3 {
                 font-size: 18px;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 16px;
+                padding: 24px 16px;
+                text-align: center;
             }
         }
     </style>
@@ -582,7 +626,7 @@
             required, fully customizable, and community-driven.</p>
 
         <div class="code-snippet">
-            <code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.2/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
+            <code tabindex="0">&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.2/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
             <button aria-label="Copy code" class="copy-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round">
@@ -593,21 +637,22 @@
         </div>
     </header>
 
+    <main>
     <div class="hero-image">
-        <img src="./accessibleweb.jpg" alt="AccessibleWeb Widget preview showing the accessibility menu panel" style="width: 100%; display: block;">
+        <img src="./accessibleweb.jpg" alt="AccessibleWeb Widget preview showing the accessibility menu panel"
+            style="width: 100%; display: block;">
     </div>
 
     <div class="container">
         <div class="warning">
-            <strong>⚠️ Important:</strong> This widget provides user preference controls only (similar to browser
-            settings). It does <strong>NOT</strong> make your website accessible or ensure compliance with WCAG, ADA, or
+            <strong>Important:</strong> This widget provides user preference controls only (similar to browser
+            settings). It does <strong>not</strong> make your website accessible or ensure compliance with WCAG, ADA, or
             other accessibility standards.
             <br><br>
             Proper accessibility must be built into your website's code. This tool is not an automated "overlay"
-            solution. Learn more: <a href="https://overlayfactsheet.com/" target="_blank" rel="noopener"
-                style="font-weight: 600;">Overlay
+            solution. Learn more: <a href="https://overlayfactsheet.com/" target="_blank" rel="noopener">Overlay
                 Factsheet</a> | <a href="https://github.com/ifrederico/accessible-web-widget/blob/main/DISCLAIMER.md"
-                target="_blank" rel="noopener" style="font-weight: 600;">Full Disclaimer</a>
+                target="_blank" rel="noopener">Full Disclaimer</a>
         </div>
 
         <h2 id="features" class="section-header">Available Features</h2>
@@ -654,37 +699,33 @@
         <div class="content-section">
             <h3>Rich Text Testing</h3>
 
-            <p style="color: #334155; line-height: 1.7; margin-bottom: 20px;">This is a paragraph of text to test the
-                various accessibility features. Try enabling different options from the accessibility menu to see how
-                they affect this content.</p>
+            <p>This is a paragraph of text to test the various accessibility features. Try enabling different options
+                from the accessibility menu to see how they affect this content.</p>
 
-            <p style="color: #334155; line-height: 1.7; margin-bottom: 20px;">Here's a <a href="#demo"
-                    style="color: #0f172a; font-weight: 500; text-decoration: none;">link to test</a> the link
-                highlighting feature, and here's <a href="#another"
-                    style="color: #0f172a; font-weight: 500; text-decoration: none;">another link</a> to see how
-                multiple links are styled.</p>
+            <p>Here's a <a href="#demo">link to test</a> the link highlighting feature, and here's
+                <a href="#another">another link</a> to see how multiple links are styled.
+            </p>
 
-            <h3 style="margin-top: 32px;">Subheading for Testing</h3>
+            <h3>Subheading for Testing</h3>
 
-            <p style="color: #334155; line-height: 1.7; margin-bottom: 20px;">Lorem ipsum dolor sit amet, consectetur
-                adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                veniam, quis nostrud exercitation ullamco laboris.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
 
             <ul class="test-list">
                 <li>List item one</li>
                 <li>List item two</li>
-                <li>List item three with a <a href="#list-link"
-                        style="color: #0f172a; font-weight: 500; text-decoration: none;">link inside</a></li>
+                <li>List item three with a <a href="#list-link">link inside</a></li>
             </ul>
         </div>
 
         <h2 id="implementation" class="section-header">Implementation</h2>
 
         <div class="implementation-section">
-            <p>To add this widget to your own website, simply add this script tag before the closing &lt;/body&gt; tag:</p>
+            <p>To add this widget to your own website, simply add this script tag before the closing &lt;/body&gt;
+                tag:</p>
 
             <div class="implementation-code">
-                <code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.2/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
+                <code tabindex="0">&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.2/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
                 <button aria-label="Copy code" class="copy-btn">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -696,6 +737,16 @@
             <p class="implementation-note">The widget will automatically initialize and appear on your page.</p>
         </div>
     </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-left">AccessibleWeb Widget &middot; MIT License</div>
+        <div class="footer-links">
+            <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://github.com/ifrederico/accessible-web-widget/blob/main/DISCLAIMER.md" target="_blank"
+                rel="noopener">Disclaimer</a>
+        </div>
+    </footer>
 
     <script>
         document.querySelectorAll('.copy-btn').forEach(function (btn) {
