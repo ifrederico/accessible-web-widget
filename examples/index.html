@@ -7,27 +7,50 @@
     <title>AccessibleWeb Widget Example</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <style>
+        :root {
+            --color-text: #0f172a;
+            --color-text-secondary: #334155;
+            --color-text-muted: #64748b;
+            --color-bg: #f8fafc;
+            --color-surface: #f1f5f9;
+            --color-border: #e2e8f0;
+            --font-serif: Georgia, "Times New Roman", serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            --page-gutter: clamp(20px, 4vmin, 48px);
+            --content-width: 1000px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         html {
             scroll-behavior: smooth;
         }
 
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            -webkit-font-smoothing: antialiased;
         }
+
+        /* --- Navbar --- */
 
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 24px 48px;
+            padding: 24px var(--page-gutter);
         }
 
         .logo {
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 28px;
+            font-family: var(--font-serif);
+            font-size: clamp(20px, 2vw + 12px, 28px);
             font-weight: 400;
             letter-spacing: -0.5px;
         }
@@ -35,7 +58,7 @@
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: clamp(12px, 2vw + 4px, 32px);
         }
 
         .nav-link {
@@ -67,24 +90,20 @@
             background-color: #333;
         }
 
-        .container {
-            padding: 40px 48px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        /* --- Hero --- */
 
         .hero {
-            padding: 80px 20px 40px;
+            padding: clamp(32px, 8vw, 80px) var(--page-gutter) clamp(24px, 4vw, 40px);
             text-align: center;
-            max-width: 900px;
+            max-width: calc(900px + var(--page-gutter) * 2);
             margin: 0 auto;
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            background-color: #e2e8f0;
-            color: #334155;
+            background-color: var(--color-border);
+            color: var(--color-text-secondary);
             padding: 6px 14px;
             border-radius: 9999px;
             font-size: 13px;
@@ -93,13 +112,13 @@
         }
 
         .hero-title {
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 56px;
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 5vw + 0.5rem, 3.5rem);
             font-weight: 400;
             line-height: 1.1;
             letter-spacing: -1px;
             margin: 0 0 24px;
-            color: #0f172a;
+            color: var(--color-text);
         }
 
         .hero-title span {
@@ -108,11 +127,11 @@
         }
 
         .hero-subtitle {
-            font-size: 19px;
-            color: #334155;
+            font-size: clamp(15px, 1vw + 12px, 19px);
+            color: var(--color-text-secondary);
             line-height: 1.6;
             max-width: 600px;
-            margin: 0 auto 40px;
+            margin: 0 auto clamp(28px, 4vw, 40px);
         }
 
         .code-snippet {
@@ -123,14 +142,14 @@
             border-radius: 9999px;
             padding: 8px 12px 8px 20px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            margin-bottom: 60px;
+            margin-bottom: clamp(32px, 6vw, 60px);
             max-width: 100%;
         }
 
         .code-snippet code {
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            font-size: 14px;
-            color: #0f172a;
+            font-family: var(--font-mono);
+            font-size: clamp(11px, 0.5vw + 9px, 14px);
+            color: var(--color-text);
             white-space: nowrap;
             overflow-x: auto;
             scrollbar-width: none;
@@ -147,11 +166,12 @@
             justify-content: center;
             border-radius: 50%;
             margin-left: 8px;
+            flex-shrink: 0;
         }
 
         .copy-btn:hover {
-            background-color: #f1f5f9;
-            color: #0f172a;
+            background-color: var(--color-surface);
+            color: var(--color-text);
         }
 
         .copy-btn svg {
@@ -159,15 +179,29 @@
             height: 16px;
         }
 
+        /* --- Hero Image --- */
+
         .hero-image {
-            max-width: 1000px;
-            margin: 0 auto 60px;
-            border-radius: 12px;
-            overflow: hidden;
+            max-width: calc(var(--content-width) + var(--page-gutter) * 2);
+            margin: 0 auto clamp(32px, 6vw, 60px);
+            padding: 0 var(--page-gutter);
+        }
+
+        .hero-image img {
+            border-radius: clamp(8px, 1vw, 12px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            background: white;
             border: 1px solid #eaeaea;
         }
+
+        /* --- Container --- */
+
+        .container {
+            max-width: calc(var(--content-width) + var(--page-gutter) * 2);
+            margin: 0 auto;
+            padding: clamp(24px, 4vw, 40px) var(--page-gutter);
+        }
+
+        /* --- Warning --- */
 
         .warning {
             background-color: #fefce8;
@@ -175,9 +209,7 @@
             color: #854d0e;
             padding: 20px 24px;
             border-radius: 8px;
-            margin: 0 auto 48px;
-            max-width: 1000px;
-            font-size: 15px;
+            margin-bottom: 48px;
             line-height: 1.6;
         }
 
@@ -197,40 +229,37 @@
             color: #854d0e;
         }
 
+        /* --- Section Headers --- */
+
         .section-header {
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 44px;
+            font-family: var(--font-serif);
+            font-size: clamp(1.75rem, 3vw + 0.5rem, 2.75rem);
             font-weight: 400;
-            color: #0f172a;
-            margin: 60px auto 32px;
-            text-align: left;
-            max-width: 1000px;
+            color: var(--color-text);
+            margin: clamp(32px, 6vw, 60px) 0 clamp(20px, 3vw, 32px);
             letter-spacing: -1px;
         }
 
+        /* --- Feature List --- */
+
         .feature-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin: 0 auto 60px;
-            max-width: 1000px;
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+            gap: clamp(16px, 2vw, 24px);
+            margin-bottom: clamp(40px, 6vw, 60px);
         }
 
         .feature {
-            background-color: #f1f5f9;
-            padding: 40px;
+            background-color: var(--color-surface);
+            padding: clamp(24px, 3vw, 40px);
             border-radius: 16px;
-            border: none;
         }
 
         .feature h3 {
-            font-size: 20px;
+            font-size: clamp(18px, 0.5vw + 16px, 20px);
             font-weight: 500;
-            color: #0f172a;
-            margin-top: 0;
-            margin-bottom: 24px;
-            padding-bottom: 0;
-            border-bottom: none;
+            color: var(--color-text);
+            margin: 0 0 clamp(16px, 2vw, 24px);
         }
 
         .feature ul {
@@ -243,8 +272,7 @@
             position: relative;
             padding-left: 28px;
             margin-bottom: 14px;
-            color: #334155;
-            font-size: 15px;
+            color: var(--color-text-secondary);
             line-height: 1.5;
         }
 
@@ -256,23 +284,24 @@
             content: "\2713";
             position: absolute;
             left: 0;
-            color: #64748b;
+            color: var(--color-text-muted);
             font-weight: 400;
         }
 
+        /* --- Content Section --- */
+
         .content-section {
-            margin: 0 auto 60px;
-            max-width: 1000px;
+            margin-bottom: clamp(40px, 6vw, 60px);
         }
 
         .content-section p {
-            color: #334155;
+            color: var(--color-text-secondary);
             line-height: 1.7;
             margin: 0 0 20px;
         }
 
         .content-section a {
-            color: #0f172a;
+            color: var(--color-text);
             font-weight: 500;
             text-decoration: underline;
             text-decoration-thickness: 1px;
@@ -280,13 +309,13 @@
         }
 
         .content-section a:hover {
-            color: #334155;
+            color: var(--color-text-secondary);
         }
 
         .content-section h3 {
-            color: #0f172a;
+            color: var(--color-text);
             margin: 32px 0 16px;
-            font-size: 22px;
+            font-size: clamp(18px, 0.5vw + 16px, 22px);
             font-weight: 500;
         }
 
@@ -304,8 +333,7 @@
             position: relative;
             padding-left: 20px;
             margin-bottom: 12px;
-            color: #334155;
-            font-size: 15px;
+            color: var(--color-text-secondary);
             line-height: 1.7;
         }
 
@@ -320,30 +348,31 @@
             background-color: #94a3b8;
         }
 
+        /* --- Implementation --- */
+
         .implementation-section {
-            margin: 0 auto 80px;
-            max-width: 1000px;
+            margin-bottom: clamp(40px, 6vw, 80px);
         }
 
         .implementation-section p {
-            color: #334155;
-            font-size: 17px;
+            color: var(--color-text-secondary);
+            font-size: clamp(15px, 0.5vw + 14px, 17px);
             line-height: 1.7;
-            margin: 0 0 28px;
+            margin: 8px 0 28px;
         }
 
         .implementation-code {
             background-color: #0f172a;
-            border-radius: 12px;
-            padding: 20px 24px;
+            border-radius: clamp(8px, 1vw, 12px);
+            padding: clamp(14px, 2vw, 20px) clamp(16px, 2vw, 24px);
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
         .implementation-code code {
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            font-size: 14px;
+            font-family: var(--font-mono);
+            font-size: clamp(11px, 0.5vw + 9px, 14px);
             color: #e2e8f0;
             line-height: 1.6;
             white-space: nowrap;
@@ -355,7 +384,6 @@
 
         .implementation-code .copy-btn {
             color: #94a3b8;
-            flex-shrink: 0;
             margin-left: 0;
         }
 
@@ -365,25 +393,134 @@
         }
 
         .implementation-note {
-            color: #64748b;
+            color: var(--color-text-muted);
             font-size: 14px;
             margin-top: 16px;
             line-height: 1.6;
         }
 
-        .footer {
-            border-top: 1px solid #e2e8f0;
-            padding: 32px 48px;
+        /* --- FAQ --- */
+
+        .faq-list {
+            margin-bottom: clamp(40px, 6vw, 60px);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .faq-item:first-child {
+            border-top: 1px solid var(--color-border);
+        }
+
+        .faq-question {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1000px;
+            gap: 16px;
+            padding: 20px 0;
+            font-size: clamp(16px, 0.5vw + 14px, 18px);
+            font-weight: 500;
+            color: var(--color-text);
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .faq-question::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-question::after {
+            content: "+";
+            font-size: 22px;
+            font-weight: 300;
+            line-height: 1;
+            flex-shrink: 0;
+            color: var(--color-text-muted);
+            transition: transform 0.2s ease;
+        }
+
+        .faq-item[open] .faq-question::after {
+            content: "\2212";
+        }
+
+        .faq-question:hover {
+            color: var(--color-text-secondary);
+        }
+
+        .faq-question:focus-visible {
+            outline: 2px solid var(--color-text);
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+
+        .faq-answer {
+            padding: 0 0 24px;
+        }
+
+        .faq-answer p {
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+            margin: 0 0 12px;
+        }
+
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-answer a {
+            color: var(--color-text);
+            font-weight: 500;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+        }
+
+        .faq-answer a:hover {
+            color: var(--color-text-secondary);
+        }
+
+        .faq-answer code {
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+            background-color: var(--color-surface);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .faq-code {
+            background-color: #0f172a;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 12px 0;
+            overflow-x: auto;
+        }
+
+        .faq-code code {
+            font-family: var(--font-mono);
+            font-size: clamp(11px, 0.5vw + 9px, 14px);
+            color: #e2e8f0;
+            line-height: 1.6;
+            white-space: nowrap;
+            background: none;
+            padding: 0;
+        }
+
+        /* --- Footer --- */
+
+        .footer {
+            border-top: 1px solid var(--color-border);
+            padding: 32px var(--page-gutter);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: calc(var(--content-width) + var(--page-gutter) * 2);
             margin: 0 auto;
         }
 
         .footer-left {
             font-size: 14px;
-            color: #64748b;
+            color: var(--color-text-muted);
         }
 
         .footer-links {
@@ -393,210 +530,29 @@
 
         .footer-links a {
             font-size: 14px;
-            color: #64748b;
+            color: var(--color-text-muted);
             text-decoration: none;
         }
 
         .footer-links a:hover {
-            color: #0f172a;
+            color: var(--color-text);
         }
 
-        /* Tablet */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 16px 24px;
-            }
+        /* --- Responsive --- */
 
-            .logo {
-                font-size: 22px;
-            }
-
-            .nav-links {
-                gap: 20px;
-            }
-
-            .nav-link {
-                font-size: 14px;
-            }
-
-            .btn-primary {
-                padding: 10px 18px;
-                font-size: 14px;
-            }
-
-            .hero {
-                padding: 48px 16px 32px;
-            }
-
-            .hero-title {
-                font-size: 40px;
-            }
-
-            .hero-subtitle {
-                font-size: 17px;
-            }
-
-            .code-snippet {
-                margin-bottom: 40px;
-            }
-
-            .code-snippet code {
-                font-size: 12px;
-            }
-
-            .container {
-                padding: 32px 24px;
-            }
-
-            .section-header {
-                font-size: 34px;
-                margin: 40px auto 24px;
-                padding: 0 24px;
-            }
-
-            .feature-list {
-                padding: 0 24px;
-                gap: 16px;
-            }
-
-            .feature {
-                padding: 28px;
-            }
-
-            .warning {
-                margin-left: 24px;
-                margin-right: 24px;
-            }
-
-            .hero-image {
-                margin-bottom: 40px;
-            }
-
-            .implementation-section {
-                padding: 0 24px;
-            }
-
-            .implementation-code {
-                padding: 16px 20px;
-            }
-
-            .implementation-code code {
-                font-size: 12px;
-            }
-
-            .footer {
-                padding: 24px;
-            }
-        }
-
-        /* Mobile */
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 12px 16px;
-            }
-
-            .logo {
-                font-size: 20px;
-            }
-
-            .nav-links {
-                gap: 12px;
-            }
-
+        @media (max-width: 640px) {
             .nav-link:not([aria-label]) {
                 display: none;
             }
 
             .btn-primary {
-                padding: 8px 16px;
-                font-size: 13px;
-            }
-
-            .hero {
-                padding: 32px 16px 24px;
-            }
-
-            .hero-title {
-                font-size: 32px;
-                letter-spacing: -0.5px;
-            }
-
-            .hero-subtitle {
-                font-size: 15px;
-                margin-bottom: 28px;
-            }
-
-            .code-snippet {
-                padding: 6px 8px 6px 14px;
-                margin-bottom: 32px;
-            }
-
-            .code-snippet code {
-                font-size: 11px;
-            }
-
-            .container {
-                padding: 24px 16px;
-            }
-
-            .section-header {
-                font-size: 28px;
-                margin: 32px auto 20px;
-                padding: 0 16px;
-            }
-
-            .feature-list {
-                grid-template-columns: 1fr;
-                padding: 0 16px;
-            }
-
-            .feature {
-                padding: 24px;
-            }
-
-            .feature h3 {
-                font-size: 18px;
-                margin-bottom: 16px;
-            }
-
-            .warning {
-                margin-left: 16px;
-                margin-right: 16px;
-                padding: 16px;
+                padding: 10px 20px;
                 font-size: 14px;
-            }
-
-            .hero-image {
-                margin-bottom: 32px;
-                border-radius: 8px;
-            }
-
-            .implementation-section {
-                padding: 0 16px;
-                margin-bottom: 60px;
-            }
-
-            .implementation-section p {
-                font-size: 15px;
-            }
-
-            .implementation-code {
-                padding: 14px 16px;
-                border-radius: 8px;
-            }
-
-            .implementation-code code {
-                font-size: 11px;
-            }
-
-            .content-section h3 {
-                font-size: 18px;
             }
 
             .footer {
                 flex-direction: column;
                 gap: 16px;
-                padding: 24px 16px;
                 text-align: center;
             }
         }
@@ -714,6 +670,147 @@
                 <li>List item two</li>
                 <li>List item three with a <a href="#list-link">link inside</a></li>
             </ul>
+        </div>
+
+        <h2 id="faq" class="section-header">Frequently Asked Questions</h2>
+
+        <div class="faq-list">
+            <details class="faq-item">
+                <summary class="faq-question">What does this widget actually do?</summary>
+                <div class="faq-answer">
+                    <p>It gives your visitors a floating panel with controls for font sizing, contrast modes, a
+                        dyslexia-friendly font, text-to-speech, animation pausing, and more. Think of it as surfacing
+                        the kind of accessibility preferences browsers already support, just in a way that's easier to
+                        find and use.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">Does this widget make my site WCAG compliant?</summary>
+                <div class="faq-answer">
+                    <p>No. No widget can do that. Real compliance requires semantic HTML, proper ARIA attributes,
+                        keyboard navigation, meaningful alt text, and ongoing testing &mdash; all baked into your code.
+                        This widget is a complement to that work, not a substitute for it.</p>
+                    <p>We support the <a href="https://overlayfactsheet.com/" target="_blank"
+                            rel="noopener">Overlay Factsheet</a> and are upfront about what overlays can and can't
+                        do.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">How is this different from other accessibility overlays?</summary>
+                <div class="faq-answer">
+                    <p>Most commercial overlays promise automated compliance. We don't. This is a free, open-source tool
+                        that gives visitors useful preference controls &mdash; nothing more, nothing less. There's no AI
+                        remediation, no legal compliance claims, and no tracking. Just a lightweight panel your visitors
+                        can use if they want to.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">Is it really free?</summary>
+                <div class="faq-answer">
+                    <p>Yes. It's MIT-licensed open-source software. There's no free tier with upsells, no paid version,
+                        and no premium features behind a paywall. You can use it, fork it, modify it, and redistribute
+                        it.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">Does the widget collect any data or use cookies?</summary>
+                <div class="faq-answer">
+                    <p>No. The widget runs entirely in the visitor's browser. It doesn't phone home, set tracking
+                        cookies, or collect any personal information. User preferences are stored locally in the browser
+                        using localStorage.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">Will it slow down my website?</summary>
+                <div class="faq-answer">
+                    <p>It shouldn't. The widget is a single lightweight script that loads alongside your page. It only
+                        activates its features when a visitor interacts with it.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">How do I install it?</summary>
+                <div class="faq-answer">
+                    <p>Add one script tag to your HTML:</p>
+                    <div class="faq-code">
+                        <code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@latest/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
+                    </div>
+                    <p>No configuration required. For more control, you can pin a specific version or self-host the
+                        file.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">What platforms does it work with?</summary>
+                <div class="faq-answer">
+                    <p>Anything that lets you add a script tag &mdash; WordPress, Shopify, Squarespace, Wix, static
+                        sites, custom-built apps, and so on. It runs on top of your existing page without modifying your
+                        underlying markup.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">Can I customize the widget's position, size, or language?</summary>
+                <div class="faq-answer">
+                    <p>Yes. You can set the position, offset, button size, and language through simple HTML data
+                        attributes. Text-to-speech voice and speed are also configurable. See the <a
+                            href="https://github.com/ifrederico/accessible-web-widget#configuration" target="_blank"
+                            rel="noopener">Configuration</a> section for details.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">What languages are supported?</summary>
+                <div class="faq-answer">
+                    <p>The widget interface is available in 10 languages. The language can be set via the
+                        <code>data-acc-lang</code> attribute.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">Does the widget modify my website's code or design?</summary>
+                <div class="faq-answer">
+                    <p>No. All changes are applied client-side in the visitor's browser and only affect their session.
+                        Nothing is altered in your source code, and other visitors see your site exactly as you designed
+                        it.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">Does the widget help me find actual accessibility issues in my
+                    code?</summary>
+                <div class="faq-answer">
+                    <p>Yes. Add <code>?acc-dev=true</code> to any page URL to activate dev mode, which runs an inline
+                        accessibility audit powered by axe-core. It'll flag real issues in your markup &mdash; missing
+                        alt text, poor contrast ratios, ARIA problems, and more.</p>
+                    <p>This is meant for development, not production, but it's a good starting point for the work that
+                        actually matters.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">I found a bug. Where do I report it?</summary>
+                <div class="faq-answer">
+                    <p>Open an <a href="https://github.com/ifrederico/accessible-web-widget/issues" target="_blank"
+                            rel="noopener">issue on GitHub</a>. Please include your browser and version, steps to
+                        reproduce, expected vs. actual behavior, and screenshots if possible.</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary class="faq-question">How can I contribute?</summary>
+                <div class="faq-answer">
+                    <p>We welcome contributions. See <a
+                            href="https://github.com/ifrederico/accessible-web-widget/blob/main/CONTRIBUTING.md"
+                            target="_blank" rel="noopener">CONTRIBUTING.md</a> for setup instructions, testing info, and
+                        how to submit a pull request.</p>
+                </div>
+            </details>
         </div>
 
         <h2 id="implementation" class="section-header">Implementation</h2>
