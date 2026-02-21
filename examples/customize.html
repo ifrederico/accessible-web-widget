@@ -211,6 +211,13 @@
             margin-bottom: 14px;
         }
 
+        .field-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: end;
+        }
+
         .field label {
             font-size: 14px;
             font-weight: 600;
@@ -228,10 +235,34 @@
             font-family: var(--font-sans);
         }
 
-        .field input[type="color"] {
-            padding: 6px;
-            min-height: 42px;
+        .field.color-field {
+            margin-bottom: 14px;
+        }
+
+        .field.color-field input[type="color"] {
+            width: 46px;
+            height: 46px;
+            min-height: 46px;
+            padding: 0;
+            border-radius: 999px;
+            border: 2px solid #cbd5e1;
+            background: transparent;
+            appearance: none;
             cursor: pointer;
+        }
+
+        .field.color-field input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .field.color-field input[type="color"]::-webkit-color-swatch {
+            border: 0;
+            border-radius: 999px;
+        }
+
+        .field.color-field input[type="color"]::-moz-color-swatch {
+            border: 0;
+            border-radius: 999px;
         }
 
         .field input:focus,
@@ -295,8 +326,8 @@
         .preview-frame {
             width: 100%;
             height: min(68vh, 720px);
-            border: 1px solid #d4deea;
-            border-radius: 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
             background: #fff;
         }
 
@@ -410,6 +441,10 @@
                 align-items: flex-start;
             }
 
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+
             .footer {
                 flex-direction: column;
                 text-align: center;
@@ -442,8 +477,8 @@
     <header class="hero">
         <div class="hero-badge">Code Generator</div>
         <h1 class="hero-title">Build your widget config and export ready-to-paste code.</h1>
-        <p class="hero-subtitle">Choose position, offset, size, accent color, and text-to-speech voice settings. Apply to
-            the live preview, test interactions, then copy the generated snippet.</p>
+        <p class="hero-subtitle">Choose position, offset, size, accent color, and text-to-speech voice settings. Changes
+            update live in preview, so you can test interactions before copying the generated snippet.</p>
     </header>
 
     <main class="container">
@@ -457,20 +492,22 @@
                     <div class="control-group">
                         <h3>Widget Layout</h3>
 
-                        <div class="field">
-                            <label for="position">Position</label>
-                            <select id="position" name="position">
-                                <option value="bottom-right">Bottom Right</option>
-                                <option value="bottom-left">Bottom Left</option>
-                                <option value="top-right">Top Right</option>
-                                <option value="top-left">Top Left</option>
-                                <option value="center-left">Center Left</option>
-                            </select>
-                        </div>
+                        <div class="field-row">
+                            <div class="field">
+                                <label for="position">Position</label>
+                                <select id="position" name="position">
+                                    <option value="bottom-right">Bottom Right</option>
+                                    <option value="bottom-left">Bottom Left</option>
+                                    <option value="top-right">Top Right</option>
+                                    <option value="top-left">Top Left</option>
+                                    <option value="center-left">Center Left</option>
+                                </select>
+                            </div>
 
-                        <div class="field">
-                            <label for="accentColor">Accent Color</label>
-                            <input id="accentColor" name="accentColor" type="color" value="#1976d2">
+                            <div class="field color-field">
+                                <label for="accentColor">Accent Color</label>
+                                <input id="accentColor" name="accentColor" type="color" value="#1976d2">
+                            </div>
                         </div>
 
                         <div class="field">
@@ -531,7 +568,6 @@
                     </div>
 
                     <div class="form-actions">
-                        <button type="button" class="btn-primary" id="apply-preview">Apply to Preview</button>
                         <button type="button" class="btn-secondary" id="reset-defaults">Reset Defaults</button>
                     </div>
                 </form>
@@ -594,12 +630,10 @@
             var exportCode = document.getElementById('export-code');
             var copyButton = document.getElementById('copy-export');
             var copyStatus = document.getElementById('copy-status');
-            var applyButton = document.getElementById('apply-preview');
             var resetButton = document.getElementById('reset-defaults');
             var testVoiceButton = document.getElementById('test-voice');
             var voiceStatus = document.getElementById('voice-status');
             var localBundleUrl = new URL('../dist/accessible-web-widget.js', window.location.href).href;
-            var previewColorStyleId = 'acc-color-overrides';
             var availableVoices = [];
             var isVoiceSamplePlaying = false;
             var activeVoiceUtterance = null;
@@ -833,18 +867,16 @@
                 };
             }
 
-            function buildColorOverridesCSS(accentHex) {
+            function buildThemeOptions(accentHex) {
                 var colors = deriveAccentColors(accentHex);
-                return [
-                    ':root {',
-                    '  --acc-primary-color: ' + colors.base + ' !important;',
-                    '  --acc-primary-color-light: ' + colors.light + ' !important;',
-                    '  --acc-primary-color-dark: ' + colors.dark + ' !important;',
-                    '  --acc-focus-ring-color: ' + colors.base + ' !important;',
-                    '  --acc-hover-color: ' + colors.light + ' !important;',
-                    '  --acc-active-color: ' + colors.dark + ' !important;',
-                    '}'
-                ].join('\n');
+                return {
+                    primaryColor: colors.base,
+                    primaryColorLight: colors.light,
+                    primaryColorDark: colors.dark,
+                    focusRingColor: colors.base,
+                    hoverColor: colors.light,
+                    activeColor: colors.dark
+                };
             }
 
             function getConfig() {
@@ -878,16 +910,20 @@
             }
 
             function buildExportSnippet(config) {
+                var themeOptions = buildThemeOptions(config.accentColor);
                 return [
                     '<!-- AccessibleWeb Widget -->',
-                    '<style id="acc-color-overrides">',
-                    buildColorOverridesCSS(config.accentColor),
-                    '</style>',
                     '<div data-acc-position="' + escapeHtmlAttr(config.position) + '"></div>',
                     '<div data-acc-offset="' + config.offsetX + ',' + config.offsetY + '"></div>',
                     '<div data-acc-size="' + config.size + '"></div>',
                     '<script>',
                     '  window.AccessibleWebWidgetOptions = {',
+                    '    primaryColor: ' + quoteJs(themeOptions.primaryColor) + ',',
+                    '    primaryColorLight: ' + quoteJs(themeOptions.primaryColorLight) + ',',
+                    '    primaryColorDark: ' + quoteJs(themeOptions.primaryColorDark) + ',',
+                    '    focusRingColor: ' + quoteJs(themeOptions.focusRingColor) + ',',
+                    '    hoverColor: ' + quoteJs(themeOptions.hoverColor) + ',',
+                    '    activeColor: ' + quoteJs(themeOptions.activeColor) + ',',
                     '    ttsNativeVoiceName: ' + quoteJs(config.ttsNativeVoiceName) + ',',
                     '    ttsRate: ' + formatDecimal(config.ttsRate) + ',',
                     '    ttsPitch: ' + formatDecimal(config.ttsPitch) + ',',
@@ -899,6 +935,7 @@
             }
 
             function buildPreviewDocument(config) {
+                var themeOptions = buildThemeOptions(config.accentColor);
                 return '<!DOCTYPE html>\n' +
                     '<html lang="en">\n' +
                     '<head>\n' +
@@ -907,43 +944,65 @@
                     '  <title>AccessibleWeb Preview</title>\n' +
                     '  <style>\n' +
                     '    :root { color-scheme: light; }\n' +
-                    '    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; color: #0f172a; background: linear-gradient(180deg, #fff7ed 0%, #ffffff 40%, #f8fafc 100%); }\n' +
-                    '    .preview-wrap { max-width: 900px; margin: 0 auto; padding: 28px; }\n' +
-                    '    h1 { margin: 0 0 10px; font-size: 34px; line-height: 1.15; letter-spacing: -0.6px; }\n' +
-                    '    h2 { margin: 0 0 10px; font-size: 22px; letter-spacing: -0.2px; }\n' +
-                    '    p { margin: 0 0 14px; line-height: 1.7; color: #334155; }\n' +
-                    '    .stage-card { border: 1px solid #fed7aa; border-radius: 14px; background: #fffaf0; padding: 16px 18px; margin: 18px 0; }\n' +
-                    '    .limerick { font-style: italic; color: #7c2d12; margin: 0; }\n' +
-                    '    .meta { margin-top: 12px; font-size: 12px; color: #7c2d12; }\n' +
-                    '    .checklist { border: 1px dashed #cbd5e1; border-radius: 12px; background: #ffffff; padding: 14px 16px; }\n' +
-                    '    .checklist ul { margin: 0; padding-left: 22px; color: #334155; line-height: 1.75; }\n' +
-                    '    .checklist li { margin: 0; }\n' +
-                    '    a { color: #0f172a; }\n' +
+                    '    body { margin: 0; background: var(--acc-card-bg, #ffffff); }\n' +
+                    '    .preview-wrap { padding: 26px; }\n' +
+                    '    .sk { border-radius: 10px; background: #d9dde3; }\n' +
+                    '    .sk-row { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; }\n' +
+                    '    .sk-logo { width: 130px; height: 20px; border-radius: 999px; }\n' +
+                    '    .sk-chip { width: 72px; height: 16px; border-radius: 999px; }\n' +
+                    '    .sk-chip.wide { width: 118px; }\n' +
+                    '    .sk-hero-title { width: 72%; max-width: 540px; height: 36px; margin-bottom: 14px; }\n' +
+                    '    .sk-hero-line { height: 14px; margin-bottom: 10px; }\n' +
+                    '    .sk-hero-line.short { width: 76%; }\n' +
+                    '    .sk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }\n' +
+                    '    .sk-card { border-radius: 12px; padding: 14px; background: #eef2f7; }\n' +
+                    '    .sk-card-title { width: 45%; height: 16px; margin-bottom: 12px; }\n' +
+                    '    .sk-card-line { height: 11px; margin-bottom: 8px; }\n' +
+                    '    .sk-card-line:last-child { margin-bottom: 0; width: 82%; }\n' +
+                    '    .sk-band { height: 42px; border-radius: 12px; margin-top: 16px; }\n' +
+                    '    .sk-band.thin { height: 24px; margin-top: 12px; width: 64%; }\n' +
+                    '    @media (max-width: 700px) { .preview-wrap { padding: 18px; } .sk-grid { grid-template-columns: 1fr; } .sk-hero-title { width: 92%; } }\n' +
                     '  </style>\n' +
-                    '  <style id="' + previewColorStyleId + '">' + buildColorOverridesCSS(config.accentColor) + '</style>\n' +
                     '</head>\n' +
                     '<body>\n' +
                     '  <main class="preview-wrap">\n' +
-                    '    <h1>The Limerick Lab</h1>\n' +
-                    '    <p>You are now testing an accessibility widget in its natural habitat: a page that does not take itself too seriously.</p>\n' +
-                    '    <article class="stage-card">\n' +
-                    '      <h2>A tiny preview limerick</h2>\n' +
-                    '      <p class="limerick">There once was a widget so bright,<br>It sat at the edge of the site.<br>With a click and a grin,<br>It let everyone in,<br>And made reading a little more light.</p>\n' +
-                    '      <p class="meta">Current setup: ' + escapeHtmlAttr(config.position) + ' | offset ' + config.offsetX + ',' + config.offsetY + ' | size ' + config.size + 'px | accent ' + escapeHtmlAttr(config.accentColor) + '</p>\n' +
-                    '    </article>\n' +
-                    '    <section class="checklist">\n' +
-                    '      <ul>\n' +
-                    '        <li>Open the widget and test contrast, spacing, and voice behavior.</li>\n' +
-                    '        <li>Use this <a href="#demo-link">demo link</a> for focus and highlight checks.</li>\n' +
-                    '        <li>Try the voice sample controls on the builder panel.</li>\n' +
-                    '      </ul>\n' +
-                    '    </section>\n' +
+                    '    <div class="sk-row">\n' +
+                    '      <div class="sk sk-logo"></div>\n' +
+                    '      <div class="sk sk-chip"></div>\n' +
+                    '      <div class="sk sk-chip"></div>\n' +
+                    '      <div class="sk sk-chip wide"></div>\n' +
+                    '    </div>\n' +
+                    '    <div class="sk sk-hero-title"></div>\n' +
+                    '    <div class="sk sk-hero-line"></div>\n' +
+                    '    <div class="sk sk-hero-line short"></div>\n' +
+                    '    <div class="sk-grid">\n' +
+                    '      <article class="sk-card">\n' +
+                    '        <div class="sk sk-card-title"></div>\n' +
+                    '        <div class="sk sk-card-line"></div>\n' +
+                    '        <div class="sk sk-card-line"></div>\n' +
+                    '        <div class="sk sk-card-line"></div>\n' +
+                    '      </article>\n' +
+                    '      <article class="sk-card">\n' +
+                    '        <div class="sk sk-card-title"></div>\n' +
+                    '        <div class="sk sk-card-line"></div>\n' +
+                    '        <div class="sk sk-card-line"></div>\n' +
+                    '        <div class="sk sk-card-line"></div>\n' +
+                    '      </article>\n' +
+                    '    </div>\n' +
+                    '    <div class="sk sk-band"></div>\n' +
+                    '    <div class="sk sk-band thin"></div>\n' +
                     '  </main>\n' +
                     '  <div data-acc-position="' + escapeHtmlAttr(config.position) + '"></div>\n' +
                     '  <div data-acc-offset="' + config.offsetX + ',' + config.offsetY + '"></div>\n' +
                     '  <div data-acc-size="' + config.size + '"></div>\n' +
                     '  <script>\n' +
                     '    window.AccessibleWebWidgetOptions = {\n' +
+                    '      primaryColor: ' + quoteJs(themeOptions.primaryColor) + ',\n' +
+                    '      primaryColorLight: ' + quoteJs(themeOptions.primaryColorLight) + ',\n' +
+                    '      primaryColorDark: ' + quoteJs(themeOptions.primaryColorDark) + ',\n' +
+                    '      focusRingColor: ' + quoteJs(themeOptions.focusRingColor) + ',\n' +
+                    '      hoverColor: ' + quoteJs(themeOptions.hoverColor) + ',\n' +
+                    '      activeColor: ' + quoteJs(themeOptions.activeColor) + ',\n' +
                     '      ttsNativeVoiceName: ' + quoteJs(config.ttsNativeVoiceName) + ',\n' +
                     '      ttsRate: ' + formatDecimal(config.ttsRate) + ',\n' +
                     '      ttsPitch: ' + formatDecimal(config.ttsPitch) + ',\n' +
@@ -991,14 +1050,15 @@
 
             function applyColorToPreview(config) {
                 var frameWindow = previewFrame.contentWindow;
-                if (!frameWindow || !frameWindow.document || !frameWindow.document.head) return false;
-                var style = frameWindow.document.getElementById(previewColorStyleId);
-                if (!style) {
-                    style = frameWindow.document.createElement('style');
-                    style.id = previewColorStyleId;
-                    frameWindow.document.head.appendChild(style);
-                }
-                style.textContent = buildColorOverridesCSS(config.accentColor);
+                if (!frameWindow || !frameWindow.document || !frameWindow.document.documentElement) return false;
+                var themeOptions = buildThemeOptions(config.accentColor);
+                var root = frameWindow.document.documentElement;
+                root.style.setProperty('--acc-primary-color', themeOptions.primaryColor);
+                root.style.setProperty('--acc-primary-color-light', themeOptions.primaryColorLight);
+                root.style.setProperty('--acc-primary-color-dark', themeOptions.primaryColorDark);
+                root.style.setProperty('--acc-focus-ring-color', themeOptions.focusRingColor);
+                root.style.setProperty('--acc-hover-color', themeOptions.hoverColor);
+                root.style.setProperty('--acc-active-color', themeOptions.activeColor);
                 return true;
             }
 
@@ -1082,10 +1142,6 @@
             form.addEventListener('change', function (event) {
                 var fieldName = event.target && event.target.name ? event.target.name : '';
                 handleControlUpdate(fieldName);
-            });
-
-            applyButton.addEventListener('click', function () {
-                applyPreview();
             });
 
             resetButton.addEventListener('click', function () {
