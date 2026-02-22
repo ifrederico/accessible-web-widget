@@ -1412,7 +1412,7 @@ var AccessibleWebWidget = (function () {
 
       setTextScaleFromPercent(percent, options = {}) {
           const shouldPersist = options.persist !== false;
-          const clampedPercent = this.getTextScalePercent(percent);
+          const clampedPercent = this.clampTextScalePercent(percent);
           const multiplier = Number((clampedPercent / 100).toFixed(2));
           const exactIndex = this.textScaleValues.indexOf(multiplier);
 
@@ -4606,8 +4606,9 @@ var AccessibleWebWidget = (function () {
                   baseOptions.size = this.normalizeButtonSize(baseOptions.size);
                   this.widgetTheme.buttonSize = baseOptions.size;
                 }
-      
+
                 this.options = { ...baseOptions };
+                this.applyThemeOverrides(baseOptions);
                 this.applyThemeVariables();
                 this.registerStaticStyles();
                 
@@ -4875,6 +4876,8 @@ var AccessibleWebWidget = (function () {
           ...options
         };
 
+        this.applyThemeOverrides(this.options);
+
         const normalizeTtsRate = (value) => {
           const numeric = Number(value);
           if (!Number.isFinite(numeric)) return 1;
@@ -4911,6 +4914,53 @@ var AccessibleWebWidget = (function () {
 
         this.applyThemeVariables();
         this.registerStaticStyles();
+      }
+
+      applyThemeOverrides(options = {}) {
+        if (!options || typeof options !== 'object') return;
+
+        const mergedOptions = {
+          ...(options.theme && typeof options.theme === 'object' ? options.theme : {}),
+          ...options
+        };
+
+        const themeKeys = [
+          'primaryColor',
+          'primaryColorLight',
+          'primaryColorDark',
+          'backgroundColor',
+          'textColor',
+          'textColorInverted',
+          'cardBackground',
+          'borderColor',
+          'focusRingColor',
+          'hoverColor',
+          'activeColor',
+          'borderRadius',
+          'buttonBorderRadius',
+          'headerHeight',
+          'focusBorderWidth',
+          'focusOutlineOffset',
+          'zIndex'
+        ];
+
+        themeKeys.forEach((key) => {
+          const value = mergedOptions[key];
+          if (value === undefined || value === null) return;
+
+          if (typeof value === 'string') {
+            const trimmed = value.trim();
+            if (!trimmed) return;
+            this.widgetTheme[key] = trimmed;
+            return;
+          }
+
+          this.widgetTheme[key] = value;
+        });
+
+        if (mergedOptions.buttonSize !== undefined && mergedOptions.buttonSize !== null && mergedOptions.buttonSize !== '') {
+          this.widgetTheme.buttonSize = this.normalizeButtonSize(mergedOptions.buttonSize);
+        }
       }
     }
 

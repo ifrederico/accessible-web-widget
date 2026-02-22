@@ -571,6 +571,7 @@
                 </svg>
             </a>
             <a href="#features" class="nav-link">Features</a>
+            <a href="./customize.html" class="nav-link">Customize</a>
             <a href="#implementation" class="btn-primary">Get Widget</a>
         </div>
     </nav>
@@ -844,11 +845,42 @@
     </footer>
 
     <script>
+        function copyTextToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text);
+            }
+
+            return new Promise(function (resolve, reject) {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.setAttribute('readonly', '');
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+
+                try {
+                    var copied = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    if (copied) {
+                        resolve();
+                    } else {
+                        reject(new Error('Copy command failed'));
+                    }
+                } catch (error) {
+                    document.body.removeChild(textarea);
+                    reject(error);
+                }
+            });
+        }
+
         document.querySelectorAll('.copy-btn').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 var code = btn.closest('.code-snippet, .implementation-code').querySelector('code');
                 var text = code.textContent;
-                navigator.clipboard.writeText(text).then(function () {
+                copyTextToClipboard(text).then(function () {
                     var svg = btn.querySelector('svg');
                     var original = svg.innerHTML;
                     svg.innerHTML = '<polyline points="20 6 9 17 4 12" />';
@@ -857,6 +889,8 @@
                         svg.innerHTML = original;
                         btn.style.color = '';
                     }, 2000);
+                }).catch(function () {
+                    btn.setAttribute('title', 'Copy failed. Select text and copy manually.');
                 });
             });
         });

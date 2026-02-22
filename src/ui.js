@@ -906,8 +906,9 @@ export const uiMethods = {
               baseOptions.size = this.normalizeButtonSize(baseOptions.size);
               this.widgetTheme.buttonSize = baseOptions.size;
             }
-  
+
             this.options = { ...baseOptions };
+            this.applyThemeOverrides(baseOptions);
             this.applyThemeVariables();
             this.registerStaticStyles();
             
