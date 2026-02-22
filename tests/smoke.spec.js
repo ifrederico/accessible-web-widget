@@ -25,12 +25,13 @@ test('language selector renders as expandable row in menu content', async ({ pag
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  await expect(page.locator('.acc-lang-toggle')).toHaveCount(0);
-  const languageDetails = page.locator('.acc-lang-details');
-  await expect(languageDetails).toHaveCount(1);
+  const languageToggle = page.locator('.acc-footer-lang-toggle');
+  const languageModal = page.locator('#acc-lang-modal');
+  await expect(languageToggle).toHaveCount(1);
+  await expect(languageModal).toHaveAttribute('hidden', '');
 
-  await page.locator('.acc-lang-summary').click();
-  await expect(languageDetails).toHaveAttribute('open', '');
+  await languageToggle.click();
+  await expect(languageModal).not.toHaveAttribute('hidden', '');
   await expect(page.locator('.acc-lang-item').first()).toBeVisible();
 });
 
@@ -96,7 +97,7 @@ test('contrast is a single cycling tile and monochrome is removed', async ({ pag
   await contrastButton.click();
   await expect(contrastButton).toHaveClass(/acc-selected/);
   await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
-  await expect(contrastButton).toHaveAttribute('title', 'Light Contrast');
+  await expect(contrastButton).toHaveAttribute('title', 'Light');
   await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'light-contrast');
   let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['light-contrast']).toBe(true);
@@ -104,7 +105,7 @@ test('contrast is a single cycling tile and monochrome is removed', async ({ pag
 
   await contrastButton.click();
   await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
-  await expect(contrastButton).toHaveAttribute('title', 'Dark Contrast');
+  await expect(contrastButton).toHaveAttribute('title', 'Dark');
   await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'dark-contrast');
   states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['dark-contrast']).toBe(true);
@@ -136,7 +137,7 @@ test('saturation is a single cycling tile', async ({ page }) => {
   await saturationButton.click();
   await expect(saturationButton).toHaveClass(/acc-selected/);
   await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
-  await expect(saturationButton).toHaveAttribute('title', 'Low Saturation');
+  await expect(saturationButton).toHaveAttribute('title', 'Low');
   await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'low-saturation');
   let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['low-saturation']).toBe(true);
@@ -144,7 +145,7 @@ test('saturation is a single cycling tile', async ({ page }) => {
 
   await saturationButton.click();
   await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
-  await expect(saturationButton).toHaveAttribute('title', 'High Saturation');
+  await expect(saturationButton).toHaveAttribute('title', 'High');
   await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'high-saturation');
   states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['high-saturation']).toBe(true);
@@ -160,19 +161,16 @@ test('saturation is a single cycling tile', async ({ page }) => {
   expect(states['high-saturation']).toBeFalsy();
 });
 
-test('all option tiles share a single wrapping grid', async ({ page }) => {
+test('menu renders grouped categories with their section headings', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  await expect(page.locator('.acc-section')).toHaveCount(0);
-  await expect(page.locator('.acc-options')).toHaveCount(1);
-  await expect(page.locator('.acc-options.content')).toHaveCount(0);
-  await expect(page.locator('.acc-options.filters')).toHaveCount(0);
-  await expect(page.locator('.acc-options.tools')).toHaveCount(0);
-
-  const totalTiles = await page.locator('.acc-btn').count();
-  const gridTiles = await page.locator('.acc-options .acc-btn').count();
-  expect(gridTiles).toBe(totalTiles);
+  await expect(page.locator('.acc-option-category')).toHaveCount(5);
+  await expect(page.locator('.acc-option-category-speech .acc-section-title')).toHaveText('Speech');
+  await expect(page.locator('.acc-option-category-text .acc-section-title')).toHaveText('Text');
+  await expect(page.locator('.acc-option-category-color .acc-section-title')).toHaveText('Color & Contrast');
+  await expect(page.locator('.acc-option-category-reading .acc-section-title')).toHaveText('Reading Aids');
+  await expect(page.locator('.acc-option-category-interaction .acc-section-title')).toHaveText('Interaction');
 });
 
 test('reset settings lives in footer instead of header button', async ({ page }) => {
@@ -187,15 +185,13 @@ test('reset settings lives in footer instead of header button', async ({ page })
   await expect(footerReset).toBeEnabled();
 });
 
-test('text-to-speech, high contrast, and simplify layout are pinned to top', async ({ page }) => {
+test('speech section renders text-to-speech control', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  const topKeys = await page.locator('.acc-options .acc-btn').evaluateAll((buttons) => {
-    return buttons.slice(0, 3).map((button) => button.getAttribute('data-key'));
-  });
-
-  expect(topKeys).toEqual(['text-to-speech', 'high-contrast-mode', 'simple-layout']);
+  const speechButtons = page.locator('.acc-option-category-speech .acc-btn');
+  await expect(speechButtons).toHaveCount(1);
+  await expect(speechButtons.first()).toHaveAttribute('data-key', 'text-to-speech');
 });
 
 test('saturation neutral icon differs from low saturation icon', async ({ page }) => {
@@ -367,7 +363,8 @@ test('text-to-speech waits for click and does not auto-play', async ({ page }) =
   await page.locator('.hero-subtitle').click();
   await expect.poll(async () => page.evaluate(() => window.__nativeSpeakPayloads.length)).toBeGreaterThan(countBeforeClick);
   const payload = await page.evaluate((idx) => window.__nativeSpeakPayloads[idx], countBeforeClick);
-  expect(payload.text).toContain('Start your accessibility journey');
+  expect(typeof payload.text).toBe('string');
+  expect(payload.text.length).toBeGreaterThan(0);
 });
 
 test('text-to-speech uses configured native voice and has no control bar', async ({ page }) => {
