@@ -256,7 +256,7 @@ export const uiMethods = {
       this.updateSkipLinkLabel();
     },
 
-  displayMenu({ container, lang }) {
+  displayMenu({ container, lang, position = 'bottom-right', offset = [20, 20], size }) {
       try {
         this.applyThemeVariables();
         this.registerStaticStyles();
@@ -329,12 +329,25 @@ export const uiMethods = {
             menu.setAttribute('tabindex', '-1');
           }
         }
-        if (this.widgetTheme.menuPosition === 'right') {
-          menu.style.right = '0px';
+        const isRightAligned = position === 'bottom-right' || position === 'top-right' || this.widgetTheme.menuPosition === 'right';
+        if (isRightAligned) {
+          menu.style.right = 'var(--acc-menu-inline-gap, 12px)';
           menu.style.left = 'auto';
         } else {
-          menu.style.left = '0px';
+          menu.style.left = 'var(--acc-menu-inline-gap, 12px)';
           menu.style.right = 'auto';
+        }
+
+        const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
+        const offsetY = normalizedOffset[1] ?? 25;
+        const buttonSize = size !== undefined && size !== null && String(size).trim() !== ''
+          ? this.normalizeButtonSize(size)
+          : (this.widgetTheme?.buttonSize || '48px');
+
+        if (position === 'bottom-right' || position === 'bottom-left') {
+          menu.style.bottom = `calc(${offsetY}px + ${buttonSize} + 16px)`;
+        } else if (position === 'top-right' || position === 'top-left') {
+          menu.style.top = `calc(${offsetY}px + ${buttonSize} + 16px)`;
         }
   
         const pinnedTopToolKeys = ['text-to-speech', 'high-contrast-mode', 'simple-layout'];

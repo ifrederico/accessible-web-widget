@@ -1,21 +1,26 @@
 /* Base styles */
 .acc-menu {
   position: fixed;
-  left: 0;
-  top: 0;
+  left: var(--acc-menu-inline-gap, 12px);
+  top: var(--acc-menu-block-gap, 12px);
+  bottom: var(--acc-menu-block-gap, 12px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
   opacity: 1;
   transition: 0.3s;
   z-index: var(--acc-widget-z-index, 100000);
   overflow: hidden;
   background: var(--acc-bg-color);
-  width: 500px;
+  width: min(460px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));
   line-height: 1.5;
   font-size: 16px;
-  height: 100%;
+  height: auto;
   letter-spacing: 0.015em;
   color: var(--acc-text-color);
-  --acc-content-inline-padding: 16px;
+  --acc-content-inline-padding: 14px;
+  --acc-menu-inline-gap: clamp(8px, 2.3vw, 18px);
+  --acc-menu-block-gap: clamp(10px, 2.2vh, 20px);
+  border-radius: 22px;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
 }
 
 /* Ensure all elements inherit proper colors for accessibility */
@@ -357,27 +362,27 @@
 .acc-options {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin: 0 var(--acc-content-inline-padding) 24px;
+  gap: 12px;
+  margin: 0 var(--acc-content-inline-padding) 20px;
 }
 
 /* Button styling */
 .acc-btn {
-  aspect-ratio: 6 / 5;
+  aspect-ratio: 11 / 8;
   border-radius: var(--acc-border-radius);
-  padding: 12px;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  font-size: 16px !important;
+  font-size: 15px !important;
   background: var(--acc-card-bg) !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
   transition: background-color 0.2s ease;
   cursor: pointer;
   word-break: break-word;
-  gap: 8px;
+  gap: 6px;
   position: relative;
 }
 
@@ -393,7 +398,7 @@
 }
 
 .acc-btn .acc-label, .acc-text-adjust .acc-label div {
-  font-size: 14px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
 }
 
@@ -408,12 +413,12 @@
 }
 
 .acc-btn svg {
-  width: 26px !important;
-  height: 26px !important;
-  min-width: 26px !important;
-  min-height: 26px !important;
-  max-width: 26px !important;
-  max-height: 26px !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
   fill: var(--acc-text-color);
 }
 
@@ -608,7 +613,9 @@
 
 /* Responsive adjustments */
 @media only screen and (max-width: 560px) {
-  .acc-menu { width: 100%; }
+  .acc-menu {
+    width: calc(100vw - (var(--acc-menu-inline-gap, 8px) * 2));
+  }
 }
 
 @media only screen and (max-width: 420px) {
