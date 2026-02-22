@@ -111,7 +111,7 @@ export const stateMethods = {
       const options = {};
       if (typeof document === 'undefined') return options;
   
-      const attributes = ['lang', 'position', 'offset', 'size'];
+      const attributes = ['lang', 'position', 'offset', 'size', 'icon'];
   
       const assignValue = (key, value) => {
         if (value === null || typeof value === 'undefined' || value === '') return;
@@ -136,6 +136,11 @@ export const stateMethods = {
             if (normalizedSize) options.size = normalizedSize;
             break;
           }
+          case 'icon': {
+            const icon = String(value).trim();
+            if (icon) options.icon = icon;
+            break;
+          }
           default:
             break;
         }
@@ -154,7 +159,7 @@ export const stateMethods = {
       if (document.currentScript) {
         scriptCandidates.push(document.currentScript);
       }
-      document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size]').forEach(script => {
+      document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon]').forEach(script => {
         if (!scriptCandidates.includes(script)) {
           scriptCandidates.push(script);
         }

@@ -6,459 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customize | AccessibleWeb Widget</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-    <style>
-        :root {
-            --color-text: #0f172a;
-            --color-text-secondary: #334155;
-            --color-text-muted: #64748b;
-            --color-bg: #f8fafc;
-            --color-surface: #f1f5f9;
-            --color-border: #dbe4ef;
-            --color-accent: #111827;
-            --color-panel: #ffffff;
-            --color-code-bg: #0b1220;
-            --color-code-border: #263146;
-            --font-serif: Georgia, "Times New Roman", serif;
-            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            --page-gutter: clamp(20px, 4vmin, 48px);
-            --content-width: 1000px;
-        }
-
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: var(--font-sans);
-            color: var(--color-text);
-            background:
-                radial-gradient(1200px 560px at 95% -15%, #e6eef7 0%, transparent 62%),
-                radial-gradient(900px 460px at -10% 0%, #edf3fa 0%, transparent 62%),
-                var(--color-bg);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 24px var(--page-gutter);
-        }
-
-        .logo {
-            font-family: var(--font-serif);
-            font-size: clamp(20px, 2vw + 12px, 28px);
-            letter-spacing: -0.5px;
-            text-decoration: none;
-            color: var(--color-text);
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: clamp(12px, 2vw + 4px, 32px);
-        }
-
-        .nav-link {
-            color: #111;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-link:hover {
-            color: #000;
-        }
-
-        .nav-link.is-active {
-            text-decoration: underline;
-            text-underline-offset: 6px;
-            text-decoration-thickness: 2px;
-        }
-
-        .nav-link svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-            display: block;
-        }
-
-        .btn-primary {
-            background: #111;
-            color: #fff;
-            border: 0;
-            border-radius: 9999px;
-            font-size: 15px;
-            font-weight: 500;
-            padding: 12px 24px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-primary:hover {
-            background: #333;
-        }
-
-        .btn-secondary {
-            background: #fff;
-            color: #1e293b;
-            border-radius: 999px;
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 1;
-            padding: 12px 18px;
-            cursor: pointer;
-            border: 1px solid #cbd5e1;
-        }
-
-        .btn-secondary:hover {
-            background: #f8fafc;
-        }
-
-        .hero {
-            max-width: calc(var(--content-width) + var(--page-gutter) * 2);
-            margin: 0 auto;
-            padding: clamp(24px, 4vw, 48px) var(--page-gutter) clamp(20px, 4vw, 32px);
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: var(--color-text-secondary);
-            border: 1px solid var(--color-border);
-            border-radius: 999px;
-            padding: 7px 14px;
-            background: rgba(255, 255, 255, 0.92);
-        }
-
-        .hero-title {
-            margin: 18px 0 14px;
-            font-family: var(--font-serif);
-            font-size: clamp(2rem, 4vw + 0.5rem, 3.2rem);
-            font-weight: 400;
-            line-height: 1.08;
-            letter-spacing: -0.8px;
-        }
-
-        .hero-subtitle {
-            margin: 0;
-            max-width: 760px;
-            color: var(--color-text-secondary);
-            font-size: clamp(15px, 1vw + 12px, 19px);
-            line-height: 1.7;
-        }
-
-        .container {
-            max-width: calc(var(--content-width) + var(--page-gutter) * 2);
-            margin: 0 auto;
-            padding: 0 var(--page-gutter) clamp(40px, 6vw, 72px);
-        }
-
-        .builder-layout {
-            display: grid;
-            grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
-            gap: clamp(16px, 2.2vw, 28px);
-            align-items: start;
-        }
-
-        .panel {
-            background: var(--color-panel);
-            border: 1px solid var(--color-border);
-            border-radius: 16px;
-            padding: clamp(18px, 2.4vw, 28px);
-            box-shadow: 0 12px 26px rgba(15, 23, 42, 0.05);
-        }
-
-        .panel h2 {
-            margin: 0 0 8px;
-            font-size: 20px;
-        }
-
-        .panel-intro {
-            margin: 0 0 18px;
-            color: var(--color-text-secondary);
-            line-height: 1.65;
-            font-size: 14px;
-        }
-
-        .control-group + .control-group {
-            margin-top: 22px;
-            padding-top: 22px;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .control-group h3 {
-            margin: 0 0 12px;
-            font-size: 15px;
-            letter-spacing: 0.2px;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-        }
-
-        .field {
-            display: grid;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-
-        .field-row {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            gap: 12px;
-            align-items: end;
-        }
-
-        .field label {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .field input,
-        .field select {
-            width: 100%;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            background: #fff;
-            color: #0f172a;
-            font-size: 14px;
-            padding: 10px 12px;
-            font-family: var(--font-sans);
-        }
-
-        .field.color-field {
-            margin-bottom: 14px;
-        }
-
-        .field.color-field input[type="color"] {
-            width: 46px;
-            height: 46px;
-            min-height: 46px;
-            padding: 0;
-            border-radius: 999px;
-            border: 2px solid #cbd5e1;
-            background: transparent;
-            appearance: none;
-            cursor: pointer;
-        }
-
-        .field.color-field input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
-        .field.color-field input[type="color"]::-webkit-color-swatch {
-            border: 0;
-            border-radius: 999px;
-        }
-
-        .field.color-field input[type="color"]::-moz-color-swatch {
-            border: 0;
-            border-radius: 999px;
-        }
-
-        .field input:focus,
-        .field select:focus {
-            outline: 3px solid rgba(59, 130, 246, 0.24);
-            border-color: #60a5fa;
-        }
-
-        .range-row {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .range-row input[type="range"] {
-            padding: 0;
-            border: 0;
-            background: transparent;
-        }
-
-        .range-value {
-            min-width: 54px;
-            font-family: var(--font-mono);
-            font-size: 12px;
-            text-align: center;
-            color: #0f172a;
-            border: 1px solid #d5deea;
-            border-radius: 999px;
-            background: #f8fafc;
-            padding: 4px 8px;
-        }
-
-        .form-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 6px;
-        }
-
-        .preview-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .preview-panel-header h2 {
-            margin: 0;
-            font-size: 20px;
-        }
-
-        .preview-note {
-            margin: 0 0 14px;
-            color: var(--color-text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .preview-frame {
-            width: 100%;
-            height: min(68vh, 720px);
-            border: 1px solid var(--color-border);
-            border-radius: 12px;
-            background: #fff;
-        }
-
-        .export-section {
-            margin-top: clamp(20px, 3.5vw, 34px);
-        }
-
-        .export-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .export-header h2 {
-            margin: 0;
-            font-size: 20px;
-        }
-
-        .export-note {
-            margin: 0;
-            color: var(--color-text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .export-code {
-            margin: 0;
-            border: 1px solid var(--color-code-border);
-            border-radius: 12px;
-            background: var(--color-code-bg);
-            color: #e2e8f0;
-            padding: 16px;
-            overflow: auto;
-            max-height: 420px;
-        }
-
-        .export-code code {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            line-height: 1.6;
-            white-space: pre;
-        }
-
-        .status {
-            margin-top: 10px;
-            color: #166534;
-            font-size: 13px;
-            min-height: 1em;
-        }
-
-        .voice-status {
-            color: var(--color-text-muted);
-            font-size: 12px;
-            line-height: 1.5;
-            min-height: 1.5em;
-        }
-
-        .footer {
-            border-top: 1px solid var(--color-border);
-            margin-top: 24px;
-            padding: 28px var(--page-gutter);
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            max-width: calc(var(--content-width) + var(--page-gutter) * 2);
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .footer-left {
-            font-size: 14px;
-            color: var(--color-text-muted);
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .footer-links a {
-            font-size: 14px;
-            color: var(--color-text-muted);
-            text-decoration: none;
-        }
-
-        .footer-links a:hover {
-            color: var(--color-text);
-        }
-
-        @media (max-width: 980px) {
-            .builder-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .nav-link:not([aria-label]) {
-                display: none;
-            }
-
-            .btn-primary {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
-
-            .preview-panel-header,
-            .export-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .field-row {
-                grid-template-columns: 1fr;
-            }
-
-            .footer {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-links {
-                justify-content: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 
-<body>
+<body class="customize-page">
     <nav class="navbar">
         <a href="./index.html" class="logo">AccessibleWeb</a>
         <div class="nav-links">
@@ -469,14 +20,13 @@
                         d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                 </svg>
             </a>
-            <a href="./index.html#features" class="nav-link">Features</a>
             <a href="./customize.html" class="nav-link is-active">Customize</a>
-            <a href="./index.html#implementation" class="btn-primary">Get Widget</a>
+            <a href="./faq.html" class="nav-link">FAQ</a>
+            <a href="./get-widget.html" class="btn-primary">Get Widget</a>
         </div>
     </nav>
 
     <header class="hero">
-        <div class="hero-badge">Code Generator</div>
         <h1 class="hero-title">Build your widget config and export ready-to-paste code.</h1>
         <p class="hero-subtitle">Choose position, offset, size, accent color, and text-to-speech voice settings. Changes
             update live in preview, so you can test interactions before copying the generated snippet.</p>
@@ -501,13 +51,42 @@
                                     <option value="bottom-left">Bottom Left</option>
                                     <option value="top-right">Top Right</option>
                                     <option value="top-left">Top Left</option>
-                                    <option value="center-left">Center Left</option>
                                 </select>
                             </div>
 
                             <div class="field color-field">
                                 <label for="accentColor">Accent Color</label>
                                 <input id="accentColor" name="accentColor" type="color" value="#1976d2">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label>Widget Icon</label>
+                            <div class="icon-picker" role="radiogroup" aria-label="Widget Icon">
+                                <label class="icon-picker-option">
+                                    <input type="radio" name="icon" value="default" aria-label="Default icon" checked>
+                                    <span class="icon-picker-preview" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M423.5-743.5Q400-767 400-800t23.5-56.5Q447-880 480-880t56.5 23.5Q560-833 560-800t-23.5 56.5Q513-720 480-720t-56.5-23.5ZM360-80v-520q-60-5-122-15t-118-25l20-80q78 21 166 30.5t174 9.5q86 0 174-9.5T820-720l20 80q-56 15-118 25t-122 15v520h-80v-240h-80v240h-80Z"/></svg>
+                                    </span>
+                                </label>
+                                <label class="icon-picker-option">
+                                    <input type="radio" name="icon" value="icon-2" aria-label="Icon option 2">
+                                    <span class="icon-picker-preview" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M423.5-743.5Q400-767 400-800t23.5-56.5Q447-880 480-880t56.5 23.5Q560-833 560-800t-23.5 56.5Q513-720 480-720t-56.5-23.5ZM360-80v-520H120v-80h720v80H600v520h-80v-240h-80v240h-80Z"/></svg>
+                                    </span>
+                                </label>
+                                <label class="icon-picker-option">
+                                    <input type="radio" name="icon" value="icon-3" aria-label="Icon option 3">
+                                    <span class="icon-picker-preview" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M423.5-743.5Q400-767 400-800t23.5-56.5Q447-880 480-880t56.5 23.5Q560-833 560-800t-23.5 56.5Q513-720 480-720t-56.5-23.5ZM680-80v-200H480q-33 0-56.5-23.5T400-360v-240q0-33 23.5-56.5T480-680q24 0 41.5 10.5T559-636q55 66 99.5 90.5T760-520v80q-53 0-107-23t-93-55v138h120q33 0 56.5 23.5T760-300v220h-80Zm-280 0q-83 0-141.5-58.5T200-280q0-72 45.5-127T360-476v82q-35 14-57.5 44.5T280-280q0 50 35 85t85 35q39 0 69.5-22.5T514-240h82q-14 69-69 114.5T400-80Z"/></svg>
+                                    </span>
+                                </label>
+                                <label class="icon-picker-option">
+                                    <input type="radio" name="icon" value="icon-4" aria-label="Icon option 4">
+                                    <span class="icon-picker-preview" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M320-80q-83 0-141.5-58.5T120-280q0-83 58.5-141.5T320-480v80q-50 0-85 35t-35 85q0 50 35 85t85 35q50 0 85-35t35-85h80q0 83-58.5 141.5T320-80Zm360-40v-200H440q-44 0-68-37.5t-6-78.5l74-164h-91l-24 62-77-22 28-72q9-23 29.5-35.5T350-680h208q45 0 68.5 36.5T632-566l-66 146h114q33 0 56.5 23.5T760-340v220h-80Zm-96.5-603.5Q560-747 560-780t23.5-56.5Q607-860 640-860t56.5 23.5Q720-813 720-780t-23.5 56.5Q673-700 640-700t-56.5-23.5Z"/></svg>
+                                    </span>
+                                </label>
                             </div>
                         </div>
 
@@ -598,7 +177,13 @@
     <footer class="footer">
         <div class="footer-left">AccessibleWeb Widget &middot; MIT License</div>
         <div class="footer-links">
-            <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path
+                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
+                <span>GitHub</span>
+            </a>
             <a href="https://github.com/ifrederico/accessible-web-widget/blob/main/DISCLAIMER.md" target="_blank"
                 rel="noopener">Disclaimer</a>
         </div>
@@ -612,6 +197,7 @@
                 offsetY: 24,
                 size: 52,
                 accentColor: '#1976d2',
+                icon: 'default',
                 ttsNativeVoiceName: 'Samantha',
                 ttsRate: 1.0,
                 ttsPitch: 1.0
@@ -882,6 +468,7 @@
 
             function getConfig() {
                 var position = String(form.elements.position.value || defaults.position);
+                var icon = String((form.elements.icon && form.elements.icon.value) || defaults.icon);
                 var offsetX = Math.round(clamp(toNumber(form.elements.offsetX.value, defaults.offsetX), 0, 120));
                 var offsetY = Math.round(clamp(toNumber(form.elements.offsetY.value, defaults.offsetY), 0, 120));
                 var size = Math.round(clamp(toNumber(form.elements.size.value, defaults.size), 24, 96));
@@ -892,6 +479,7 @@
 
                 return {
                     position: position,
+                    icon: icon,
                     offsetX: offsetX,
                     offsetY: offsetY,
                     size: size,
@@ -917,6 +505,7 @@
                     '<div data-acc-position="' + escapeHtmlAttr(config.position) + '"></div>',
                     '<div data-acc-offset="' + config.offsetX + ',' + config.offsetY + '"></div>',
                     '<div data-acc-size="' + config.size + '"></div>',
+                    '<div data-acc-icon="' + escapeHtmlAttr(config.icon) + '"></div>',
                     '<script>',
                     '  window.AccessibleWebWidgetOptions = {',
                     '    primaryColor: ' + quoteJs(themeOptions.primaryColor) + ',',
@@ -996,6 +585,7 @@
                     '  <div data-acc-position="' + escapeHtmlAttr(config.position) + '"></div>\n' +
                     '  <div data-acc-offset="' + config.offsetX + ',' + config.offsetY + '"></div>\n' +
                     '  <div data-acc-size="' + config.size + '"></div>\n' +
+                    '  <div data-acc-icon="' + escapeHtmlAttr(config.icon) + '"></div>\n' +
                     '  <script>\n' +
                     '    window.AccessibleWebWidgetOptions = {\n' +
                     '      primaryColor: ' + quoteJs(themeOptions.primaryColor) + ',\n' +
@@ -1036,10 +626,6 @@
                 } else if (config.position === 'top-right') {
                     btn.style.right = config.offsetX + 'px';
                     btn.style.top = config.offsetY + 'px';
-                } else if (config.position === 'center-left') {
-                    btn.style.left = config.offsetX + 'px';
-                    btn.style.top = '50%';
-                    btn.style.transform = 'translateY(-50%)';
                 } else {
                     btn.style.left = config.offsetX + 'px';
                     btn.style.bottom = config.offsetY + 'px';
@@ -1106,6 +692,10 @@
 
             function setFormValues(config) {
                 form.elements.position.value = config.position;
+                var iconValue = config.icon || defaults.icon;
+                Array.prototype.forEach.call(form.querySelectorAll('input[name="icon"]'), function (input) {
+                    input.checked = input.value === iconValue;
+                });
                 form.elements.offsetX.value = String(config.offsetX);
                 form.elements.offsetY.value = String(config.offsetY);
                 form.elements.size.value = String(config.size);

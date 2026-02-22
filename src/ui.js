@@ -53,6 +53,12 @@ export const uiMethods = {
       return `${baseName} (${this.getLanguageCountryLabel(language.code)})`;
     },
 
+  getWidgetIconMarkup(iconKey) {
+      const normalized = typeof iconKey === 'string' ? iconKey.trim().toLowerCase() : '';
+      const variants = this.widgetIcons?.accessibilityVariants || {};
+      return variants[normalized] || variants.default || this.widgetIcons.accessibility;
+    },
+
   throttle(func, limit) {
       let inThrottle;
       return function (...args) {
@@ -290,7 +296,7 @@ export const uiMethods = {
       this.updateSkipLinkLabel();
     },
 
-  displayMenu({ container, lang, position = 'bottom-right', offset = [20, 20], size }) {
+  displayMenu({ container, lang, position = 'bottom-right', offset = [20, 20], size, icon }) {
       try {
         this.applyThemeVariables();
         this.registerStaticStyles();
@@ -301,7 +307,7 @@ export const uiMethods = {
         <div class="acc-menu" role="dialog" aria-labelledby="accessibility-title">
           <div class="acc-menu-header">
             <div id="accessibility-title" class="acc-menu-title">
-              <span class="acc-menu-title-icon" aria-hidden="true">${this.widgetIcons.accessibility}</span>
+              <span class="acc-menu-title-icon" aria-hidden="true">${this.getWidgetIconMarkup(icon)}</span>
               <span class="acc-label">Accessibility</span>
             </div>
             <div class="acc-header-actions">
@@ -769,7 +775,7 @@ export const uiMethods = {
       const widgetTemplate = `
         <div class="acc-widget">
           <a href="#" id="accessibilityWidget" class="acc-toggle-btn" title="Open Accessibility Menu" role="button" aria-label="Open accessibility menu" aria-expanded="false">
-            ${this.widgetIcons.accessibility}
+            ${this.getWidgetIconMarkup(options?.icon)}
             <span class="acc-violation-bubble" data-severity="warning" hidden> </span>
           </a>
         </div>
@@ -794,8 +800,6 @@ export const uiMethods = {
           buttonStyle = { top: `${offsetY}px`, bottom: "auto", left: `${offsetX}px` };
         } else if (position === "top-right") {
           buttonStyle = { top: `${offsetY}px`, right: `${offsetX}px`, bottom: "auto", left: "auto" };
-        } else if (position === "center-left") {
-          buttonStyle = { top: "50%", transform: "translateY(-50%)", left: `${offsetX}px`, bottom: "auto" };
         }
         Object.assign(btn.style, buttonStyle);
   

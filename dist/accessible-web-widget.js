@@ -49,7 +49,13 @@ var AccessibleWebWidget = (function () {
         };
 
     const WIDGET_ICONS = {
-          accessibility: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-720q-33 0-56.5-23.5T400-800q0-33 23.5-56.5T480-880q33 0 56.5 23.5T560-800q0 33-23.5 56.5T480-720ZM360-80v-520q-60-5-122-15t-118-25l20-80q78 21 166 30.5t174 9.5q86 0 174-9.5T820-720l20 80q-56 15-118 25t-122 15v520h-80v-240h-80v240h-80Z"/></svg>',
+          accessibility: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M423.5-743.5Q400-767 400-800t23.5-56.5Q447-880 480-880t56.5 23.5Q560-833 560-800t-23.5 56.5Q513-720 480-720t-56.5-23.5ZM360-80v-520q-60-5-122-15t-118-25l20-80q78 21 166 30.5t174 9.5q86 0 174-9.5T820-720l20 80q-56 15-118 25t-122 15v520h-80v-240h-80v240h-80Z"/></svg>',
+          accessibilityVariants: {
+                default: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M423.5-743.5Q400-767 400-800t23.5-56.5Q447-880 480-880t56.5 23.5Q560-833 560-800t-23.5 56.5Q513-720 480-720t-56.5-23.5ZM360-80v-520q-60-5-122-15t-118-25l20-80q78 21 166 30.5t174 9.5q86 0 174-9.5T820-720l20 80q-56 15-118 25t-122 15v520h-80v-240h-80v240h-80Z"/></svg>',
+                'icon-2': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M423.5-743.5Q400-767 400-800t23.5-56.5Q447-880 480-880t56.5 23.5Q560-833 560-800t-23.5 56.5Q513-720 480-720t-56.5-23.5ZM360-80v-520H120v-80h720v80H600v520h-80v-240h-80v240h-80Z"/></svg>',
+                'icon-3': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M423.5-743.5Q400-767 400-800t23.5-56.5Q447-880 480-880t56.5 23.5Q560-833 560-800t-23.5 56.5Q513-720 480-720t-56.5-23.5ZM680-80v-200H480q-33 0-56.5-23.5T400-360v-240q0-33 23.5-56.5T480-680q24 0 41.5 10.5T559-636q55 66 99.5 90.5T760-520v80q-53 0-107-23t-93-55v138h120q33 0 56.5 23.5T760-300v220h-80Zm-280 0q-83 0-141.5-58.5T200-280q0-72 45.5-127T360-476v82q-35 14-57.5 44.5T280-280q0 50 35 85t85 35q39 0 69.5-22.5T514-240h82q-14 69-69 114.5T400-80Z"/></svg>',
+                'icon-4': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M320-80q-83 0-141.5-58.5T120-280q0-83 58.5-141.5T320-480v80q-50 0-85 35t-35 85q0 50 35 85t85 35q50 0 85-35t35-85h80q0 83-58.5 141.5T320-80Zm360-40v-200H440q-44 0-68-37.5t-6-78.5l74-164h-91l-24 62-77-22 28-72q9-23 29.5-35.5T350-680h208q45 0 68.5 36.5T632-566l-66 146h114q33 0 56.5 23.5T760-340v220h-80Zm-96.5-603.5Q560-747 560-780t23.5-56.5Q607-860 640-860t56.5 23.5Q720-813 720-780t-23.5 56.5Q673-700 640-700t-56.5-23.5Z"/></svg>'
+          },
           largePointer: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"><path d="m320-410 79-110h170L320-716v306ZM551-80 406-392 240-160v-720l560 440H516l144 309-109 51ZM399-520Z"/></svg>',
           pauseMotion: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m791-55-91-91q-49 32-104.5 49T480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 17-115.5T146-700l-91-91 57-57 736 736-57 57ZM480-160q43 0 83.5-11t78.5-33L204-642q-22 38-33 78.5T160-480q0 133 93.5 226.5T480-160Zm334-100-58-58q22-38 33-78.5t11-83.5q0-133-93.5-226.5T480-800q-43 0-83.5 11T318-756l-58-58q49-32 104.5-49T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 60-17 115.5T814-260ZM537-537ZM423-423Z"/></svg>',
           readingAid: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M320-80v-440l-80-120v-240h480v240l-80 120v440H320Zm160-260q-25 0-42.5-17.5T420-400q0-25 17.5-42.5T480-460q25 0 42.5 17.5T540-400q0 25-17.5 42.5T480-340ZM320-760h320v-40H320v40Zm320 80H320v16l80 120v384h160v-384l80-120v-16ZM480-480Z"/></svg>',
@@ -800,7 +806,7 @@ var AccessibleWebWidget = (function () {
           const options = {};
           if (typeof document === 'undefined') return options;
       
-          const attributes = ['lang', 'position', 'offset', 'size'];
+          const attributes = ['lang', 'position', 'offset', 'size', 'icon'];
       
           const assignValue = (key, value) => {
             if (value === null || typeof value === 'undefined' || value === '') return;
@@ -825,6 +831,11 @@ var AccessibleWebWidget = (function () {
                 if (normalizedSize) options.size = normalizedSize;
                 break;
               }
+              case 'icon': {
+                const icon = String(value).trim();
+                if (icon) options.icon = icon;
+                break;
+              }
             }
           };
       
@@ -841,7 +852,7 @@ var AccessibleWebWidget = (function () {
           if (document.currentScript) {
             scriptCandidates.push(document.currentScript);
           }
-          document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size]').forEach(script => {
+          document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon]').forEach(script => {
             if (!scriptCandidates.includes(script)) {
               scriptCandidates.push(script);
             }
@@ -3753,6 +3764,12 @@ var AccessibleWebWidget = (function () {
           return `${baseName} (${this.getLanguageCountryLabel(language.code)})`;
         },
 
+      getWidgetIconMarkup(iconKey) {
+          const normalized = typeof iconKey === 'string' ? iconKey.trim().toLowerCase() : '';
+          const variants = this.widgetIcons?.accessibilityVariants || {};
+          return variants[normalized] || variants.default || this.widgetIcons.accessibility;
+        },
+
       throttle(func, limit) {
           let inThrottle;
           return function (...args) {
@@ -3990,7 +4007,7 @@ var AccessibleWebWidget = (function () {
           this.updateSkipLinkLabel();
         },
 
-      displayMenu({ container, lang, position = 'bottom-right', offset = [20, 20], size }) {
+      displayMenu({ container, lang, position = 'bottom-right', offset = [20, 20], size, icon }) {
           try {
             this.applyThemeVariables();
             this.registerStaticStyles();
@@ -4001,7 +4018,7 @@ var AccessibleWebWidget = (function () {
         <div class="acc-menu" role="dialog" aria-labelledby="accessibility-title">
           <div class="acc-menu-header">
             <div id="accessibility-title" class="acc-menu-title">
-              <span class="acc-menu-title-icon" aria-hidden="true">${this.widgetIcons.accessibility}</span>
+              <span class="acc-menu-title-icon" aria-hidden="true">${this.getWidgetIconMarkup(icon)}</span>
               <span class="acc-label">Accessibility</span>
             </div>
             <div class="acc-header-actions">
@@ -4469,7 +4486,7 @@ var AccessibleWebWidget = (function () {
           const widgetTemplate = `
         <div class="acc-widget">
           <a href="#" id="accessibilityWidget" class="acc-toggle-btn" title="Open Accessibility Menu" role="button" aria-label="Open accessibility menu" aria-expanded="false">
-            ${this.widgetIcons.accessibility}
+            ${this.getWidgetIconMarkup(options?.icon)}
             <span class="acc-violation-bubble" data-severity="warning" hidden> </span>
           </a>
         </div>
@@ -4494,8 +4511,6 @@ var AccessibleWebWidget = (function () {
               buttonStyle = { top: `${offsetY}px`, bottom: "auto", left: `${offsetX}px` };
             } else if (position === "top-right") {
               buttonStyle = { top: `${offsetY}px`, right: `${offsetX}px`, bottom: "auto", left: "auto" };
-            } else if (position === "center-left") {
-              buttonStyle = { top: "50%", transform: "translateY(-50%)", left: `${offsetX}px`, bottom: "auto" };
             }
             Object.assign(btn.style, buttonStyle);
       
