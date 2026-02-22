@@ -29,18 +29,65 @@
     border: none !important;
     box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 2px 5px rgba(0,0,0,0.2) !important;
     background: var(--acc-primary-color, #1976d2) !important;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     overflow: visible;
   }
   
-  .acc-toggle-btn svg {
+  .acc-toggle-btn .acc-toggle-icon {
     width: 60%;
     height: 60%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .acc-toggle-btn .acc-toggle-icon svg {
+    width: 100%;
+    height: 100%;
     fill: white;
+    transition: none;
   }
   
   .acc-toggle-btn:hover {
     transform: scale(1.12);
+  }
+
+  .acc-toggle-btn::before,
+  .acc-toggle-btn::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44%;
+    height: 2.6px;
+    border-radius: 999px;
+    background: var(--acc-text-color-inverted, #fff);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) rotate(0deg);
+    transition: none;
+  }
+
+  .acc-toggle-btn[aria-expanded="true"] {
+    background: var(--acc-primary-color, #1976d2) !important;
+    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 6px 14px rgba(0, 0, 0, 0.24) !important;
+  }
+
+  .acc-toggle-btn[aria-expanded="true"] .acc-toggle-icon svg {
+    opacity: 0;
+  }
+
+  .acc-toggle-btn[aria-expanded="true"]::before,
+  .acc-toggle-btn[aria-expanded="true"]::after {
+    opacity: 1;
+  }
+
+  .acc-toggle-btn[aria-expanded="true"]::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .acc-toggle-btn[aria-expanded="true"]::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
   }
 
   .acc-violation-bubble {
@@ -64,18 +111,18 @@
   }
 
   .acc-violation-bubble[data-severity="critical"] {
-    background: #fbc02c;
-    color: #222;
+    background: #d32f2f;
+    color: #fff;
   }
 
   .acc-violation-bubble[data-severity="serious"] {
-    background: #ffab32;
-    color: #222;
+    background: #f57c00;
+    color: #fff;
   }
 
   .acc-violation-bubble[data-severity="moderate"] {
-    background: #fbc02c;
-    color: #000;
+    background: #fbc02d;
+    color: #333;
   }
 
   .acc-violation-bubble[hidden] {
@@ -105,4 +152,11 @@
     .acc-toggle-btn {
       transition: none;
     }
+
+    .acc-toggle-btn .acc-toggle-icon svg,
+    .acc-toggle-btn::before,
+    .acc-toggle-btn::after {
+      transition: none;
+    }
+
   }

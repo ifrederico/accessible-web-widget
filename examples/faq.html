@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | AccessibleWeb Widget</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body class="faq-page">
+    <nav class="navbar">
+        <a href="./index.html" class="logo">AccessibleWeb</a>
+        <div class="nav-links">
+            <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener"
+                class="nav-link" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
+            </a>
+            <a href="./customize.html" class="nav-link">Customize</a>
+            <a href="./faq.html" class="nav-link is-active">FAQ</a>
+            <a href="./audit.html" class="nav-link">Audit</a>
+            <a href="./get-widget.html" class="btn-primary">Get Widget</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1 class="hero-title">Accessibility FAQ</h1>
+        <p class="hero-subtitle">Quick answers about WCAG, overlays, implementation details, supported features, and how
+            to use this widget correctly.</p>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="faq-search-center" aria-label="FAQ search">
+                <input id="faq-search" class="faq-search-input" type="search"
+                    placeholder="Search WCAG, contrast, keyboard, overlay, language, text-to-speech"
+                    aria-label="Search FAQ">
+            </section>
+
+            <h2 class="section-header">Frequently Asked Questions</h2>
+            <div class="faq-list" id="faq-list">
+                <details class="faq-item">
+                    <summary class="faq-question">What does this widget actually do?</summary>
+                    <div class="faq-answer">
+                        <p>It gives your visitors a floating panel with controls for font sizing, contrast modes, a
+                            dyslexia-friendly font, text-to-speech, animation pausing, and more. Think of it as surfacing
+                            the kind of accessibility preferences browsers already support, just in a way that's easier to
+                            find and use.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Does this widget make my site WCAG compliant?</summary>
+                    <div class="faq-answer">
+                        <p>No. No widget can do that. Real compliance requires semantic HTML, proper ARIA attributes,
+                            keyboard navigation, meaningful alt text, and ongoing testing &mdash; all baked into your code.
+                            This widget is a complement to that work, not a substitute for it.</p>
+                        <p>We support the <a href="https://overlayfactsheet.com/" target="_blank"
+                                rel="noopener">Overlay Factsheet</a> and are upfront about what overlays can and can't
+                            do.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">How is this different from other accessibility overlays?</summary>
+                    <div class="faq-answer">
+                        <p>Most commercial overlays promise automated compliance. We don't. This is a free, open-source tool
+                            that gives visitors useful preference controls &mdash; nothing more, nothing less. There's no AI
+                            remediation, no legal compliance claims, and no tracking. Just a lightweight panel your visitors
+                            can use if they want to.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Is it really free?</summary>
+                    <div class="faq-answer">
+                        <p>Yes. It's MIT-licensed open-source software. There's no free tier with upsells, no paid version,
+                            and no premium features behind a paywall. You can use it, fork it, modify it, and redistribute
+                            it.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Does the widget collect any data or use cookies?</summary>
+                    <div class="faq-answer">
+                        <p>No. The widget runs entirely in the visitor's browser. It doesn't phone home, set tracking
+                            cookies, or collect any personal information. User preferences are stored locally in the browser
+                            using localStorage.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Will it slow down my website?</summary>
+                    <div class="faq-answer">
+                        <p>It shouldn't. The widget is a single lightweight script that loads alongside your page. It only
+                            activates its features when a visitor interacts with it.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">How do I install it?</summary>
+                    <div class="faq-answer">
+                        <p>Add one script tag to your HTML:</p>
+                        <div class="faq-code">
+                            <code>&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@latest/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
+                        </div>
+                        <p>No configuration required. For more control, you can pin a specific version or self-host the
+                            file.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">What platforms does it work with?</summary>
+                    <div class="faq-answer">
+                        <p>Anything that lets you add a script tag &mdash; WordPress, Shopify, Squarespace, Wix, static
+                            sites, custom-built apps, and so on. It runs on top of your existing page without modifying your
+                            underlying markup.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Can I customize the widget's position, size, or language?</summary>
+                    <div class="faq-answer">
+                        <p>Yes. You can set the position, offset, button size, language, and icon through simple HTML data
+                            attributes. Text-to-speech voice and speed are also configurable. See the <a
+                                href="https://github.com/ifrederico/accessible-web-widget#configuration" target="_blank"
+                                rel="noopener">Configuration</a> section for details.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">What languages are supported?</summary>
+                    <div class="faq-answer">
+                        <p>The widget interface is available in 10 languages. The language can be set via the
+                            <code>data-acc-lang</code> attribute.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Does the widget modify my website's code or design?</summary>
+                    <div class="faq-answer">
+                        <p>No. All changes are applied client-side in the visitor's browser and only affect their session.
+                            Nothing is altered in your source code, and other visitors see your site exactly as you designed
+                            it.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">Does the widget help me find actual accessibility issues in my code?</summary>
+                    <div class="faq-answer">
+                        <p>Yes. Add <code>?acc-dev=true</code> to any page URL to activate dev mode, which runs an inline
+                            accessibility audit powered by axe-core. It'll flag real issues in your markup &mdash; missing
+                            alt text, poor contrast ratios, ARIA problems, and more.</p>
+                        <p>This is meant for development, not production, but it's a good starting point for the work that
+                            actually matters.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">I found a bug. Where do I report it?</summary>
+                    <div class="faq-answer">
+                        <p>Open an <a href="https://github.com/ifrederico/accessible-web-widget/issues" target="_blank"
+                                rel="noopener">issue on GitHub</a>. Please include your browser and version, steps to
+                            reproduce, expected vs. actual behavior, and screenshots if possible.</p>
+                    </div>
+                </details>
+
+                <details class="faq-item">
+                    <summary class="faq-question">How can I contribute?</summary>
+                    <div class="faq-answer">
+                        <p>We welcome contributions. See <a
+                                href="https://github.com/ifrederico/accessible-web-widget/blob/main/CONTRIBUTING.md"
+                                target="_blank" rel="noopener">CONTRIBUTING.md</a> for setup instructions, testing info, and
+                            how to submit a pull request.</p>
+                    </div>
+                </details>
+            </div>
+            <p id="faq-empty-state" class="faq-empty-state" hidden>No matching questions found.</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-left">AccessibleWeb Widget &middot; MIT License</div>
+        <div class="footer-links">
+            <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path
+                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
+                <span>GitHub</span>
+            </a>
+            <a href="https://github.com/ifrederico/accessible-web-widget/blob/main/DISCLAIMER.md" target="_blank"
+                rel="noopener">Disclaimer</a>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            var input = document.getElementById('faq-search');
+            var empty = document.getElementById('faq-empty-state');
+            var items = Array.prototype.slice.call(document.querySelectorAll('#faq-list .faq-item'));
+
+            function normalize(value) {
+                return String(value || '').toLowerCase().replace(/\s+/g, ' ').trim();
+            }
+
+            function filterFaq() {
+                if (!input) return;
+                var query = normalize(input.value);
+                var terms = query ? query.split(' ') : [];
+                var visible = 0;
+
+                items.forEach(function (item) {
+                    var text = normalize(item.textContent);
+                    var match = terms.every(function (term) {
+                        return text.indexOf(term) !== -1;
+                    });
+                    item.hidden = !match;
+                    if (!match) {
+                        item.removeAttribute('open');
+                    } else {
+                        visible += 1;
+                    }
+                });
+
+                if (empty) {
+                    empty.hidden = visible !== 0;
+                }
+            }
+
+            if (input) {
+                input.addEventListener('input', filterFaq);
+                filterFaq();
+            }
+        })();
+    </script>
+    <div data-acc-position="bottom-right"></div>
+    <script src="../dist/accessible-web-widget.js"></script>
+</body>
+
+</html>

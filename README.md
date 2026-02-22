@@ -23,7 +23,7 @@ It initializes on page load. No config needed.
 To pin a specific version:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.2/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.3/dist/accessible-web-widget.min.js"></script>
 ```
 
 Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widget.min.js` and serve it yourself.
@@ -48,7 +48,6 @@ Everything below is optional. The widget works with zero config.
 <div data-acc-position="bottom-left"></div>
 <div data-acc-position="top-left"></div>
 <div data-acc-position="top-right"></div>
-<div data-acc-position="center-left"></div>
 
 <div data-acc-offset="24,24"></div>   <!-- x, y in pixels -->
 ```
@@ -58,6 +57,7 @@ Everything below is optional. The widget works with zero config.
 ```html
 <div data-acc-size="44"></div>        <!-- px, rem, or any CSS unit -->
 <div data-acc-lang="en"></div>
+<div data-acc-icon="default"></div>   <!-- default | icon-2 | icon-3 | icon-4 -->
 ```
 
 ### Text-to-speech voices

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit | AccessibleWeb</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body class="get-widget-page audit-page">
+    <nav class="navbar">
+        <a href="./index.html" class="logo">AccessibleWeb</a>
+        <div class="nav-links">
+            <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener"
+                class="nav-link" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
+            </a>
+            <a href="./customize.html" class="nav-link">Customize</a>
+            <a href="./faq.html" class="nav-link">FAQ</a>
+            <a href="./audit.html" class="nav-link is-active">Audit</a>
+            <a href="./get-widget.html" class="btn-primary">Get Widget</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1 class="hero-title">Audit in 4 simple steps</h1>
+        <p class="hero-subtitle">Use dev mode to run a page audit with axe-core and review real accessibility issues.</p>
+        <div class="audit-cta">
+            <button type="button" id="try-dev-mode" class="btn-secondary">Enable dev mode</button>
+        </div>
+        <small class="audit-cta-note">When dev mode is enabled, open the widget, scroll down, and you should see
+            Annotations and Accessibility Report.</small>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="get-widget-steps get-widget-steps-timeline" aria-label="Audit setup steps">
+                <div class="get-step">
+                    <div class="get-step-marker" aria-hidden="true">
+                        <span class="get-step-dot">1</span>
+                    </div>
+                    <article class="get-step-card">
+                        <p class="get-step-number">Step 1</p>
+                        <h2>Add the widget script</h2>
+                        <p>Paste this before the closing <code>&lt;/body&gt;</code> tag.</p>
+                        <div class="implementation-code">
+                            <code tabindex="0">&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.3/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
+                            <button aria-label="Copy script tag" class="copy-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="get-step">
+                    <div class="get-step-marker" aria-hidden="true">
+                        <span class="get-step-dot">2</span>
+                    </div>
+                    <article class="get-step-card">
+                        <p class="get-step-number">Step 2</p>
+                        <h2>Open your page with dev mode</h2>
+                        <p>Add <code>?acc-dev=true</code> to your page URL.</p>
+                        <div class="implementation-code">
+                            <code tabindex="0">https://yourdomain.com/page?acc-dev=true</code>
+                            <button aria-label="Copy dev mode URL example" class="copy-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <p>If your URL already has a <code>?</code>, append <code>&amp;acc-dev=true</code> instead.</p>
+                    </article>
+                </div>
+
+                <div class="get-step">
+                    <div class="get-step-marker" aria-hidden="true">
+                        <span class="get-step-dot">3</span>
+                    </div>
+                    <article class="get-step-card">
+                        <p class="get-step-number">Step 3</p>
+                        <h2>Run the report</h2>
+                        <p>Open the widget, then click <strong>Accessibility Report</strong> to scan the current page.</p>
+                    </article>
+                </div>
+
+                <div class="get-step">
+                    <div class="get-step-marker" aria-hidden="true">
+                        <span class="get-step-dot">4</span>
+                    </div>
+                    <article class="get-step-card">
+                        <p class="get-step-number">Step 4</p>
+                        <h2>Fix issues and disable dev mode</h2>
+                        <p>Use the findings to update your code, then remove <code>acc-dev=true</code> from the URL for normal browsing.</p>
+                        <p class="implementation-note get-step-hint">Important: dev mode is for testing only, not production use.</p>
+                    </article>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-left">AccessibleWeb Widget &middot; MIT License</div>
+        <div class="footer-links">
+            <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path
+                        d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                </svg>
+                <span>GitHub</span>
+            </a>
+            <a href="https://github.com/ifrederico/accessible-web-widget/blob/main/DISCLAIMER.md" target="_blank"
+                rel="noopener">Disclaimer</a>
+        </div>
+    </footer>
+
+    <script>
+        function copyTextToClipboard(text) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(text);
+            }
+
+            return new Promise(function (resolve, reject) {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.setAttribute('readonly', '');
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+
+                try {
+                    var copied = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    if (copied) {
+                        resolve();
+                    } else {
+                        reject(new Error('Copy command failed'));
+                    }
+                } catch (error) {
+                    document.body.removeChild(textarea);
+                    reject(error);
+                }
+            });
+        }
+
+        document.querySelectorAll('.copy-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var code = btn.closest('.implementation-code').querySelector('code');
+                var text = code.textContent;
+                copyTextToClipboard(text).then(function () {
+                    var svg = btn.querySelector('svg');
+                    var original = svg.innerHTML;
+                    svg.innerHTML = '<polyline points="20 6 9 17 4 12" />';
+                    btn.style.color = '#22c55e';
+                    setTimeout(function () {
+                        svg.innerHTML = original;
+                        btn.style.color = '';
+                    }, 1200);
+                }).catch(function () {
+                    btn.style.color = '#ef4444';
+                    setTimeout(function () {
+                        btn.style.color = '';
+                    }, 1200);
+                });
+            });
+        });
+
+        (function () {
+            var tryDevButton = document.getElementById('try-dev-mode');
+            if (!tryDevButton) return;
+
+            tryDevButton.addEventListener('click', function () {
+                var nextUrl = new URL(window.location.href);
+                var hasDevMode = nextUrl.searchParams.get('acc-dev') === 'true';
+                if (hasDevMode) {
+                    nextUrl.searchParams.delete('acc-dev');
+                } else {
+                    nextUrl.searchParams.set('acc-dev', 'true');
+                }
+                window.location.href = nextUrl.toString();
+            });
+
+            var currentUrl = new URL(window.location.href);
+            var hasDevMode = currentUrl.searchParams.get('acc-dev') === 'true';
+            tryDevButton.textContent = hasDevMode ? 'Disable dev mode' : 'Enable dev mode';
+            tryDevButton.setAttribute('aria-pressed', hasDevMode ? 'true' : 'false');
+
+            if (hasDevMode && !document.getElementById('acc-dev-demo-issue')) {
+                var devDemoIssue = document.createElement('img');
+                devDemoIssue.id = 'acc-dev-demo-issue';
+                devDemoIssue.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8"%3E%3Crect width="8" height="8" fill="%23ffffff"/%3E%3C/svg%3E';
+                devDemoIssue.width = 8;
+                devDemoIssue.height = 8;
+                devDemoIssue.style.position = 'fixed';
+                devDemoIssue.style.left = '8px';
+                devDemoIssue.style.top = '8px';
+                devDemoIssue.style.opacity = '0.01';
+                devDemoIssue.style.pointerEvents = 'none';
+                devDemoIssue.style.zIndex = '0';
+                document.body.appendChild(devDemoIssue);
+            }
+        })();
+    </script>
+    <div data-acc-position="bottom-right"></div>
+    <script src="../dist/accessible-web-widget.js"></script>
+</body>
+
+</html>
