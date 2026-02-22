@@ -23,7 +23,7 @@ It initializes on page load. No config needed.
 To pin a specific version:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.3/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.4/dist/accessible-web-widget.min.js"></script>
 ```
 
 Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widget.min.js` and serve it yourself.
