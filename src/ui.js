@@ -161,9 +161,14 @@ export const uiMethods = {
         menu.setAttribute('aria-modal', 'false');
       }
 
-      const langDetails = this.findElement('.acc-lang-details', targetContainer);
-      if (langDetails) {
-        langDetails.removeAttribute('open');
+      const langModal = this.findElement('#acc-lang-modal', targetContainer);
+      if (langModal) {
+        langModal.setAttribute('hidden', '');
+      }
+
+      const langToggle = this.findElement('.acc-footer-lang-toggle', targetContainer);
+      if (langToggle) {
+        langToggle.setAttribute('aria-expanded', 'false');
       }
 
       const langSearch = this.findElement('#acc-lang-search', targetContainer);
@@ -205,6 +210,7 @@ export const uiMethods = {
           continue;
         }
         const isMultiLevel = opt.multiLevel === true;
+        const mergedOptionClass = [optionClass, opt.optionClass].filter(Boolean).join(' ');
         let progressIndicator = '';
         if (isMultiLevel) {
           const featureData = this.multiLevelFeatures[opt.key];
@@ -218,7 +224,7 @@ export const uiMethods = {
           }
         }
         html += `<button 
-          class="acc-btn ${optionClass || ''} ${this.multiLevelFeatures[opt.key]?.currentIndex >= 0 ? 'acc-selected' : ''}" 
+          class="acc-btn ${mergedOptionClass} ${this.multiLevelFeatures[opt.key]?.currentIndex >= 0 ? 'acc-selected' : ''}" 
           type="button" 
           data-key="${opt.key}" 
           data-multi-level="${isMultiLevel}"
@@ -232,6 +238,34 @@ export const uiMethods = {
           </button>`;
       }
       return html;
+    },
+
+  renderTextScaleControl(scaleValue = 1) {
+      const percent = this.getTextScalePercent(scaleValue);
+      const min = Number(this.textScaleMinPercent) || 80;
+      const max = Number(this.textScaleMaxPercent) || 150;
+      const step = Number(this.textScaleStepPercent) || 5;
+      const progress = ((percent - min) / (max - min)) * 100;
+
+      return `
+        <div class="acc-text-scale-control" data-key="text-scale">
+          <div class="acc-text-scale-meta">
+            <span class="acc-text-scale-icon" aria-hidden="true">${this.widgetIcons.adjustFontSize}</span>
+            <span class="acc-label" data-acc-text="Font Size">Font Size</span>
+            <span class="acc-text-scale-percent">${percent}%</span>
+          </div>
+          <input
+            type="range"
+            class="acc-text-scale-range"
+            min="${min}"
+            max="${max}"
+            step="${step}"
+            value="${percent}"
+            data-acc-text="Font Size"
+            aria-label="Font Size"
+            style="--acc-text-scale-progress: ${Math.max(0, Math.min(100, progress))}%">
+        </div>
+      `;
     },
 
   getTranslatedText(el, defaultValue) {
@@ -262,59 +296,54 @@ export const uiMethods = {
         this.registerStaticStyles();
 
         const activeLanguageCode = String(lang || 'en').split(/[_-]/)[0].toLowerCase();
-        const activeLanguage = this.supportedLanguages.find(language => language.code === activeLanguageCode) || this.supportedLanguages[0];
-        const activeLanguageLabel = this.formatLanguageLabel(activeLanguage);
-        const activeLanguageFlag = this.getLanguageFlag(activeLanguage?.code);
 
         const menuTemplate = `
         <div class="acc-menu" role="dialog" aria-labelledby="accessibility-title">
           <div class="acc-menu-header">
-            <div id="accessibility-title" class="acc-menu-title acc-label">Accessibility Menu</div>
+            <div id="accessibility-title" class="acc-menu-title">
+              <span class="acc-menu-title-icon" aria-hidden="true">${this.widgetIcons.accessibility}</span>
+              <span class="acc-label">Accessibility</span>
+            </div>
             <div class="acc-header-actions">
-              <div role="button" class="acc-menu-close" title="Close" aria-label="Close accessibility menu" tabindex="0">
-                ${this.widgetIcons.close}
-              </div>
+              
             </div>
           </div>
           <div id="acc-menu-content" class="acc-menu-content">
-            <div class="acc-language-container">
-              <details class="acc-lang-details">
-                <summary class="acc-lang-summary" aria-label="Language" title="Language">
-                  <span class="acc-lang-summary-main">
-                    <span id="acc-current-language-flag" class="acc-lang-flag" aria-hidden="true">${activeLanguageFlag}</span>
-                    <span id="acc-current-language" class="acc-lang-current-label">${activeLanguageLabel}</span>
-                  </span>
-                  <span class="acc-lang-summary-arrow" aria-hidden="true"> </span>
-                </summary>
-                <div class="acc-lang-details-panel">
-                  <div class="acc-section-title">All Languages</div>
-                  <div class="acc-lang-search-wrapper">
-                    <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
-                  </div>
-                  <div class="acc-lang-list">
-                    ${this.supportedLanguages.map(language => {
-                      const languageLabel = this.formatLanguageLabel(language);
-                      const languageFlag = this.getLanguageFlag(language.code);
-                      return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
-                        <span class="acc-lang-item-main">
-                          <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
-                          <span class="acc-lang-item-label">${languageLabel}</span>
-                        </span>
-                        <span class="acc-icon-check" aria-hidden="true"> </span>
-                      </button>`;
-                    }).join('')}
-                  </div>
-                </div>
-              </details>
-            </div>
-            <div class="acc-options acc-options-all"> </div>
+            <div class="acc-options-all"> </div>
           </div>
           <div class="acc-footer">
             <button type="button" class="acc-footer-reset" title="Reset settings" aria-label="Reset settings">
               ${this.widgetIcons.reset}
               <span class="acc-label">Reset settings</span>
             </button>
-            <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>
+            <div class="acc-footer-meta">
+              <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>
+              <button type="button" class="acc-footer-lang-toggle" title="Language" aria-label="Language" aria-expanded="false" aria-controls="acc-lang-modal">
+                <span id="acc-current-language" class="acc-footer-lang-current">${String(activeLanguageCode || 'en').toUpperCase()}</span>
+                <span class="acc-footer-lang-arrow" aria-hidden="true"> </span>
+              </button>
+            </div>
+            <div id="acc-lang-modal" class="acc-lang-modal" hidden>
+              <div class="acc-lang-modal-header">
+                <div class="acc-section-title acc-label">All Languages</div>
+              </div>
+              <div class="acc-lang-search-wrapper">
+                <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
+              </div>
+              <div class="acc-lang-list">
+                ${this.supportedLanguages.map(language => {
+                  const languageLabel = this.formatLanguageLabel(language);
+                  const languageFlag = this.getLanguageFlag(language.code);
+                  return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
+                    <span class="acc-lang-item-main">
+                      <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
+                      <span class="acc-lang-item-label">${languageLabel}</span>
+                    </span>
+                    <span class="acc-icon-check" aria-hidden="true"> </span>
+                  </button>`;
+                }).join('')}
+              </div>
+            </div>
           </div>
         </div>
         <div class="acc-overlay"> </div>
@@ -350,62 +379,268 @@ export const uiMethods = {
           menu.style.top = `calc(${offsetY}px + ${buttonSize} + 16px)`;
         }
   
-        const pinnedTopToolKeys = ['text-to-speech', 'high-contrast-mode', 'simple-layout'];
-        const pinnedTopTools = [];
-        const remainingTools = [];
-        this.accessTools.forEach(tool => {
-          if (pinnedTopToolKeys.includes(tool.key)) {
-            pinnedTopTools.push(tool);
-          } else {
-            remainingTools.push(tool);
+        const config = this.loadConfig();
+
+        const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text']);
+        const colorKeys = new Set(['contrast-toggle', 'invert-colors', 'saturation-toggle', 'high-contrast-mode']);
+        const readingAidsKeys = new Set(['reading-aid', 'highlight-links', 'highlight-title', 'simple-layout']);
+
+        const sourceOptions = [
+          ...this.contentOptions.map(option => ({ ...option })),
+          ...this.colorOptions.map(option => ({ ...option, optionClass: 'acc-filter' })),
+          ...this.accessTools.map(option => ({ ...option, optionClass: 'acc-tools' }))
+        ];
+
+        const groupedOptions = {
+          speech: [],
+          text: [],
+          color: [],
+          reading: [],
+          interaction: []
+        };
+
+        const seenKeys = new Set();
+        sourceOptions.forEach(option => {
+          if (!option?.key || seenKeys.has(option.key)) return;
+          seenKeys.add(option.key);
+
+          if (option.key === 'text-to-speech') {
+            groupedOptions.speech.push(option);
+            return;
           }
+          if (textKeys.has(option.key)) {
+            groupedOptions.text.push(option);
+            return;
+          }
+          if (colorKeys.has(option.key)) {
+            groupedOptions.color.push(option);
+            return;
+          }
+          if (readingAidsKeys.has(option.key)) {
+            groupedOptions.reading.push(option);
+            return;
+          }
+          groupedOptions.interaction.push(option);
         });
 
-        const allOptions = [
-          this.renderOptions(pinnedTopTools, 'acc-tools'),
-          this.renderOptions(this.contentOptions),
-          this.renderOptions(this.colorOptions, 'acc-filter'),
-          this.renderOptions(remainingTools, 'acc-tools')
-        ].join('');
-        menu.querySelector(".acc-options-all").innerHTML = allOptions;
-        const langDetails = this.findElement(".acc-lang-details", menu);
+        const sectionConfig = [
+          { key: 'speech', label: 'Speech', containerClass: 'acc-tts-toggle-container', optionClass: 'acc-tts-toggle' },
+          { key: 'text', label: 'Text', containerClass: 'acc-options acc-options-text' },
+          { key: 'color', label: 'Color & Contrast', containerClass: 'acc-options' },
+          { key: 'reading', label: 'Reading Aids', containerClass: 'acc-options' },
+          { key: 'interaction', label: 'Interaction', containerClass: 'acc-options' }
+        ];
+
+        const sectionMarkup = sectionConfig.map(section => {
+          let sectionOptions = groupedOptions[section.key];
+          let specialContent = '';
+
+          if (section.key === 'text') {
+            const textScaleOption = sectionOptions.find(option => option.key === 'text-scale');
+            sectionOptions = sectionOptions.filter(option => option.key !== 'text-scale');
+            const textOrder = ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'];
+            sectionOptions.sort((a, b) => {
+              const indexA = textOrder.indexOf(a.key);
+              const indexB = textOrder.indexOf(b.key);
+              const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
+              const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
+              return rankA - rankB;
+            });
+            if (textScaleOption) {
+              specialContent = this.renderTextScaleControl(config.states?.['text-scale'] || 1);
+            }
+
+            const firstThinRowKeys = new Set(['line-spacing', 'letter-spacing']);
+            const secondThinRowKeys = new Set(['bold-text', 'readable-text']);
+            const firstThinRowOptions = sectionOptions.filter(option => firstThinRowKeys.has(option.key));
+            const secondThinRowOptions = sectionOptions.filter(option => secondThinRowKeys.has(option.key));
+            const remainingTextOptions = sectionOptions.filter(option => (
+              !firstThinRowKeys.has(option.key) && !secondThinRowKeys.has(option.key)
+            ));
+            const firstThinRowHtml = firstThinRowOptions.length
+              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstThinRowOptions, 'acc-text-inline')}</div>`
+              : '';
+            const secondThinRowHtml = secondThinRowOptions.length
+              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondThinRowOptions, 'acc-text-inline')}</div>`
+              : '';
+            const remainingTextHtml = remainingTextOptions.length
+              ? `<div class="${section.containerClass}">${this.renderOptions(remainingTextOptions, section.optionClass || '')}</div>`
+              : '';
+
+            if (!specialContent && !firstThinRowHtml && !secondThinRowHtml && !remainingTextHtml) return '';
+
+            return `
+              <section class="acc-option-category acc-option-category-${section.key}">
+                <div class="acc-section-title acc-label">${section.label}</div>
+                ${specialContent}
+                ${firstThinRowHtml}
+                ${secondThinRowHtml}
+                ${remainingTextHtml}
+              </section>
+            `;
+          }
+
+          if (section.key === 'color') {
+            const colorOrder = ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'];
+            sectionOptions.sort((a, b) => {
+              const indexA = colorOrder.indexOf(a.key);
+              const indexB = colorOrder.indexOf(b.key);
+              const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
+              const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
+              return rankA - rankB;
+            });
+
+            const firstThinRowKeys = new Set(['contrast-toggle', 'saturation-toggle']);
+            const secondThinRowKeys = new Set(['invert-colors', 'high-contrast-mode']);
+            const firstThinRowOptions = sectionOptions.filter(option => firstThinRowKeys.has(option.key));
+            const secondThinRowOptions = sectionOptions.filter(option => secondThinRowKeys.has(option.key));
+            const remainingColorOptions = sectionOptions.filter(option => (
+              !firstThinRowKeys.has(option.key) && !secondThinRowKeys.has(option.key)
+            ));
+
+            const firstThinRowHtml = firstThinRowOptions.length
+              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstThinRowOptions, 'acc-text-inline')}</div>`
+              : '';
+            const secondThinRowHtml = secondThinRowOptions.length
+              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondThinRowOptions, 'acc-text-inline')}</div>`
+              : '';
+            const remainingColorHtml = remainingColorOptions.length
+              ? `<div class="${section.containerClass}">${this.renderOptions(remainingColorOptions, section.optionClass || '')}</div>`
+              : '';
+
+            if (!firstThinRowHtml && !secondThinRowHtml && !remainingColorHtml) return '';
+
+            return `
+              <section class="acc-option-category acc-option-category-${section.key}">
+                <div class="acc-section-title acc-label">${section.label}</div>
+                ${firstThinRowHtml}
+                ${secondThinRowHtml}
+                ${remainingColorHtml}
+              </section>
+            `;
+          }
+
+          if (section.key === 'reading') {
+            const readingOrder = ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout'];
+            sectionOptions.sort((a, b) => {
+              const indexA = readingOrder.indexOf(a.key);
+              const indexB = readingOrder.indexOf(b.key);
+              const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
+              const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
+              return rankA - rankB;
+            });
+
+            const firstThinRowKeys = new Set(['highlight-links', 'highlight-title']);
+            const secondThinRowKeys = new Set(['reading-aid', 'simple-layout']);
+            const firstThinRowOptions = sectionOptions.filter(option => firstThinRowKeys.has(option.key));
+            const secondThinRowOptions = sectionOptions.filter(option => secondThinRowKeys.has(option.key));
+            const remainingReadingOptions = sectionOptions.filter(option => (
+              !firstThinRowKeys.has(option.key) && !secondThinRowKeys.has(option.key)
+            ));
+
+            const firstThinRowHtml = firstThinRowOptions.length
+              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstThinRowOptions, 'acc-text-inline')}</div>`
+              : '';
+            const secondThinRowHtml = secondThinRowOptions.length
+              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondThinRowOptions, 'acc-text-inline')}</div>`
+              : '';
+            const remainingReadingHtml = remainingReadingOptions.length
+              ? `<div class="${section.containerClass}">${this.renderOptions(remainingReadingOptions, section.optionClass || '')}</div>`
+              : '';
+
+            if (!firstThinRowHtml && !secondThinRowHtml && !remainingReadingHtml) return '';
+
+            return `
+              <section class="acc-option-category acc-option-category-${section.key}">
+                <div class="acc-section-title acc-label">${section.label}</div>
+                ${firstThinRowHtml}
+                ${secondThinRowHtml}
+                ${remainingReadingHtml}
+              </section>
+            `;
+          }
+
+          const sectionOptionsHtml = sectionOptions.length
+            ? this.renderOptions(sectionOptions, section.optionClass || '')
+            : '';
+
+          if (!specialContent && !sectionOptionsHtml.trim()) return '';
+
+          const optionsContainer = sectionOptionsHtml.trim()
+            ? `<div class="${section.containerClass}">${sectionOptionsHtml}</div>`
+            : '';
+
+          return `
+            <section class="acc-option-category acc-option-category-${section.key}">
+              <div class="acc-section-title acc-label">${section.label}</div>
+              ${specialContent}
+              ${optionsContainer}
+            </section>
+          `;
+        }).join('');
+
+        menu.querySelector(".acc-options-all").innerHTML = sectionMarkup;
+        const langModal = this.findElement("#acc-lang-modal", menu);
+        const langToggle = this.findElement(".acc-footer-lang-toggle", menu);
         const langSearch = this.findElement("#acc-lang-search", menu);
         const langItems = menu.querySelectorAll(".acc-lang-item");
-        if (langDetails) {
-          langDetails.addEventListener('toggle', () => {
-            if (langDetails.open) {
-              if (langSearch) {
-                langSearch.focus();
-              }
-              return;
+
+        const closeLanguageModal = () => {
+          if (langModal) {
+            langModal.setAttribute('hidden', '');
+          }
+          if (langToggle) {
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
+          if (langSearch) {
+            langSearch.value = '';
+          }
+          langItems.forEach(item => {
+            item.style.display = '';
+          });
+        };
+
+        const openLanguageModal = () => {
+          if (langModal) {
+            langModal.removeAttribute('hidden');
+          }
+          if (langToggle) {
+            langToggle.setAttribute('aria-expanded', 'true');
+          }
+          if (langSearch) {
+            langSearch.focus();
+          }
+        };
+
+        if (langToggle && langModal) {
+          langToggle.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const isOpen = !langModal.hasAttribute('hidden');
+            if (isOpen) {
+              closeLanguageModal();
+            } else {
+              openLanguageModal();
             }
-            if (langSearch) {
-              langSearch.value = '';
-            }
-            langItems.forEach(item => {
-              item.style.display = '';
-            });
           });
         }
   
         // Handle language search
-        langSearch.addEventListener("input", () => {
-          const searchValue = langSearch.value.toLowerCase();
-          langItems.forEach(item => {
-            const labelElement = item.querySelector('.acc-lang-item-label');
-            const text = (labelElement?.textContent || item.textContent).toLowerCase();
-            item.style.display = text.includes(searchValue) ? '' : 'none';
+        if (langSearch) {
+          langSearch.addEventListener("input", () => {
+            const searchValue = langSearch.value.toLowerCase();
+            langItems.forEach(item => {
+              const labelElement = item.querySelector('.acc-lang-item-label');
+              const text = (labelElement?.textContent || item.textContent).toLowerCase();
+              item.style.display = text.includes(searchValue) ? '' : 'none';
+            });
           });
-        });
+        }
   
         // Handle language selection
         langItems.forEach(item => {
           item.addEventListener("click", () => {
             const langCode = item.getAttribute("data-lang");
             if (!langCode) return;
-            const selectedLanguage = this.supportedLanguages.find(language => language.code === langCode);
-            const langLabel = this.formatLanguageLabel(selectedLanguage);
-            const langFlag = this.getLanguageFlag(langCode);
             
             // Update selected language
             langItems.forEach(i => i.classList.remove("selected"));
@@ -414,28 +649,42 @@ export const uiMethods = {
             // Update current language display
             const currentLang = this.findElement("#acc-current-language", menu);
             if (currentLang) {
-              currentLang.textContent = langLabel;
+              currentLang.textContent = String(langCode).toUpperCase();
             }
-            const currentLangFlag = this.findElement("#acc-current-language-flag", menu);
-            if (currentLangFlag) {
-              currentLangFlag.textContent = langFlag;
-            }
-            
-            if (langDetails) {
-              langDetails.open = false;
-            }
+            closeLanguageModal();
             
             // Save language preference and update UI
             this.saveConfig({ lang: langCode });
             this.translateMenuUI(menuContainer);
           });
         });
+
+        const textScaleRange = this.findElement('.acc-text-scale-range', menu);
+        if (textScaleRange) {
+          textScaleRange.addEventListener('input', () => {
+            const multiplier = this.setTextScaleFromPercent(textScaleRange.value, { persist: false });
+            this.syncTextScaleControlUI(menu, multiplier);
+          });
+          textScaleRange.addEventListener('change', () => {
+            const multiplier = this.setTextScaleFromPercent(textScaleRange.value, { persist: true });
+            this.syncTextScaleControlUI(menu, multiplier);
+          });
+          this.syncTextScaleControlUI(menu, config.states?.['text-scale'] || 1);
+        }
   
         // click event handler:
         menu.addEventListener('click', (e) => {
+          if (langModal && !langModal.hasAttribute('hidden')) {
+            const clickedInsideLanguageModal = Boolean(e.target.closest('.acc-lang-modal'));
+            const clickedLanguageToggle = Boolean(e.target.closest('.acc-footer-lang-toggle'));
+            if (!clickedInsideLanguageModal && !clickedLanguageToggle) {
+              closeLanguageModal();
+            }
+          }
+
           const target = e.target.closest('[role="button"], button, .acc-overlay');
           if (!target) return;
-          if (target.classList.contains('acc-overlay') || target.classList.contains('acc-menu-close')) {
+          if (target.classList.contains('acc-overlay')) {
             this.closeMenu(menuContainer);
             return;
           }
@@ -486,7 +735,6 @@ export const uiMethods = {
           });
         });
         this.translateMenuUI(menuContainer);
-        const config = this.loadConfig();
         const activeColorFilter = this.getActiveColorFilterKey(config.states);
         this.setColorFilterUI(menu, activeColorFilter);
         this.updateColorFilterState(activeColorFilter);
@@ -501,12 +749,6 @@ export const uiMethods = {
               if (btn) {
                 btn.classList.add("acc-selected");
                 btn.setAttribute('aria-pressed', 'true');
-              }
-            } else if (key === "text-scale") {
-              const scaleBtn = this.findElement(`.acc-btn[data-key="text-scale"]`, menu);
-              if (scaleBtn && this.textScaleIndex > 0) {
-                scaleBtn.classList.add("acc-selected");
-                scaleBtn.setAttribute('aria-pressed', 'true');
               }
             }
           }

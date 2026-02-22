@@ -14,10 +14,10 @@ export const featureMethods = {
 
   getContrastToggleDisplay(index) {
       if (index === 0) {
-        return { key: 'light-contrast', label: 'Light Contrast', icon: this.widgetIcons.lightContrast };
+        return { key: 'light-contrast', label: 'Light', icon: this.widgetIcons.lightContrast };
       }
       if (index === 1) {
-        return { key: 'dark-contrast', label: 'Dark Contrast', icon: this.widgetIcons.darkContrast };
+        return { key: 'dark-contrast', label: 'Dark', icon: this.widgetIcons.darkContrast };
       }
       return { key: null, label: 'Contrast', icon: this.widgetIcons.contrast };
     },
@@ -45,10 +45,10 @@ export const featureMethods = {
 
   getSaturationToggleDisplay(index) {
       if (index === 0) {
-        return { key: 'low-saturation', label: 'Low Saturation', icon: this.widgetIcons.lowSaturation };
+        return { key: 'low-saturation', label: 'Low', icon: this.widgetIcons.lowSaturation };
       }
       if (index === 1) {
-        return { key: 'high-saturation', label: 'High Saturation', icon: this.widgetIcons.highSaturation };
+        return { key: 'high-saturation', label: 'High', icon: this.widgetIcons.highSaturation };
       }
       return { key: null, label: 'Saturation', icon: this.widgetIcons.saturation };
     },
@@ -213,6 +213,82 @@ export const featureMethods = {
       } catch (e) {
         console.warn('Error scaling text:', e);
       }
+    },
+
+  clampTextScalePercent(percent) {
+      const min = Number(this.textScaleMinPercent) || 80;
+      const max = Number(this.textScaleMaxPercent) || 150;
+      const step = Number(this.textScaleStepPercent) || 5;
+      const numeric = Number(percent);
+      if (!Number.isFinite(numeric)) return 100;
+      const snapped = Math.round((numeric - min) / step) * step + min;
+      return Math.min(max, Math.max(min, snapped));
+    },
+
+  getTextScalePercent(scaleValue = 1) {
+      if (scaleValue === false || scaleValue === null || typeof scaleValue === 'undefined') {
+        return this.clampTextScalePercent(100);
+      }
+      const numeric = Number(scaleValue);
+      if (!Number.isFinite(numeric)) {
+        return this.clampTextScalePercent(100);
+      }
+      if (numeric <= 0) {
+        return this.clampTextScalePercent(100);
+      }
+      const percent = numeric > 10 ? numeric : numeric * 100;
+      return this.clampTextScalePercent(percent);
+    },
+
+  syncTextScaleControlUI(menu, scaleValue = 1) {
+      if (!menu || !menu.querySelector) return;
+      const range = menu.querySelector('.acc-text-scale-range');
+      const label = menu.querySelector('.acc-text-scale-percent');
+      const percent = this.getTextScalePercent(scaleValue);
+      if (range) {
+        const min = Number(this.textScaleMinPercent) || 80;
+        const max = Number(this.textScaleMaxPercent) || 150;
+        const progress = ((percent - min) / (max - min)) * 100;
+        range.value = String(percent);
+        range.style.setProperty('--acc-text-scale-progress', `${Math.max(0, Math.min(100, progress))}%`);
+      }
+      if (label) {
+        label.textContent = `${percent}%`;
+      }
+    },
+
+  setTextScaleFromPercent(percent, options = {}) {
+      const shouldPersist = options.persist !== false;
+      const clampedPercent = this.clampTextScalePercent(percent);
+      const multiplier = Number((clampedPercent / 100).toFixed(2));
+      const exactIndex = this.textScaleValues.indexOf(multiplier);
+
+      if (this.multiLevelFeatures['text-scale']) {
+        this.multiLevelFeatures['text-scale'].currentIndex = exactIndex;
+      }
+
+      if (exactIndex > -1) {
+        this.textScaleIndex = exactIndex;
+      } else {
+        let nearestIndex = 0;
+        let minDistance = Infinity;
+        this.textScaleValues.forEach((value, index) => {
+          const distance = Math.abs(value - multiplier);
+          if (distance < minDistance) {
+            minDistance = distance;
+            nearestIndex = index;
+          }
+        });
+        this.textScaleIndex = nearestIndex;
+      }
+
+      this.scaleText(multiplier);
+
+      if (shouldPersist) {
+        this.updateState({ 'text-scale': multiplier });
+      }
+
+      return multiplier;
     },
 
   enableBoldText(enable = false) {
@@ -2104,19 +2180,18 @@ export const featureMethods = {
   applyEnhancements() {
       const { states } = this.loadConfig();
       // Handle font size scaling
-      if (states && states['text-scale']) {
-        const scaleValue = states['text-scale'];
-        const scaleIndex = this.textScaleValues.indexOf(scaleValue);
-        if (scaleIndex > -1) {
-          this.textScaleIndex = scaleIndex;
-          this.multiLevelFeatures['text-scale'].currentIndex = scaleIndex;
-          this.scaleText(scaleValue);
-        }
+      const hasTextScaleState = !!(states && Object.prototype.hasOwnProperty.call(states, 'text-scale'));
+      if (hasTextScaleState) {
+        const storedScale = states['text-scale'] === false ? 1 : states['text-scale'];
+        const appliedScale = this.setTextScaleFromPercent(storedScale, { persist: false });
+        this.syncTextScaleControlUI(document.querySelector('.acc-menu'), appliedScale);
       } else {
         this.textScaleIndex = 0;
         if (this.multiLevelFeatures['text-scale']) {
           this.multiLevelFeatures['text-scale'].currentIndex = -1;
         }
+        this.scaleText(1);
+        this.syncTextScaleControlUI(document.querySelector('.acc-menu'), 1);
       }
       // Apply other enhancements
       this.concealImages(states && states['hide-images']);
@@ -2330,7 +2405,7 @@ export const featureMethods = {
       }
       const multiply = enable ? this.textScaleValues[this.textScaleIndex] : 1;
       this.scaleText(multiply);
-      this.updateState({ 'text-scale': multiply > 1 ? multiply : false });
+      this.updateState({ 'text-scale': multiply });
       return this.textScaleIndex;
     },
 
@@ -2352,7 +2427,7 @@ export const featureMethods = {
         feature.currentIndex = -1;
         button.classList.remove('acc-selected');
         button.setAttribute('aria-pressed', 'false');
-        this.updateState({ [featureKey]: false });
+        this.updateState({ [featureKey]: featureKey === 'text-scale' ? 1 : false });
         if (featureKey === 'text-scale') {
           this.textScaleIndex = 0;
         }
@@ -2401,6 +2476,7 @@ export const featureMethods = {
       const menu = document.querySelector('.acc-menu');
       if (menu) {
         this.setColorFilterUI(menu, null);
+        this.syncTextScaleControlUI(menu, 1);
       }
       
       // Remove focus from active element to fix the persistent focus ring bug

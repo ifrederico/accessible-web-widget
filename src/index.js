@@ -127,6 +127,9 @@ class AccessibleWebWidget {
     // Font size cycling
     this.textScaleIndex = 0;
     this.textScaleValues = [1.2, 1.4, 1.6];
+    this.textScaleMinPercent = 80;
+    this.textScaleMaxPercent = 150;
+    this.textScaleStepPercent = 5;
     this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation'];
 
