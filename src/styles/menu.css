@@ -865,8 +865,8 @@
 .acc-footer-lang-arrow {
   width: 8px;
   height: 8px;
-  border-right: 2px solid var(--acc-text-color);
-  border-bottom: 2px solid var(--acc-text-color);
+  border-right: 1.5px solid var(--acc-text-color);
+  border-bottom: 1.5px solid var(--acc-text-color);
   transform: rotate(45deg) translateY(-1px);
   transition: transform 0.2s ease;
 }

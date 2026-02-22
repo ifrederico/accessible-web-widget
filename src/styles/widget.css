@@ -33,9 +33,17 @@
     overflow: visible;
   }
   
-  .acc-toggle-btn svg {
+  .acc-toggle-btn .acc-toggle-icon {
     width: 60%;
     height: 60%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .acc-toggle-btn .acc-toggle-icon svg {
+    width: 100%;
+    height: 100%;
     fill: white;
     transition: none;
   }
@@ -65,7 +73,7 @@
     box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 6px 14px rgba(0, 0, 0, 0.24) !important;
   }
 
-  .acc-toggle-btn[aria-expanded="true"] svg {
+  .acc-toggle-btn[aria-expanded="true"] .acc-toggle-icon svg {
     opacity: 0;
   }
 
@@ -103,18 +111,18 @@
   }
 
   .acc-violation-bubble[data-severity="critical"] {
-    background: #fbc02c;
-    color: #222;
+    background: #d32f2f;
+    color: #fff;
   }
 
   .acc-violation-bubble[data-severity="serious"] {
-    background: #ffab32;
-    color: #222;
+    background: #f57c00;
+    color: #fff;
   }
 
   .acc-violation-bubble[data-severity="moderate"] {
-    background: #fbc02c;
-    color: #000;
+    background: #fbc02d;
+    color: #333;
   }
 
   .acc-violation-bubble[hidden] {
@@ -145,9 +153,10 @@
       transition: none;
     }
 
-    .acc-toggle-btn svg,
+    .acc-toggle-btn .acc-toggle-icon svg,
     .acc-toggle-btn::before,
     .acc-toggle-btn::after {
       transition: none;
     }
+
   }

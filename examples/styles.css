@@ -5,7 +5,7 @@
         :root {
             --color-text: #0f172a;
             --color-text-secondary: #334155;
-            --color-text-muted: #64748b;
+            --color-text-muted: #475569;
             --color-bg: #f8fafc;
             --color-surface: #f1f5f9;
             --color-border: #dbe4ef;
@@ -116,7 +116,9 @@
         }
 
         .btn-secondary:hover {
-            background: #f8fafc;
+            background: #fff;
+            border-color: var(--color-accent);
+            color: var(--color-text);
         }
 
         .hero {
@@ -547,7 +549,7 @@
         :root {
             --color-text: #0f172a;
             --color-text-secondary: #334155;
-            --color-text-muted: #64748b;
+            --color-text-muted: #475569;
             --color-bg: #f8fafc;
             --color-surface: #f1f5f9;
             --color-border: #e2e8f0;
@@ -634,6 +636,10 @@
             text-align: center;
             max-width: calc(900px + var(--page-gutter) * 2);
             margin: 0 auto;
+        }
+
+        .home-page .hero {
+            padding-bottom: 0;
         }
 
         .hero-badge {
@@ -1029,6 +1035,21 @@
             margin-top: 8px;
             font-size: 14px;
             color: var(--color-text-muted);
+        }
+
+        .audit-cta {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .audit-cta-note {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: 13px;
+            line-height: 1.5;
         }
 
         /* --- FAQ --- */

@@ -775,7 +775,7 @@ export const uiMethods = {
       const widgetTemplate = `
         <div class="acc-widget">
           <a href="#" id="accessibilityWidget" class="acc-toggle-btn" title="Open Accessibility Menu" role="button" aria-label="Open accessibility menu" aria-expanded="false">
-            ${this.getWidgetIconMarkup(options?.icon)}
+            <span class="acc-toggle-icon" aria-hidden="true">${this.getWidgetIconMarkup(options?.icon)}</span>
             <span class="acc-violation-bubble" data-severity="warning" hidden> </span>
           </a>
         </div>
@@ -855,6 +855,20 @@ export const uiMethods = {
         this.runBackgroundAxeScan().catch(() => {
           this.updateViolationBubble({ violations: [] });
         });
+        if (this.isDevMode()) {
+          const rerunDevScan = () => {
+            this.runBackgroundAxeScan({ force: true }).catch(() => {
+              this.updateViolationBubble(this.axeScanResults || { violations: [] });
+            });
+          };
+          if (document.readyState === 'complete') {
+            setTimeout(rerunDevScan, 250);
+          } else {
+            window.addEventListener('load', () => {
+              setTimeout(rerunDevScan, 150);
+            }, { once: true });
+          }
+        }
         
         // Add a click handler to the document to blur the toggle button when clicking outside
         document.addEventListener('click', (e) => {

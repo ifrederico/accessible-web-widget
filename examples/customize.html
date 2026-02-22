@@ -22,6 +22,7 @@
             </a>
             <a href="./customize.html" class="nav-link is-active">Customize</a>
             <a href="./faq.html" class="nav-link">FAQ</a>
+            <a href="./audit.html" class="nav-link">Audit</a>
             <a href="./get-widget.html" class="btn-primary">Get Widget</a>
         </div>
     </nav>
@@ -166,7 +167,13 @@
         <section class="panel export-section" aria-labelledby="export-heading">
             <div class="export-header">
                 <h2 id="export-heading">Export Code</h2>
-                <button type="button" class="btn-secondary" id="copy-export">Copy Code</button>
+                <button type="button" class="copy-btn" id="copy-export" aria-label="Copy code">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
             </div>
             <p class="export-note">Paste this snippet into your site before <code>&lt;/body&gt;</code>.</p>
             <pre class="export-code"><code id="export-code"></code></pre>
@@ -509,11 +516,6 @@
                     '<script>',
                     '  window.AccessibleWebWidgetOptions = {',
                     '    primaryColor: ' + quoteJs(themeOptions.primaryColor) + ',',
-                    '    primaryColorLight: ' + quoteJs(themeOptions.primaryColorLight) + ',',
-                    '    primaryColorDark: ' + quoteJs(themeOptions.primaryColorDark) + ',',
-                    '    focusRingColor: ' + quoteJs(themeOptions.focusRingColor) + ',',
-                    '    hoverColor: ' + quoteJs(themeOptions.hoverColor) + ',',
-                    '    activeColor: ' + quoteJs(themeOptions.activeColor) + ',',
                     '    ttsNativeVoiceName: ' + quoteJs(config.ttsNativeVoiceName) + ',',
                     '    ttsRate: ' + formatDecimal(config.ttsRate) + ',',
                     '    ttsPitch: ' + formatDecimal(config.ttsPitch) + ',',
@@ -632,6 +634,23 @@
                 }
 
                 btn.style.setProperty('--acc-button-size', config.size + 'px');
+
+                var menu = frameWindow.document.querySelector('.acc-menu');
+                if (menu) {
+                    var isRightAligned = config.position === 'bottom-right' || config.position === 'top-right';
+                    menu.style.right = isRightAligned ? 'var(--acc-menu-inline-gap, 12px)' : 'auto';
+                    menu.style.left = isRightAligned ? 'auto' : 'var(--acc-menu-inline-gap, 12px)';
+
+                    var menuOffset = config.offsetY + config.size + 16;
+                    menu.style.top = 'auto';
+                    menu.style.bottom = 'auto';
+
+                    if (config.position === 'bottom-right' || config.position === 'bottom-left') {
+                        menu.style.bottom = 'calc(' + menuOffset + 'px)';
+                    } else {
+                        menu.style.top = 'calc(' + menuOffset + 'px)';
+                    }
+                }
                 return true;
             }
 
@@ -667,13 +686,18 @@
                 copyStatus.textContent = '';
             }
 
-            function handleControlUpdate(fieldName) {
+            function handleControlUpdate(fieldName, eventType) {
                 var config = getConfig();
                 updateRangeValues(config);
                 exportCode.textContent = buildExportSnippet(config);
                 copyStatus.textContent = '';
 
                 if (layoutFieldNames[fieldName]) {
+                    var shouldRebuildLayout = fieldName === 'position' || eventType === 'change';
+                    if (shouldRebuildLayout) {
+                        applyPreviewFromConfig(config);
+                        return;
+                    }
                     if (!applyLayoutToPreview(config)) {
                         applyPreviewFromConfig(config);
                     }
@@ -681,9 +705,7 @@
                 }
 
                 if (fieldName === 'accentColor') {
-                    if (!applyColorToPreview(config)) {
-                        applyPreviewFromConfig(config);
-                    }
+                    applyPreviewFromConfig(config);
                     return;
                 }
 
@@ -727,12 +749,12 @@
 
             form.addEventListener('input', function (event) {
                 var fieldName = event.target && event.target.name ? event.target.name : '';
-                handleControlUpdate(fieldName);
+                handleControlUpdate(fieldName, 'input');
             });
 
             form.addEventListener('change', function (event) {
                 var fieldName = event.target && event.target.name ? event.target.name : '';
-                handleControlUpdate(fieldName);
+                handleControlUpdate(fieldName, 'change');
             });
 
             resetButton.addEventListener('click', function () {
@@ -742,12 +764,22 @@
 
             copyButton.addEventListener('click', function () {
                 var text = exportCode.textContent;
+                var icon = copyButton.querySelector('svg');
                 if (!navigator.clipboard || !navigator.clipboard.writeText) {
                     copyStatus.textContent = 'Clipboard unavailable in this browser.';
                     return;
                 }
                 navigator.clipboard.writeText(text).then(function () {
                     copyStatus.textContent = 'Code copied.';
+                    if (icon) {
+                        var original = icon.innerHTML;
+                        icon.innerHTML = '<polyline points="20 6 9 17 4 12" />';
+                        copyButton.style.color = '#22c55e';
+                        setTimeout(function () {
+                            icon.innerHTML = original;
+                            copyButton.style.color = '';
+                        }, 1200);
+                    }
                 }).catch(function () {
                     copyStatus.textContent = 'Could not copy. Select and copy manually.';
                 });

@@ -292,11 +292,39 @@ export const featureMethods = {
     },
 
   enableBoldText(enable = false) {
+      const contentSelector = [
+        '*',
+        ':not(.material-icons)',
+        ':not(.material-icons-outlined)',
+        ':not(.material-icons-round)',
+        ':not(.material-symbols-outlined)',
+        ':not(.material-symbols-rounded)',
+        ':not(.fa)',
+        ':not(.fas)',
+        ':not(.far)',
+        ':not(.fab)',
+        ':not(.fa-solid)',
+        ':not(.fa-regular)',
+        ':not(.fa-brands)',
+        ':not(.glyphicon)',
+        ':not(.icon)',
+        ':not(.icons)',
+        ':not([class*="icon-"])',
+        ':not([data-icon])'
+      ].join('');
       const config = {
         id: "bold-text",
-        selector: "html",
-        childrenSelector: ['', '*:not(.material-icons,.acc-menu,.acc-menu *, .acc-widget, .acc-widget *)'],
-        styles: { 'font-weight': '700' }
+        selector: "body",
+        childrenSelector: [contentSelector],
+        styles: { 'font-weight': '700' },
+        css: `
+          .acc-container, .acc-container *, .acc-menu, .acc-menu * {
+            font-weight: inherit !important;
+          }
+          input::placeholder, textarea::placeholder {
+            font-weight: 700 !important;
+          }
+        `
       };
       this.applyToolStyle({ ...config, enable });
     },
@@ -386,11 +414,8 @@ export const featureMethods = {
       if (shouldEnable) {
         this.ensureReadableFontLoaded();
       }
-      // Exclude widget elements and common icon classes
-      const iconExclusions = [
-        ':not(.acc-widget)',
-        ':not(.acc-menu)',
-        ':not(.acc-container)',
+      const contentSelector = [
+        '*',
         ':not(.material-icons)',
         ':not(.material-icons-outlined)',
         ':not(.material-icons-round)',
@@ -409,40 +434,21 @@ export const featureMethods = {
         ':not([class*="icon-"])',
         ':not([data-icon])'
       ].join('');
-      const exclusionSuffix = iconExclusions;
-      const readableSelectors = [
-        `h1${exclusionSuffix}`,
-        `h2${exclusionSuffix}`,
-        `h3${exclusionSuffix}`,
-        `h4${exclusionSuffix}`,
-        `h5${exclusionSuffix}`,
-        `h6${exclusionSuffix}`,
-        `.wsite-headline${exclusionSuffix}`,
-        `.wsite-content-title${exclusionSuffix}`,
-        `p${exclusionSuffix}`,
-        `a${exclusionSuffix}`,
-        `span${exclusionSuffix}`,
-        `li${exclusionSuffix}`,
-        `ol${exclusionSuffix}`,
-        `dl${exclusionSuffix}`,
-        `dt${exclusionSuffix}`,
-        `th${exclusionSuffix}`,
-        `td${exclusionSuffix}`,
-        `blockquote${exclusionSuffix}`,
-        `label${exclusionSuffix}`,
-        `button:not(.acc-btn)${exclusionSuffix}`,
-        `.acc-text${exclusionSuffix}`
-      ];
       const config = {
         id: "readable-text",
         selector: "body",
-        childrenSelector: readableSelectors,
+        childrenSelector: [contentSelector],
         styles: { 
           'font-family': '"OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif' 
         },
-        css: `.acc-container, .acc-container *, .acc-menu, .acc-menu * {
-          font-family: inherit !important;
-        }`
+        css: `
+          .acc-container, .acc-container *, .acc-menu, .acc-menu * {
+            font-family: inherit !important;
+          }
+          input::placeholder, textarea::placeholder {
+            font-family: "OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif !important;
+          }
+        `
       };
       this.applyToolStyle({ ...config, enable: shouldEnable });
     },
