@@ -47,6 +47,46 @@ test('state persists after reload (bold text toggle)', async ({ page }) => {
   await expect(page.locator('.acc-btn[data-key="bold-text"]')).toHaveClass(/acc-selected/);
 });
 
+test('text scale applies below 100% and persists exact percent', async ({ page }) => {
+  const textTarget = page.locator('.hero-subtitle');
+  const textScaleRange = page.locator('.acc-text-scale-range');
+  const textScaleLabel = page.locator('.acc-text-scale-percent');
+
+  const readFontSize = async () => textTarget.evaluate((element) => parseFloat(window.getComputedStyle(element).fontSize));
+  const setTextScalePercent = async (percent) => {
+    await textScaleRange.evaluate((input, value) => {
+      input.value = String(value);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }, percent);
+  };
+
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const baseSize = await readFontSize();
+  expect(baseSize).toBeGreaterThan(0);
+
+  await setTextScalePercent(80);
+  await expect(textScaleLabel).toHaveText('80%');
+  const reducedSize = await readFontSize();
+  expect(reducedSize).toBeLessThan(baseSize);
+
+  await page.reload();
+  await page.locator('.acc-toggle-btn').click();
+  await expect(textScaleLabel).toHaveText('80%');
+  const reducedAfterReload = await readFontSize();
+  expect(reducedAfterReload).toBeLessThan(baseSize);
+
+  await setTextScalePercent(100);
+  await expect(textScaleLabel).toHaveText('100%');
+  const resetSize = await readFontSize();
+  expect(Math.abs(resetSize - baseSize)).toBeLessThan(0.2);
+
+  await page.reload();
+  await page.locator('.acc-toggle-btn').click();
+  await expect(textScaleLabel).toHaveText('100%');
+});
+
 test('dev mode exposes accessibility report tool only when enabled', async ({ page }) => {
   await page.goto('index.html?acc-dev=true');
   await page.locator('.acc-toggle-btn').click();

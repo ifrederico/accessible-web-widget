@@ -208,7 +208,7 @@ export const featureMethods = {
   ensureTextScaleObserver() {
       if (this.textScaleObserver || !document.body) return;
       this.textScaleObserver = new MutationObserver((mutations) => {
-        if (this.currentTextScaleMultiplier <= 1) {
+        if (Math.abs(this.currentTextScaleMultiplier - 1) < 0.001) {
           return;
         }
         const pending = new Set();
@@ -236,12 +236,15 @@ export const featureMethods = {
 
   scaleText(multiply = 1) {
       try {
-        this.currentTextScaleMultiplier = multiply;
-        if (multiply > 1) {
+        const numericMultiply = Number(multiply);
+        const resolvedMultiply = Number.isFinite(numericMultiply) && numericMultiply > 0 ? numericMultiply : 1;
+        const isDefaultScale = Math.abs(resolvedMultiply - 1) < 0.001;
+        this.currentTextScaleMultiplier = resolvedMultiply;
+        if (!isDefaultScale) {
           this.ensureTextScaleObserver();
           const elements = document.querySelectorAll(this.textScaleSelectors);
-          elements.forEach(el => this.applyScaleToElement(el, multiply));
-          this.collectDirectTextParents(document.body).forEach(el => this.applyScaleToElement(el, multiply));
+          elements.forEach(el => this.applyScaleToElement(el, resolvedMultiply));
+          this.collectDirectTextParents(document.body).forEach(el => this.applyScaleToElement(el, resolvedMultiply));
         } else {
           this.disconnectTextScaleObserver();
           const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
@@ -300,7 +303,7 @@ export const featureMethods = {
 
   setTextScaleFromPercent(percent, options = {}) {
       const shouldPersist = options.persist !== false;
-      const clampedPercent = this.clampTextScalePercent(percent);
+      const clampedPercent = this.getTextScalePercent(percent);
       const multiplier = Number((clampedPercent / 100).toFixed(2));
       const exactIndex = this.textScaleValues.indexOf(multiplier);
 
