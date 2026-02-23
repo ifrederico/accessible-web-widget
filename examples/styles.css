@@ -1371,6 +1371,7 @@ body.nav-open {
     display: none;
     width: 44px;
     height: 44px;
+    position: relative;
     border: none;
     border-radius: 0;
     background: transparent;
@@ -1390,6 +1391,30 @@ body.nav-open {
     height: 2px;
     border-radius: 999px;
     background: currentColor;
+}
+
+.nav-toggle[aria-expanded="true"] span {
+    display: none;
+}
+
+.nav-toggle[aria-expanded="true"]::before,
+.nav-toggle[aria-expanded="true"]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+.nav-toggle[aria-expanded="true"]::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"]::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 @media (max-width: 640px) {
@@ -1455,10 +1480,4 @@ body.nav-open {
         opacity: 0.7;
     }
 
-    .navbar .nav-toggle[aria-expanded="true"] {
-        position: fixed;
-        top: 26px;
-        right: var(--page-gutter);
-        z-index: 80;
-    }
 }
