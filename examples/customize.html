@@ -177,6 +177,28 @@
             <pre class="export-code"><code id="export-code"></code></pre>
             <div class="status" id="copy-status" aria-live="polite"></div>
         </section>
+
+        <section class="panel export-section" aria-labelledby="self-host-heading">
+            <div class="export-header">
+                <h2 id="self-host-heading">Self Host</h2>
+            </div>
+            <p class="export-note">Download your customized widget file, upload it to your website, then add this script
+                tag before <code>&lt;/body&gt;</code>.</p>
+            <div class="form-actions self-host-download-actions">
+                <button type="button" class="btn-secondary" id="download-custom-widget">Download customized widget</button>
+            </div>
+            <div class="implementation-code">
+                <code id="self-host-script" tabindex="0">&lt;script src="./accessible-web-widget.custom.min.js"&gt;&lt;/script&gt;</code>
+                <button type="button" class="copy-btn" id="copy-self-host" aria-label="Copy self host script">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="status" id="self-host-status" aria-live="polite"></div>
+        </section>
     </main>
 
     <footer class="footer">
@@ -223,11 +245,17 @@
             var previewFrame = document.getElementById('widget-preview');
             var exportCode = document.getElementById('export-code');
             var copyButton = document.getElementById('copy-export');
+            var copySelfHostButton = document.getElementById('copy-self-host');
+            var selfHostScript = document.getElementById('self-host-script');
+            var downloadCustomButton = document.getElementById('download-custom-widget');
             var copyStatus = document.getElementById('copy-status');
+            var selfHostStatus = document.getElementById('self-host-status');
             var resetButton = document.getElementById('reset-defaults');
             var testVoiceButton = document.getElementById('test-voice');
             var voiceStatus = document.getElementById('voice-status');
             var localBundleUrl = new URL('../dist/accessible-web-widget.js', window.location.href).href;
+            var localBundleMinUrl = new URL('../dist/accessible-web-widget.min.js', window.location.href).href;
+            var customBundleSourceCache = '';
             var availableVoices = [];
             var isVoiceSamplePlaying = false;
             var activeVoiceUtterance = null;
@@ -526,6 +554,72 @@
                 ].join('\n');
             }
 
+            function buildCustomBundleBootstrap(config) {
+                var themeOptions = buildThemeOptions(config.accentColor);
+                return [
+                    '(function () {',
+                    '  var optionDefaults = {',
+                    '    primaryColor: ' + quoteJs(themeOptions.primaryColor) + ',',
+                    '    ttsNativeVoiceName: ' + quoteJs(config.ttsNativeVoiceName) + ',',
+                    '    ttsRate: ' + formatDecimal(config.ttsRate) + ',',
+                    '    ttsPitch: ' + formatDecimal(config.ttsPitch),
+                    '  };',
+                    '  window.AccessibleWebWidgetOptions = Object.assign({}, optionDefaults, window.AccessibleWebWidgetOptions || {});',
+                    '',
+                    '  function ensureDataOption(name, value) {',
+                    '    var node = document.querySelector("div[" + name + "]");',
+                    '    if (!node) {',
+                    '      node = document.createElement("div");',
+                    '      (document.body || document.documentElement).appendChild(node);',
+                    '    }',
+                    '    node.setAttribute(name, value);',
+                    '  }',
+                    '',
+                    '  ensureDataOption("data-acc-position", ' + quoteJs(config.position) + ');',
+                    '  ensureDataOption("data-acc-offset", ' + quoteJs(config.offsetX + ',' + config.offsetY) + ');',
+                    '  ensureDataOption("data-acc-size", ' + quoteJs(String(config.size)) + ');',
+                    '  ensureDataOption("data-acc-icon", ' + quoteJs(config.icon) + ');',
+                    '})();'
+                ].join('\n');
+            }
+
+            function getCustomBundleSource() {
+                if (customBundleSourceCache) {
+                    return Promise.resolve(customBundleSourceCache);
+                }
+                return fetch(localBundleMinUrl).then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Bundle request failed');
+                    }
+                    return response.text();
+                }).then(function (source) {
+                    customBundleSourceCache = source;
+                    return source;
+                });
+            }
+
+            function downloadTextFile(filename, content) {
+                var blob = new Blob([content], { type: 'application/javascript' });
+                var blobUrl = URL.createObjectURL(blob);
+                var link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                setTimeout(function () {
+                    URL.revokeObjectURL(blobUrl);
+                }, 0);
+            }
+
+            function setSelfHostStatus(message) {
+                if (selfHostStatus) {
+                    selfHostStatus.textContent = message;
+                    return;
+                }
+                copyStatus.textContent = message;
+            }
+
             function buildPreviewDocument(config) {
                 var themeOptions = buildThemeOptions(config.accentColor);
                 return '<!DOCTYPE html>\n' +
@@ -684,6 +778,7 @@
                 exportCode.textContent = buildExportSnippet(config);
                 applyPreviewFromConfig(config);
                 copyStatus.textContent = '';
+                setSelfHostStatus('');
             }
 
             function handleControlUpdate(fieldName, eventType) {
@@ -691,6 +786,7 @@
                 updateRangeValues(config);
                 exportCode.textContent = buildExportSnippet(config);
                 copyStatus.textContent = '';
+                setSelfHostStatus('');
 
                 if (layoutFieldNames[fieldName]) {
                     var shouldRebuildLayout = fieldName === 'position' || eventType === 'change';
@@ -784,6 +880,48 @@
                     copyStatus.textContent = 'Could not copy. Select and copy manually.';
                 });
             });
+
+            if (copySelfHostButton && selfHostScript) {
+                copySelfHostButton.addEventListener('click', function () {
+                    var text = selfHostScript.textContent;
+                    var icon = copySelfHostButton.querySelector('svg');
+                    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+                        setSelfHostStatus('Clipboard unavailable in this browser.');
+                        return;
+                    }
+                    navigator.clipboard.writeText(text).then(function () {
+                        setSelfHostStatus('Script copied.');
+                        if (icon) {
+                            var original = icon.innerHTML;
+                            icon.innerHTML = '<polyline points="20 6 9 17 4 12" />';
+                            copySelfHostButton.style.color = '#22c55e';
+                            setTimeout(function () {
+                                icon.innerHTML = original;
+                                copySelfHostButton.style.color = '';
+                            }, 1200);
+                        }
+                    }).catch(function () {
+                        setSelfHostStatus('Could not copy. Select and copy manually.');
+                    });
+                });
+            }
+
+            if (downloadCustomButton) {
+                downloadCustomButton.addEventListener('click', function () {
+                    var config = getConfig();
+                    downloadCustomButton.disabled = true;
+                    setSelfHostStatus('Preparing customized widget download...');
+                    getCustomBundleSource().then(function (bundleSource) {
+                        var bundle = buildCustomBundleBootstrap(config) + '\n\n' + bundleSource;
+                        downloadTextFile('accessible-web-widget.custom.min.js', bundle);
+                        setSelfHostStatus('Customized widget downloaded.');
+                        downloadCustomButton.disabled = false;
+                    }).catch(function () {
+                        setSelfHostStatus('Could not prepare download. Try again.');
+                        downloadCustomButton.disabled = false;
+                    });
+                });
+            }
 
             loadAvailableVoices(false);
             updateVoiceButtonState();

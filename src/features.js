@@ -141,6 +141,45 @@ export const featureMethods = {
       return element.closest('.acc-menu, .acc-container, .acc-widget');
     },
 
+  collectDirectTextParents(rootElement = document.body) {
+      const directTextParents = new Set();
+      if (typeof document === 'undefined' || typeof NodeFilter === 'undefined') {
+        return directTextParents;
+      }
+
+      const root = rootElement instanceof Element ? rootElement : document.body;
+      if (!root) return directTextParents;
+
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: (node) => {
+          if (!node || !node.textContent || !node.textContent.trim()) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          const parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          if (this.shouldSkipScaling(parent)) return NodeFilter.FILTER_REJECT;
+          if (parent.closest('script,style,noscript,textarea,pre,code,svg')) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (parent.matches(this.textScaleSelectors)) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      let currentNode = walker.nextNode();
+      while (currentNode) {
+        const parent = currentNode.parentElement;
+        if (parent) {
+          directTextParents.add(parent);
+        }
+        currentNode = walker.nextNode();
+      }
+
+      return directTextParents;
+    },
+
   applyScaleToElement(element, multiplier) {
       if (
         !element ||
@@ -180,6 +219,7 @@ export const featureMethods = {
               pending.add(node);
             }
             node.querySelectorAll?.(this.textScaleSelectors).forEach(el => pending.add(el));
+            this.collectDirectTextParents(node).forEach(el => pending.add(el));
           });
         });
         if (!pending.size) return;
@@ -201,6 +241,7 @@ export const featureMethods = {
           this.ensureTextScaleObserver();
           const elements = document.querySelectorAll(this.textScaleSelectors);
           elements.forEach(el => this.applyScaleToElement(el, multiply));
+          this.collectDirectTextParents(document.body).forEach(el => this.applyScaleToElement(el, multiply));
         } else {
           this.disconnectTextScaleObserver();
           const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
