@@ -12,6 +12,7 @@ export const uiMethods = {
   getLanguageCountryLabel(languageCode) {
       const countryByLanguage = {
         en: 'USA',
+        pt: 'Brazil',
         it: 'Italy',
         fr: 'France',
         de: 'Germany',
@@ -28,6 +29,7 @@ export const uiMethods = {
   getLanguageFlag(languageCode) {
       const countryCodeByLanguage = {
         en: 'US',
+        pt: 'BR',
         it: 'IT',
         fr: 'FR',
         de: 'DE',
