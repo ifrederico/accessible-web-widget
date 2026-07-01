@@ -226,18 +226,7 @@ class AccessibleWebWidget {
 
     this.applyThemeOverrides(this.options);
 
-    const normalizeTtsRate = (value) => {
-      const numeric = Number(value);
-      if (!Number.isFinite(numeric)) return 1;
-      return Math.min(2, Math.max(0.5, numeric));
-    };
-
-    const normalizeTtsPitch = (value) => {
-      const numeric = Number(value);
-      if (!Number.isFinite(numeric)) return 1;
-      return Math.min(2, Math.max(0, numeric));
-    };
-
+    // Raw values; getNativeTtsRate()/getNativeTtsPitch() clamp on read.
     this.nativeTtsConfig = {
       preferredVoiceName: (
         typeof options.ttsNativeVoiceName === 'string' &&
@@ -247,8 +236,8 @@ class AccessibleWebWidget {
         typeof options.ttsNativeVoiceLang === 'string' &&
         options.ttsNativeVoiceLang.trim()
       ) ? options.ttsNativeVoiceLang.trim() : '',
-      rate: normalizeTtsRate(options.ttsRate),
-      pitch: normalizeTtsPitch(options.ttsPitch)
+      rate: options.ttsRate,
+      pitch: options.ttsPitch
     };
 
     if (this.options.offset) {

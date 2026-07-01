@@ -17,11 +17,11 @@ export const stateMethods = {
   fetchCookie(name) {
       const cookieName = name + "=";
       try {
-        const decodedCookie = decodeURIComponent(document.cookie);
-        return decodedCookie.split(';')
+        const match = document.cookie.split(';')
           .map(c => c.trim())
-          .find(c => c.startsWith(cookieName))
-          ?.substring(cookieName.length) || "{}";
+          .find(c => c.startsWith(cookieName));
+        if (!match) return "{}";
+        return decodeURIComponent(match.substring(cookieName.length)) || "{}";
       } catch (e) {
         console.warn('Error reading cookie:', e);
         return "{}";
@@ -34,7 +34,7 @@ export const stateMethods = {
         d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
         const expires = "expires=" + d.toUTCString();
         const isSecure = window.location.protocol === 'https:';
-        document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Strict" + (isSecure ? ";Secure" : "");
+        document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Strict" + (isSecure ? ";Secure" : "");
       } catch (e) {
         console.warn('Error setting cookie:', e);
       }
@@ -42,20 +42,8 @@ export const stateMethods = {
 
   getSavedLanguage() {
       try {
-        // Try localStorage first
-        if (this.storageAvailable()) {
-          const stored = localStorage.getItem(this.cookieKey);
-          if (stored) {
-            const config = JSON.parse(stored);
-            if (config.lang) return config.lang;
-          }
-        }
-        // Fallback to cookie
-        const cookieVal = this.fetchCookie(this.cookieKey);
-        if (cookieVal && cookieVal !== "") {
-          const config = JSON.parse(cookieVal);
-          if (config.lang) return config.lang;
-        }
+        const config = JSON.parse(this.fetchSavedConfig());
+        if (config.lang) return config.lang;
       } catch {
         // Ignore parsing errors
       }

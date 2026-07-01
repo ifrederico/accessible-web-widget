@@ -75,6 +75,18 @@ TTS uses native browser voices. When enabled, visitors click any text block to h
 </script>
 ```
 
+### Dyslexia font source
+
+The "Dyslexia Font" feature loads OpenDyslexic from a CDN by default. To self-host the font, point the widget at your own copy:
+
+```html
+<script>
+  window.AccessibleWebWidgetOptions = {
+    dyslexiaFontUrl: "/fonts/OpenDyslexic3-Regular.woff"  // absolute or relative URL
+  };
+</script>
+```
+
 ### Dev tools
 
 Add `?acc-dev=true` to any page URL to get inline annotation markers and a full accessibility report powered by axe-core. Useful for development, not meant for production.

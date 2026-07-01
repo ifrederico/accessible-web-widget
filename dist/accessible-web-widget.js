@@ -804,11 +804,11 @@ var AccessibleWebWidget = (function () {
       fetchCookie(name) {
           const cookieName = name + "=";
           try {
-            const decodedCookie = decodeURIComponent(document.cookie);
-            return decodedCookie.split(';')
+            const match = document.cookie.split(';')
               .map(c => c.trim())
-              .find(c => c.startsWith(cookieName))
-              ?.substring(cookieName.length) || "{}";
+              .find(c => c.startsWith(cookieName));
+            if (!match) return "{}";
+            return decodeURIComponent(match.substring(cookieName.length)) || "{}";
           } catch (e) {
             console.warn('Error reading cookie:', e);
             return "{}";
@@ -821,7 +821,7 @@ var AccessibleWebWidget = (function () {
             d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
             const expires = "expires=" + d.toUTCString();
             const isSecure = window.location.protocol === 'https:';
-            document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Strict" + (isSecure ? ";Secure" : "");
+            document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Strict" + (isSecure ? ";Secure" : "");
           } catch (e) {
             console.warn('Error setting cookie:', e);
           }
@@ -829,20 +829,8 @@ var AccessibleWebWidget = (function () {
 
       getSavedLanguage() {
           try {
-            // Try localStorage first
-            if (this.storageAvailable()) {
-              const stored = localStorage.getItem(this.cookieKey);
-              if (stored) {
-                const config = JSON.parse(stored);
-                if (config.lang) return config.lang;
-              }
-            }
-            // Fallback to cookie
-            const cookieVal = this.fetchCookie(this.cookieKey);
-            if (cookieVal && cookieVal !== "") {
-              const config = JSON.parse(cookieVal);
-              if (config.lang) return config.lang;
-            }
+            const config = JSON.parse(this.fetchSavedConfig());
+            if (config.lang) return config.lang;
           } catch {
             // Ignore parsing errors
           }
@@ -1120,17 +1108,17 @@ var AccessibleWebWidget = (function () {
 
     };
 
-    var menuCSS = "/* Base styles */\r\n.acc-menu {\r\n  position: fixed;\r\n  left: var(--acc-menu-inline-gap, 12px);\r\n  top: var(--acc-menu-block-gap, 12px);\r\n  bottom: var(--acc-menu-block-gap, 12px);\r\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);\r\n  opacity: 1;\r\n  transition: 0.3s;\r\n  z-index: var(--acc-widget-z-index, 100000);\r\n  overflow: hidden;\r\n  background: var(--acc-bg-color);\r\n  width: min(430px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));\r\n  line-height: 1.5;\r\n  font-size: 16px;\r\n  height: auto;\r\n  letter-spacing: 0.015em;\r\n  color: var(--acc-text-color);\r\n  --acc-content-inline-padding: 14px;\r\n  --acc-menu-inline-gap: clamp(8px, 2.3vw, 18px);\r\n  --acc-menu-block-gap: clamp(10px, 2.2vh, 20px);\r\n  border-radius: 16px;\r\n  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n/* Ensure all elements inherit proper colors for accessibility */\r\n.acc-menu * {\r\n  color: var(--acc-text-color);\r\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\r\n  padding: 0;\r\n  margin: 0;\r\n  line-height: 1.5 !important;\r\n  letter-spacing: normal !important;\r\n}\r\n\r\n/* Header section */\r\n.acc-menu-header {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  padding: 0 var(--acc-content-inline-padding);\r\n  height: var(--acc-header-height);\r\n  font-weight: 700 !important;\r\n  background-color: var(--acc-primary-color) !important;\r\n}\r\n\r\n.acc-menu-title {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 10px;\r\n  font-size: 18px !important;\r\n  color: var(--acc-text-color-inverted) !important;\r\n  font-weight: bold;\r\n}\r\n\r\n.acc-menu-title .acc-label {\r\n  color: var(--acc-text-color-inverted) !important;\r\n}\r\n\r\n.acc-menu-title-icon {\r\n  width: 30px;\r\n  height: 30px;\r\n  border-radius: 8px;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  flex-shrink: 0;\r\n}\r\n\r\n.acc-menu-title-icon svg {\r\n  fill: var(--acc-text-color-inverted) !important;\r\n  width: 18px !important;\r\n  height: 18px !important;\r\n  min-width: 18px !important;\r\n  min-height: 18px !important;\r\n  max-width: 18px !important;\r\n  max-height: 18px !important;\r\n}\r\n\r\n.acc-header-back {\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n.acc-back-btn {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 8px;\r\n  background: transparent;\r\n  border: none;\r\n  padding: 8px;\r\n  cursor: pointer;\r\n  font-size: 16px;\r\n  font-weight: 600;\r\n  color: var(--acc-text-color-inverted) !important;\r\n  transition: background-color 0.2s ease;\r\n  border-radius: 4px;\r\n  visibility: hidden;\r\n}\r\n\r\n.acc-back-btn > span {\r\n  color: var(--acc-text-color-inverted) !important;\r\n}\r\n\r\n.acc-back-btn.visible {\r\n  visibility: visible;\r\n}\r\n\r\n.acc-back-btn:hover {\r\n  background-color: rgba(255, 255, 255, 0.18);\r\n}\r\n\r\n.acc-back-btn:focus {\r\n  outline: 2px solid var(--acc-text-color-inverted);\r\n  outline-offset: 1px;\r\n}\r\n\r\n.acc-back-btn svg {\r\n  fill: var(--acc-text-color-inverted) !important;\r\n  width: 24px !important;\r\n  height: 24px !important;\r\n}\r\n\r\n.acc-menu-title-dynamic {\r\n  display: none !important;\r\n}\r\n\r\n.acc-menu-title-dynamic.visible {\r\n  display: block !important;\r\n}\r\n\r\n.acc-menu-title-default {\r\n  display: block !important;\r\n}\r\n\r\n.acc-menu-title-default.hidden {\r\n  display: none !important;\r\n}\r\n\r\n.acc-menu-header svg {\r\n  fill: var(--acc-text-color-inverted) !important;\r\n  width: 28px !important;\r\n  height: 28px !important;\r\n  min-width: 28px !important;\r\n  min-height: 28px !important;\r\n  max-width: 28px !important;\r\n  max-height: 28px !important;\r\n}\r\n\r\n.acc-menu-header > div {\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n/* Interactive elements */\r\n.acc-menu-header div[role=\"button\"] {\r\n  cursor: pointer;\r\n  padding: 8px;\r\n  border-radius: 50%;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  width: 36px;\r\n  height: 36px;\r\n  transition: background-color 0.2s ease;\r\n}\r\n\r\n.acc-menu-header div[role=\"button\"]:hover {\r\n  background-color: rgba(255, 255, 255, 0.18);\r\n}\r\n\r\n.acc-menu-header div[role=\"button\"]:focus {\r\n  outline: 2px solid var(--acc-text-color-inverted);\r\n  outline-offset: 1px;\r\n}\r\n\r\n.acc-menu-header .acc-header-actions {\r\n  display: flex;\r\n  align-items: center;\r\n}\r\n\r\n.acc-language-container {\r\n  margin: 0 var(--acc-content-inline-padding) 24px;\r\n}\r\n\r\n.acc-lang-details {\r\n  border: 1px solid rgba(0, 0, 0, 0.1);\r\n  border-radius: var(--acc-button-border-radius);\r\n  background: var(--acc-card-bg);\r\n}\r\n\r\n.acc-lang-summary {\r\n  list-style: none;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  gap: 12px;\r\n  padding: 12px 14px;\r\n  cursor: pointer;\r\n  border-radius: var(--acc-button-border-radius);\r\n}\r\n\r\n.acc-lang-summary::-webkit-details-marker {\r\n  display: none;\r\n}\r\n\r\n.acc-lang-summary::marker {\r\n  content: '';\r\n}\r\n\r\n.acc-lang-summary-main {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 10px;\r\n  min-width: 0;\r\n}\r\n\r\n.acc-lang-current-label {\r\n  font-size: 16px !important;\r\n  font-weight: 600 !important;\r\n}\r\n\r\n.acc-lang-summary:hover {\r\n  background-color: rgba(25, 118, 210, 0.06);\r\n}\r\n\r\n.acc-lang-summary:focus {\r\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\r\n  outline-offset: var(--acc-focus-outline-offset);\r\n}\r\n\r\n.acc-lang-summary-arrow {\r\n  width: 10px;\r\n  height: 10px;\r\n  border-right: 2px solid var(--acc-text-color);\r\n  border-bottom: 2px solid var(--acc-text-color);\r\n  transform: rotate(-45deg);\r\n  transition: transform 0.2s ease;\r\n}\r\n\r\n.acc-lang-details[open] .acc-lang-summary-arrow {\r\n  transform: rotate(45deg);\r\n}\r\n\r\n.acc-lang-details[open] .acc-lang-summary {\r\n  border-bottom: 1px solid var(--acc-border-color);\r\n  border-bottom-left-radius: 0;\r\n  border-bottom-right-radius: 0;\r\n}\r\n\r\n.acc-lang-details-panel {\r\n  padding: 12px 0 8px;\r\n}\r\n\r\n.acc-lang-details-panel .acc-section-title {\r\n  font-size: 16px !important;\r\n  padding: 0 16px 10px;\r\n}\r\n\r\n.acc-lang-flag {\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  min-width: 22px;\r\n  font-size: 18px !important;\r\n  line-height: 1;\r\n}\r\n\r\n.acc-lang-search-wrapper {\r\n  padding: 0 16px 8px;\r\n}\r\n\r\n.acc-lang-search {\r\n  width: 100%;\r\n  padding: 10px 16px;\r\n  border: 1.5px solid var(--acc-border-color);\r\n  border-radius: var(--acc-button-border-radius);\r\n  font-size: 16px;\r\n  background-color: var(--acc-card-bg);\r\n  transition: border-color 0.2s ease;\r\n}\r\n\r\n.acc-lang-search:focus {\r\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\r\n  outline-offset: var(--acc-focus-outline-offset);\r\n  border-color: var(--acc-primary-color) !important;\r\n}\r\n\r\n.acc-lang-list {\r\n  padding: 6px 8px 12px;\r\n  max-height: 280px;\r\n  overflow-y: auto;\r\n}\r\n\r\n.acc-lang-item {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  gap: 8px;\r\n  width: 100%;\r\n  text-align: left;\r\n  padding: 11px 10px;\r\n  margin-bottom: 4px;\r\n  background-color: transparent;\r\n  border: none;\r\n  border-radius: var(--acc-button-border-radius);\r\n  cursor: pointer;\r\n  font-size: 16px;\r\n  color: var(--acc-text-color);\r\n  transition: background-color 0.12s ease;\r\n}\r\n\r\n.acc-lang-item:hover {\r\n  background-color: rgba(25, 118, 210, 0.06);\r\n}\r\n\r\n.acc-lang-item:focus {\r\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\r\n  outline-offset: var(--acc-focus-outline-offset);\r\n}\r\n\r\n.acc-lang-item.selected {\r\n  background-color: rgba(25, 118, 210, 0.08);\r\n  font-weight: 600;\r\n}\r\n\r\n.acc-lang-item-main {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 10px;\r\n  min-width: 0;\r\n}\r\n\r\n.acc-lang-item-label {\r\n  font-size: 16px !important;\r\n  line-height: 1.4 !important;\r\n}\r\n\r\n.acc-icon-check {\r\n  display: inline-block;\r\n  width: 18px;\r\n  height: 18px;\r\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23886f60' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\");\r\n  background-repeat: no-repeat;\r\n  background-position: center;\r\n  opacity: 0;\r\n  transition: opacity 0.15s ease;\r\n}\r\n\r\n.acc-lang-item.selected .acc-icon-check {\r\n  opacity: 1;\r\n}\r\n\r\n.acc-menu .acc-lang-select {\r\n  width: 100% !important;\r\n  padding: 0 16px !important;\r\n  font-size: 16px !important;\r\n  font-family: inherit !important;\r\n  font-weight: 600 !important;\r\n  border-radius: var(--acc-button-border-radius) !important;\r\n  background: var(--acc-card-bg) !important;\r\n  border: 1.5px solid var(--acc-border-color) !important;\r\n  min-height: 48px !important;\r\n  max-height: 48px !important;\r\n  height: 48px !important;\r\n  color: var(--acc-text-color) !important;\r\n  -webkit-appearance: none !important;\r\n  -moz-appearance: none !important;\r\n  appearance: none !important;\r\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0%20-960%20960%20960' width='24px' fill='%231f1f1f'%3E%3Cpath d='M480-344%20240-584l56-56%20184 184%20184-184%2056 56-240 240Z'/%3E%3C/svg%3E\") !important;\r\n  background-repeat: no-repeat !important;\r\n  background-position: right 12px center !important;\r\n  background-size: 20px !important;\r\n  padding-right: 44px !important;\r\n}\r\n\r\n/* Hide default arrows in Firefox and IE */\r\n.acc-menu .acc-lang-select::-ms-expand {\r\n  display: none !important;\r\n}\r\n\r\n.acc-menu .acc-lang-select:focus {\r\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\r\n  outline-offset: var(--acc-focus-outline-offset);\r\n  border-color: var(--acc-primary-color) !important;\r\n}\r\n\r\n/* Option grid layout */\r\n.acc-options-all {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 16px;\r\n  padding: 0 var(--acc-content-inline-padding) 12px;\r\n}\r\n\r\n.acc-option-category {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 10px;\r\n}\r\n\r\n.acc-option-category-interaction {\r\n  padding-bottom: 12px;\r\n}\r\n\r\n.acc-option-category .acc-section-title {\r\n  font-size: 14px !important;\r\n  font-weight: 700 !important;\r\n  letter-spacing: 0.01em !important;\r\n  text-transform: none;\r\n  color: #6b7280 !important;\r\n  padding: 0 2px;\r\n}\r\n\r\n.acc-options {\r\n  display: grid;\r\n  grid-template-columns: repeat(3, minmax(0, 1fr));\r\n  gap: 12px;\r\n  margin: 0;\r\n}\r\n\r\n.acc-options-text {\r\n  grid-template-columns: repeat(3, minmax(0, 1fr));\r\n}\r\n\r\n.acc-options-text-inline {\r\n  grid-template-columns: repeat(2, minmax(0, 1fr));\r\n}\r\n\r\n.acc-btn.acc-text-inline {\r\n  min-height: 54px;\r\n  aspect-ratio: auto;\r\n  flex-direction: row;\r\n  align-items: center;\r\n  justify-content: flex-start;\r\n  text-align: left;\r\n  gap: 10px;\r\n  padding: 12px 14px;\r\n}\r\n\r\n.acc-btn.acc-text-inline .acc-label {\r\n  font-size: 14px !important;\r\n  flex: 1 1 auto;\r\n  min-width: 0;\r\n}\r\n\r\n.acc-btn.acc-text-inline .acc-progress-indicator {\r\n  margin-top: 0;\r\n  margin-left: auto;\r\n  justify-content: flex-end;\r\n  min-width: 24px;\r\n}\r\n\r\n@media only screen and (max-width: 430px) {\r\n  .acc-options-text-inline {\r\n    grid-template-columns: repeat(2, minmax(0, 1fr));\r\n  }\r\n\r\n  .acc-btn.acc-text-inline {\r\n    min-height: auto;\r\n    aspect-ratio: 11 / 8;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    justify-content: center;\r\n    text-align: center;\r\n    gap: 6px;\r\n    padding: 10px;\r\n  }\r\n\r\n  .acc-btn.acc-text-inline .acc-label {\r\n    font-size: 13px !important;\r\n    flex: 0 1 auto;\r\n  }\r\n\r\n  .acc-btn.acc-text-inline .acc-progress-indicator {\r\n    margin-top: 8px;\r\n    margin-left: 0;\r\n    justify-content: center;\r\n  }\r\n}\r\n\r\n.acc-tts-toggle-container {\r\n  margin: 0;\r\n}\r\n\r\n.acc-text-scale-control {\r\n  width: 100%;\r\n  background: var(--acc-card-bg) !important;\r\n  border: 1px solid rgba(0, 0, 0, 0.1) !important;\r\n  border-radius: var(--acc-border-radius);\r\n  padding: 12px 14px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 10px;\r\n}\r\n\r\n.acc-text-scale-meta {\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 10px;\r\n}\r\n\r\n.acc-text-scale-icon {\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  flex-shrink: 0;\r\n}\r\n\r\n.acc-text-scale-icon svg {\r\n  width: 22px !important;\r\n  height: 22px !important;\r\n  min-width: 22px !important;\r\n  min-height: 22px !important;\r\n  max-width: 22px !important;\r\n  max-height: 22px !important;\r\n  fill: var(--acc-text-color);\r\n}\r\n\r\n.acc-text-scale-meta .acc-label {\r\n  font-size: 15px !important;\r\n  font-weight: 600 !important;\r\n}\r\n\r\n.acc-text-scale-percent {\r\n  margin-left: auto;\r\n  font-size: 15px !important;\r\n  font-weight: 700 !important;\r\n  color: var(--acc-primary-color) !important;\r\n}\r\n\r\n.acc-text-scale-range {\r\n  width: 100%;\r\n  appearance: none;\r\n  -webkit-appearance: none;\r\n  background: transparent;\r\n  height: 20px;\r\n  cursor: pointer;\r\n  margin: 0;\r\n}\r\n\r\n.acc-text-scale-range:focus {\r\n  outline: none;\r\n}\r\n\r\n.acc-text-scale-range::-webkit-slider-runnable-track {\r\n  width: 100%;\r\n  height: 4px;\r\n  border-radius: 999px;\r\n  background: linear-gradient(\r\n    to right,\r\n    var(--acc-primary-color) 0%,\r\n    var(--acc-primary-color) var(--acc-text-scale-progress, 0%),\r\n    #d8d8d8 var(--acc-text-scale-progress, 0%),\r\n    #d8d8d8 100%\r\n  );\r\n}\r\n\r\n.acc-text-scale-range::-webkit-slider-thumb {\r\n  appearance: none;\r\n  -webkit-appearance: none;\r\n  width: 18px;\r\n  height: 18px;\r\n  border-radius: 50%;\r\n  background: #fff;\r\n  border: 2px solid var(--acc-primary-color);\r\n  margin-top: -7px;\r\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n.acc-text-scale-range::-moz-range-track {\r\n  width: 100%;\r\n  height: 4px;\r\n  border-radius: 999px;\r\n  background: #d8d8d8;\r\n}\r\n\r\n.acc-text-scale-range::-moz-range-progress {\r\n  height: 4px;\r\n  border-radius: 999px;\r\n  background: var(--acc-primary-color);\r\n}\r\n\r\n.acc-text-scale-range::-moz-range-thumb {\r\n  width: 18px;\r\n  height: 18px;\r\n  border-radius: 50%;\r\n  background: #fff;\r\n  border: 2px solid var(--acc-primary-color);\r\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n.acc-btn.acc-tts-toggle {\r\n  width: 100%;\r\n  min-height: 54px;\r\n  aspect-ratio: auto;\r\n  flex-direction: row;\r\n  align-items: center;\r\n  justify-content: flex-start;\r\n  gap: 10px;\r\n  text-align: left;\r\n  padding: 12px 76px 12px 14px;\r\n}\r\n\r\n.acc-btn.acc-tts-toggle .acc-label {\r\n  font-size: 15px !important;\r\n}\r\n\r\n.acc-btn.acc-tts-toggle svg {\r\n  width: 22px !important;\r\n  height: 22px !important;\r\n  min-width: 22px !important;\r\n  min-height: 22px !important;\r\n  max-width: 22px !important;\r\n  max-height: 22px !important;\r\n}\r\n\r\n.acc-btn.acc-tts-toggle::before {\r\n  content: \"\";\r\n  position: absolute;\r\n  right: 14px;\r\n  top: 50%;\r\n  width: 44px;\r\n  height: 24px;\r\n  border-radius: 999px;\r\n  transform: translateY(-50%);\r\n  background: #dbd7d2;\r\n  border: 1px solid rgba(0, 0, 0, 0.08);\r\n}\r\n\r\n.acc-btn.acc-tts-toggle::after {\r\n  content: \"\";\r\n  position: absolute;\r\n  right: 38px;\r\n  top: 50%;\r\n  width: 18px;\r\n  height: 18px;\r\n  border-radius: 50%;\r\n  transform: translateY(-50%);\r\n  background: #fff;\r\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);\r\n}\r\n\r\n.acc-btn.acc-tts-toggle.acc-selected::before {\r\n  background: var(--acc-primary-color);\r\n  border-color: var(--acc-primary-color);\r\n}\r\n\r\n.acc-btn.acc-tts-toggle.acc-selected::after {\r\n  right: 16px;\r\n}\r\n\r\n/* Button styling */\r\n.acc-btn {\r\n  aspect-ratio: 11 / 8;\r\n  border-radius: var(--acc-border-radius);\r\n  padding: 10px;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  flex-direction: column;\r\n  text-align: center;\r\n  font-size: 15px !important;\r\n  background: var(--acc-card-bg) !important;\r\n  border: 1px solid rgba(0, 0, 0, 0.1) !important;\r\n  transition: background-color 0.2s ease;\r\n  cursor: pointer;\r\n  word-break: break-word;\r\n  gap: 6px;\r\n  position: relative;\r\n}\r\n\r\n.acc-btn:hover {\r\n  border-color: var(--acc-hover-color) !important;\r\n  border-width: 1px !important;\r\n  box-shadow: inset 0 0 0 1px var(--acc-hover-color);\r\n}\r\n\r\n.acc-btn:focus {\r\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\r\n  outline-offset: var(--acc-focus-outline-offset);\r\n  border-color: var(--acc-primary-color) !important;\r\n}\r\n\r\n.acc-btn .acc-label, .acc-text-adjust .acc-label div {\r\n  font-size: 13px !important;\r\n  font-weight: 600 !important;\r\n}\r\n\r\n/* SVG icons */\r\n.acc-text-adjust svg {\r\n  width: 20px !important;\r\n  height: 20px !important;\r\n  min-width: 20px !important;\r\n  min-height: 20px !important;\r\n  max-width: 20px !important;\r\n  max-height: 20px !important;\r\n}\r\n\r\n.acc-btn svg {\r\n  width: 24px !important;\r\n  height: 24px !important;\r\n  min-width: 24px !important;\r\n  min-height: 24px !important;\r\n  max-width: 24px !important;\r\n  max-height: 24px !important;\r\n  fill: var(--acc-text-color);\r\n}\r\n\r\n/* Selected state */\r\n.acc-btn.acc-selected {\r\n  background-color: var(--acc-primary-color) !important;\r\n  border-color: var(--acc-primary-color) !important;\r\n}\r\n\r\n.acc-btn.acc-selected .acc-progress-dot {\r\n  background-color: rgba(255, 255, 255, 0.5);\r\n}\r\n\r\n.acc-btn.acc-selected .acc-progress-dot.active {\r\n  background-color: var(--acc-text-color-inverted) !important;\r\n}\r\n\r\n.acc-btn.acc-selected svg,\r\n.acc-btn.acc-selected span,\r\n.acc-btn.acc-selected .acc-label {\r\n  fill: var(--acc-text-color-inverted) !important;\r\n  color: var(--acc-text-color-inverted) !important;\r\n}\r\n\r\n.acc-btn.acc-tts-toggle.acc-selected {\r\n  background-color: var(--acc-card-bg) !important;\r\n  border-color: rgba(0, 0, 0, 0.1) !important;\r\n}\r\n\r\n.acc-btn.acc-tts-toggle.acc-selected svg,\r\n.acc-btn.acc-tts-toggle.acc-selected span,\r\n.acc-btn.acc-tts-toggle.acc-selected .acc-label {\r\n  fill: var(--acc-text-color) !important;\r\n  color: var(--acc-text-color) !important;\r\n}\r\n\r\n/* Footer section */\r\n.acc-footer {\r\n  position: absolute;\r\n  bottom: 0;\r\n  left: 0;\r\n  right: 0;\r\n  background: var(--acc-card-bg);\r\n  padding: 12px 16px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: stretch;\r\n  gap: 10px;\r\n  border-top: 1px solid var(--acc-border-color);\r\n  z-index: 100;\r\n  overflow: visible;\r\n}\r\n\r\n.acc-footer-meta {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  gap: 12px;\r\n  width: 100%;\r\n  flex-wrap: nowrap;\r\n}\r\n\r\n.acc-footer-reset {\r\n  display: flex;\r\n  width: 100%;\r\n  align-items: center;\r\n  justify-content: center;\r\n  gap: 8px;\r\n  padding: 12px 16px;\r\n  border: none;\r\n  border-radius: var(--acc-button-border-radius);\r\n  background-color: var(--acc-primary-color) !important;\r\n  cursor: pointer;\r\n  transition: background-color 0.2s ease;\r\n  white-space: nowrap;\r\n}\r\n\r\n.acc-footer-reset svg {\r\n  width: 24px !important;\r\n  height: 24px !important;\r\n  fill: var(--acc-text-color-inverted) !important;\r\n}\r\n\r\n.acc-footer-reset .acc-label {\r\n  font-size: 16px !important;\r\n  font-weight: 600 !important;\r\n  color: var(--acc-text-color-inverted) !important;\r\n  line-height: 1.2 !important;\r\n}\r\n\r\n.acc-footer-reset:hover {\r\n  background-color: var(--acc-primary-color-dark) !important;\r\n}\r\n\r\n.acc-footer-reset:focus {\r\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\r\n  outline-offset: var(--acc-focus-outline-offset);\r\n}\r\n\r\n.acc-footer a {\r\n  font-size: 12px !important;\r\n  text-decoration: none !important;\r\n  color: #6b7280 !important;\r\n  background: transparent !important;\r\n  font-weight: 500 !important;\r\n  padding: 4px 0;\r\n  border-radius: 4px;\r\n  transition: color 0.15s ease;\r\n  letter-spacing: 0.01em !important;\r\n  align-self: center;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  white-space: nowrap;\r\n  line-height: 1.2 !important;\r\n}\r\n\r\n.acc-footer a:hover {\r\n  text-decoration: none !important;\r\n  color: var(--acc-primary-color) !important;\r\n}\r\n\r\n.acc-footer a:focus {\r\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\r\n  outline-offset: var(--acc-focus-outline-offset);\r\n}\r\n\r\n.acc-footer-lang-toggle {\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  gap: 8px;\r\n  min-width: 84px;\r\n  padding: 7px 10px 7px 12px;\r\n  border: 1px solid var(--acc-border-color);\r\n  border-radius: var(--acc-button-border-radius);\r\n  background: var(--acc-card-bg);\r\n  cursor: pointer;\r\n  transition: border-color 0.2s ease, background-color 0.2s ease;\r\n}\r\n\r\n.acc-footer-lang-toggle:hover {\r\n  border-color: var(--acc-hover-color);\r\n}\r\n\r\n.acc-footer-lang-toggle:focus {\r\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\r\n  outline-offset: var(--acc-focus-outline-offset);\r\n}\r\n\r\n.acc-footer-lang-current {\r\n  display: inline-block;\r\n  min-width: 2ch;\r\n  text-align: left;\r\n  font-size: 14px !important;\r\n  font-weight: 600 !important;\r\n  line-height: 1 !important;\r\n}\r\n\r\n.acc-footer-lang-arrow {\r\n  width: 8px;\r\n  height: 8px;\r\n  border-right: 1.5px solid var(--acc-text-color);\r\n  border-bottom: 1.5px solid var(--acc-text-color);\r\n  transform: rotate(45deg) translateY(-1px);\r\n  transition: transform 0.2s ease;\r\n}\r\n\r\n.acc-footer-lang-toggle[aria-expanded=\"true\"] .acc-footer-lang-arrow {\r\n  transform: rotate(-135deg) translateY(-1px);\r\n}\r\n\r\n.acc-lang-modal {\r\n  position: absolute;\r\n  right: 16px;\r\n  bottom: calc(100% + 10px);\r\n  width: min(320px, calc(100% - 32px));\r\n  border: 1px solid var(--acc-border-color);\r\n  border-radius: 14px;\r\n  background: var(--acc-card-bg);\r\n  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);\r\n  z-index: 120;\r\n  padding: 10px 0 8px;\r\n}\r\n\r\n.acc-lang-modal[hidden] {\r\n  display: none;\r\n}\r\n\r\n.acc-lang-modal-header {\r\n  padding: 0 14px 8px;\r\n}\r\n\r\n.acc-lang-modal .acc-section-title {\r\n  font-size: 14px !important;\r\n  font-weight: 700 !important;\r\n  color: #6b7280 !important;\r\n}\r\n\r\n.acc-lang-modal .acc-lang-search-wrapper {\r\n  padding: 0 12px 8px;\r\n}\r\n\r\n.acc-lang-modal .acc-lang-list {\r\n  padding: 6px 8px 8px;\r\n  max-height: 240px;\r\n}\r\n\r\n/* Content area */\r\n.acc-menu-content {\r\n  overflow: auto;\r\n  max-height: calc(100% - 122px);\r\n  padding: 24px 0 36px;\r\n}\r\n\r\n/* Text adjustments */\r\n.acc-text-adjust {\r\n  background: var(--acc-card-bg);\r\n  padding: 18px 20px;\r\n  margin-bottom: 20px;\r\n  border-radius: var(--acc-border-radius);\r\n  border: 1px solid rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.acc-text-adjust .acc-label {\r\n  display: flex;\r\n  justify-content: flex-start;\r\n}\r\n\r\n.acc-text-adjust > div {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  margin-top: 20px;\r\n  align-items: center;\r\n  font-size: 16px;\r\n}\r\n\r\n.acc-text-adjust .acc-label div {\r\n  font-size: 16px !important;\r\n}\r\n\r\n.acc-text-adjust div[role=\"button\"] {\r\n  background: var(--acc-bg-color) !important;\r\n  border-radius: 50%;\r\n  width: 40px;\r\n  height: 40px;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  cursor: pointer;\r\n  border: 1px solid rgba(0, 0, 0, 0.1);\r\n  transition: border-color 0.2s ease;\r\n}\r\n\r\n.acc-text-adjust div[role=\"button\"]:hover {\r\n  border-color: var(--acc-primary-color);\r\n}\r\n\r\n.acc-text-adjust div[role=\"button\"]:focus {\r\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\r\n  outline-offset: var(--acc-focus-outline-offset);\r\n}\r\n\r\n/* Overlay */\r\n.acc-overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  z-index: calc(var(--acc-widget-z-index, 100000) - 1);\r\n}\r\n\r\n/* Progress indicator */\r\n.acc-progress-indicator {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  gap: 4px;\r\n  margin-top: 8px;\r\n  height: 8px;\r\n}\r\n\r\n.acc-progress-dot {\r\n  width: 6px;\r\n  height: 6px;\r\n  border-radius: 50%;\r\n  background-color: var(--acc-border-color);\r\n  transition: background-color 0.2s ease;\r\n}\r\n\r\n.acc-progress-dot.active {\r\n  background-color: var(--acc-primary-color);\r\n}\r\n\r\n/* Selected state updates indicator colors */\r\n.acc-btn.acc-selected .acc-progress-dot.active {\r\n  background-color: var(--acc-bg-color);\r\n}\r\n\r\n/* Responsive adjustments */\r\n@media only screen and (max-width: 560px) {\r\n  .acc-menu {\r\n    width: calc(100vw - (var(--acc-menu-inline-gap, 8px) * 2));\r\n  }\r\n}\r\n\r\n@media only screen and (max-width: 420px) {\r\n  .acc-options {\r\n    grid-template-columns: repeat(2, minmax(0, 1fr));\r\n    gap: 12px;\r\n  }\r\n  .acc-btn {\r\n    padding: 8px;\r\n  }\r\n}\r\n\r\n/* Ensure proper focus visibility for assistive technology */\r\n@media (prefers-reduced-motion: reduce) {\r\n  .acc-menu,\r\n  .acc-btn,\r\n  .acc-lang-select,\r\n  .acc-progress-dot,\r\n  .acc-menu-header div[role=\"button\"],\r\n  .acc-lang-toggle,\r\n  .acc-back-btn,\r\n  .acc-footer-reset,\r\n  .acc-footer-lang-toggle,\r\n  .acc-footer-lang-arrow,\r\n  .acc-text-adjust div[role=\"button\"] {\r\n    transition: none;\r\n  }\r\n}\r\n";
+    var menuCSS = "/* Base styles */\n.acc-menu {\n  position: fixed;\n  left: var(--acc-menu-inline-gap, 12px);\n  top: var(--acc-menu-block-gap, 12px);\n  bottom: var(--acc-menu-block-gap, 12px);\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);\n  opacity: 1;\n  transition: 0.3s;\n  z-index: var(--acc-widget-z-index, 100000);\n  overflow: hidden;\n  background: var(--acc-bg-color);\n  width: min(430px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));\n  line-height: 1.5;\n  font-size: 16px;\n  height: auto;\n  letter-spacing: 0.015em;\n  color: var(--acc-text-color);\n  --acc-content-inline-padding: 14px;\n  --acc-menu-inline-gap: clamp(8px, 2.3vw, 18px);\n  --acc-menu-block-gap: clamp(10px, 2.2vh, 20px);\n  border-radius: 16px;\n  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);\n}\n\n/* Ensure all elements inherit proper colors for accessibility */\n.acc-menu * {\n  color: var(--acc-text-color);\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n  padding: 0;\n  margin: 0;\n  line-height: 1.5 !important;\n  letter-spacing: normal !important;\n}\n\n/* Header section */\n.acc-menu-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 var(--acc-content-inline-padding);\n  height: var(--acc-header-height);\n  font-weight: 700 !important;\n  background-color: var(--acc-primary-color) !important;\n}\n\n.acc-menu-title {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  font-size: 18px !important;\n  color: var(--acc-text-color-inverted) !important;\n  font-weight: bold;\n}\n\n.acc-menu-title .acc-label {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-menu-title-icon {\n  width: 30px;\n  height: 30px;\n  border-radius: 8px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n\n.acc-menu-title-icon svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 18px !important;\n  height: 18px !important;\n  min-width: 18px !important;\n  min-height: 18px !important;\n  max-width: 18px !important;\n  max-height: 18px !important;\n}\n\n.acc-header-back {\n  display: flex;\n  align-items: center;\n}\n\n.acc-back-btn {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: transparent;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--acc-text-color-inverted) !important;\n  transition: background-color 0.2s ease;\n  border-radius: 4px;\n  visibility: hidden;\n}\n\n.acc-back-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-back-btn.visible {\n  visibility: visible;\n}\n\n.acc-back-btn:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-back-btn:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-back-btn svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 24px !important;\n  height: 24px !important;\n}\n\n.acc-menu-title-dynamic {\n  display: none !important;\n}\n\n.acc-menu-title-dynamic.visible {\n  display: block !important;\n}\n\n.acc-menu-title-default {\n  display: block !important;\n}\n\n.acc-menu-title-default.hidden {\n  display: none !important;\n}\n\n.acc-menu-header svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n}\n\n.acc-menu-header > div {\n  display: flex;\n  align-items: center;\n}\n\n/* Interactive elements */\n.acc-menu-header div[role=\"button\"] {\n  cursor: pointer;\n  padding: 8px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  transition: background-color 0.2s ease;\n}\n\n.acc-menu-header div[role=\"button\"]:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-menu-header div[role=\"button\"]:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-menu-header .acc-header-actions {\n  display: flex;\n  align-items: center;\n}\n\n.acc-language-container {\n  margin: 0 var(--acc-content-inline-padding) 24px;\n}\n\n.acc-lang-details {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  border-radius: var(--acc-button-border-radius);\n  background: var(--acc-card-bg);\n}\n\n.acc-lang-summary {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  padding: 12px 14px;\n  cursor: pointer;\n  border-radius: var(--acc-button-border-radius);\n}\n\n.acc-lang-summary::-webkit-details-marker {\n  display: none;\n}\n\n.acc-lang-summary::marker {\n  content: '';\n}\n\n.acc-lang-summary-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-current-label {\n  font-size: 16px !important;\n  font-weight: 600 !important;\n}\n\n.acc-lang-summary:hover {\n  background-color: rgba(25, 118, 210, 0.06);\n}\n\n.acc-lang-summary:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-summary-arrow {\n  width: 10px;\n  height: 10px;\n  border-right: 2px solid var(--acc-text-color);\n  border-bottom: 2px solid var(--acc-text-color);\n  transform: rotate(-45deg);\n  transition: transform 0.2s ease;\n}\n\n.acc-lang-details[open] .acc-lang-summary-arrow {\n  transform: rotate(45deg);\n}\n\n.acc-lang-details[open] .acc-lang-summary {\n  border-bottom: 1px solid var(--acc-border-color);\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.acc-lang-details-panel {\n  padding: 12px 0 8px;\n}\n\n.acc-lang-details-panel .acc-section-title {\n  font-size: 16px !important;\n  padding: 0 16px 10px;\n}\n\n.acc-lang-flag {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 22px;\n  font-size: 18px !important;\n  line-height: 1;\n}\n\n.acc-lang-search-wrapper {\n  padding: 0 16px 8px;\n}\n\n.acc-lang-search {\n  width: 100%;\n  padding: 10px 16px;\n  border: 1.5px solid var(--acc-border-color);\n  border-radius: var(--acc-button-border-radius);\n  font-size: 16px;\n  background-color: var(--acc-card-bg);\n  transition: border-color 0.2s ease;\n}\n\n.acc-lang-search:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-lang-list {\n  padding: 6px 8px 12px;\n  max-height: 280px;\n  overflow-y: auto;\n}\n\n.acc-lang-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  width: 100%;\n  text-align: left;\n  padding: 11px 10px;\n  margin-bottom: 4px;\n  background-color: transparent;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  cursor: pointer;\n  font-size: 16px;\n  color: var(--acc-text-color);\n  transition: background-color 0.12s ease;\n}\n\n.acc-lang-item:hover {\n  background-color: rgba(25, 118, 210, 0.06);\n}\n\n.acc-lang-item:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-item.selected {\n  background-color: rgba(25, 118, 210, 0.08);\n  font-weight: 600;\n}\n\n.acc-lang-item-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-item-label {\n  font-size: 16px !important;\n  line-height: 1.4 !important;\n}\n\n.acc-icon-check {\n  display: inline-block;\n  width: 18px;\n  height: 18px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23886f60' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\");\n  background-repeat: no-repeat;\n  background-position: center;\n  opacity: 0;\n  transition: opacity 0.15s ease;\n}\n\n.acc-lang-item.selected .acc-icon-check {\n  opacity: 1;\n}\n\n.acc-menu .acc-lang-select {\n  width: 100% !important;\n  padding: 0 16px !important;\n  font-size: 16px !important;\n  font-family: inherit !important;\n  font-weight: 600 !important;\n  border-radius: var(--acc-button-border-radius) !important;\n  background: var(--acc-card-bg) !important;\n  border: 1.5px solid var(--acc-border-color) !important;\n  min-height: 48px !important;\n  max-height: 48px !important;\n  height: 48px !important;\n  color: var(--acc-text-color) !important;\n  -webkit-appearance: none !important;\n  -moz-appearance: none !important;\n  appearance: none !important;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0%20-960%20960%20960' width='24px' fill='%231f1f1f'%3E%3Cpath d='M480-344%20240-584l56-56%20184 184%20184-184%2056 56-240 240Z'/%3E%3C/svg%3E\") !important;\n  background-repeat: no-repeat !important;\n  background-position: right 12px center !important;\n  background-size: 20px !important;\n  padding-right: 44px !important;\n}\n\n/* Hide default arrows in Firefox and IE */\n.acc-menu .acc-lang-select::-ms-expand {\n  display: none !important;\n}\n\n.acc-menu .acc-lang-select:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n/* Option grid layout */\n.acc-options-all {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n  padding: 0 var(--acc-content-inline-padding) 12px;\n}\n\n.acc-option-category {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.acc-option-category-interaction {\n  padding-bottom: 12px;\n}\n\n.acc-option-category .acc-section-title {\n  font-size: 14px !important;\n  font-weight: 700 !important;\n  letter-spacing: 0.01em !important;\n  text-transform: none;\n  color: #6b7280 !important;\n  padding: 0 2px;\n}\n\n.acc-options {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 12px;\n  margin: 0;\n}\n\n.acc-options-text {\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n}\n\n.acc-options-text-inline {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n\n.acc-btn.acc-text-inline {\n  min-height: 54px;\n  aspect-ratio: auto;\n  flex-direction: row;\n  align-items: center;\n  justify-content: flex-start;\n  text-align: left;\n  gap: 10px;\n  padding: 12px 14px;\n}\n\n.acc-btn.acc-text-inline .acc-label {\n  font-size: 14px !important;\n  flex: 1 1 auto;\n  min-width: 0;\n}\n\n.acc-btn.acc-text-inline .acc-progress-indicator {\n  margin-top: 0;\n  margin-left: auto;\n  justify-content: flex-end;\n  min-width: 24px;\n}\n\n@media only screen and (max-width: 430px) {\n  .acc-options-text-inline {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  .acc-btn.acc-text-inline {\n    min-height: auto;\n    aspect-ratio: 11 / 8;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n    gap: 6px;\n    padding: 10px;\n  }\n\n  .acc-btn.acc-text-inline .acc-label {\n    font-size: 13px !important;\n    flex: 0 1 auto;\n  }\n\n  .acc-btn.acc-text-inline .acc-progress-indicator {\n    margin-top: 8px;\n    margin-left: 0;\n    justify-content: center;\n  }\n}\n\n.acc-tts-toggle-container {\n  margin: 0;\n}\n\n.acc-text-scale-control {\n  width: 100%;\n  background: var(--acc-card-bg) !important;\n  border: 1px solid rgba(0, 0, 0, 0.1) !important;\n  border-radius: var(--acc-border-radius);\n  padding: 12px 14px;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.acc-text-scale-meta {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.acc-text-scale-icon {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n\n.acc-text-scale-icon svg {\n  width: 22px !important;\n  height: 22px !important;\n  min-width: 22px !important;\n  min-height: 22px !important;\n  max-width: 22px !important;\n  max-height: 22px !important;\n  fill: var(--acc-text-color);\n}\n\n.acc-text-scale-meta .acc-label {\n  font-size: 15px !important;\n  font-weight: 600 !important;\n}\n\n.acc-text-scale-percent {\n  margin-left: auto;\n  font-size: 15px !important;\n  font-weight: 700 !important;\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-text-scale-range {\n  width: 100%;\n  appearance: none;\n  -webkit-appearance: none;\n  background: transparent;\n  height: 20px;\n  cursor: pointer;\n  margin: 0;\n}\n\n.acc-text-scale-range:focus {\n  outline: none;\n}\n\n.acc-text-scale-range::-webkit-slider-runnable-track {\n  width: 100%;\n  height: 4px;\n  border-radius: 999px;\n  background: linear-gradient(\n    to right,\n    var(--acc-primary-color) 0%,\n    var(--acc-primary-color) var(--acc-text-scale-progress, 0%),\n    #d8d8d8 var(--acc-text-scale-progress, 0%),\n    #d8d8d8 100%\n  );\n}\n\n.acc-text-scale-range::-webkit-slider-thumb {\n  appearance: none;\n  -webkit-appearance: none;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  background: #fff;\n  border: 2px solid var(--acc-primary-color);\n  margin-top: -7px;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n}\n\n.acc-text-scale-range::-moz-range-track {\n  width: 100%;\n  height: 4px;\n  border-radius: 999px;\n  background: #d8d8d8;\n}\n\n.acc-text-scale-range::-moz-range-progress {\n  height: 4px;\n  border-radius: 999px;\n  background: var(--acc-primary-color);\n}\n\n.acc-text-scale-range::-moz-range-thumb {\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  background: #fff;\n  border: 2px solid var(--acc-primary-color);\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n}\n\n.acc-btn.acc-tts-toggle {\n  width: 100%;\n  min-height: 54px;\n  aspect-ratio: auto;\n  flex-direction: row;\n  align-items: center;\n  justify-content: flex-start;\n  gap: 10px;\n  text-align: left;\n  padding: 12px 76px 12px 14px;\n}\n\n.acc-btn.acc-tts-toggle .acc-label {\n  font-size: 15px !important;\n}\n\n.acc-btn.acc-tts-toggle svg {\n  width: 22px !important;\n  height: 22px !important;\n  min-width: 22px !important;\n  min-height: 22px !important;\n  max-width: 22px !important;\n  max-height: 22px !important;\n}\n\n.acc-btn.acc-tts-toggle::before {\n  content: \"\";\n  position: absolute;\n  right: 14px;\n  top: 50%;\n  width: 44px;\n  height: 24px;\n  border-radius: 999px;\n  transform: translateY(-50%);\n  background: #dbd7d2;\n  border: 1px solid rgba(0, 0, 0, 0.08);\n}\n\n.acc-btn.acc-tts-toggle::after {\n  content: \"\";\n  position: absolute;\n  right: 38px;\n  top: 50%;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  transform: translateY(-50%);\n  background: #fff;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);\n}\n\n.acc-btn.acc-tts-toggle.acc-selected::before {\n  background: var(--acc-primary-color);\n  border-color: var(--acc-primary-color);\n}\n\n.acc-btn.acc-tts-toggle.acc-selected::after {\n  right: 16px;\n}\n\n/* Button styling */\n.acc-btn {\n  aspect-ratio: 11 / 8;\n  border-radius: var(--acc-border-radius);\n  padding: 10px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  text-align: center;\n  font-size: 15px !important;\n  background: var(--acc-card-bg) !important;\n  border: 1px solid rgba(0, 0, 0, 0.1) !important;\n  transition: background-color 0.2s ease;\n  cursor: pointer;\n  word-break: break-word;\n  gap: 6px;\n  position: relative;\n}\n\n.acc-btn:hover {\n  border-color: var(--acc-hover-color) !important;\n  border-width: 1px !important;\n  box-shadow: inset 0 0 0 1px var(--acc-hover-color);\n}\n\n.acc-btn:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn .acc-label, .acc-text-adjust .acc-label div {\n  font-size: 13px !important;\n  font-weight: 600 !important;\n}\n\n/* SVG icons */\n.acc-text-adjust svg {\n  width: 20px !important;\n  height: 20px !important;\n  min-width: 20px !important;\n  min-height: 20px !important;\n  max-width: 20px !important;\n  max-height: 20px !important;\n}\n\n.acc-btn svg {\n  width: 24px !important;\n  height: 24px !important;\n  min-width: 24px !important;\n  min-height: 24px !important;\n  max-width: 24px !important;\n  max-height: 24px !important;\n  fill: var(--acc-text-color);\n}\n\n/* Selected state */\n.acc-btn.acc-selected {\n  background-color: var(--acc-primary-color) !important;\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected .acc-progress-dot {\n  background-color: rgba(255, 255, 255, 0.5);\n}\n\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-btn.acc-selected svg,\n.acc-btn.acc-selected span,\n.acc-btn.acc-selected .acc-label {\n  fill: var(--acc-text-color-inverted) !important;\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-btn.acc-tts-toggle.acc-selected {\n  background-color: var(--acc-card-bg) !important;\n  border-color: rgba(0, 0, 0, 0.1) !important;\n}\n\n.acc-btn.acc-tts-toggle.acc-selected svg,\n.acc-btn.acc-tts-toggle.acc-selected span,\n.acc-btn.acc-tts-toggle.acc-selected .acc-label {\n  fill: var(--acc-text-color) !important;\n  color: var(--acc-text-color) !important;\n}\n\n/* Footer section */\n.acc-footer {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  background: var(--acc-card-bg);\n  padding: 12px 16px;\n  display: flex;\n  flex-direction: column;\n  align-items: stretch;\n  gap: 10px;\n  border-top: 1px solid var(--acc-border-color);\n  z-index: 100;\n  overflow: visible;\n}\n\n.acc-footer-meta {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  width: 100%;\n  flex-wrap: nowrap;\n}\n\n.acc-footer-reset {\n  display: flex;\n  width: 100%;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  padding: 12px 16px;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  background-color: var(--acc-primary-color) !important;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n  white-space: nowrap;\n}\n\n.acc-footer-reset svg {\n  width: 24px !important;\n  height: 24px !important;\n  fill: var(--acc-text-color-inverted) !important;\n}\n\n.acc-footer-reset .acc-label {\n  font-size: 16px !important;\n  font-weight: 600 !important;\n  color: var(--acc-text-color-inverted) !important;\n  line-height: 1.2 !important;\n}\n\n.acc-footer-reset:hover {\n  background-color: var(--acc-primary-color-dark) !important;\n}\n\n.acc-footer-reset:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-footer a {\n  font-size: 12px !important;\n  text-decoration: none !important;\n  color: #6b7280 !important;\n  background: transparent !important;\n  font-weight: 500 !important;\n  padding: 4px 0;\n  border-radius: 4px;\n  transition: color 0.15s ease;\n  letter-spacing: 0.01em !important;\n  align-self: center;\n  display: inline-flex;\n  align-items: center;\n  white-space: nowrap;\n  line-height: 1.2 !important;\n}\n\n.acc-footer a:hover {\n  text-decoration: none !important;\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-footer a:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-footer-lang-toggle {\n  display: inline-flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  min-width: 84px;\n  padding: 7px 10px 7px 12px;\n  border: 1px solid var(--acc-border-color);\n  border-radius: var(--acc-button-border-radius);\n  background: var(--acc-card-bg);\n  cursor: pointer;\n  transition: border-color 0.2s ease, background-color 0.2s ease;\n}\n\n.acc-footer-lang-toggle:hover {\n  border-color: var(--acc-hover-color);\n}\n\n.acc-footer-lang-toggle:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-footer-lang-current {\n  display: inline-block;\n  min-width: 2ch;\n  text-align: left;\n  font-size: 14px !important;\n  font-weight: 600 !important;\n  line-height: 1 !important;\n}\n\n.acc-footer-lang-arrow {\n  width: 8px;\n  height: 8px;\n  border-right: 1.5px solid var(--acc-text-color);\n  border-bottom: 1.5px solid var(--acc-text-color);\n  transform: rotate(45deg) translateY(-1px);\n  transition: transform 0.2s ease;\n}\n\n.acc-footer-lang-toggle[aria-expanded=\"true\"] .acc-footer-lang-arrow {\n  transform: rotate(-135deg) translateY(-1px);\n}\n\n.acc-lang-modal {\n  position: absolute;\n  right: 16px;\n  bottom: calc(100% + 10px);\n  width: min(320px, calc(100% - 32px));\n  border: 1px solid var(--acc-border-color);\n  border-radius: 14px;\n  background: var(--acc-card-bg);\n  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);\n  z-index: 120;\n  padding: 10px 0 8px;\n}\n\n.acc-lang-modal[hidden] {\n  display: none;\n}\n\n.acc-lang-modal-header {\n  padding: 0 14px 8px;\n}\n\n.acc-lang-modal .acc-section-title {\n  font-size: 14px !important;\n  font-weight: 700 !important;\n  color: #6b7280 !important;\n}\n\n.acc-lang-modal .acc-lang-search-wrapper {\n  padding: 0 12px 8px;\n}\n\n.acc-lang-modal .acc-lang-list {\n  padding: 6px 8px 8px;\n  max-height: 240px;\n}\n\n/* Content area */\n.acc-menu-content {\n  overflow: auto;\n  max-height: calc(100% - 122px);\n  padding: 24px 0 36px;\n}\n\n/* Text adjustments */\n.acc-text-adjust {\n  background: var(--acc-card-bg);\n  padding: 18px 20px;\n  margin-bottom: 20px;\n  border-radius: var(--acc-border-radius);\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.acc-text-adjust .acc-label {\n  display: flex;\n  justify-content: flex-start;\n}\n\n.acc-text-adjust > div {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 20px;\n  align-items: center;\n  font-size: 16px;\n}\n\n.acc-text-adjust .acc-label div {\n  font-size: 16px !important;\n}\n\n.acc-text-adjust div[role=\"button\"] {\n  background: var(--acc-bg-color) !important;\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  transition: border-color 0.2s ease;\n}\n\n.acc-text-adjust div[role=\"button\"]:hover {\n  border-color: var(--acc-primary-color);\n}\n\n.acc-text-adjust div[role=\"button\"]:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Overlay */\n.acc-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: calc(var(--acc-widget-z-index, 100000) - 1);\n}\n\n/* Progress indicator */\n.acc-progress-indicator {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  margin-top: 8px;\n  height: 8px;\n}\n\n.acc-progress-dot {\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background-color: var(--acc-border-color);\n  transition: background-color 0.2s ease;\n}\n\n.acc-progress-dot.active {\n  background-color: var(--acc-primary-color);\n}\n\n/* Selected state updates indicator colors */\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-bg-color);\n}\n\n/* Responsive adjustments */\n@media only screen and (max-width: 560px) {\n  .acc-menu {\n    width: calc(100vw - (var(--acc-menu-inline-gap, 8px) * 2));\n  }\n}\n\n@media only screen and (max-width: 420px) {\n  .acc-options {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 12px;\n  }\n  .acc-btn {\n    padding: 8px;\n  }\n}\n\n/* Ensure proper focus visibility for assistive technology */\n@media (prefers-reduced-motion: reduce) {\n  .acc-menu,\n  .acc-btn,\n  .acc-lang-select,\n  .acc-progress-dot,\n  .acc-menu-header div[role=\"button\"],\n  .acc-lang-toggle,\n  .acc-back-btn,\n  .acc-footer-reset,\n  .acc-footer-lang-toggle,\n  .acc-footer-lang-arrow,\n  .acc-text-adjust div[role=\"button\"] {\n    transition: none;\n  }\n}\n";
 
-    var widgetCSS = "  /* Base styles for the widget */\r\n  .acc-widget, .acc-menu {\r\n    -webkit-user-select: none;\r\n    -moz-user-select: none;\r\n    -ms-user-select: none;\r\n    user-select: none;\r\n    font-weight: 400;\r\n    -webkit-font-smoothing: antialiased;\r\n  }\r\n  \r\n  .acc-widget *, .acc-menu * { \r\n    box-sizing: border-box !important; \r\n  }\r\n  \r\n  /* Accessibility toggle button */\r\n  .acc-toggle-btn {\r\n    position: fixed;\r\n    z-index: var(--acc-widget-z-index, 100000);\r\n    left: 30px;\r\n    bottom: 30px;\r\n    border-radius: 50%;\r\n    align-items: center;\r\n    justify-content: center;\r\n    width: var(--acc-button-size, 48px);\r\n    height: var(--acc-button-size, 48px);\r\n    display: flex;\r\n    cursor: pointer;\r\n    outline: none !important;\r\n    border: none !important;\r\n    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 2px 5px rgba(0,0,0,0.2) !important;\r\n    background: var(--acc-primary-color, #1976d2) !important;\r\n    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;\r\n    overflow: visible;\r\n  }\r\n  \r\n  .acc-toggle-btn .acc-toggle-icon {\r\n    width: 60%;\r\n    height: 60%;\r\n    display: inline-flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n  }\r\n\r\n  .acc-toggle-btn .acc-toggle-icon svg {\r\n    width: 100%;\r\n    height: 100%;\r\n    fill: white;\r\n    transition: none;\r\n  }\r\n  \r\n  .acc-toggle-btn:hover {\r\n    transform: scale(1.12);\r\n  }\r\n\r\n  .acc-toggle-btn::before,\r\n  .acc-toggle-btn::after {\r\n    content: \"\";\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    width: 44%;\r\n    height: 2.6px;\r\n    border-radius: 999px;\r\n    background: var(--acc-text-color-inverted, #fff);\r\n    opacity: 0;\r\n    pointer-events: none;\r\n    transform: translate(-50%, -50%) rotate(0deg);\r\n    transition: none;\r\n  }\r\n\r\n  .acc-toggle-btn[aria-expanded=\"true\"] {\r\n    background: var(--acc-primary-color, #1976d2) !important;\r\n    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 6px 14px rgba(0, 0, 0, 0.24) !important;\r\n  }\r\n\r\n  .acc-toggle-btn[aria-expanded=\"true\"] .acc-toggle-icon svg {\r\n    opacity: 0;\r\n  }\r\n\r\n  .acc-toggle-btn[aria-expanded=\"true\"]::before,\r\n  .acc-toggle-btn[aria-expanded=\"true\"]::after {\r\n    opacity: 1;\r\n  }\r\n\r\n  .acc-toggle-btn[aria-expanded=\"true\"]::before {\r\n    transform: translate(-50%, -50%) rotate(45deg);\r\n  }\r\n\r\n  .acc-toggle-btn[aria-expanded=\"true\"]::after {\r\n    transform: translate(-50%, -50%) rotate(-45deg);\r\n  }\r\n\r\n  .acc-violation-bubble {\r\n    position: absolute;\r\n    top: -8px;\r\n    right: -8px;\r\n    min-width: 24px;\r\n    height: 24px;\r\n    border-radius: 12px;\r\n    font-size: 11px;\r\n    font-weight: 700;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    padding: 0 4px;\r\n    pointer-events: none;\r\n    z-index: 1;\r\n    color: #fff;\r\n    border: none;\r\n    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\r\n  }\r\n\r\n  .acc-violation-bubble[data-severity=\"critical\"] {\r\n    background: #d32f2f;\r\n    color: #fff;\r\n  }\r\n\r\n  .acc-violation-bubble[data-severity=\"serious\"] {\r\n    background: #f57c00;\r\n    color: #fff;\r\n  }\r\n\r\n  .acc-violation-bubble[data-severity=\"moderate\"] {\r\n    background: #fbc02d;\r\n    color: #333;\r\n  }\r\n\r\n  .acc-violation-bubble[hidden] {\r\n    display: none;\r\n  }\r\n\r\n  .acc-toggle-btn:focus {\r\n    outline: none !important;\r\n  }\r\n\r\n  .acc-toggle-btn:focus-visible {\r\n    outline: 3px solid var(--acc-primary-color, #1976d2) !important;\r\n    outline-offset: 2px;\r\n  }\r\n\r\n  body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {\r\n    cursor: pointer;\r\n  }\r\n\r\n  .acc-tts-active-block {\r\n    outline: 2px solid var(--acc-primary-color, #1976d2) !important;\r\n    outline-offset: 3px !important;\r\n    border-radius: 4px;\r\n  }\r\n  \r\n  @media (prefers-reduced-motion: reduce) {\r\n    .acc-toggle-btn {\r\n      transition: none;\r\n    }\r\n\r\n    .acc-toggle-btn .acc-toggle-icon svg,\r\n    .acc-toggle-btn::before,\r\n    .acc-toggle-btn::after {\r\n      transition: none;\r\n    }\r\n\r\n  }\r\n";
+    var widgetCSS = "  /* Base styles for the widget */\n  .acc-widget, .acc-menu {\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n  }\n  \n  .acc-widget *, .acc-menu * { \n    box-sizing: border-box !important; \n  }\n  \n  /* Accessibility toggle button */\n  .acc-toggle-btn {\n    position: fixed;\n    z-index: var(--acc-widget-z-index, 100000);\n    left: 30px;\n    bottom: 30px;\n    border-radius: 50%;\n    align-items: center;\n    justify-content: center;\n    width: var(--acc-button-size, 48px);\n    height: var(--acc-button-size, 48px);\n    display: flex;\n    cursor: pointer;\n    outline: none !important;\n    border: none !important;\n    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 2px 5px rgba(0,0,0,0.2) !important;\n    background: var(--acc-primary-color, #1976d2) !important;\n    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;\n    overflow: visible;\n  }\n  \n  .acc-toggle-btn .acc-toggle-icon {\n    width: 60%;\n    height: 60%;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  .acc-toggle-btn .acc-toggle-icon svg {\n    width: 100%;\n    height: 100%;\n    fill: white;\n    transition: none;\n  }\n  \n  .acc-toggle-btn:hover {\n    transform: scale(1.12);\n  }\n\n  .acc-toggle-btn::before,\n  .acc-toggle-btn::after {\n    content: \"\";\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    width: 44%;\n    height: 2.6px;\n    border-radius: 999px;\n    background: var(--acc-text-color-inverted, #fff);\n    opacity: 0;\n    pointer-events: none;\n    transform: translate(-50%, -50%) rotate(0deg);\n    transition: none;\n  }\n\n  .acc-toggle-btn[aria-expanded=\"true\"] {\n    background: var(--acc-primary-color, #1976d2) !important;\n    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 6px 14px rgba(0, 0, 0, 0.24) !important;\n  }\n\n  .acc-toggle-btn[aria-expanded=\"true\"] .acc-toggle-icon svg {\n    opacity: 0;\n  }\n\n  .acc-toggle-btn[aria-expanded=\"true\"]::before,\n  .acc-toggle-btn[aria-expanded=\"true\"]::after {\n    opacity: 1;\n  }\n\n  .acc-toggle-btn[aria-expanded=\"true\"]::before {\n    transform: translate(-50%, -50%) rotate(45deg);\n  }\n\n  .acc-toggle-btn[aria-expanded=\"true\"]::after {\n    transform: translate(-50%, -50%) rotate(-45deg);\n  }\n\n  .acc-violation-bubble {\n    position: absolute;\n    top: -8px;\n    right: -8px;\n    min-width: 24px;\n    height: 24px;\n    border-radius: 12px;\n    font-size: 11px;\n    font-weight: 700;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 0 4px;\n    pointer-events: none;\n    z-index: 1;\n    color: #fff;\n    border: none;\n    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  }\n\n  .acc-violation-bubble[data-severity=\"critical\"] {\n    background: #d32f2f;\n    color: #fff;\n  }\n\n  .acc-violation-bubble[data-severity=\"serious\"] {\n    background: #f57c00;\n    color: #fff;\n  }\n\n  .acc-violation-bubble[data-severity=\"moderate\"] {\n    background: #fbc02d;\n    color: #333;\n  }\n\n  .acc-violation-bubble[hidden] {\n    display: none;\n  }\n\n  .acc-toggle-btn:focus {\n    outline: none !important;\n  }\n\n  .acc-toggle-btn:focus-visible {\n    outline: 3px solid var(--acc-primary-color, #1976d2) !important;\n    outline-offset: 2px;\n  }\n\n  body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {\n    cursor: pointer;\n  }\n\n  .acc-tts-active-block {\n    outline: 2px solid var(--acc-primary-color, #1976d2) !important;\n    outline-offset: 3px !important;\n    border-radius: 4px;\n  }\n  \n  @media (prefers-reduced-motion: reduce) {\n    .acc-toggle-btn {\n      transition: none;\n    }\n\n    .acc-toggle-btn .acc-toggle-icon svg,\n    .acc-toggle-btn::before,\n    .acc-toggle-btn::after {\n      transition: none;\n    }\n\n  }\n";
 
-    var reportCSS = ".acc-report-panel {\r\n  display: none;\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  z-index: calc(var(--acc-widget-z-index, 100000) + 10);\r\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;\r\n}\r\n.acc-report-panel.acc-report-visible {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n}\r\n.acc-report-overlay {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  right: 0;\r\n  bottom: 0;\r\n  background: rgba(0, 0, 0, 0.6);\r\n}\r\n.acc-report-dialog {\r\n  position: relative;\r\n  background: #fff;\r\n  border-radius: 12px;\r\n  width: 90%;\r\n  max-width: 800px;\r\n  max-height: 85vh;\r\n  display: flex;\r\n  flex-direction: column;\r\n  box-shadow: 0 20px 60px rgba(0,0,0,0.3);\r\n}\r\n.acc-report-header {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  padding: 16px 20px;\r\n  border-bottom: 1px solid #e0e0e0;\r\n}\r\n.acc-report-title {\r\n  margin: 0;\r\n  font-size: 18px;\r\n  font-weight: 600;\r\n  color: #1a1a1a;\r\n}\r\n.acc-report-close {\r\n  background: none;\r\n  border: none;\r\n  padding: 8px;\r\n  cursor: pointer;\r\n  border-radius: 6px;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n}\r\n.acc-report-close:hover {\r\n  background: #f0f0f0;\r\n}\r\n.acc-report-close svg {\r\n  width: 20px;\r\n  height: 20px;\r\n  fill: #666;\r\n}\r\n.acc-report-status {\r\n  padding: 8px 20px;\r\n  font-size: 14px;\r\n  color: #666;\r\n  background: #f8f9fa;\r\n}\r\n.acc-report-content {\r\n  flex: 1;\r\n  overflow-y: auto;\r\n  padding: 16px 20px;\r\n}\r\n.acc-report-loading {\r\n  text-align: center;\r\n  padding: 40px;\r\n  color: #666;\r\n}\r\n.acc-report-error {\r\n  color: #d32f2f;\r\n  padding: 20px;\r\n  text-align: center;\r\n}\r\n.acc-report-summary {\r\n  display: grid;\r\n  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));\r\n  gap: 12px;\r\n  margin-bottom: 20px;\r\n}\r\n.acc-report-stat {\r\n  background: #f8f9fa;\r\n  border-radius: 8px;\r\n  padding: 16px;\r\n  text-align: center;\r\n}\r\n.acc-report-stat-value {\r\n  font-size: 28px;\r\n  font-weight: 700;\r\n  display: block;\r\n}\r\n.acc-report-stat-label {\r\n  font-size: 12px;\r\n  color: #666;\r\n  text-transform: uppercase;\r\n  margin-top: 4px;\r\n}\r\n.acc-report-stat.critical .acc-report-stat-value { color: #d32f2f; }\r\n.acc-report-stat.serious .acc-report-stat-value { color: #f57c00; }\r\n.acc-report-stat.moderate .acc-report-stat-value { color: #fbc02d; }\r\n.acc-report-stat.minor .acc-report-stat-value { color: #7cb342; }\r\n.acc-report-stat.passed .acc-report-stat-value { color: #43a047; }\r\n.acc-report-section {\r\n  margin-bottom: 20px;\r\n}\r\n.acc-report-section-title {\r\n  font-size: 14px;\r\n  font-weight: 600;\r\n  color: #333;\r\n  margin-bottom: 12px;\r\n  padding-bottom: 8px;\r\n  border-bottom: 2px solid #e0e0e0;\r\n}\r\n.acc-report-violation {\r\n  background: #fff;\r\n  border: 1px solid #e0e0e0;\r\n  border-radius: 8px;\r\n  margin-bottom: 12px;\r\n  overflow: hidden;\r\n}\r\n.acc-report-violation-header {\r\n  padding: 12px 16px;\r\n  background: #f8f9fa;\r\n  cursor: pointer;\r\n  display: flex;\r\n  align-items: center;\r\n  gap: 12px;\r\n}\r\n.acc-report-violation-header:hover {\r\n  background: #f0f0f0;\r\n}\r\n.acc-report-violation-impact {\r\n  font-size: 11px;\r\n  font-weight: 600;\r\n  text-transform: uppercase;\r\n  padding: 4px 8px;\r\n  border-radius: 4px;\r\n  color: #fff;\r\n}\r\n.acc-report-violation-impact.critical { background: #d32f2f; }\r\n.acc-report-violation-impact.serious { background: #f57c00; }\r\n.acc-report-violation-impact.moderate { background: #fbc02d; color: #333; }\r\n.acc-report-violation-impact.minor { background: #7cb342; }\r\n.acc-report-violation-title {\r\n  flex: 1;\r\n  font-weight: 500;\r\n  color: #333;\r\n}\r\n.acc-report-violation-count {\r\n  font-size: 12px;\r\n  color: #666;\r\n  background: #e0e0e0;\r\n  padding: 2px 8px;\r\n  border-radius: 12px;\r\n}\r\n.acc-report-violation-details {\r\n  display: none;\r\n  padding: 16px;\r\n  border-top: 1px solid #e0e0e0;\r\n}\r\n.acc-report-violation.expanded .acc-report-violation-details {\r\n  display: block;\r\n}\r\n.acc-report-violation-desc {\r\n  color: #666;\r\n  font-size: 14px;\r\n  margin-bottom: 12px;\r\n}\r\n.acc-report-violation-help {\r\n  font-size: 13px;\r\n  margin-bottom: 12px;\r\n}\r\n.acc-report-violation-help a {\r\n  color: #1976d2;\r\n}\r\n.acc-report-node {\r\n  background: #f8f9fa;\r\n  border-radius: 6px;\r\n  padding: 12px;\r\n  margin-top: 8px;\r\n}\r\n.acc-report-node-html {\r\n  font-family: monospace;\r\n  font-size: 12px;\r\n  background: #263238;\r\n  color: #80cbc4;\r\n  padding: 8px 12px;\r\n  border-radius: 4px;\r\n  overflow-x: auto;\r\n  white-space: pre-wrap;\r\n  word-break: break-all;\r\n}\r\n.acc-report-node-fix {\r\n  margin-top: 8px;\r\n  font-size: 13px;\r\n  color: #333;\r\n}\r\n.acc-report-node-fix strong {\r\n  color: #1976d2;\r\n}\r\n.acc-report-success {\r\n  text-align: center;\r\n  padding: 40px;\r\n}\r\n.acc-report-success-icon {\r\n  width: 64px;\r\n  height: 64px;\r\n  background: #43a047;\r\n  border-radius: 50%;\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  margin: 0 auto 16px;\r\n}\r\n.acc-report-success-icon svg {\r\n  width: 32px;\r\n  height: 32px;\r\n  fill: #fff;\r\n}\r\n.acc-report-footer {\r\n  padding: 12px 20px;\r\n  border-top: 1px solid #e0e0e0;\r\n  text-align: center;\r\n}\r\n.acc-report-powered {\r\n  font-size: 12px;\r\n}\r\n@media (max-width: 600px) {\r\n  .acc-report-dialog {\r\n    width: 95%;\r\n    max-height: 90vh;\r\n  }\r\n  .acc-report-summary {\r\n    grid-template-columns: repeat(2, 1fr);\r\n  }\r\n}\r\n";
+    var reportCSS = ".acc-report-panel {\n  display: none;\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 10);\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;\n}\n.acc-report-panel.acc-report-visible {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.acc-report-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.6);\n}\n.acc-report-dialog {\n  position: relative;\n  background: #fff;\n  border-radius: 12px;\n  width: 90%;\n  max-width: 800px;\n  max-height: 85vh;\n  display: flex;\n  flex-direction: column;\n  box-shadow: 0 20px 60px rgba(0,0,0,0.3);\n}\n.acc-report-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 16px 20px;\n  border-bottom: 1px solid #e0e0e0;\n}\n.acc-report-title {\n  margin: 0;\n  font-size: 18px;\n  font-weight: 600;\n  color: #1a1a1a;\n}\n.acc-report-close {\n  background: none;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  border-radius: 6px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.acc-report-close:hover {\n  background: #f0f0f0;\n}\n.acc-report-close svg {\n  width: 20px;\n  height: 20px;\n  fill: #666;\n}\n.acc-report-status {\n  padding: 8px 20px;\n  font-size: 14px;\n  color: #666;\n  background: #f8f9fa;\n}\n.acc-report-content {\n  flex: 1;\n  overflow-y: auto;\n  padding: 16px 20px;\n}\n.acc-report-loading {\n  text-align: center;\n  padding: 40px;\n  color: #666;\n}\n.acc-report-error {\n  color: #d32f2f;\n  padding: 20px;\n  text-align: center;\n}\n.acc-report-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));\n  gap: 12px;\n  margin-bottom: 20px;\n}\n.acc-report-stat {\n  background: #f8f9fa;\n  border-radius: 8px;\n  padding: 16px;\n  text-align: center;\n}\n.acc-report-stat-value {\n  font-size: 28px;\n  font-weight: 700;\n  display: block;\n}\n.acc-report-stat-label {\n  font-size: 12px;\n  color: #666;\n  text-transform: uppercase;\n  margin-top: 4px;\n}\n.acc-report-stat.critical .acc-report-stat-value { color: #d32f2f; }\n.acc-report-stat.serious .acc-report-stat-value { color: #f57c00; }\n.acc-report-stat.moderate .acc-report-stat-value { color: #fbc02d; }\n.acc-report-stat.minor .acc-report-stat-value { color: #7cb342; }\n.acc-report-stat.passed .acc-report-stat-value { color: #43a047; }\n.acc-report-section {\n  margin-bottom: 20px;\n}\n.acc-report-section-title {\n  font-size: 14px;\n  font-weight: 600;\n  color: #333;\n  margin-bottom: 12px;\n  padding-bottom: 8px;\n  border-bottom: 2px solid #e0e0e0;\n}\n.acc-report-violation {\n  background: #fff;\n  border: 1px solid #e0e0e0;\n  border-radius: 8px;\n  margin-bottom: 12px;\n  overflow: hidden;\n}\n.acc-report-violation-header {\n  padding: 12px 16px;\n  background: #f8f9fa;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n.acc-report-violation-header:hover {\n  background: #f0f0f0;\n}\n.acc-report-violation-impact {\n  font-size: 11px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding: 4px 8px;\n  border-radius: 4px;\n  color: #fff;\n}\n.acc-report-violation-impact.critical { background: #d32f2f; }\n.acc-report-violation-impact.serious { background: #f57c00; }\n.acc-report-violation-impact.moderate { background: #fbc02d; color: #333; }\n.acc-report-violation-impact.minor { background: #7cb342; }\n.acc-report-violation-title {\n  flex: 1;\n  font-weight: 500;\n  color: #333;\n}\n.acc-report-violation-count {\n  font-size: 12px;\n  color: #666;\n  background: #e0e0e0;\n  padding: 2px 8px;\n  border-radius: 12px;\n}\n.acc-report-violation-details {\n  display: none;\n  padding: 16px;\n  border-top: 1px solid #e0e0e0;\n}\n.acc-report-violation.expanded .acc-report-violation-details {\n  display: block;\n}\n.acc-report-violation-desc {\n  color: #666;\n  font-size: 14px;\n  margin-bottom: 12px;\n}\n.acc-report-violation-help {\n  font-size: 13px;\n  margin-bottom: 12px;\n}\n.acc-report-violation-help a {\n  color: #1976d2;\n}\n.acc-report-node {\n  background: #f8f9fa;\n  border-radius: 6px;\n  padding: 12px;\n  margin-top: 8px;\n}\n.acc-report-node-html {\n  font-family: monospace;\n  font-size: 12px;\n  background: #263238;\n  color: #80cbc4;\n  padding: 8px 12px;\n  border-radius: 4px;\n  overflow-x: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n.acc-report-node-fix {\n  margin-top: 8px;\n  font-size: 13px;\n  color: #333;\n}\n.acc-report-node-fix strong {\n  color: #1976d2;\n}\n.acc-report-success {\n  text-align: center;\n  padding: 40px;\n}\n.acc-report-success-icon {\n  width: 64px;\n  height: 64px;\n  background: #43a047;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin: 0 auto 16px;\n}\n.acc-report-success-icon svg {\n  width: 32px;\n  height: 32px;\n  fill: #fff;\n}\n.acc-report-footer {\n  padding: 12px 20px;\n  border-top: 1px solid #e0e0e0;\n  text-align: center;\n}\n.acc-report-powered {\n  font-size: 12px;\n}\n@media (max-width: 600px) {\n  .acc-report-dialog {\n    width: 95%;\n    max-height: 90vh;\n  }\n  .acc-report-summary {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n";
 
-    var readingGuideCSS = ".acc-rg {\r\n  position: fixed;\r\n  left: 0;\r\n  right: 0;\r\n  width: 100%;\r\n  pointer-events: none;\r\n  background-color: rgba(0, 0, 0, 0.4);\r\n  z-index: calc(var(--acc-widget-z-index, 100000) + 1);\r\n}\r\n.acc-rg-top {\r\n  top: 0;\r\n}\r\n.acc-rg-bottom {\r\n  bottom: 0;\r\n}\r\n/* Softer overlay when high contrast is active */\r\nbody.acc-high-contrast-mode .acc-rg {\r\n  background-color: rgba(0, 0, 0, 0.25);\r\n}\r\n";
+    var readingGuideCSS = ".acc-rg {\n  position: fixed;\n  left: 0;\n  right: 0;\n  width: 100%;\n  pointer-events: none;\n  background-color: rgba(0, 0, 0, 0.4);\n  z-index: calc(var(--acc-widget-z-index, 100000) + 1);\n}\n.acc-rg-top {\n  top: 0;\n}\n.acc-rg-bottom {\n  bottom: 0;\n}\n/* Softer overlay when high contrast is active */\nbody.acc-high-contrast-mode .acc-rg {\n  background-color: rgba(0, 0, 0, 0.25);\n}\n";
 
-    var skipLinkCSS = ".acc-skip-link {\r\n  font-family: inherit;\r\n  position: fixed;\r\n  top: 16px;\r\n  left: 16px;\r\n  background: var(--acc-card-bg, #ffffff);\r\n  color: var(--acc-text-color, #222222);\r\n  border: 3px solid var(--acc-primary-color, #1976d2);\r\n  border-radius: var(--acc-button-border-radius, 0.4rem);\r\n  padding: 8px 16px;\r\n  z-index: calc(var(--acc-widget-z-index, 100000) + 2);\r\n  transform: translateY(-140%);\r\n  opacity: 0;\r\n  pointer-events: none;\r\n  transition: transform 0.2s ease, opacity 0.2s ease;\r\n  font-size: 16px;\r\n  line-height: 1.2;\r\n  font-weight: 600;\r\n  background-clip: padding-box;\r\n}\r\n.acc-skip-link:focus,\r\n.acc-skip-link:active {\r\n  transform: translateY(0);\r\n  opacity: 1;\r\n  pointer-events: auto;\r\n  outline: var(--acc-focus-outline-width, 3px) solid var(--acc-focus-ring-color, #1976d2);\r\n  outline-offset: var(--acc-focus-outline-offset, 2px);\r\n}\r\n";
+    var skipLinkCSS = ".acc-skip-link {\n  font-family: inherit;\n  position: fixed;\n  top: 16px;\n  left: 16px;\n  background: var(--acc-card-bg, #ffffff);\n  color: var(--acc-text-color, #222222);\n  border: 3px solid var(--acc-primary-color, #1976d2);\n  border-radius: var(--acc-button-border-radius, 0.4rem);\n  padding: 8px 16px;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 2);\n  transform: translateY(-140%);\n  opacity: 0;\n  pointer-events: none;\n  transition: transform 0.2s ease, opacity 0.2s ease;\n  font-size: 16px;\n  line-height: 1.2;\n  font-weight: 600;\n  background-clip: padding-box;\n}\n.acc-skip-link:focus,\n.acc-skip-link:active {\n  transform: translateY(0);\n  opacity: 1;\n  pointer-events: auto;\n  outline: var(--acc-focus-outline-width, 3px) solid var(--acc-focus-ring-color, #1976d2);\n  outline-offset: var(--acc-focus-outline-offset, 2px);\n}\n";
 
-    var annotationsCSS = ".acc-annotation-layer {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 0;\r\n  height: 0;\r\n  z-index: calc(var(--acc-widget-z-index, 100000) + 5);\r\n  pointer-events: none;\r\n}\r\n\r\n.acc-annotation-marker {\r\n  position: absolute;\r\n  width: 20px;\r\n  height: 20px;\r\n  border: none;\r\n  border-radius: 999px;\r\n  color: #fff;\r\n  display: inline-flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);\r\n  cursor: pointer;\r\n  pointer-events: auto;\r\n  transform: translate(-40%, -50%);\r\n}\r\n\r\n.acc-annotation-marker svg {\r\n  width: 12px;\r\n  height: 12px;\r\n  fill: currentColor;\r\n}\r\n\r\n.acc-annotation-marker[data-impact=\"critical\"] {\r\n  background: #b71c1c;\r\n}\r\n\r\n.acc-annotation-marker[data-impact=\"serious\"] {\r\n  background: #d84315;\r\n}\r\n\r\n.acc-annotation-marker[data-impact=\"moderate\"] {\r\n  background: #ef6c00;\r\n}\r\n\r\n.acc-annotation-marker[data-impact=\"minor\"] {\r\n  background: #1565c0;\r\n}\r\n\r\n.acc-annotation-popup {\r\n  position: absolute;\r\n  width: min(320px, 92vw);\r\n  background: #fff;\r\n  color: #1a1a1a;\r\n  border: 1px solid #d7d7d7;\r\n  border-radius: 10px;\r\n  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);\r\n  padding: 12px;\r\n  pointer-events: auto;\r\n}\r\n\r\n.acc-annotation-popup-header {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  gap: 10px;\r\n}\r\n\r\n.acc-annotation-popup-title {\r\n  margin: 0;\r\n  font-size: 14px;\r\n  line-height: 1.3;\r\n}\r\n\r\n.acc-annotation-popup-close {\r\n  border: 0;\r\n  background: transparent;\r\n  padding: 2px;\r\n  width: 24px;\r\n  height: 24px;\r\n  color: #444;\r\n  cursor: pointer;\r\n}\r\n\r\n.acc-annotation-popup-close svg {\r\n  width: 20px;\r\n  height: 20px;\r\n  fill: currentColor;\r\n}\r\n\r\n.acc-annotation-popup p {\r\n  margin: 8px 0;\r\n  font-size: 13px;\r\n  line-height: 1.45;\r\n}\r\n\r\n.acc-annotation-popup a {\r\n  color: #0d47a1;\r\n  font-weight: 600;\r\n  text-decoration: underline;\r\n}\r\n";
+    var annotationsCSS = ".acc-annotation-layer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 0;\n  height: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 5);\n  pointer-events: none;\n}\n\n.acc-annotation-marker {\n  position: absolute;\n  width: 20px;\n  height: 20px;\n  border: none;\n  border-radius: 999px;\n  color: #fff;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);\n  cursor: pointer;\n  pointer-events: auto;\n  transform: translate(-40%, -50%);\n}\n\n.acc-annotation-marker svg {\n  width: 12px;\n  height: 12px;\n  fill: currentColor;\n}\n\n.acc-annotation-marker[data-impact=\"critical\"] {\n  background: #b71c1c;\n}\n\n.acc-annotation-marker[data-impact=\"serious\"] {\n  background: #d84315;\n}\n\n.acc-annotation-marker[data-impact=\"moderate\"] {\n  background: #ef6c00;\n}\n\n.acc-annotation-marker[data-impact=\"minor\"] {\n  background: #1565c0;\n}\n\n.acc-annotation-popup {\n  position: absolute;\n  width: min(320px, 92vw);\n  background: #fff;\n  color: #1a1a1a;\n  border: 1px solid #d7d7d7;\n  border-radius: 10px;\n  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);\n  padding: 12px;\n  pointer-events: auto;\n}\n\n.acc-annotation-popup-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n}\n\n.acc-annotation-popup-title {\n  margin: 0;\n  font-size: 14px;\n  line-height: 1.3;\n}\n\n.acc-annotation-popup-close {\n  border: 0;\n  background: transparent;\n  padding: 2px;\n  width: 24px;\n  height: 24px;\n  color: #444;\n  cursor: pointer;\n}\n\n.acc-annotation-popup-close svg {\n  width: 20px;\n  height: 20px;\n  fill: currentColor;\n}\n\n.acc-annotation-popup p {\n  margin: 8px 0;\n  font-size: 13px;\n  line-height: 1.45;\n}\n\n.acc-annotation-popup a {\n  color: #0d47a1;\n  font-weight: 600;\n  text-decoration: underline;\n}\n";
 
     const STATIC_STYLE_ID = 'acc-static-styles';
     const STATIC_STYLES = [
@@ -1278,9 +1266,8 @@ var AccessibleWebWidget = (function () {
           return { key: null, label: 'Contrast', icon: this.widgetIcons.contrast };
         },
 
-      updateContrastToggleButton(button, index) {
+      applyModeToggleButtonDisplay(button, display, modeAttribute) {
           if (!button) return;
-          const display = this.getContrastToggleDisplay(index);
           const iconNode = button.querySelector('svg');
           if (iconNode) {
             iconNode.outerHTML = display.icon;
@@ -1296,7 +1283,11 @@ var AccessibleWebWidget = (function () {
           }
           button.setAttribute('title', translatedLabel);
           button.setAttribute('aria-label', translatedLabel);
-          button.setAttribute('data-contrast-mode', display.key || 'off');
+          button.setAttribute(modeAttribute, display.key || 'off');
+        },
+
+      updateContrastToggleButton(button, index) {
+          this.applyModeToggleButtonDisplay(button, this.getContrastToggleDisplay(index), 'data-contrast-mode');
         },
 
       getSaturationToggleDisplay(index) {
@@ -1310,24 +1301,7 @@ var AccessibleWebWidget = (function () {
         },
 
       updateSaturationToggleButton(button, index) {
-          if (!button) return;
-          const display = this.getSaturationToggleDisplay(index);
-          const iconNode = button.querySelector('svg');
-          if (iconNode) {
-            iconNode.outerHTML = display.icon;
-          } else {
-            button.insertAdjacentHTML('afterbegin', display.icon);
-          }
-
-          const translatedLabel = this.translate(display.label);
-          const labelNode = button.querySelector('.acc-label');
-          if (labelNode) {
-            labelNode.setAttribute('data-acc-text', display.label);
-            labelNode.innerText = translatedLabel;
-          }
-          button.setAttribute('title', translatedLabel);
-          button.setAttribute('aria-label', translatedLabel);
-          button.setAttribute('data-saturation-mode', display.key || 'off');
+          this.applyModeToggleButtonDisplay(button, this.getSaturationToggleDisplay(index), 'data-saturation-mode');
         },
 
       ensureSkipLink() {
@@ -1695,13 +1669,18 @@ var AccessibleWebWidget = (function () {
             this.readableFontLoaded = true;
             return;
           }
+          const rawFontUrl = typeof this.options?.dyslexiaFontUrl === 'string' ? this.options.dyslexiaFontUrl.trim() : '';
+          const customFontUrl = rawFontUrl && !/["'()\\]/.test(rawFontUrl) ? rawFontUrl : '';
+          const fontSrc = customFontUrl
+            ? `url("${customFontUrl}")`
+            : `url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"),
+               url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype")`;
           const style = document.createElement('style');
           style.id = 'acc-readable-text-font';
           style.textContent = `
         @font-face {
           font-family: "OpenDyslexic3";
-          src: url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"),
-               url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype");
+          src: ${fontSrc};
           font-display: swap;
         }
       `;
@@ -2329,6 +2308,7 @@ var AccessibleWebWidget = (function () {
           violations.sort((a, b) => (severityOrder[a.impact] || 4) - (severityOrder[b.impact] || 4));
       
           violations.forEach((violation, index) => {
+            const safeHelpUrl = this.sanitizeUrl(violation.helpUrl);
             html += `
           <div class="acc-report-violation" data-index="${index}">
             <div class="acc-report-violation-header">
@@ -2338,9 +2318,9 @@ var AccessibleWebWidget = (function () {
             </div>
             <div class="acc-report-violation-details">
               <p class="acc-report-violation-desc">${this.escapeHtml(violation.description)}</p>
-              <p class="acc-report-violation-help">
-                <a href="${violation.helpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
-              </p>
+              ${safeHelpUrl ? `<p class="acc-report-violation-help">
+                <a href="${safeHelpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
+              </p>` : ''}
               ${violation.nodes.slice(0, 5).map(node => `
                 <div class="acc-report-node">
                   <div class="acc-report-node-html">${this.escapeHtml(node.html)}</div>
@@ -2385,6 +2365,12 @@ var AccessibleWebWidget = (function () {
         const div = document.createElement('div');
         div.textContent = str;
         return div.innerHTML;
+      },
+
+      sanitizeUrl(url) {
+        const value = String(url || '').trim();
+        if (!/^https?:\/\//i.test(value)) return '';
+        return value.replace(/"/g, '%22').replace(/'/g, '%27');
       },
 
       closeReportPanel() {
@@ -2444,6 +2430,7 @@ var AccessibleWebWidget = (function () {
         const code = String(languageCode || 'en').toLowerCase();
         const languageMap = {
           en: 'en-US',
+          pt: 'pt-BR',
           it: 'it-IT',
           fr: 'fr-FR',
           de: 'de-DE',
@@ -3071,6 +3058,7 @@ var AccessibleWebWidget = (function () {
         if (!annotation || !marker || !this.annotationLayer) return;
         this.clearAnnotationPopup();
 
+        const safeHelpUrl = this.sanitizeUrl(annotation.helpUrl);
         const popup = document.createElement('div');
         popup.className = 'acc-annotation-popup';
         popup.innerHTML = `
@@ -3081,7 +3069,7 @@ var AccessibleWebWidget = (function () {
       <p><strong>${this.translate(this.capitalizeFirst(annotation.impact))}</strong></p>
       <p>${this.escapeHtml(annotation.description)}</p>
       ${annotation.failureSummary ? `<p><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(annotation.failureSummary)}</p>` : ''}
-      ${annotation.helpUrl ? `<p><a href="${annotation.helpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a></p>` : ''}
+      ${safeHelpUrl ? `<p><a href="${safeHelpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a></p>` : ''}
     `;
         popup.__accMarker = marker;
 
@@ -3689,77 +3677,18 @@ var AccessibleWebWidget = (function () {
           this.injectStyle('acc-filter-style', css);
         },
 
-      cycleTextScale(enable = false) {
-          if (enable) {
-            this.textScaleIndex = (this.textScaleIndex + 1) % this.textScaleValues.length;
-            if (this.multiLevelFeatures['text-scale']) {
-              this.multiLevelFeatures['text-scale'].currentIndex = this.textScaleIndex;
-            }
-          } else {
-            this.textScaleIndex = 0;
-            if (this.multiLevelFeatures['text-scale']) {
-              this.multiLevelFeatures['text-scale'].currentIndex = -1;
-            }
-          }
-          const progressIndicator = document.querySelector(`.acc-progress-indicator[data-feature="text-scale"]`);
-          if (progressIndicator) {
-            const dots = progressIndicator.querySelectorAll('.acc-progress-dot');
-            dots.forEach(dot => dot.classList.remove('active'));
-            if (enable && this.textScaleIndex < dots.length) {
-              dots[this.textScaleIndex].classList.add('active');
-            }
-          }
-          const multiply = enable ? this.textScaleValues[this.textScaleIndex] : 1;
-          this.scaleText(multiply);
-          this.updateState({ 'text-scale': multiply });
-          return this.textScaleIndex;
-        },
-
       cycleMultiLevelFeature(featureKey, button) {
           const feature = this.multiLevelFeatures[featureKey];
           if (!feature || !button) return;
-
-          if (featureKey === 'contrast-toggle' || featureKey === 'saturation-toggle') {
-            const newIndex = feature.currentIndex + 1;
-            const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
-            this.updateColorFilterState(newActiveKey);
-            this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
-            this.applyVisualFilters();
-            return;
-          }
+          // Only the color filter toggles render as cycling buttons; text scale
+          // is controlled by the slider in the Text section.
+          if (featureKey !== 'contrast-toggle' && featureKey !== 'saturation-toggle') return;
 
           const newIndex = feature.currentIndex + 1;
-          if (newIndex >= feature.levels) {
-            feature.currentIndex = -1;
-            button.classList.remove('acc-selected');
-            button.setAttribute('aria-pressed', 'false');
-            this.updateState({ [featureKey]: featureKey === 'text-scale' ? 1 : false });
-            if (featureKey === 'text-scale') {
-              this.textScaleIndex = 0;
-            }
-          } else {
-            feature.currentIndex = newIndex;
-            button.classList.add('acc-selected');
-            button.setAttribute('aria-pressed', 'true');
-            const newValue = feature.values[newIndex];
-            this.updateState({ [featureKey]: newValue });
-            if (featureKey === 'text-scale') {
-              this.textScaleIndex = newIndex;
-            }
-          }
-          const indicator = button.querySelector(`.acc-progress-indicator[data-feature="${featureKey}"]`);
-          if (indicator) {
-            const dots = indicator.querySelectorAll('.acc-progress-dot');
-            dots.forEach((dot, i) => {
-              dot.classList.toggle('active', i === feature.currentIndex);
-            });
-          }
-          if (featureKey === 'text-scale') {
-            const multiply = feature.currentIndex >= 0 ? feature.values[feature.currentIndex] : 1;
-            this.scaleText(multiply);
-          } else {
-            this.applyVisualFilters();
-          }
+          const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
+          this.updateColorFilterState(newActiveKey);
+          this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
+          this.applyVisualFilters();
         },
 
       resetEnhancements() {
@@ -4292,6 +4221,46 @@ var AccessibleWebWidget = (function () {
               { key: 'interaction', label: 'Interaction', containerClass: 'acc-options' }
             ];
 
+            const sortOptionsByOrder = (sectionOptions, order) => {
+              sectionOptions.sort((a, b) => {
+                const indexA = order.indexOf(a.key);
+                const indexB = order.indexOf(b.key);
+                const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
+                const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
+                return rankA - rankB;
+              });
+            };
+
+            const renderThinRowSection = (section, sectionOptions, { order, firstRowKeys, secondRowKeys, specialContent = '' }) => {
+              sortOptionsByOrder(sectionOptions, order);
+              const firstRowOptions = sectionOptions.filter(option => firstRowKeys.has(option.key));
+              const secondRowOptions = sectionOptions.filter(option => secondRowKeys.has(option.key));
+              const remainingOptions = sectionOptions.filter(option => (
+                !firstRowKeys.has(option.key) && !secondRowKeys.has(option.key)
+              ));
+              const firstRowHtml = firstRowOptions.length
+                ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstRowOptions, 'acc-text-inline')}</div>`
+                : '';
+              const secondRowHtml = secondRowOptions.length
+                ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondRowOptions, 'acc-text-inline')}</div>`
+                : '';
+              const remainingHtml = remainingOptions.length
+                ? `<div class="${section.containerClass}">${this.renderOptions(remainingOptions, section.optionClass || '')}</div>`
+                : '';
+
+              if (!specialContent && !firstRowHtml && !secondRowHtml && !remainingHtml) return '';
+
+              return `
+            <section class="acc-option-category acc-option-category-${section.key}">
+              <div class="acc-section-title acc-label">${section.label}</div>
+              ${specialContent}
+              ${firstRowHtml}
+              ${secondRowHtml}
+              ${remainingHtml}
+            </section>
+          `;
+            };
+
             const sectionMarkup = sectionConfig.map(section => {
               let sectionOptions = groupedOptions[section.key];
               let specialContent = '';
@@ -4299,126 +4268,30 @@ var AccessibleWebWidget = (function () {
               if (section.key === 'text') {
                 const textScaleOption = sectionOptions.find(option => option.key === 'text-scale');
                 sectionOptions = sectionOptions.filter(option => option.key !== 'text-scale');
-                const textOrder = ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'];
-                sectionOptions.sort((a, b) => {
-                  const indexA = textOrder.indexOf(a.key);
-                  const indexB = textOrder.indexOf(b.key);
-                  const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
-                  const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
-                  return rankA - rankB;
+                return renderThinRowSection(section, sectionOptions, {
+                  order: ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'],
+                  firstRowKeys: new Set(['line-spacing', 'letter-spacing']),
+                  secondRowKeys: new Set(['bold-text', 'readable-text']),
+                  specialContent: textScaleOption
+                    ? this.renderTextScaleControl(config.states?.['text-scale'] || 1)
+                    : ''
                 });
-                if (textScaleOption) {
-                  specialContent = this.renderTextScaleControl(config.states?.['text-scale'] || 1);
-                }
-
-                const firstThinRowKeys = new Set(['line-spacing', 'letter-spacing']);
-                const secondThinRowKeys = new Set(['bold-text', 'readable-text']);
-                const firstThinRowOptions = sectionOptions.filter(option => firstThinRowKeys.has(option.key));
-                const secondThinRowOptions = sectionOptions.filter(option => secondThinRowKeys.has(option.key));
-                const remainingTextOptions = sectionOptions.filter(option => (
-                  !firstThinRowKeys.has(option.key) && !secondThinRowKeys.has(option.key)
-                ));
-                const firstThinRowHtml = firstThinRowOptions.length
-                  ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstThinRowOptions, 'acc-text-inline')}</div>`
-                  : '';
-                const secondThinRowHtml = secondThinRowOptions.length
-                  ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondThinRowOptions, 'acc-text-inline')}</div>`
-                  : '';
-                const remainingTextHtml = remainingTextOptions.length
-                  ? `<div class="${section.containerClass}">${this.renderOptions(remainingTextOptions, section.optionClass || '')}</div>`
-                  : '';
-
-                if (!specialContent && !firstThinRowHtml && !secondThinRowHtml && !remainingTextHtml) return '';
-
-                return `
-              <section class="acc-option-category acc-option-category-${section.key}">
-                <div class="acc-section-title acc-label">${section.label}</div>
-                ${specialContent}
-                ${firstThinRowHtml}
-                ${secondThinRowHtml}
-                ${remainingTextHtml}
-              </section>
-            `;
               }
 
               if (section.key === 'color') {
-                const colorOrder = ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'];
-                sectionOptions.sort((a, b) => {
-                  const indexA = colorOrder.indexOf(a.key);
-                  const indexB = colorOrder.indexOf(b.key);
-                  const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
-                  const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
-                  return rankA - rankB;
+                return renderThinRowSection(section, sectionOptions, {
+                  order: ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'],
+                  firstRowKeys: new Set(['contrast-toggle', 'saturation-toggle']),
+                  secondRowKeys: new Set(['invert-colors', 'high-contrast-mode'])
                 });
-
-                const firstThinRowKeys = new Set(['contrast-toggle', 'saturation-toggle']);
-                const secondThinRowKeys = new Set(['invert-colors', 'high-contrast-mode']);
-                const firstThinRowOptions = sectionOptions.filter(option => firstThinRowKeys.has(option.key));
-                const secondThinRowOptions = sectionOptions.filter(option => secondThinRowKeys.has(option.key));
-                const remainingColorOptions = sectionOptions.filter(option => (
-                  !firstThinRowKeys.has(option.key) && !secondThinRowKeys.has(option.key)
-                ));
-
-                const firstThinRowHtml = firstThinRowOptions.length
-                  ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstThinRowOptions, 'acc-text-inline')}</div>`
-                  : '';
-                const secondThinRowHtml = secondThinRowOptions.length
-                  ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondThinRowOptions, 'acc-text-inline')}</div>`
-                  : '';
-                const remainingColorHtml = remainingColorOptions.length
-                  ? `<div class="${section.containerClass}">${this.renderOptions(remainingColorOptions, section.optionClass || '')}</div>`
-                  : '';
-
-                if (!firstThinRowHtml && !secondThinRowHtml && !remainingColorHtml) return '';
-
-                return `
-              <section class="acc-option-category acc-option-category-${section.key}">
-                <div class="acc-section-title acc-label">${section.label}</div>
-                ${firstThinRowHtml}
-                ${secondThinRowHtml}
-                ${remainingColorHtml}
-              </section>
-            `;
               }
 
               if (section.key === 'reading') {
-                const readingOrder = ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout'];
-                sectionOptions.sort((a, b) => {
-                  const indexA = readingOrder.indexOf(a.key);
-                  const indexB = readingOrder.indexOf(b.key);
-                  const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
-                  const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
-                  return rankA - rankB;
+                return renderThinRowSection(section, sectionOptions, {
+                  order: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout'],
+                  firstRowKeys: new Set(['highlight-links', 'highlight-title']),
+                  secondRowKeys: new Set(['reading-aid', 'simple-layout'])
                 });
-
-                const firstThinRowKeys = new Set(['highlight-links', 'highlight-title']);
-                const secondThinRowKeys = new Set(['reading-aid', 'simple-layout']);
-                const firstThinRowOptions = sectionOptions.filter(option => firstThinRowKeys.has(option.key));
-                const secondThinRowOptions = sectionOptions.filter(option => secondThinRowKeys.has(option.key));
-                const remainingReadingOptions = sectionOptions.filter(option => (
-                  !firstThinRowKeys.has(option.key) && !secondThinRowKeys.has(option.key)
-                ));
-
-                const firstThinRowHtml = firstThinRowOptions.length
-                  ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstThinRowOptions, 'acc-text-inline')}</div>`
-                  : '';
-                const secondThinRowHtml = secondThinRowOptions.length
-                  ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondThinRowOptions, 'acc-text-inline')}</div>`
-                  : '';
-                const remainingReadingHtml = remainingReadingOptions.length
-                  ? `<div class="${section.containerClass}">${this.renderOptions(remainingReadingOptions, section.optionClass || '')}</div>`
-                  : '';
-
-                if (!firstThinRowHtml && !secondThinRowHtml && !remainingReadingHtml) return '';
-
-                return `
-              <section class="acc-option-category acc-option-category-${section.key}">
-                <div class="acc-section-title acc-label">${section.label}</div>
-                ${firstThinRowHtml}
-                ${secondThinRowHtml}
-                ${remainingReadingHtml}
-              </section>
-            `;
               }
 
               const sectionOptionsHtml = sectionOptions.length
@@ -4587,14 +4460,6 @@ var AccessibleWebWidget = (function () {
                 }
               }
             });
-            menu.querySelectorAll('[role="button"], button').forEach(el => {
-              el.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  el.click();
-                }
-              });
-            });
             this.translateMenuUI(menuContainer);
             const activeColorFilter = this.getActiveColorFilterKey(config.states);
             this.setColorFilterUI(menu, activeColorFilter);
@@ -4629,10 +4494,10 @@ var AccessibleWebWidget = (function () {
 
           const widgetTemplate = `
         <div class="acc-widget">
-          <a href="#" id="accessibilityWidget" class="acc-toggle-btn" title="Open Accessibility Menu" role="button" aria-label="Open accessibility menu" aria-expanded="false">
+          <button type="button" id="accessibilityWidget" class="acc-toggle-btn" title="Open Accessibility Menu" aria-label="Open accessibility menu" aria-expanded="false">
             <span class="acc-toggle-icon" aria-hidden="true">${this.getWidgetIconMarkup(options?.icon)}</span>
             <span class="acc-violation-bubble" data-severity="warning" hidden> </span>
-          </a>
+          </button>
         </div>
         `;
           
@@ -4664,8 +4529,7 @@ var AccessibleWebWidget = (function () {
             }
             
             let menu;
-            btn.addEventListener("click", (event) => {
-              event.preventDefault();
+            btn.addEventListener("click", () => {
               if (!menu) {
                 menu = this.displayMenu({ ...options, container: widget });
                 if (!menu) return;
@@ -4695,15 +4559,7 @@ var AccessibleWebWidget = (function () {
                 this.closeMenu(menu, btn);
               }
             });
-            
-            // Handle keyboard interaction
-            btn.addEventListener("keydown", (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                btn.click();
-              }
-            });
-            
+
             document.body.appendChild(widget);
             this.translateMenuUI(widget);
             this.ensureSkipLink();
@@ -4805,23 +4661,21 @@ var AccessibleWebWidget = (function () {
 
       launchWidget(args = {}) {
               try {
-                let options = { lang: this.getDefaultLanguage(), position: 'bottom-right', offset: [20, 20] };
-                
-                // Load the saved configuration
-                try {
-                  const savedConfig = this.fetchSavedConfig();
-                  if (savedConfig) {
-                    options = { ...options, ...JSON.parse(savedConfig) };
-                    // Note: We don't call applyEnhancements() here anymore as it's already called in startAccessibleWebWidget
-                  }
-                } catch (e) {
-                  console.warn('Error loading saved config:', e);
+                // getDefaultLanguage() already prefers the saved language, so the
+                // saved config only contributes `lang` here. Presentation options
+                // (position, offset, size, icon) always come from the embed
+                // configuration and are never persisted.
+                const options = {
+                  lang: this.getDefaultLanguage(),
+                  position: 'bottom-right',
+                  offset: [20, 20],
+                  ...args
+                };
+
+                if (options.lang) {
+                  this.saveConfig({ lang: options.lang });
                 }
-                
-                // Merge with new arguments
-                options = { ...options, ...args };
-                this.saveConfig(options);
-                
+
                 // Display the widget UI
                 this.displayWidget(options);
               } catch (e) {
@@ -5051,18 +4905,7 @@ var AccessibleWebWidget = (function () {
 
         this.applyThemeOverrides(this.options);
 
-        const normalizeTtsRate = (value) => {
-          const numeric = Number(value);
-          if (!Number.isFinite(numeric)) return 1;
-          return Math.min(2, Math.max(0.5, numeric));
-        };
-
-        const normalizeTtsPitch = (value) => {
-          const numeric = Number(value);
-          if (!Number.isFinite(numeric)) return 1;
-          return Math.min(2, Math.max(0, numeric));
-        };
-
+        // Raw values; getNativeTtsRate()/getNativeTtsPitch() clamp on read.
         this.nativeTtsConfig = {
           preferredVoiceName: (
             typeof options.ttsNativeVoiceName === 'string' &&
@@ -5072,8 +4915,8 @@ var AccessibleWebWidget = (function () {
             typeof options.ttsNativeVoiceLang === 'string' &&
             options.ttsNativeVoiceLang.trim()
           ) ? options.ttsNativeVoiceLang.trim() : '',
-          rate: normalizeTtsRate(options.ttsRate),
-          pitch: normalizeTtsPitch(options.ttsPitch)
+          rate: options.ttsRate,
+          pitch: options.ttsPitch
         };
 
         if (this.options.offset) {

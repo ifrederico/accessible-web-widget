@@ -439,6 +439,46 @@ export const uiMethods = {
           { key: 'interaction', label: 'Interaction', containerClass: 'acc-options' }
         ];
 
+        const sortOptionsByOrder = (sectionOptions, order) => {
+          sectionOptions.sort((a, b) => {
+            const indexA = order.indexOf(a.key);
+            const indexB = order.indexOf(b.key);
+            const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
+            const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
+            return rankA - rankB;
+          });
+        };
+
+        const renderThinRowSection = (section, sectionOptions, { order, firstRowKeys, secondRowKeys, specialContent = '' }) => {
+          sortOptionsByOrder(sectionOptions, order);
+          const firstRowOptions = sectionOptions.filter(option => firstRowKeys.has(option.key));
+          const secondRowOptions = sectionOptions.filter(option => secondRowKeys.has(option.key));
+          const remainingOptions = sectionOptions.filter(option => (
+            !firstRowKeys.has(option.key) && !secondRowKeys.has(option.key)
+          ));
+          const firstRowHtml = firstRowOptions.length
+            ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstRowOptions, 'acc-text-inline')}</div>`
+            : '';
+          const secondRowHtml = secondRowOptions.length
+            ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondRowOptions, 'acc-text-inline')}</div>`
+            : '';
+          const remainingHtml = remainingOptions.length
+            ? `<div class="${section.containerClass}">${this.renderOptions(remainingOptions, section.optionClass || '')}</div>`
+            : '';
+
+          if (!specialContent && !firstRowHtml && !secondRowHtml && !remainingHtml) return '';
+
+          return `
+            <section class="acc-option-category acc-option-category-${section.key}">
+              <div class="acc-section-title acc-label">${section.label}</div>
+              ${specialContent}
+              ${firstRowHtml}
+              ${secondRowHtml}
+              ${remainingHtml}
+            </section>
+          `;
+        };
+
         const sectionMarkup = sectionConfig.map(section => {
           let sectionOptions = groupedOptions[section.key];
           let specialContent = '';
@@ -446,126 +486,30 @@ export const uiMethods = {
           if (section.key === 'text') {
             const textScaleOption = sectionOptions.find(option => option.key === 'text-scale');
             sectionOptions = sectionOptions.filter(option => option.key !== 'text-scale');
-            const textOrder = ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'];
-            sectionOptions.sort((a, b) => {
-              const indexA = textOrder.indexOf(a.key);
-              const indexB = textOrder.indexOf(b.key);
-              const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
-              const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
-              return rankA - rankB;
+            return renderThinRowSection(section, sectionOptions, {
+              order: ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'],
+              firstRowKeys: new Set(['line-spacing', 'letter-spacing']),
+              secondRowKeys: new Set(['bold-text', 'readable-text']),
+              specialContent: textScaleOption
+                ? this.renderTextScaleControl(config.states?.['text-scale'] || 1)
+                : ''
             });
-            if (textScaleOption) {
-              specialContent = this.renderTextScaleControl(config.states?.['text-scale'] || 1);
-            }
-
-            const firstThinRowKeys = new Set(['line-spacing', 'letter-spacing']);
-            const secondThinRowKeys = new Set(['bold-text', 'readable-text']);
-            const firstThinRowOptions = sectionOptions.filter(option => firstThinRowKeys.has(option.key));
-            const secondThinRowOptions = sectionOptions.filter(option => secondThinRowKeys.has(option.key));
-            const remainingTextOptions = sectionOptions.filter(option => (
-              !firstThinRowKeys.has(option.key) && !secondThinRowKeys.has(option.key)
-            ));
-            const firstThinRowHtml = firstThinRowOptions.length
-              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstThinRowOptions, 'acc-text-inline')}</div>`
-              : '';
-            const secondThinRowHtml = secondThinRowOptions.length
-              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondThinRowOptions, 'acc-text-inline')}</div>`
-              : '';
-            const remainingTextHtml = remainingTextOptions.length
-              ? `<div class="${section.containerClass}">${this.renderOptions(remainingTextOptions, section.optionClass || '')}</div>`
-              : '';
-
-            if (!specialContent && !firstThinRowHtml && !secondThinRowHtml && !remainingTextHtml) return '';
-
-            return `
-              <section class="acc-option-category acc-option-category-${section.key}">
-                <div class="acc-section-title acc-label">${section.label}</div>
-                ${specialContent}
-                ${firstThinRowHtml}
-                ${secondThinRowHtml}
-                ${remainingTextHtml}
-              </section>
-            `;
           }
 
           if (section.key === 'color') {
-            const colorOrder = ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'];
-            sectionOptions.sort((a, b) => {
-              const indexA = colorOrder.indexOf(a.key);
-              const indexB = colorOrder.indexOf(b.key);
-              const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
-              const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
-              return rankA - rankB;
+            return renderThinRowSection(section, sectionOptions, {
+              order: ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'],
+              firstRowKeys: new Set(['contrast-toggle', 'saturation-toggle']),
+              secondRowKeys: new Set(['invert-colors', 'high-contrast-mode'])
             });
-
-            const firstThinRowKeys = new Set(['contrast-toggle', 'saturation-toggle']);
-            const secondThinRowKeys = new Set(['invert-colors', 'high-contrast-mode']);
-            const firstThinRowOptions = sectionOptions.filter(option => firstThinRowKeys.has(option.key));
-            const secondThinRowOptions = sectionOptions.filter(option => secondThinRowKeys.has(option.key));
-            const remainingColorOptions = sectionOptions.filter(option => (
-              !firstThinRowKeys.has(option.key) && !secondThinRowKeys.has(option.key)
-            ));
-
-            const firstThinRowHtml = firstThinRowOptions.length
-              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstThinRowOptions, 'acc-text-inline')}</div>`
-              : '';
-            const secondThinRowHtml = secondThinRowOptions.length
-              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondThinRowOptions, 'acc-text-inline')}</div>`
-              : '';
-            const remainingColorHtml = remainingColorOptions.length
-              ? `<div class="${section.containerClass}">${this.renderOptions(remainingColorOptions, section.optionClass || '')}</div>`
-              : '';
-
-            if (!firstThinRowHtml && !secondThinRowHtml && !remainingColorHtml) return '';
-
-            return `
-              <section class="acc-option-category acc-option-category-${section.key}">
-                <div class="acc-section-title acc-label">${section.label}</div>
-                ${firstThinRowHtml}
-                ${secondThinRowHtml}
-                ${remainingColorHtml}
-              </section>
-            `;
           }
 
           if (section.key === 'reading') {
-            const readingOrder = ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout'];
-            sectionOptions.sort((a, b) => {
-              const indexA = readingOrder.indexOf(a.key);
-              const indexB = readingOrder.indexOf(b.key);
-              const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
-              const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
-              return rankA - rankB;
+            return renderThinRowSection(section, sectionOptions, {
+              order: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout'],
+              firstRowKeys: new Set(['highlight-links', 'highlight-title']),
+              secondRowKeys: new Set(['reading-aid', 'simple-layout'])
             });
-
-            const firstThinRowKeys = new Set(['highlight-links', 'highlight-title']);
-            const secondThinRowKeys = new Set(['reading-aid', 'simple-layout']);
-            const firstThinRowOptions = sectionOptions.filter(option => firstThinRowKeys.has(option.key));
-            const secondThinRowOptions = sectionOptions.filter(option => secondThinRowKeys.has(option.key));
-            const remainingReadingOptions = sectionOptions.filter(option => (
-              !firstThinRowKeys.has(option.key) && !secondThinRowKeys.has(option.key)
-            ));
-
-            const firstThinRowHtml = firstThinRowOptions.length
-              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstThinRowOptions, 'acc-text-inline')}</div>`
-              : '';
-            const secondThinRowHtml = secondThinRowOptions.length
-              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondThinRowOptions, 'acc-text-inline')}</div>`
-              : '';
-            const remainingReadingHtml = remainingReadingOptions.length
-              ? `<div class="${section.containerClass}">${this.renderOptions(remainingReadingOptions, section.optionClass || '')}</div>`
-              : '';
-
-            if (!firstThinRowHtml && !secondThinRowHtml && !remainingReadingHtml) return '';
-
-            return `
-              <section class="acc-option-category acc-option-category-${section.key}">
-                <div class="acc-section-title acc-label">${section.label}</div>
-                ${firstThinRowHtml}
-                ${secondThinRowHtml}
-                ${remainingReadingHtml}
-              </section>
-            `;
           }
 
           const sectionOptionsHtml = sectionOptions.length
@@ -734,14 +678,6 @@ export const uiMethods = {
             }
           }
         });
-        menu.querySelectorAll('[role="button"], button').forEach(el => {
-          el.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              el.click();
-            }
-          });
-        });
         this.translateMenuUI(menuContainer);
         const activeColorFilter = this.getActiveColorFilterKey(config.states);
         this.setColorFilterUI(menu, activeColorFilter);
@@ -776,10 +712,10 @@ export const uiMethods = {
 
       const widgetTemplate = `
         <div class="acc-widget">
-          <a href="#" id="accessibilityWidget" class="acc-toggle-btn" title="Open Accessibility Menu" role="button" aria-label="Open accessibility menu" aria-expanded="false">
+          <button type="button" id="accessibilityWidget" class="acc-toggle-btn" title="Open Accessibility Menu" aria-label="Open accessibility menu" aria-expanded="false">
             <span class="acc-toggle-icon" aria-hidden="true">${this.getWidgetIconMarkup(options?.icon)}</span>
             <span class="acc-violation-bubble" data-severity="warning" hidden> </span>
-          </a>
+          </button>
         </div>
         `;
       
@@ -811,8 +747,7 @@ export const uiMethods = {
         }
         
         let menu;
-        btn.addEventListener("click", (event) => {
-          event.preventDefault();
+        btn.addEventListener("click", () => {
           if (!menu) {
             menu = this.displayMenu({ ...options, container: widget });
             if (!menu) return;
@@ -842,15 +777,7 @@ export const uiMethods = {
             this.closeMenu(menu, btn);
           }
         });
-        
-        // Handle keyboard interaction
-        btn.addEventListener("keydown", (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            btn.click();
-          }
-        });
-        
+
         document.body.appendChild(widget);
         this.translateMenuUI(widget);
         this.ensureSkipLink();
@@ -952,23 +879,21 @@ export const uiMethods = {
 
   launchWidget(args = {}) {
           try {
-            let options = { lang: this.getDefaultLanguage(), position: 'bottom-right', offset: [20, 20] };
-            
-            // Load the saved configuration
-            try {
-              const savedConfig = this.fetchSavedConfig();
-              if (savedConfig) {
-                options = { ...options, ...JSON.parse(savedConfig) };
-                // Note: We don't call applyEnhancements() here anymore as it's already called in startAccessibleWebWidget
-              }
-            } catch (e) {
-              console.warn('Error loading saved config:', e);
+            // getDefaultLanguage() already prefers the saved language, so the
+            // saved config only contributes `lang` here. Presentation options
+            // (position, offset, size, icon) always come from the embed
+            // configuration and are never persisted.
+            const options = {
+              lang: this.getDefaultLanguage(),
+              position: 'bottom-right',
+              offset: [20, 20],
+              ...args
+            };
+
+            if (options.lang) {
+              this.saveConfig({ lang: options.lang });
             }
-            
-            // Merge with new arguments
-            options = { ...options, ...args };
-            this.saveConfig(options);
-            
+
             // Display the widget UI
             this.displayWidget(options);
           } catch (e) {

@@ -22,9 +22,8 @@ export const featureMethods = {
       return { key: null, label: 'Contrast', icon: this.widgetIcons.contrast };
     },
 
-  updateContrastToggleButton(button, index) {
+  applyModeToggleButtonDisplay(button, display, modeAttribute) {
       if (!button) return;
-      const display = this.getContrastToggleDisplay(index);
       const iconNode = button.querySelector('svg');
       if (iconNode) {
         iconNode.outerHTML = display.icon;
@@ -40,7 +39,11 @@ export const featureMethods = {
       }
       button.setAttribute('title', translatedLabel);
       button.setAttribute('aria-label', translatedLabel);
-      button.setAttribute('data-contrast-mode', display.key || 'off');
+      button.setAttribute(modeAttribute, display.key || 'off');
+    },
+
+  updateContrastToggleButton(button, index) {
+      this.applyModeToggleButtonDisplay(button, this.getContrastToggleDisplay(index), 'data-contrast-mode');
     },
 
   getSaturationToggleDisplay(index) {
@@ -54,24 +57,7 @@ export const featureMethods = {
     },
 
   updateSaturationToggleButton(button, index) {
-      if (!button) return;
-      const display = this.getSaturationToggleDisplay(index);
-      const iconNode = button.querySelector('svg');
-      if (iconNode) {
-        iconNode.outerHTML = display.icon;
-      } else {
-        button.insertAdjacentHTML('afterbegin', display.icon);
-      }
-
-      const translatedLabel = this.translate(display.label);
-      const labelNode = button.querySelector('.acc-label');
-      if (labelNode) {
-        labelNode.setAttribute('data-acc-text', display.label);
-        labelNode.innerText = translatedLabel;
-      }
-      button.setAttribute('title', translatedLabel);
-      button.setAttribute('aria-label', translatedLabel);
-      button.setAttribute('data-saturation-mode', display.key || 'off');
+      this.applyModeToggleButtonDisplay(button, this.getSaturationToggleDisplay(index), 'data-saturation-mode');
     },
 
   ensureSkipLink() {
@@ -439,13 +425,18 @@ export const featureMethods = {
         this.readableFontLoaded = true;
         return;
       }
+      const rawFontUrl = typeof this.options?.dyslexiaFontUrl === 'string' ? this.options.dyslexiaFontUrl.trim() : '';
+      const customFontUrl = rawFontUrl && !/["'()\\]/.test(rawFontUrl) ? rawFontUrl : '';
+      const fontSrc = customFontUrl
+        ? `url("${customFontUrl}")`
+        : `url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"),
+               url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype")`;
       const style = document.createElement('style');
       style.id = 'acc-readable-text-font';
       style.textContent = `
         @font-face {
           font-family: "OpenDyslexic3";
-          src: url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"),
-               url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype");
+          src: ${fontSrc};
           font-display: swap;
         }
       `;
@@ -1073,6 +1064,7 @@ export const featureMethods = {
       violations.sort((a, b) => (severityOrder[a.impact] || 4) - (severityOrder[b.impact] || 4));
   
       violations.forEach((violation, index) => {
+        const safeHelpUrl = this.sanitizeUrl(violation.helpUrl);
         html += `
           <div class="acc-report-violation" data-index="${index}">
             <div class="acc-report-violation-header">
@@ -1082,9 +1074,9 @@ export const featureMethods = {
             </div>
             <div class="acc-report-violation-details">
               <p class="acc-report-violation-desc">${this.escapeHtml(violation.description)}</p>
-              <p class="acc-report-violation-help">
-                <a href="${violation.helpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
-              </p>
+              ${safeHelpUrl ? `<p class="acc-report-violation-help">
+                <a href="${safeHelpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
+              </p>` : ''}
               ${violation.nodes.slice(0, 5).map(node => `
                 <div class="acc-report-node">
                   <div class="acc-report-node-html">${this.escapeHtml(node.html)}</div>
@@ -1129,6 +1121,12 @@ export const featureMethods = {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
+  },
+
+  sanitizeUrl(url) {
+    const value = String(url || '').trim();
+    if (!/^https?:\/\//i.test(value)) return '';
+    return value.replace(/"/g, '%22').replace(/'/g, '%27');
   },
 
   closeReportPanel() {
@@ -1188,6 +1186,7 @@ export const featureMethods = {
     const code = String(languageCode || 'en').toLowerCase();
     const languageMap = {
       en: 'en-US',
+      pt: 'pt-BR',
       it: 'it-IT',
       fr: 'fr-FR',
       de: 'de-DE',
@@ -1815,6 +1814,7 @@ export const featureMethods = {
     if (!annotation || !marker || !this.annotationLayer) return;
     this.clearAnnotationPopup();
 
+    const safeHelpUrl = this.sanitizeUrl(annotation.helpUrl);
     const popup = document.createElement('div');
     popup.className = 'acc-annotation-popup';
     popup.innerHTML = `
@@ -1825,7 +1825,7 @@ export const featureMethods = {
       <p><strong>${this.translate(this.capitalizeFirst(annotation.impact))}</strong></p>
       <p>${this.escapeHtml(annotation.description)}</p>
       ${annotation.failureSummary ? `<p><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(annotation.failureSummary)}</p>` : ''}
-      ${annotation.helpUrl ? `<p><a href="${annotation.helpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a></p>` : ''}
+      ${safeHelpUrl ? `<p><a href="${safeHelpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a></p>` : ''}
     `;
     popup.__accMarker = marker;
 
@@ -2433,77 +2433,18 @@ export const featureMethods = {
       this.injectStyle('acc-filter-style', css);
     },
 
-  cycleTextScale(enable = false) {
-      if (enable) {
-        this.textScaleIndex = (this.textScaleIndex + 1) % this.textScaleValues.length;
-        if (this.multiLevelFeatures['text-scale']) {
-          this.multiLevelFeatures['text-scale'].currentIndex = this.textScaleIndex;
-        }
-      } else {
-        this.textScaleIndex = 0;
-        if (this.multiLevelFeatures['text-scale']) {
-          this.multiLevelFeatures['text-scale'].currentIndex = -1;
-        }
-      }
-      const progressIndicator = document.querySelector(`.acc-progress-indicator[data-feature="text-scale"]`);
-      if (progressIndicator) {
-        const dots = progressIndicator.querySelectorAll('.acc-progress-dot');
-        dots.forEach(dot => dot.classList.remove('active'));
-        if (enable && this.textScaleIndex < dots.length) {
-          dots[this.textScaleIndex].classList.add('active');
-        }
-      }
-      const multiply = enable ? this.textScaleValues[this.textScaleIndex] : 1;
-      this.scaleText(multiply);
-      this.updateState({ 'text-scale': multiply });
-      return this.textScaleIndex;
-    },
-
   cycleMultiLevelFeature(featureKey, button) {
       const feature = this.multiLevelFeatures[featureKey];
       if (!feature || !button) return;
-
-      if (featureKey === 'contrast-toggle' || featureKey === 'saturation-toggle') {
-        const newIndex = feature.currentIndex + 1;
-        const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
-        this.updateColorFilterState(newActiveKey);
-        this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
-        this.applyVisualFilters();
-        return;
-      }
+      // Only the color filter toggles render as cycling buttons; text scale
+      // is controlled by the slider in the Text section.
+      if (featureKey !== 'contrast-toggle' && featureKey !== 'saturation-toggle') return;
 
       const newIndex = feature.currentIndex + 1;
-      if (newIndex >= feature.levels) {
-        feature.currentIndex = -1;
-        button.classList.remove('acc-selected');
-        button.setAttribute('aria-pressed', 'false');
-        this.updateState({ [featureKey]: featureKey === 'text-scale' ? 1 : false });
-        if (featureKey === 'text-scale') {
-          this.textScaleIndex = 0;
-        }
-      } else {
-        feature.currentIndex = newIndex;
-        button.classList.add('acc-selected');
-        button.setAttribute('aria-pressed', 'true');
-        const newValue = feature.values[newIndex];
-        this.updateState({ [featureKey]: newValue });
-        if (featureKey === 'text-scale') {
-          this.textScaleIndex = newIndex;
-        }
-      }
-      const indicator = button.querySelector(`.acc-progress-indicator[data-feature="${featureKey}"]`);
-      if (indicator) {
-        const dots = indicator.querySelectorAll('.acc-progress-dot');
-        dots.forEach((dot, i) => {
-          dot.classList.toggle('active', i === feature.currentIndex);
-        });
-      }
-      if (featureKey === 'text-scale') {
-        const multiply = feature.currentIndex >= 0 ? feature.values[feature.currentIndex] : 1;
-        this.scaleText(multiply);
-      } else {
-        this.applyVisualFilters();
-      }
+      const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
+      this.updateColorFilterState(newActiveKey);
+      this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
+      this.applyVisualFilters();
     },
 
   resetEnhancements() {
