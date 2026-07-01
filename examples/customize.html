@@ -701,10 +701,17 @@
                     '</html>';
             }
 
+            function getPreviewWidgetRoot(frameDocument) {
+                var host = frameDocument.getElementById('acc-widget-host');
+                if (host && host.shadowRoot) return host.shadowRoot;
+                return frameDocument;
+            }
+
             function applyLayoutToPreview(config) {
                 var frameWindow = previewFrame.contentWindow;
                 if (!frameWindow || !frameWindow.document) return false;
-                var btn = frameWindow.document.querySelector('.acc-widget .acc-toggle-btn');
+                var widgetRoot = getPreviewWidgetRoot(frameWindow.document);
+                var btn = widgetRoot.querySelector('.acc-widget .acc-toggle-btn');
                 if (!btn) return false;
 
                 btn.style.left = 'auto';
@@ -729,7 +736,7 @@
 
                 btn.style.setProperty('--acc-button-size', config.size + 'px');
 
-                var menu = frameWindow.document.querySelector('.acc-menu');
+                var menu = widgetRoot.querySelector('.acc-menu');
                 if (menu) {
                     var isRightAligned = config.position === 'bottom-right' || config.position === 'top-right';
                     menu.style.right = isRightAligned ? 'var(--acc-menu-inline-gap, 12px)' : 'auto';

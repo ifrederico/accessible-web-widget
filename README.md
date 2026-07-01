@@ -20,7 +20,7 @@ Drop this into your HTML and you're done:
 
 It initializes on page load. No config needed.
 
-To pin a specific version:
+For production, pin a specific version — `@latest` resolves to the newest release automatically, which means updates ship to your site without review:
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.4/dist/accessible-web-widget.min.js"></script>
@@ -30,12 +30,15 @@ Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widg
 
 ## What you get
 
+- **Profiles** — One-tap presets: Seizure Safe, Vision Impaired, ADHD Friendly, Dyslexia Friendly
 - **Text** — Font size, bold, line height, letter spacing
 - **Color** — Contrast (light/dark), invert, saturation controls, high contrast
-- **Reading** — OpenDyslexic font, reading guide, link/title highlighting, reader mode, text-to-speech
-- **Interaction** — Large cursor, pause animations, hide images
+- **Reading** — OpenDyslexic font, reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, page structure navigator (headings/landmarks/links)
+- **Interaction** — Large cursor, pause animations, hide images, mute sounds
 
-Plus: 10 languages, persistent settings, system preference detection, keyboard accessible, and mobile friendly.
+Plus: 13 languages (including RTL Arabic and Hebrew), persistent settings, system preference detection (`prefers-reduced-motion`, `prefers-contrast`), screen-reader announcements for every toggle, keyboard accessible, and mobile friendly. The widget UI lives in a shadow root, so your site's CSS can't break it and its styles can't leak into your page.
+
+Platform wrappers for WordPress and Shopify live in [`platforms/`](platforms/).
 
 ## Configuration
 
@@ -71,6 +74,18 @@ TTS uses native browser voices. When enabled, visitors click any text block to h
     ttsNativeVoiceLang: "en-US",
     ttsRate: 1.0,                    // 0.5 – 2.0
     ttsPitch: 1.0                    // 0 – 2.0
+  };
+</script>
+```
+
+### Dyslexia font source
+
+The "Dyslexia Font" feature loads OpenDyslexic from a CDN by default. To self-host the font, point the widget at your own copy:
+
+```html
+<script>
+  window.AccessibleWebWidgetOptions = {
+    dyslexiaFontUrl: "/fonts/OpenDyslexic3-Regular.woff"  // absolute or relative URL
   };
 </script>
 ```

@@ -1,0 +1,77 @@
+/* TTS click-to-read — these target light-DOM page content, so they must
+   live in <head>, not the widget shadow root */
+body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {
+  cursor: pointer;
+}
+
+.acc-tts-active-block {
+  outline: 2px solid var(--acc-primary-color, #1976d2) !important;
+  outline-offset: 3px !important;
+  border-radius: 4px;
+}
+
+/* Text magnifier — fixed banner showing enlarged copy of hovered text */
+.acc-text-magnifier {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  max-width: min(90vw, 880px);
+  background: #111827;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 28px;
+  line-height: 1.45;
+  padding: 14px 22px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  z-index: 2147483646;
+  pointer-events: none;
+  display: none;
+}
+
+.acc-text-magnifier.acc-visible {
+  display: block;
+}
+
+/* Page structure navigator — list styling inside the shared report dialog */
+.acc-structure-list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+
+.acc-structure-list li {
+  margin: 0;
+  padding: 0;
+}
+
+.acc-structure-item {
+  display: block;
+  width: 100%;
+  text-align: start;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--acc-text-color, #1f2937);
+  cursor: pointer;
+}
+
+.acc-structure-item:hover {
+  background: var(--acc-hover-color, #f3f4f6);
+}
+
+.acc-structure-item:focus-visible {
+  outline: 2px solid var(--acc-focus-ring-color, #1976d2);
+  outline-offset: -2px;
+}
+
+.acc-structure-empty {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0 0 16px;
+  padding: 0 12px;
+}

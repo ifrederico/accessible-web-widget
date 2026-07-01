@@ -1,0 +1,35 @@
+{% comment %}
+  AccessibleWeb Widget — Shopify theme snippet
+  https://github.com/ifrederico/accessible-web-widget
+
+  Usage:
+    1. Save this file as snippets/accessible-web-widget.liquid in your theme.
+    2. In layout/theme.liquid, add this line just before </body>:
+
+         {% render 'accessible-web-widget' %}
+
+    Optional overrides:
+
+         {% render 'accessible-web-widget', position: 'bottom-left', size: 48, lang: 'fr' %}
+
+  Parameters (all optional):
+    position — 'bottom-right' (default) | 'bottom-left' | 'top-right' | 'top-left'
+    size     — button size in pixels (default: 44)
+    lang     — language code, e.g. 'en', 'es', 'pt-BR' (default: auto-detect)
+{% endcomment %}
+
+{%- liquid
+  assign aww_position = position | default: 'bottom-right'
+  assign aww_size = size | default: 44
+  assign aww_lang = lang | default: blank
+-%}
+
+<div
+  data-acc-position="{{ aww_position | escape }}"
+  data-acc-size="{{ aww_size | escape }}"
+  {%- if aww_lang != blank %} data-acc-lang="{{ aww_lang | escape }}"{% endif -%}
+></div>
+<script
+  src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.1.4/dist/accessible-web-widget.min.js"
+  defer
+></script>

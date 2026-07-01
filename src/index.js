@@ -65,7 +65,44 @@ class AccessibleWebWidget {
         requiresSpeechSynthesis: true
       },
       { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
-      { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout }
+      { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout },
+      { label: 'Mute Sounds', key: 'mute-sounds', icon: this.widgetIcons.muteSounds },
+      { label: 'Text Magnifier', key: 'text-magnifier', icon: this.widgetIcons.textMagnifier },
+      {
+        label: 'Page Structure',
+        key: 'page-structure',
+        icon: this.widgetIcons.pageStructure,
+        isAction: true
+      }
+    ];
+
+    // One-tap presets bundling existing features. Each profile persists its
+    // own state key plus the bundled feature states.
+    this.accessibilityProfiles = [
+      {
+        label: 'Seizure Safe',
+        key: 'profile-seizure-safe',
+        icon: this.widgetIcons.pauseMotion,
+        states: { 'pause-motion': true, 'low-saturation': true }
+      },
+      {
+        label: 'Vision Impaired',
+        key: 'profile-vision',
+        icon: this.widgetIcons.highContrast,
+        states: { 'text-scale': 1.4, 'high-contrast-mode': true, 'large-pointer': true }
+      },
+      {
+        label: 'ADHD Friendly',
+        key: 'profile-adhd',
+        icon: this.widgetIcons.readingAid,
+        states: { 'reading-aid': true, 'pause-motion': true }
+      },
+      {
+        label: 'Dyslexia Friendly',
+        key: 'profile-dyslexia',
+        icon: this.widgetIcons.dyslexiaFont,
+        states: { 'readable-text': true, 'line-spacing': true, 'letter-spacing': true }
+      }
     ];
 
     // Add dev-only tools (?acc-dev=true)
@@ -83,13 +120,13 @@ class AccessibleWebWidget {
 
     // axe-core state
     this.axeCoreLoaded = false;
-    this.axeCoreLoading = false;
     this.axeCorePromise = null;
     this.axeScanResults = null;
     this.axeScanPromise = null;
     this.violationBubble = null;
 
     // Accessibility report modal state
+    this.reportPanel = null;
     this.reportPreviousFocus = null;
     this.reportKeyListener = null;
 
@@ -124,9 +161,7 @@ class AccessibleWebWidget {
     // Track direct user toggles for features that have side effects.
     this.userInitiatedToggleKey = null;
 
-    // Font size cycling
-    this.textScaleIndex = 0;
-    this.textScaleValues = [1.2, 1.4, 1.6];
+    // Font size slider bounds
     this.textScaleMinPercent = 80;
     this.textScaleMaxPercent = 150;
     this.textScaleStepPercent = 5;
@@ -141,21 +176,10 @@ class AccessibleWebWidget {
       { label: 'Dyslexia Font', key: 'readable-text', icon: this.widgetIcons.dyslexiaFont },
       { label: 'Highlight Links', key: 'highlight-links', icon: this.widgetIcons.highlightLinks },
       { label: 'Highlight Title', key: 'highlight-title', icon: this.widgetIcons.highlightTitle },
-      {
-        label: 'Font Size',
-        key: 'text-scale',
-        icon: this.widgetIcons.adjustFontSize,
-        multiLevel: true,
-        levels: this.textScaleValues.length
-      }
+      { label: 'Font Size', key: 'text-scale', icon: this.widgetIcons.adjustFontSize }
     ];
 
     this.multiLevelFeatures = {
-      'text-scale': {
-        levels: this.textScaleValues.length,
-        currentIndex: -1,
-        values: this.textScaleValues
-      },
       'contrast-toggle': {
         levels: this.contrastFilterValues.length,
         currentIndex: -1,
@@ -203,6 +227,24 @@ class AccessibleWebWidget {
     this.readingAidVisible = false;
     this.readableFontLoaded = false;
 
+    // Shadow DOM host for the widget UI
+    this.shadowHost = null;
+    this.widgetRoot = null;
+
+    // Screen-reader live region
+    this.liveRegion = null;
+    this.liveRegionTimer = null;
+
+    // Mute sounds state
+    this.muteSoundsObserver = null;
+
+    // Text magnifier state
+    this.magnifierElement = null;
+    this.magnifierMoveHandler = null;
+
+    // Page structure panel state
+    this.structurePanel = null;
+
     // Menu state tracking for focus management
     this.activeMenuContainer = null;
     this.activeMenuToggle = null;
@@ -226,18 +268,7 @@ class AccessibleWebWidget {
 
     this.applyThemeOverrides(this.options);
 
-    const normalizeTtsRate = (value) => {
-      const numeric = Number(value);
-      if (!Number.isFinite(numeric)) return 1;
-      return Math.min(2, Math.max(0.5, numeric));
-    };
-
-    const normalizeTtsPitch = (value) => {
-      const numeric = Number(value);
-      if (!Number.isFinite(numeric)) return 1;
-      return Math.min(2, Math.max(0, numeric));
-    };
-
+    // Raw values; getNativeTtsRate()/getNativeTtsPitch() clamp on read.
     this.nativeTtsConfig = {
       preferredVoiceName: (
         typeof options.ttsNativeVoiceName === 'string' &&
@@ -247,8 +278,8 @@ class AccessibleWebWidget {
         typeof options.ttsNativeVoiceLang === 'string' &&
         options.ttsNativeVoiceLang.trim()
       ) ? options.ttsNativeVoiceLang.trim() : '',
-      rate: normalizeTtsRate(options.ttsRate),
-      pitch: normalizeTtsPitch(options.ttsPitch)
+      rate: options.ttsRate,
+      pitch: options.ttsPitch
     };
 
     if (this.options.offset) {

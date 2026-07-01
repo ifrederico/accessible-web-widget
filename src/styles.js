@@ -4,15 +4,22 @@ import reportCSS from './styles/report.css';
 import readingGuideCSS from './styles/reading-guide.css';
 import skipLinkCSS from './styles/skip-link.css';
 import annotationsCSS from './styles/annotations.css';
+import extrasCSS from './styles/extras.css';
 
 const STATIC_STYLE_ID = 'acc-static-styles';
-const STATIC_STYLES = [
+// Widget UI styles live inside the shadow root so host-page CSS cannot
+// override them; page-level overlay styles (report modal, reading guide,
+// skip link, annotations) target light-DOM elements and stay in <head>.
+const WIDGET_UI_STYLES = [
   menuCSS,
-  widgetCSS,
+  widgetCSS
+].join('\n');
+const PAGE_OVERLAY_STYLES = [
   reportCSS,
   readingGuideCSS,
   skipLinkCSS,
-  annotationsCSS
+  annotationsCSS,
+  extrasCSS
 ].join('\n');
 
 /** @typedef {import('./index.js').default} AccessibleWebWidget */
@@ -121,8 +128,44 @@ export const styleMethods = {
 
   registerStaticStyles() {
     if (this.staticStylesRegistered) return;
-    this.injectStyle(STATIC_STYLE_ID, STATIC_STYLES);
+    this.injectStyle(STATIC_STYLE_ID, PAGE_OVERLAY_STYLES);
     this.staticStylesRegistered = true;
+  },
+
+  getWidgetUiStyles() {
+    return WIDGET_UI_STYLES;
+  },
+
+  // Query the widget's own UI. Before the shadow root exists (or if
+  // attachShadow is unavailable) this falls back to the document.
+  queryWidget(selector) {
+    const root = this.widgetRoot || document;
+    try {
+      return root.querySelector(selector);
+    } catch (e) {
+      console.warn(`Failed to query widget selector: ${selector}`, e);
+      return null;
+    }
+  },
+
+  queryWidgetAll(selector) {
+    const root = this.widgetRoot || document;
+    try {
+      return Array.from(root.querySelectorAll(selector));
+    } catch (e) {
+      console.warn(`Failed to query widget selector: ${selector}`, e);
+      return [];
+    }
+  },
+
+  // document.activeElement reports the shadow host once focus moves inside
+  // the shadow root; resolve the real focused element.
+  getActiveElement() {
+    if (typeof document === 'undefined') return null;
+    if (this.widgetRoot && this.widgetRoot.activeElement) {
+      return this.widgetRoot.activeElement;
+    }
+    return document.activeElement;
   }
 
 };

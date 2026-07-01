@@ -23,7 +23,7 @@ export default [
     }
   },
   {
-    files: ['*.js'],
+    files: ['*.js', 'tests/unit/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

@@ -17,11 +17,11 @@ export const stateMethods = {
   fetchCookie(name) {
       const cookieName = name + "=";
       try {
-        const decodedCookie = decodeURIComponent(document.cookie);
-        return decodedCookie.split(';')
+        const match = document.cookie.split(';')
           .map(c => c.trim())
-          .find(c => c.startsWith(cookieName))
-          ?.substring(cookieName.length) || "{}";
+          .find(c => c.startsWith(cookieName));
+        if (!match) return "{}";
+        return decodeURIComponent(match.substring(cookieName.length)) || "{}";
       } catch (e) {
         console.warn('Error reading cookie:', e);
         return "{}";
@@ -34,7 +34,7 @@ export const stateMethods = {
         d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
         const expires = "expires=" + d.toUTCString();
         const isSecure = window.location.protocol === 'https:';
-        document.cookie = name + "=" + value + ";" + expires + ";path=/;SameSite=Strict" + (isSecure ? ";Secure" : "");
+        document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Strict" + (isSecure ? ";Secure" : "");
       } catch (e) {
         console.warn('Error setting cookie:', e);
       }
@@ -42,20 +42,8 @@ export const stateMethods = {
 
   getSavedLanguage() {
       try {
-        // Try localStorage first
-        if (this.storageAvailable()) {
-          const stored = localStorage.getItem(this.cookieKey);
-          if (stored) {
-            const config = JSON.parse(stored);
-            if (config.lang) return config.lang;
-          }
-        }
-        // Fallback to cookie
-        const cookieVal = this.fetchCookie(this.cookieKey);
-        if (cookieVal && cookieVal !== "") {
-          const config = JSON.parse(cookieVal);
-          if (config.lang) return config.lang;
-        }
+        const config = JSON.parse(this.fetchSavedConfig());
+        if (config.lang) return config.lang;
       } catch {
         // Ignore parsing errors
       }
@@ -95,6 +83,20 @@ export const stateMethods = {
         }
       }
       return this.getBrowserLanguage();
+    },
+
+  // Map a configured language tag to a supported dictionary code: exact
+  // match first, then the primary subtag ('pt-BR' → 'pt'). 'auto' or
+  // unsupported tags fall back to the saved/browser language.
+  resolveSupportedLanguage(code) {
+      const supportedCodes = this.supportedLanguages.map(lang => lang.code);
+      const raw = String(code || '').trim();
+      if (raw && raw.toLowerCase() !== 'auto') {
+        if (supportedCodes.includes(raw)) return raw;
+        const primary = raw.split(/[_-]/)[0].toLowerCase();
+        if (supportedCodes.includes(primary)) return primary;
+      }
+      return this.getDefaultLanguage();
     },
 
   isDevMode() {
@@ -219,16 +221,6 @@ export const stateMethods = {
       return fallback;
     },
 
-  toggleDisplay(el, state) {
-      if (!el) return;
-      try {
-        el.style.display = (typeof state === "undefined") 
-          ? (el.style.display === "none" ? "block" : "none") 
-          : (state ? "block" : "none");
-      } catch (e) {
-        console.warn('Error toggling element:', e);
-      }
-    },
 
   isSystemControlledPreference(key) {
       const systemDefaults = this.widgetConfig?.systemDefaults || {};
@@ -243,15 +235,6 @@ export const stateMethods = {
       return !this.isSystemControlledPreference(key);
     },
 
-  hasExplicitColorFilterPreference() {
-      const states = this.widgetConfig?.states || {};
-      const systemDefaults = this.widgetConfig?.systemDefaults || {};
-      const keys = Array.isArray(this.colorFilterKeys) ? this.colorFilterKeys : [];
-      return keys.some((key) =>
-        Object.prototype.hasOwnProperty.call(states, key) &&
-        !Object.prototype.hasOwnProperty.call(systemDefaults, key)
-      );
-    },
 
   updateState(payload, options = {}) {
       const source = options.source || 'user';
@@ -273,6 +256,21 @@ export const stateMethods = {
         });
       }
 
+      const updatedConfig = { ...this.widgetConfig, states: nextStates, systemDefaults: nextSystemDefaults };
+      this.saveConfig(updatedConfig);
+      return updatedConfig;
+    },
+
+  // Return keys to "no preference": unlike writing an explicit false via
+  // updateState, this lets system defaults (prefers-reduced-motion,
+  // prefers-contrast) re-apply afterwards.
+  clearStates(keys) {
+      const nextStates = { ...(this.widgetConfig.states || {}) };
+      const nextSystemDefaults = { ...(this.widgetConfig.systemDefaults || {}) };
+      (keys || []).forEach((key) => {
+        delete nextStates[key];
+        delete nextSystemDefaults[key];
+      });
       const updatedConfig = { ...this.widgetConfig, states: nextStates, systemDefaults: nextSystemDefaults };
       this.saveConfig(updatedConfig);
       return updatedConfig;
@@ -322,15 +320,5 @@ export const stateMethods = {
       return cookieVal && cookieVal !== "" ? cookieVal : "{}";
     },
 
-  fetchDataAttr(attr) {
-      try {
-        const dataAttr = `data-acc-${attr}`;
-        const element = document.querySelector(`[${dataAttr}]`);
-        return element ? element.getAttribute(dataAttr) : null;
-      } catch (e) {
-        console.warn(`Error getting data attribute: ${attr}`, e);
-        return null;
-      }
-    },
 
 };
