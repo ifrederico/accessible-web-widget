@@ -12,24 +12,74 @@ export const pageToolMethods = {
     if (!profile) return;
 
     const enable = !this.retrieveState(profileKey);
-    const payload = { [profileKey]: enable };
-    let touchesColorFilter = false;
-    let colorFilterKey = null;
 
-    Object.entries(profile.states).forEach(([key, value]) => {
-      if (this.isColorFilterKey(key)) {
-        touchesColorFilter = true;
-        if (enable) colorFilterKey = key;
-        return;
-      }
-      payload[key] = enable ? value : (key === 'text-scale' ? 1 : false);
+    // Keys also bundled by another currently-active profile must survive
+    // this profile turning off, so sibling profiles stay truthful.
+    const keysHeldByOtherProfiles = new Set();
+    (this.accessibilityProfiles || []).forEach((other) => {
+      if (other.key === profileKey || !this.retrieveState(other.key)) return;
+      Object.keys(other.states).forEach((key) => keysHeldByOtherProfiles.add(key));
     });
 
-    // Turning a profile off also clears its state keys from any other
-    // active profile that shares them — last action wins, kept simple.
-    this.updateState(payload);
-    if (touchesColorFilter) {
-      this.updateColorFilterState(colorFilterKey);
+    if (enable) {
+      // Snapshot explicit user choices for the bundled keys so disabling
+      // the profile can restore them. Keys without an explicit choice are
+      // left out and return to "no preference" on disable, which keeps
+      // system defaults (prefers-reduced-motion, prefers-contrast) working.
+      const snapshot = {};
+      const payload = { [profileKey]: true };
+      let colorFilterKey = null;
+      Object.entries(profile.states).forEach(([key, value]) => {
+        if (this.isColorFilterKey(key)) {
+          colorFilterKey = key;
+          return;
+        }
+        if (this.hasExplicitStatePreference(key)) {
+          snapshot[key] = this.retrieveState(key);
+        }
+        payload[key] = value;
+      });
+      this.saveConfig({
+        profileSnapshots: { ...(this.widgetConfig.profileSnapshots || {}), [profileKey]: snapshot }
+      });
+      this.updateState(payload);
+      if (colorFilterKey) {
+        this.updateColorFilterState(colorFilterKey);
+      }
+    } else {
+      const snapshots = { ...(this.widgetConfig.profileSnapshots || {}) };
+      const snapshot = snapshots[profileKey] || {};
+      delete snapshots[profileKey];
+
+      const restorePayload = { [profileKey]: false };
+      const clearKeys = [];
+      let clearColorFilter = false;
+      Object.keys(profile.states).forEach((key) => {
+        if (keysHeldByOtherProfiles.has(key)) return;
+        if (this.isColorFilterKey(key)) {
+          // Clear only the filter this profile activated; a filter the
+          // user switched to manually stays untouched.
+          if (this.retrieveState(key)) clearColorFilter = true;
+          return;
+        }
+        if (Object.prototype.hasOwnProperty.call(snapshot, key)) {
+          restorePayload[key] = snapshot[key];
+        } else {
+          clearKeys.push(key);
+        }
+      });
+
+      this.updateState(restorePayload);
+      if (clearKeys.length) {
+        this.clearStates(clearKeys);
+      }
+      this.saveConfig({ profileSnapshots: snapshots });
+      if (clearColorFilter) {
+        this.updateColorFilterState(null);
+      }
+      // Cleared keys may be governed by OS media queries; re-establish
+      // those defaults immediately instead of waiting for the next load.
+      this.detectSystemPreferences();
     }
 
     this.applyEnhancements();
@@ -105,6 +155,7 @@ export const pageToolMethods = {
         this.magnifierElement.remove();
         this.magnifierElement = null;
       }
+      this.magnifierLastBlock = null;
     }
   },
 
@@ -112,13 +163,17 @@ export const pageToolMethods = {
     const magnifier = this.magnifierElement;
     if (!magnifier) return;
     const target = event.target instanceof Element ? event.target : null;
-    let text = '';
+    let block = null;
     if (target && !target.closest('.acc-container') && !target.closest('.acc-rg-container')) {
-      const block = target.closest('h1,h2,h3,h4,h5,h6,p,li,dt,dd,a,button,label,blockquote,figcaption,caption,th,td,span,summary');
-      if (block) {
-        text = this.normalizeReadableText(block.innerText || block.textContent || '').slice(0, 220);
-      }
+      block = target.closest('h1,h2,h3,h4,h5,h6,p,li,dt,dd,a,button,label,blockquote,figcaption,caption,th,td,span,summary');
     }
+    // Reading innerText forces a layout pass; skip it (and the DOM write)
+    // while the pointer stays inside the same block.
+    if (block === this.magnifierLastBlock) return;
+    this.magnifierLastBlock = block;
+    const text = block
+      ? this.normalizeReadableText(block.innerText || block.textContent || '').slice(0, 220)
+      : '';
     if (text) {
       magnifier.textContent = text;
       magnifier.classList.add('acc-visible');

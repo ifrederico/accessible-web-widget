@@ -434,6 +434,13 @@ export const axeReportMethods = {
     if (panel) {
       panel.classList.remove('acc-report-visible');
       panel.setAttribute('aria-hidden', 'true');
+      // The structure panel's item buttons capture live page elements; drop
+      // them on close so detached DOM (e.g. after SPA navigation) can be
+      // garbage-collected. The panel is rebuilt from scratch on every open.
+      if (panel === this.structurePanel) {
+        const content = panel.querySelector('.acc-report-content');
+        if (content) content.innerHTML = '';
+      }
     }
   
     if (this.reportKeyListener) {

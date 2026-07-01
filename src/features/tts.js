@@ -110,29 +110,6 @@ export const ttsMethods = {
     if (typeof document === 'undefined') return null;
     const candidates = this.getTtsCandidateRoots();
     if (!candidates.length) {
-      const explicitCandidates = Array.from(
-        document.querySelectorAll('main,article,[role="main"],#content,.content,.post,.entry-content')
-      ).filter((element) =>
-        element instanceof Element &&
-        !this.isTtsExcludedElement(element) &&
-        this.isElementVisibleForTts(element)
-      );
-
-      if (explicitCandidates.length) {
-        let explicitBest = explicitCandidates[0];
-        let explicitBestScore = -1;
-        explicitCandidates.forEach((candidate) => {
-          const textLength = this.normalizeReadableText(candidate.innerText || candidate.textContent || '').length;
-          const rect = candidate.getBoundingClientRect();
-          const score = textLength + (rect.width * rect.height * 0.0025);
-          if (score > explicitBestScore) {
-            explicitBestScore = score;
-            explicitBest = candidate;
-          }
-        });
-        return explicitBest;
-      }
-
       if (document.body) {
         const topLevelCandidates = Array.from(document.body.children).filter((element) =>
           element instanceof Element &&

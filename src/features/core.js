@@ -999,7 +999,7 @@ export const coreFeatureMethods = {
     },
 
   resetEnhancements() {
-      this.saveConfig({ states: {}, systemDefaults: {} });
+      this.saveConfig({ states: {}, systemDefaults: {}, profileSnapshots: {} });
       this.activeColorFilterKey = null;
       Object.keys(this.multiLevelFeatures).forEach(key => {
         this.multiLevelFeatures[key].currentIndex = -1;

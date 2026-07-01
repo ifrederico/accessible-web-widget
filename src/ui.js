@@ -5,7 +5,10 @@ export const uiMethods = {
 
   translate(label) {
       const { lang } = this.loadConfig();
-      const dictionary = this.translations[lang] || this.translations["en"];
+      // Tolerate regional tags persisted by older versions or written
+      // directly into storage ('pt-BR' → 'pt') before falling back to English.
+      const primary = String(lang || '').split(/[_-]/)[0].toLowerCase();
+      const dictionary = this.translations[lang] || this.translations[primary] || this.translations["en"];
       return dictionary[label] || label;
     },
 
@@ -739,10 +742,16 @@ export const uiMethods = {
           if (btn) {
             const key = btn.dataset.key;
             // Handle action buttons (open a panel; no persistent state).
+            // Close the menu first: the panel is its own modal surface, and
+            // leaving the menu open would leave two competing document-level
+            // focus traps active at once. Closing also parks focus on the
+            // toggle, which the panel captures as its restore target.
             if (key === 'accessibility-report') {
+              this.closeMenu(menuContainer);
               this.runAccessibilityReport();
             }
             else if (key === 'page-structure') {
+              this.closeMenu(menuContainer);
               this.openPageStructurePanel();
             }
             // One-tap profiles bundle several feature states.
@@ -903,13 +912,17 @@ export const uiMethods = {
           }
         }
         
-        // Add a click handler to the document to blur the toggle button when clicking outside
+        // Add a click handler to the document to blur the toggle button when clicking outside.
+        // e.target is retargeted to the shadow host for clicks inside the shadow
+        // root, so resolve the real click path via composedPath().
         document.addEventListener('click', (e) => {
           if (!btn) return;
-          const clickedToggle = e.target === btn || btn.contains(e.target);
-          const clickedInsideWidget = e.target.closest('.acc-container');
+          const path = typeof e.composedPath === 'function' ? e.composedPath() : [e.target];
+          const clickedToggle = path.includes(btn);
+          const clickedInsideWidget = path.some((node) =>
+            node instanceof Element && node.classList.contains('acc-container'));
           if (menu && this.activeMenuContainer === menu && menu.style.display !== 'none') {
-            const clickedInsideMenu = menu.contains(e.target);
+            const clickedInsideMenu = path.includes(menu);
             if (!clickedToggle && !clickedInsideMenu && !clickedInsideWidget) {
               this.closeMenu(menu, btn);
             }
@@ -988,11 +1001,13 @@ export const uiMethods = {
             // (position, offset, size, icon) always come from the embed
             // configuration and are never persisted.
             const options = {
-              lang: this.getDefaultLanguage(),
               position: 'bottom-right',
               offset: [20, 20],
               ...args
             };
+            // Resolve regional tags ('pt-BR' → 'pt') and 'auto' to a
+            // supported dictionary code before persisting.
+            options.lang = this.resolveSupportedLanguage(options.lang);
 
             if (options.lang) {
               this.saveConfig({ lang: options.lang });

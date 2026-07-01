@@ -23,6 +23,13 @@ export default {
       sourcemap: true,
       banner,
       plugins: [terser()]
+    },
+    {
+      // Real module build for npm consumers (import / bundlers); the IIFE
+      // builds above exist for script-tag and CDN use.
+      file: 'dist/accessible-web-widget.esm.js',
+      format: 'es',
+      banner
     }
   ],
   plugins: [

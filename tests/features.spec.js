@@ -42,9 +42,61 @@ test('profile applies and clears its bundled feature states', async ({ page }) =
   await profileBtn.click();
   states = await readStates(page);
   expect(states['profile-dyslexia']).toBe(false);
-  expect(states['readable-text']).toBe(false);
-  expect(states['line-spacing']).toBe(false);
+  // Bundled keys return to "no preference" instead of an explicit false, so
+  // OS-level defaults keep working after a profile is tried and removed.
+  expect(states['readable-text']).toBeUndefined();
+  expect(states['line-spacing']).toBeUndefined();
   await expect(profileBtn).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('.acc-btn[data-key="line-spacing"]')).toHaveAttribute('aria-pressed', 'false');
+});
+
+test('disabling a profile restores prior explicit user choices', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  await page.locator('.acc-btn[data-key="line-spacing"]').click();
+  const profileBtn = page.locator('.acc-btn[data-key="profile-dyslexia"]');
+  await profileBtn.click();
+  await profileBtn.click();
+
+  const states = await readStates(page);
+  expect(states['line-spacing']).toBe(true);
+  expect(states['readable-text']).toBeUndefined();
+  await expect(page.locator('.acc-btn[data-key="line-spacing"]')).toHaveAttribute('aria-pressed', 'true');
+});
+
+test('disabling a profile keeps honoring the OS reduced-motion preference', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('index.html');
+
+  await expect.poll(() => page.evaluate(() =>
+    (JSON.parse(localStorage.getItem('accweb') || '{}').states || {})['pause-motion']
+  )).toBe(true);
+
+  await page.locator('.acc-toggle-btn').click();
+  const profileBtn = page.locator('.acc-btn[data-key="profile-seizure-safe"]');
+  await profileBtn.click();
+  await profileBtn.click();
+
+  const states = await readStates(page);
+  expect(states['pause-motion']).toBe(true);
+});
+
+test('disabling a profile leaves a manually chosen color filter active', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const profileBtn = page.locator('.acc-btn[data-key="profile-seizure-safe"]');
+  await profileBtn.click();
+  // Manually switch to a different color filter after the profile set its own.
+  await page.locator('.acc-btn[data-key="contrast-toggle"]').click();
+  let states = await readStates(page);
+  expect(states['light-contrast']).toBe(true);
+  expect(states['low-saturation']).toBe(false);
+
+  await profileBtn.click();
+  states = await readStates(page);
+  expect(states['light-contrast']).toBe(true);
 });
 
 test('seizure safe profile activates the low saturation color filter', async ({ page }) => {
@@ -96,6 +148,17 @@ test('mute sounds mutes existing and dynamically added media', async ({ page }) 
   await expect.poll(() => page.evaluate(() => document.getElementById('test-video').muted)).toBe(false);
 });
 
+test('TTS page-level styles are injected into the document head', async ({ page }) => {
+  await page.goto('index.html');
+  const staticCss = await page.evaluate(() =>
+    document.getElementById('acc-static-styles')?.textContent || ''
+  );
+  // These selectors target light-DOM page content, so they must live in
+  // <head> — inside the widget shadow root they can never match.
+  expect(staticCss).toContain('.acc-tts-active-block');
+  expect(staticCss).toContain('acc-tts-click-mode');
+});
+
 test('page structure panel lists headings and navigates to them', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
@@ -103,6 +166,8 @@ test('page structure panel lists headings and navigates to them', async ({ page 
   await page.locator('.acc-btn[data-key="page-structure"]').click();
   const panel = page.locator('.acc-structure-panel');
   await expect(panel).toBeVisible();
+  // The menu closes when a panel opens so their focus traps never compete.
+  await expect(page.locator('.acc-menu')).toBeHidden();
   const items = panel.locator('.acc-structure-item');
   expect(await items.count()).toBeGreaterThan(0);
 

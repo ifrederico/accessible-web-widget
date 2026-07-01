@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { stateMethods } from '../../src/state.js';
 import { coreFeatureMethods } from '../../src/features/core.js';
+import { SUPPORTED_LANGUAGES } from '../../src/constants/translations.js';
 
 const stateCtx = { ...stateMethods, widgetTheme: { buttonSize: '48px' } };
 
@@ -27,6 +28,25 @@ test('normalizeButtonSize handles numbers, units, and minimum size', () => {
   assert.equal(stateCtx.normalizeButtonSize('52'), '52px');
   assert.equal(stateCtx.normalizeButtonSize(''), '48px');
   assert.equal(stateCtx.normalizeButtonSize(undefined), '48px');
+});
+
+const langCtx = {
+  ...stateMethods,
+  supportedLanguages: SUPPORTED_LANGUAGES,
+  getDefaultLanguage() { return 'en'; }
+};
+
+test('resolveSupportedLanguage maps regional tags to primary codes', () => {
+  assert.equal(langCtx.resolveSupportedLanguage('pt-BR'), 'pt');
+  assert.equal(langCtx.resolveSupportedLanguage('pt_BR'), 'pt');
+  assert.equal(langCtx.resolveSupportedLanguage('pt'), 'pt');
+});
+
+test('resolveSupportedLanguage falls back for auto/empty/unsupported tags', () => {
+  assert.equal(langCtx.resolveSupportedLanguage('auto'), 'en');
+  assert.equal(langCtx.resolveSupportedLanguage(''), 'en');
+  assert.equal(langCtx.resolveSupportedLanguage(undefined), 'en');
+  assert.equal(langCtx.resolveSupportedLanguage('xx-YY'), 'en');
 });
 
 const scaleCtx = {

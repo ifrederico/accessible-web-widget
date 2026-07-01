@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { TRANSLATIONS, SUPPORTED_LANGUAGES } from '../../src/constants/translations.js';
+import { uiMethods } from '../../src/ui.js';
 
 test('every supported language has a translation dictionary', () => {
   const dictionaryCodes = Object.keys(TRANSLATIONS);
@@ -16,6 +17,17 @@ test('every dictionary covers the full English key set', () => {
     const missing = englishKeys.filter(key => !(key in dictionary));
     assert.deepEqual(missing, [], `${code} is missing keys: ${missing.join(', ')}`);
   }
+});
+
+test('translate falls back from a regional tag to the primary dictionary', () => {
+  const ctx = {
+    ...uiMethods,
+    translations: TRANSLATIONS,
+    loadConfig() { return { lang: 'pt-BR' }; }
+  };
+  const label = Object.keys(TRANSLATIONS.en).find(key => TRANSLATIONS.pt[key] !== TRANSLATIONS.en[key]);
+  assert.ok(label, 'expected at least one key translated differently in pt');
+  assert.equal(ctx.translate(label), TRANSLATIONS.pt[label]);
 });
 
 test('no dictionary has empty translation values', () => {

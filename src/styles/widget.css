@@ -138,16 +138,6 @@
     outline-offset: 2px;
   }
 
-  body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {
-    cursor: pointer;
-  }
-
-  .acc-tts-active-block {
-    outline: 2px solid var(--acc-primary-color, #1976d2) !important;
-    outline-offset: 3px !important;
-    border-radius: 4px;
-  }
-  
   @media (prefers-reduced-motion: reduce) {
     .acc-toggle-btn {
       transition: none;

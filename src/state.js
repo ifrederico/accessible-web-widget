@@ -85,6 +85,20 @@ export const stateMethods = {
       return this.getBrowserLanguage();
     },
 
+  // Map a configured language tag to a supported dictionary code: exact
+  // match first, then the primary subtag ('pt-BR' → 'pt'). 'auto' or
+  // unsupported tags fall back to the saved/browser language.
+  resolveSupportedLanguage(code) {
+      const supportedCodes = this.supportedLanguages.map(lang => lang.code);
+      const raw = String(code || '').trim();
+      if (raw && raw.toLowerCase() !== 'auto') {
+        if (supportedCodes.includes(raw)) return raw;
+        const primary = raw.split(/[_-]/)[0].toLowerCase();
+        if (supportedCodes.includes(primary)) return primary;
+      }
+      return this.getDefaultLanguage();
+    },
+
   isDevMode() {
       if (typeof window === 'undefined') return false;
       try {
@@ -242,6 +256,21 @@ export const stateMethods = {
         });
       }
 
+      const updatedConfig = { ...this.widgetConfig, states: nextStates, systemDefaults: nextSystemDefaults };
+      this.saveConfig(updatedConfig);
+      return updatedConfig;
+    },
+
+  // Return keys to "no preference": unlike writing an explicit false via
+  // updateState, this lets system defaults (prefers-reduced-motion,
+  // prefers-contrast) re-apply afterwards.
+  clearStates(keys) {
+      const nextStates = { ...(this.widgetConfig.states || {}) };
+      const nextSystemDefaults = { ...(this.widgetConfig.systemDefaults || {}) };
+      (keys || []).forEach((key) => {
+        delete nextStates[key];
+        delete nextSystemDefaults[key];
+      });
       const updatedConfig = { ...this.widgetConfig, states: nextStates, systemDefaults: nextSystemDefaults };
       this.saveConfig(updatedConfig);
       return updatedConfig;
