@@ -462,25 +462,7 @@ export const ttsMethods = {
     this.startNativeSpeechPlayback({ restart });
   },
 
-  pauseSpeech() {
-    if (!this.supportsSpeechSynthesis()) return;
-    const synth = window.speechSynthesis;
-    if (synth.speaking && !synth.paused) {
-      synth.pause();
-      this.ttsStatus = 'paused';
-    }
-  },
 
-  resumeSpeech() {
-    if (!this.supportsSpeechSynthesis()) return;
-    const synth = window.speechSynthesis;
-    if (synth.paused) {
-      synth.resume();
-      this.ttsStatus = 'reading';
-      return;
-    }
-    this.startSpeechPlayback({ restart: false });
-  },
 
   stopSpeech() {
     const synth = this.supportsSpeechSynthesis() ? window.speechSynthesis : null;

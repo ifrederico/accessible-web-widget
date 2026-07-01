@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.1.1
+ * AccessibleWeb Widget v1.1.4
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
@@ -74,11 +74,7 @@ var AccessibleWebWidget = (function () {
           highSaturation: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 32.5-156t88-127Q256-817 330-848.5T488-880q80 0 151 27.5t124.5 76q53.5 48.5 85 115T880-518q0 115-70 176.5T640-280h-74q-9 0-12.5 5t-3.5 11q0 12 15 34.5t15 51.5q0 50-27.5 74T480-80Zm0-400Zm-220 40q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm120-160q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm200 0q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm120 160q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17ZM480-160q9 0 14.5-5t5.5-13q0-14-15-33t-15-57q0-42 29-67t71-25h70q66 0 113-38.5T800-518q0-121-92.5-201.5T488-800q-136 0-232 93t-96 227q0 133 93.5 226.5T480-160Z"/></svg>',
           reset: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-122q-121-15-200.5-105.5T160-440q0-66 26-126.5T260-672l57 57q-38 34-57.5 79T240-440q0 88 56 155.5T440-202v80Zm80 0v-80q87-16 143.5-83T720-440q0-100-70-170t-170-70h-3l44 44-56 56-140-140 140-140 56 56-44 44h3q134 0 227 93t93 227q0 121-79.5 211.5T520-122Z"/></svg>',
           close: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>',
-          increase: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z"/></svg>',
-          decrease: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2Z"/></svg>',
-          arrowBack: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M400-80 0-480l400-400 71 71-329 329 329 329-71 71Z"/></svg>',
           adjustFontSize: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 4v3h5v12h3V7h5V4H2m19 5h-9v3h3v7h3v-7h3V9Z"/></svg>',
-          language: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/></svg>',
           hideImages: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m840-234-80-80v-446H314l-80-80h526q33 0 56.5 23.5T840-760v526ZM792-56l-64-64H200q-33 0-56.5-23.5T120-200v-528l-64-64 56-56 736 736-56 56ZM240-280l120-160 90 120 33-44-283-283v447h447l-80-80H240Zm297-257ZM424-424Z"/></svg>',
           accessibilityReport: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm221.5-198.5Q510-807 510-820t-8.5-21.5Q493-850 480-850t-21.5 8.5Q450-833 450-820t8.5 21.5Q467-790 480-790t21.5-8.5ZM200-200v-560 560Z"/></svg>',
           annotations: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v268q-19-9-39-15.5t-41-9.5v-243H200v560h242q3 22 9.5 42t15.5 38H200Zm0-120v40-560 243-3 280Zm80-40h163q3-21 9.5-41t14.5-39H280v80Zm0-160h244q32-30 71.5-50t84.5-27v-3H280v80Zm0-160h400v-80H280v80ZM720-40q-83 0-141.5-58.5T520-240q0-83 58.5-141.5T720-440q83 0 141.5 58.5T920-240q0 83-58.5 141.5T720-40Zm-20-80h40v-100h100v-40H740v-100h-40v100H600v40h100v100Z"/></svg>',
@@ -1495,16 +1491,6 @@ var AccessibleWebWidget = (function () {
           return fallback;
         },
 
-      toggleDisplay(el, state) {
-          if (!el) return;
-          try {
-            el.style.display = (typeof state === "undefined") 
-              ? (el.style.display === "none" ? "block" : "none") 
-              : (state ? "block" : "none");
-          } catch (e) {
-            console.warn('Error toggling element:', e);
-          }
-        },
 
       isSystemControlledPreference(key) {
           const systemDefaults = this.widgetConfig?.systemDefaults || {};
@@ -1519,15 +1505,6 @@ var AccessibleWebWidget = (function () {
           return !this.isSystemControlledPreference(key);
         },
 
-      hasExplicitColorFilterPreference() {
-          const states = this.widgetConfig?.states || {};
-          const systemDefaults = this.widgetConfig?.systemDefaults || {};
-          const keys = Array.isArray(this.colorFilterKeys) ? this.colorFilterKeys : [];
-          return keys.some((key) =>
-            Object.prototype.hasOwnProperty.call(states, key) &&
-            !Object.prototype.hasOwnProperty.call(systemDefaults, key)
-          );
-        },
 
       updateState(payload, options = {}) {
           const source = options.source || 'user';
@@ -1598,16 +1575,6 @@ var AccessibleWebWidget = (function () {
           return cookieVal && cookieVal !== "" ? cookieVal : "{}";
         },
 
-      fetchDataAttr(attr) {
-          try {
-            const dataAttr = `data-acc-${attr}`;
-            const element = document.querySelector(`[${dataAttr}]`);
-            return element ? element.getAttribute(dataAttr) : null;
-          } catch (e) {
-            console.warn(`Error getting data attribute: ${attr}`, e);
-            return null;
-          }
-        },
 
     };
 
@@ -2028,26 +1995,6 @@ var AccessibleWebWidget = (function () {
           const shouldPersist = options.persist !== false;
           const clampedPercent = this.getTextScalePercent(percent);
           const multiplier = Number((clampedPercent / 100).toFixed(2));
-          const exactIndex = this.textScaleValues.indexOf(multiplier);
-
-          if (this.multiLevelFeatures['text-scale']) {
-            this.multiLevelFeatures['text-scale'].currentIndex = exactIndex;
-          }
-
-          if (exactIndex > -1) {
-            this.textScaleIndex = exactIndex;
-          } else {
-            let nearestIndex = 0;
-            let minDistance = Infinity;
-            this.textScaleValues.forEach((value, index) => {
-              const distance = Math.abs(value - multiplier);
-              if (distance < minDistance) {
-                minDistance = distance;
-                nearestIndex = index;
-              }
-            });
-            this.textScaleIndex = nearestIndex;
-          }
 
           this.scaleText(multiplier);
 
@@ -2787,10 +2734,6 @@ var AccessibleWebWidget = (function () {
             const appliedScale = this.setTextScaleFromPercent(storedScale, { persist: false });
             this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), appliedScale);
           } else {
-            this.textScaleIndex = 0;
-            if (this.multiLevelFeatures['text-scale']) {
-              this.multiLevelFeatures['text-scale'].currentIndex = -1;
-            }
             this.scaleText(1);
             this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), 1);
           }
@@ -2815,7 +2758,6 @@ var AccessibleWebWidget = (function () {
 
       resetEnhancements() {
           this.saveConfig({ states: {}, systemDefaults: {} });
-          this.textScaleIndex = 0;
           this.activeColorFilterKey = null;
           Object.keys(this.multiLevelFeatures).forEach(key => {
             this.multiLevelFeatures[key].currentIndex = -1;
@@ -3369,25 +3311,7 @@ var AccessibleWebWidget = (function () {
         this.startNativeSpeechPlayback({ restart });
       },
 
-      pauseSpeech() {
-        if (!this.supportsSpeechSynthesis()) return;
-        const synth = window.speechSynthesis;
-        if (synth.speaking && !synth.paused) {
-          synth.pause();
-          this.ttsStatus = 'paused';
-        }
-      },
 
-      resumeSpeech() {
-        if (!this.supportsSpeechSynthesis()) return;
-        const synth = window.speechSynthesis;
-        if (synth.paused) {
-          synth.resume();
-          this.ttsStatus = 'reading';
-          return;
-        }
-        this.startSpeechPlayback({ restart: false });
-      },
 
       stopSpeech() {
         const synth = this.supportsSpeechSynthesis() ? window.speechSynthesis : null;
@@ -3464,8 +3388,6 @@ var AccessibleWebWidget = (function () {
         if (this.axeCorePromise) {
           return this.axeCorePromise;
         }
-      
-        this.axeCoreLoading = true;
         this.axeCorePromise = new Promise((resolve, reject) => {
           let script = document.querySelector('script[data-acc-axe-core="true"]');
           let settled = false;
@@ -3476,13 +3398,11 @@ var AccessibleWebWidget = (function () {
             settled = true;
             if (timeoutId) clearTimeout(timeoutId);
             if (!window.axe) {
-              this.axeCoreLoading = false;
               this.axeCoreLoaded = false;
               this.axeCorePromise = null;
               reject(new Error('axe-core loaded but window.axe is unavailable'));
               return;
             }
-            this.axeCoreLoading = false;
             this.axeCoreLoaded = true;
             if (script) {
               script.setAttribute('data-acc-axe-core-loaded', 'true');
@@ -3494,7 +3414,6 @@ var AccessibleWebWidget = (function () {
             if (settled) return;
             settled = true;
             if (timeoutId) clearTimeout(timeoutId);
-            this.axeCoreLoading = false;
             this.axeCoreLoaded = false;
             this.axeCorePromise = null;
             reject(error);
@@ -5832,7 +5751,6 @@ var AccessibleWebWidget = (function () {
 
         // axe-core state
         this.axeCoreLoaded = false;
-        this.axeCoreLoading = false;
         this.axeCorePromise = null;
         this.axeScanResults = null;
         this.axeScanPromise = null;
@@ -5874,9 +5792,7 @@ var AccessibleWebWidget = (function () {
         // Track direct user toggles for features that have side effects.
         this.userInitiatedToggleKey = null;
 
-        // Font size cycling
-        this.textScaleIndex = 0;
-        this.textScaleValues = [1.2, 1.4, 1.6];
+        // Font size slider bounds
         this.textScaleMinPercent = 80;
         this.textScaleMaxPercent = 150;
         this.textScaleStepPercent = 5;
@@ -5891,21 +5807,10 @@ var AccessibleWebWidget = (function () {
           { label: 'Dyslexia Font', key: 'readable-text', icon: this.widgetIcons.dyslexiaFont },
           { label: 'Highlight Links', key: 'highlight-links', icon: this.widgetIcons.highlightLinks },
           { label: 'Highlight Title', key: 'highlight-title', icon: this.widgetIcons.highlightTitle },
-          {
-            label: 'Font Size',
-            key: 'text-scale',
-            icon: this.widgetIcons.adjustFontSize,
-            multiLevel: true,
-            levels: this.textScaleValues.length
-          }
+          { label: 'Font Size', key: 'text-scale', icon: this.widgetIcons.adjustFontSize }
         ];
 
         this.multiLevelFeatures = {
-          'text-scale': {
-            levels: this.textScaleValues.length,
-            currentIndex: -1,
-            values: this.textScaleValues
-          },
           'contrast-toggle': {
             levels: this.contrastFilterValues.length,
             currentIndex: -1,

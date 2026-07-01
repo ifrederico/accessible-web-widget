@@ -120,7 +120,6 @@ class AccessibleWebWidget {
 
     // axe-core state
     this.axeCoreLoaded = false;
-    this.axeCoreLoading = false;
     this.axeCorePromise = null;
     this.axeScanResults = null;
     this.axeScanPromise = null;
@@ -162,9 +161,7 @@ class AccessibleWebWidget {
     // Track direct user toggles for features that have side effects.
     this.userInitiatedToggleKey = null;
 
-    // Font size cycling
-    this.textScaleIndex = 0;
-    this.textScaleValues = [1.2, 1.4, 1.6];
+    // Font size slider bounds
     this.textScaleMinPercent = 80;
     this.textScaleMaxPercent = 150;
     this.textScaleStepPercent = 5;
@@ -179,21 +176,10 @@ class AccessibleWebWidget {
       { label: 'Dyslexia Font', key: 'readable-text', icon: this.widgetIcons.dyslexiaFont },
       { label: 'Highlight Links', key: 'highlight-links', icon: this.widgetIcons.highlightLinks },
       { label: 'Highlight Title', key: 'highlight-title', icon: this.widgetIcons.highlightTitle },
-      {
-        label: 'Font Size',
-        key: 'text-scale',
-        icon: this.widgetIcons.adjustFontSize,
-        multiLevel: true,
-        levels: this.textScaleValues.length
-      }
+      { label: 'Font Size', key: 'text-scale', icon: this.widgetIcons.adjustFontSize }
     ];
 
     this.multiLevelFeatures = {
-      'text-scale': {
-        levels: this.textScaleValues.length,
-        currentIndex: -1,
-        values: this.textScaleValues
-      },
       'contrast-toggle': {
         levels: this.contrastFilterValues.length,
         currentIndex: -1,

@@ -18,8 +18,6 @@ export const axeReportMethods = {
     if (this.axeCorePromise) {
       return this.axeCorePromise;
     }
-  
-    this.axeCoreLoading = true;
     this.axeCorePromise = new Promise((resolve, reject) => {
       let script = document.querySelector('script[data-acc-axe-core="true"]');
       let settled = false;
@@ -30,13 +28,11 @@ export const axeReportMethods = {
         settled = true;
         if (timeoutId) clearTimeout(timeoutId);
         if (!window.axe) {
-          this.axeCoreLoading = false;
           this.axeCoreLoaded = false;
           this.axeCorePromise = null;
           reject(new Error('axe-core loaded but window.axe is unavailable'));
           return;
         }
-        this.axeCoreLoading = false;
         this.axeCoreLoaded = true;
         if (script) {
           script.setAttribute('data-acc-axe-core-loaded', 'true');
@@ -48,7 +44,6 @@ export const axeReportMethods = {
         if (settled) return;
         settled = true;
         if (timeoutId) clearTimeout(timeoutId);
-        this.axeCoreLoading = false;
         this.axeCoreLoaded = false;
         this.axeCorePromise = null;
         reject(error);

@@ -207,16 +207,6 @@ export const stateMethods = {
       return fallback;
     },
 
-  toggleDisplay(el, state) {
-      if (!el) return;
-      try {
-        el.style.display = (typeof state === "undefined") 
-          ? (el.style.display === "none" ? "block" : "none") 
-          : (state ? "block" : "none");
-      } catch (e) {
-        console.warn('Error toggling element:', e);
-      }
-    },
 
   isSystemControlledPreference(key) {
       const systemDefaults = this.widgetConfig?.systemDefaults || {};
@@ -231,15 +221,6 @@ export const stateMethods = {
       return !this.isSystemControlledPreference(key);
     },
 
-  hasExplicitColorFilterPreference() {
-      const states = this.widgetConfig?.states || {};
-      const systemDefaults = this.widgetConfig?.systemDefaults || {};
-      const keys = Array.isArray(this.colorFilterKeys) ? this.colorFilterKeys : [];
-      return keys.some((key) =>
-        Object.prototype.hasOwnProperty.call(states, key) &&
-        !Object.prototype.hasOwnProperty.call(systemDefaults, key)
-      );
-    },
 
   updateState(payload, options = {}) {
       const source = options.source || 'user';
@@ -310,15 +291,5 @@ export const stateMethods = {
       return cookieVal && cookieVal !== "" ? cookieVal : "{}";
     },
 
-  fetchDataAttr(attr) {
-      try {
-        const dataAttr = `data-acc-${attr}`;
-        const element = document.querySelector(`[${dataAttr}]`);
-        return element ? element.getAttribute(dataAttr) : null;
-      } catch (e) {
-        console.warn(`Error getting data attribute: ${attr}`, e);
-        return null;
-      }
-    },
 
 };

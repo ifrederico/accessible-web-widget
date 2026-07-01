@@ -237,26 +237,6 @@ export const coreFeatureMethods = {
       const shouldPersist = options.persist !== false;
       const clampedPercent = this.getTextScalePercent(percent);
       const multiplier = Number((clampedPercent / 100).toFixed(2));
-      const exactIndex = this.textScaleValues.indexOf(multiplier);
-
-      if (this.multiLevelFeatures['text-scale']) {
-        this.multiLevelFeatures['text-scale'].currentIndex = exactIndex;
-      }
-
-      if (exactIndex > -1) {
-        this.textScaleIndex = exactIndex;
-      } else {
-        let nearestIndex = 0;
-        let minDistance = Infinity;
-        this.textScaleValues.forEach((value, index) => {
-          const distance = Math.abs(value - multiplier);
-          if (distance < minDistance) {
-            minDistance = distance;
-            nearestIndex = index;
-          }
-        });
-        this.textScaleIndex = nearestIndex;
-      }
 
       this.scaleText(multiplier);
 
@@ -996,10 +976,6 @@ export const coreFeatureMethods = {
         const appliedScale = this.setTextScaleFromPercent(storedScale, { persist: false });
         this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), appliedScale);
       } else {
-        this.textScaleIndex = 0;
-        if (this.multiLevelFeatures['text-scale']) {
-          this.multiLevelFeatures['text-scale'].currentIndex = -1;
-        }
         this.scaleText(1);
         this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), 1);
       }
@@ -1024,7 +1000,6 @@ export const coreFeatureMethods = {
 
   resetEnhancements() {
       this.saveConfig({ states: {}, systemDefaults: {} });
-      this.textScaleIndex = 0;
       this.activeColorFilterKey = null;
       Object.keys(this.multiLevelFeatures).forEach(key => {
         this.multiLevelFeatures[key].currentIndex = -1;
