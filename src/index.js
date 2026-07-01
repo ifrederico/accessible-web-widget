@@ -65,7 +65,44 @@ class AccessibleWebWidget {
         requiresSpeechSynthesis: true
       },
       { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
-      { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout }
+      { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout },
+      { label: 'Mute Sounds', key: 'mute-sounds', icon: this.widgetIcons.muteSounds },
+      { label: 'Text Magnifier', key: 'text-magnifier', icon: this.widgetIcons.textMagnifier },
+      {
+        label: 'Page Structure',
+        key: 'page-structure',
+        icon: this.widgetIcons.pageStructure,
+        isAction: true
+      }
+    ];
+
+    // One-tap presets bundling existing features. Each profile persists its
+    // own state key plus the bundled feature states.
+    this.accessibilityProfiles = [
+      {
+        label: 'Seizure Safe',
+        key: 'profile-seizure-safe',
+        icon: this.widgetIcons.pauseMotion,
+        states: { 'pause-motion': true, 'low-saturation': true }
+      },
+      {
+        label: 'Vision Impaired',
+        key: 'profile-vision',
+        icon: this.widgetIcons.highContrast,
+        states: { 'text-scale': 1.4, 'high-contrast-mode': true, 'large-pointer': true }
+      },
+      {
+        label: 'ADHD Friendly',
+        key: 'profile-adhd',
+        icon: this.widgetIcons.readingAid,
+        states: { 'reading-aid': true, 'pause-motion': true }
+      },
+      {
+        label: 'Dyslexia Friendly',
+        key: 'profile-dyslexia',
+        icon: this.widgetIcons.dyslexiaFont,
+        states: { 'readable-text': true, 'line-spacing': true, 'letter-spacing': true }
+      }
     ];
 
     // Add dev-only tools (?acc-dev=true)
@@ -90,6 +127,7 @@ class AccessibleWebWidget {
     this.violationBubble = null;
 
     // Accessibility report modal state
+    this.reportPanel = null;
     this.reportPreviousFocus = null;
     this.reportKeyListener = null;
 
@@ -202,6 +240,24 @@ class AccessibleWebWidget {
     this.cookieKey = 'accweb';
     this.readingAidVisible = false;
     this.readableFontLoaded = false;
+
+    // Shadow DOM host for the widget UI
+    this.shadowHost = null;
+    this.widgetRoot = null;
+
+    // Screen-reader live region
+    this.liveRegion = null;
+    this.liveRegionTimer = null;
+
+    // Mute sounds state
+    this.muteSoundsObserver = null;
+
+    // Text magnifier state
+    this.magnifierElement = null;
+    this.magnifierMoveHandler = null;
+
+    // Page structure panel state
+    this.structurePanel = null;
 
     // Menu state tracking for focus management
     this.activeMenuContainer = null;

@@ -205,7 +205,8 @@ test('menu renders grouped categories with their section headings', async ({ pag
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  await expect(page.locator('.acc-option-category')).toHaveCount(5);
+  await expect(page.locator('.acc-option-category')).toHaveCount(6);
+  await expect(page.locator('.acc-option-category-profiles .acc-section-title')).toHaveText('Profiles');
   await expect(page.locator('.acc-option-category-speech .acc-section-title')).toHaveText('Speech');
   await expect(page.locator('.acc-option-category-text .acc-section-title')).toHaveText('Text');
   await expect(page.locator('.acc-option-category-color .acc-section-title')).toHaveText('Color & Contrast');

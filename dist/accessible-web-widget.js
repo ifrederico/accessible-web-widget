@@ -84,7 +84,10 @@ var AccessibleWebWidget = (function () {
           annotations: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v268q-19-9-39-15.5t-41-9.5v-243H200v560h242q3 22 9.5 42t15.5 38H200Zm0-120v40-560 243-3 280Zm80-40h163q3-21 9.5-41t14.5-39H280v80Zm0-160h244q32-30 71.5-50t84.5-27v-3H280v80Zm0-160h400v-80H280v80ZM720-40q-83 0-141.5-58.5T520-240q0-83 58.5-141.5T720-440q83 0 141.5 58.5T920-240q0 83-58.5 141.5T720-40Zm-20-80h40v-100h100v-40H740v-100h-40v100H600v40h100v100Z"/></svg>',
           textToSpeech: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320ZM400-606l-86 86H200v80h114l86 86v-252ZM300-480Z"/></svg>',
           highContrast: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93v640Z"/></svg>',
-          simplifyLayout: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M760-360v-80H200v80h560Zm0-160v-80H200v80h560Zm0-160v-80H200v80h560ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm560-80v-80H200v80h560Z"/></svg>'
+          simplifyLayout: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M760-360v-80H200v80h560Zm0-160v-80H200v80h560Zm0-160v-80H200v80h560ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm560-80v-80H200v80h560Z"/></svg>',
+          muteSounds: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M792-56 671-177q-25 16-53 27.5T560-131v-82q14-5 27.5-10t25.5-12L480-368v208L280-360H120v-240h128L56-792l56-56 736 736-56 56Zm-8-232-58-58q17-31 25.5-65t8.5-70q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 53-14.5 102T784-288ZM650-422l-90-90v-130q47 22 73.5 66t26.5 96q0 15-2.5 29.5T650-422ZM480-592 376-696l104-104v208Zm-80 238v-94l-72-72H200v80h114l86 86Zm-36-130Z"/></svg>',
+          textMagnifier: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Zm-40-60v-80h-80v-80h80v-80h80v80h80v80h-80v80h-80Z"/></svg>',
+          pageStructure: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-240v-80h480v80H120Zm0-200v-80h480v80H120Zm0-200v-80h480v80H120Zm600 400v-80h120v80H720Zm0-200v-80h120v80H720Zm0-200v-80h120v80H720Z"/></svg>'
         };
 
     const TARGET_SELECTORS = {
@@ -171,6 +174,21 @@ var AccessibleWebWidget = (function () {
             "Stop": "Stop",
             "Loading voice...": "Loading voice...",
             "Reading...": "Reading...",
+            "Profiles": "Profiles",
+            "Seizure Safe": "Seizure Safe",
+            "Vision Impaired": "Vision Impaired",
+            "ADHD Friendly": "ADHD Friendly",
+            "Dyslexia Friendly": "Dyslexia Friendly",
+            "On": "On",
+            "Off": "Off",
+            "Mute Sounds": "Mute Sounds",
+            "Page Structure": "Page Structure",
+            "Text Magnifier": "Text Magnifier",
+            "Headings": "Headings",
+            "Landmarks": "Landmarks",
+            "Links": "Links",
+            "No items found": "No items found",
+            "Settings reset": "Settings reset",
           },
           pt: {
             "Accessibility": "Acessibilidade",
@@ -246,8 +264,24 @@ var AccessibleWebWidget = (function () {
             "Stop": "Parar",
             "Loading voice...": "Carregando voz...",
             "Reading...": "Lendo...",
+            "Profiles": "Perfis",
+            "Seizure Safe": "Seguro para Epilepsia",
+            "Vision Impaired": "Deficiência Visual",
+            "ADHD Friendly": "Adaptado para TDAH",
+            "Dyslexia Friendly": "Adaptado para Dislexia",
+            "On": "Ativado",
+            "Off": "Desativado",
+            "Mute Sounds": "Silenciar Sons",
+            "Page Structure": "Estrutura da Página",
+            "Text Magnifier": "Lupa de Texto",
+            "Headings": "Títulos",
+            "Landmarks": "Pontos de Referência",
+            "Links": "Links",
+            "No items found": "Nenhum item encontrado",
+            "Settings reset": "Configurações redefinidas",
           },
           it: {
+            "Accessibility": "Accessibilità",
             "Accessibility Menu": "Menu Accessibilità",
             "Reset settings": "Ripristina impostazioni",
             "Reset All Settings": "Ripristina tutte le impostazioni",
@@ -275,8 +309,12 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Altezza Riga",
             "Font Weight": "Grassetto",
             "Dyslexia Font": "Font Dislessia",
+            "Font Size": "Dimensione Font",
             "Language": "Lingua",
+            "All Languages": "Tutte le Lingue",
+            "Search language": "Cerca lingua",
             "Open Accessibility Menu": "Apri Menu Accessibilità",
+            "Open accessibility menu": "Apri menu accessibilità",
             "Hide Images": "Nascondi Immagini",
             "Skip to accessibility menu": "Vai al menu accessibilità",
             "Accessibility Report": "Report Accessibilità",
@@ -300,12 +338,40 @@ var AccessibleWebWidget = (function () {
             "Text to Speech On": "Sintesi Vocale Attiva",
             "Text to Speech Off": "Sintesi Vocale Disattiva",
             "Simplify Layout": "Simplify Layout",
+            "Speech": "Voce",
+            "Text": "Testo",
+            "Color & Contrast": "Colore e Contrasto",
+            "Reading Aids": "Aiuti alla Lettura",
+            "Interaction": "Interazione",
+            "Contrast": "Contrasto",
+            "Saturation": "Saturazione",
+            "Light": "Chiaro",
+            "Dark": "Scuro",
+            "High": "Alta",
+            "Low": "Bassa",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
+            "Loading voice...": "Caricamento voce...",
             "Reading...": "Reading...",
+            "Profiles": "Profili",
+            "Seizure Safe": "Sicuro per Epilessia",
+            "Vision Impaired": "Ipovisione",
+            "ADHD Friendly": "Adatto per ADHD",
+            "Dyslexia Friendly": "Adatto per Dislessia",
+            "On": "Attivato",
+            "Off": "Disattivato",
+            "Mute Sounds": "Disattiva Suoni",
+            "Page Structure": "Struttura della Pagina",
+            "Text Magnifier": "Lente d'Ingrandimento Testo",
+            "Headings": "Intestazioni",
+            "Landmarks": "Punti di Riferimento",
+            "Links": "Link",
+            "No items found": "Nessun elemento trovato",
+            "Settings reset": "Impostazioni ripristinate",
           },
           fr: {
+            "Accessibility": "Accessibilité",
             "Accessibility Menu": "Menu Accessibilité",
             "Reset settings": "Réinitialiser les paramètres",
             "Reset All Settings": "Réinitialiser tous les paramètres",
@@ -333,8 +399,12 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Hauteur de Ligne",
             "Font Weight": "Graisse de Police",
             "Dyslexia Font": "Police Dyslexie",
+            "Font Size": "Taille de Police",
             "Language": "Langue",
+            "All Languages": "Toutes les Langues",
+            "Search language": "Rechercher une langue",
             "Open Accessibility Menu": "Ouvrir le Menu Accessibilité",
+            "Open accessibility menu": "Ouvrir le menu accessibilité",
             "Hide Images": "Masquer les Images",
             "Skip to accessibility menu": "Aller au menu accessibilité",
             "Accessibility Report": "Rapport d'Accessibilité",
@@ -358,12 +428,40 @@ var AccessibleWebWidget = (function () {
             "Text to Speech On": "Synthèse Vocale Activée",
             "Text to Speech Off": "Synthèse Vocale Désactivée",
             "Simplify Layout": "Simplify Layout",
+            "Speech": "Voix",
+            "Text": "Texte",
+            "Color & Contrast": "Couleur et Contraste",
+            "Reading Aids": "Aides à la Lecture",
+            "Interaction": "Interaction",
+            "Contrast": "Contraste",
+            "Saturation": "Saturation",
+            "Light": "Clair",
+            "Dark": "Sombre",
+            "High": "Élevée",
+            "Low": "Faible",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
+            "Loading voice...": "Chargement de la voix...",
             "Reading...": "Reading...",
+            "Profiles": "Profils",
+            "Seizure Safe": "Protection Épilepsie",
+            "Vision Impaired": "Déficience Visuelle",
+            "ADHD Friendly": "Adapté TDAH",
+            "Dyslexia Friendly": "Adapté Dyslexie",
+            "On": "Activé",
+            "Off": "Désactivé",
+            "Mute Sounds": "Couper les Sons",
+            "Page Structure": "Structure de la Page",
+            "Text Magnifier": "Loupe de Texte",
+            "Headings": "Titres",
+            "Landmarks": "Points de Repère",
+            "Links": "Liens",
+            "No items found": "Aucun élément trouvé",
+            "Settings reset": "Paramètres réinitialisés",
           },
           de: {
+            "Accessibility": "Barrierefreiheit",
             "Accessibility Menu": "Barrierefreiheit-Menü",
             "Reset settings": "Einstellungen zurücksetzen",
             "Reset All Settings": "Alle Einstellungen zurücksetzen",
@@ -391,8 +489,12 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Zeilenhöhe",
             "Font Weight": "Schriftstärke",
             "Dyslexia Font": "Legasthenie-Schrift",
+            "Font Size": "Schriftgröße",
             "Language": "Sprache",
+            "All Languages": "Alle Sprachen",
+            "Search language": "Sprache suchen",
             "Open Accessibility Menu": "Barrierefreiheit-Menü öffnen",
+            "Open accessibility menu": "Barrierefreiheit-Menü öffnen",
             "Hide Images": "Bilder ausblenden",
             "Skip to accessibility menu": "Zum Barrierefreiheit-Menü springen",
             "Accessibility Report": "Barrierefreiheit-Bericht",
@@ -416,12 +518,40 @@ var AccessibleWebWidget = (function () {
             "Text to Speech On": "Sprachausgabe Ein",
             "Text to Speech Off": "Sprachausgabe Aus",
             "Simplify Layout": "Simplify Layout",
+            "Speech": "Sprachausgabe",
+            "Text": "Text",
+            "Color & Contrast": "Farbe & Kontrast",
+            "Reading Aids": "Lesehilfen",
+            "Interaction": "Interaktion",
+            "Contrast": "Kontrast",
+            "Saturation": "Sättigung",
+            "Light": "Hell",
+            "Dark": "Dunkel",
+            "High": "Hoch",
+            "Low": "Niedrig",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
+            "Loading voice...": "Stimme wird geladen...",
             "Reading...": "Reading...",
+            "Profiles": "Profile",
+            "Seizure Safe": "Anfallssicher",
+            "Vision Impaired": "Sehbeeinträchtigung",
+            "ADHD Friendly": "ADHS-freundlich",
+            "Dyslexia Friendly": "Legasthenie-freundlich",
+            "On": "Ein",
+            "Off": "Aus",
+            "Mute Sounds": "Töne stummschalten",
+            "Page Structure": "Seitenstruktur",
+            "Text Magnifier": "Textlupe",
+            "Headings": "Überschriften",
+            "Landmarks": "Orientierungspunkte",
+            "Links": "Links",
+            "No items found": "Keine Einträge gefunden",
+            "Settings reset": "Einstellungen zurückgesetzt",
           },
           es: {
+            "Accessibility": "Accesibilidad",
             "Accessibility Menu": "Menú de Accesibilidad",
             "Reset settings": "Restablecer configuración",
             "Reset All Settings": "Restablecer toda la configuración",
@@ -449,8 +579,12 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Altura de Línea",
             "Font Weight": "Grosor de Fuente",
             "Dyslexia Font": "Fuente para Dislexia",
+            "Font Size": "Tamaño de Fuente",
             "Language": "Idioma",
+            "All Languages": "Todos los Idiomas",
+            "Search language": "Buscar idioma",
             "Open Accessibility Menu": "Abrir Menú de Accesibilidad",
+            "Open accessibility menu": "Abrir menú de accesibilidad",
             "Hide Images": "Ocultar Imágenes",
             "Skip to accessibility menu": "Ir al menú de accesibilidad",
             "Accessibility Report": "Informe de Accesibilidad",
@@ -474,12 +608,40 @@ var AccessibleWebWidget = (function () {
             "Text to Speech On": "Texto a Voz Activado",
             "Text to Speech Off": "Texto a Voz Desactivado",
             "Simplify Layout": "Simplify Layout",
+            "Speech": "Voz",
+            "Text": "Texto",
+            "Color & Contrast": "Color y Contraste",
+            "Reading Aids": "Ayudas de Lectura",
+            "Interaction": "Interacción",
+            "Contrast": "Contraste",
+            "Saturation": "Saturación",
+            "Light": "Claro",
+            "Dark": "Oscuro",
+            "High": "Alta",
+            "Low": "Baja",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
+            "Loading voice...": "Cargando voz...",
             "Reading...": "Reading...",
+            "Profiles": "Perfiles",
+            "Seizure Safe": "Seguro para Epilepsia",
+            "Vision Impaired": "Discapacidad Visual",
+            "ADHD Friendly": "Adaptado para TDAH",
+            "Dyslexia Friendly": "Adaptado para Dislexia",
+            "On": "Activado",
+            "Off": "Desactivado",
+            "Mute Sounds": "Silenciar Sonidos",
+            "Page Structure": "Estructura de la Página",
+            "Text Magnifier": "Lupa de Texto",
+            "Headings": "Encabezados",
+            "Landmarks": "Puntos de Referencia",
+            "Links": "Enlaces",
+            "No items found": "No se encontraron elementos",
+            "Settings reset": "Configuración restablecida",
           },
           ru: {
+            "Accessibility": "Доступность",
             "Accessibility Menu": "Меню доступности",
             "Reset settings": "Сбросить настройки",
             "Reset All Settings": "Сбросить все настройки",
@@ -507,8 +669,12 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Высота строки",
             "Font Weight": "Жирный шрифт",
             "Dyslexia Font": "Шрифт для дислексии",
+            "Font Size": "Размер шрифта",
             "Language": "Язык",
+            "All Languages": "Все языки",
+            "Search language": "Поиск языка",
             "Open Accessibility Menu": "Открыть меню доступности",
+            "Open accessibility menu": "Открыть меню доступности",
             "Hide Images": "Скрыть изображения",
             "Skip to accessibility menu": "Перейти к меню доступности",
             "Accessibility Report": "Отчёт о доступности",
@@ -532,12 +698,40 @@ var AccessibleWebWidget = (function () {
             "Text to Speech On": "Озвучивание Включено",
             "Text to Speech Off": "Озвучивание Выключено",
             "Simplify Layout": "Simplify Layout",
+            "Speech": "Речь",
+            "Text": "Текст",
+            "Color & Contrast": "Цвет и контраст",
+            "Reading Aids": "Помощь при чтении",
+            "Interaction": "Взаимодействие",
+            "Contrast": "Контраст",
+            "Saturation": "Насыщенность",
+            "Light": "Светлый",
+            "Dark": "Тёмный",
+            "High": "Высокая",
+            "Low": "Низкая",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
+            "Loading voice...": "Загрузка голоса...",
             "Reading...": "Reading...",
+            "Profiles": "Профили",
+            "Seizure Safe": "Защита от эпилепсии",
+            "Vision Impaired": "Для слабовидящих",
+            "ADHD Friendly": "Для людей с СДВГ",
+            "Dyslexia Friendly": "Для людей с дислексией",
+            "On": "Включено",
+            "Off": "Выключено",
+            "Mute Sounds": "Отключить звук",
+            "Page Structure": "Структура страницы",
+            "Text Magnifier": "Текстовая лупа",
+            "Headings": "Заголовки",
+            "Landmarks": "Ориентиры",
+            "Links": "Ссылки",
+            "No items found": "Ничего не найдено",
+            "Settings reset": "Настройки сброшены",
           },
           pl: {
+            "Accessibility": "Dostępność",
             "Accessibility Menu": "Menu Dostępności",
             "Reset settings": "Zresetuj ustawienia",
             "Reset All Settings": "Zresetuj wszystkie ustawienia",
@@ -565,8 +759,12 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Wysokość Linii",
             "Font Weight": "Grubość Czcionki",
             "Dyslexia Font": "Czcionka dla Dysleksji",
+            "Font Size": "Rozmiar Czcionki",
             "Language": "Język",
+            "All Languages": "Wszystkie Języki",
+            "Search language": "Szukaj języka",
             "Open Accessibility Menu": "Otwórz Menu Dostępności",
+            "Open accessibility menu": "Otwórz menu dostępności",
             "Hide Images": "Ukryj Obrazy",
             "Skip to accessibility menu": "Przejdź do menu dostępności",
             "Accessibility Report": "Raport Dostępności",
@@ -590,12 +788,40 @@ var AccessibleWebWidget = (function () {
             "Text to Speech On": "Czytanie Tekstu Włączone",
             "Text to Speech Off": "Czytanie Tekstu Wyłączone",
             "Simplify Layout": "Simplify Layout",
+            "Speech": "Mowa",
+            "Text": "Tekst",
+            "Color & Contrast": "Kolor i Kontrast",
+            "Reading Aids": "Pomoce do Czytania",
+            "Interaction": "Interakcja",
+            "Contrast": "Kontrast",
+            "Saturation": "Saturacja",
+            "Light": "Jasny",
+            "Dark": "Ciemny",
+            "High": "Wysoka",
+            "Low": "Niska",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
+            "Loading voice...": "Ładowanie głosu...",
             "Reading...": "Reading...",
+            "Profiles": "Profile",
+            "Seizure Safe": "Bezpieczny dla Epileptyków",
+            "Vision Impaired": "Dla Słabowidzących",
+            "ADHD Friendly": "Przyjazny dla ADHD",
+            "Dyslexia Friendly": "Przyjazny dla Dysleksji",
+            "On": "Włączone",
+            "Off": "Wyłączone",
+            "Mute Sounds": "Wycisz Dźwięki",
+            "Page Structure": "Struktura Strony",
+            "Text Magnifier": "Lupa Tekstu",
+            "Headings": "Nagłówki",
+            "Landmarks": "Punkty Orientacyjne",
+            "Links": "Linki",
+            "No items found": "Nie znaleziono elementów",
+            "Settings reset": "Ustawienia zresetowane",
           },
           ro: {
+            "Accessibility": "Accesibilitate",
             "Accessibility Menu": "Meniu Accesibilitate",
             "Reset settings": "Resetare setări",
             "Reset All Settings": "Resetare toate setările",
@@ -623,8 +849,12 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Înălțime Linie",
             "Font Weight": "Grosime Font",
             "Dyslexia Font": "Font pentru Dislexie",
+            "Font Size": "Dimensiune Font",
             "Language": "Limbă",
+            "All Languages": "Toate Limbile",
+            "Search language": "Căutare limbă",
             "Open Accessibility Menu": "Deschide Meniul Accesibilitate",
+            "Open accessibility menu": "Deschide meniul de accesibilitate",
             "Hide Images": "Ascunde Imagini",
             "Skip to accessibility menu": "Salt la meniul de accesibilitate",
             "Accessibility Report": "Raport Accesibilitate",
@@ -648,12 +878,40 @@ var AccessibleWebWidget = (function () {
             "Text to Speech On": "Text to Speech Pornit",
             "Text to Speech Off": "Text to Speech Oprit",
             "Simplify Layout": "Simplify Layout",
+            "Speech": "Voce",
+            "Text": "Text",
+            "Color & Contrast": "Culoare și Contrast",
+            "Reading Aids": "Ajutoare de Citire",
+            "Interaction": "Interacțiune",
+            "Contrast": "Contrast",
+            "Saturation": "Saturație",
+            "Light": "Luminos",
+            "Dark": "Întunecat",
+            "High": "Ridicată",
+            "Low": "Scăzută",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
+            "Loading voice...": "Se încarcă vocea...",
             "Reading...": "Reading...",
+            "Profiles": "Profiluri",
+            "Seizure Safe": "Protecție Epilepsie",
+            "Vision Impaired": "Deficiențe de Vedere",
+            "ADHD Friendly": "Adaptat pentru ADHD",
+            "Dyslexia Friendly": "Adaptat pentru Dislexie",
+            "On": "Activat",
+            "Off": "Dezactivat",
+            "Mute Sounds": "Dezactivare Sunete",
+            "Page Structure": "Structura Paginii",
+            "Text Magnifier": "Lupă pentru Text",
+            "Headings": "Titluri",
+            "Landmarks": "Repere",
+            "Links": "Linkuri",
+            "No items found": "Niciun element găsit",
+            "Settings reset": "Setări resetate",
           },
           nl: {
+            "Accessibility": "Toegankelijkheid",
             "Accessibility Menu": "Toegankelijkheidsmenu",
             "Reset settings": "Instellingen resetten",
             "Reset All Settings": "Alle instellingen resetten",
@@ -681,8 +939,12 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Regelhoogte",
             "Font Weight": "Letterdikte",
             "Dyslexia Font": "Dyslexie Lettertype",
+            "Font Size": "Lettergrootte",
             "Language": "Taal",
+            "All Languages": "Alle Talen",
+            "Search language": "Taal zoeken",
             "Open Accessibility Menu": "Toegankelijkheidsmenu openen",
+            "Open accessibility menu": "Toegankelijkheidsmenu openen",
             "Hide Images": "Afbeeldingen verbergen",
             "Skip to accessibility menu": "Ga naar toegankelijkheidsmenu",
             "Accessibility Report": "Toegankelijkheidsrapport",
@@ -706,12 +968,40 @@ var AccessibleWebWidget = (function () {
             "Text to Speech On": "Tekst naar Spraak Aan",
             "Text to Speech Off": "Tekst naar Spraak Uit",
             "Simplify Layout": "Simplify Layout",
+            "Speech": "Spraak",
+            "Text": "Tekst",
+            "Color & Contrast": "Kleur & Contrast",
+            "Reading Aids": "Leeshulpmiddelen",
+            "Interaction": "Interactie",
+            "Contrast": "Contrast",
+            "Saturation": "Verzadiging",
+            "Light": "Licht",
+            "Dark": "Donker",
+            "High": "Hoog",
+            "Low": "Laag",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
+            "Loading voice...": "Stem laden...",
             "Reading...": "Reading...",
+            "Profiles": "Profielen",
+            "Seizure Safe": "Epilepsieveilig",
+            "Vision Impaired": "Slechtziend",
+            "ADHD Friendly": "ADHD-vriendelijk",
+            "Dyslexia Friendly": "Dyslexievriendelijk",
+            "On": "Aan",
+            "Off": "Uit",
+            "Mute Sounds": "Geluiden dempen",
+            "Page Structure": "Paginastructuur",
+            "Text Magnifier": "Tekstvergrootglas",
+            "Headings": "Koppen",
+            "Landmarks": "Oriëntatiepunten",
+            "Links": "Links",
+            "No items found": "Geen items gevonden",
+            "Settings reset": "Instellingen gereset",
           },
           uk: {
+            "Accessibility": "Доступність",
             "Accessibility Menu": "Меню доступності",
             "Reset settings": "Скинути налаштування",
             "Reset All Settings": "Скинути всі налаштування",
@@ -739,8 +1029,12 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Висота рядка",
             "Font Weight": "Жирний шрифт",
             "Dyslexia Font": "Шрифт для дислексії",
+            "Font Size": "Розмір шрифту",
             "Language": "Мова",
+            "All Languages": "Усі мови",
+            "Search language": "Пошук мови",
             "Open Accessibility Menu": "Відкрити меню доступності",
+            "Open accessibility menu": "Відкрити меню доступності",
             "Hide Images": "Приховати зображення",
             "Skip to accessibility menu": "Перейти до меню доступності",
             "Accessibility Report": "Звіт про доступність",
@@ -764,10 +1058,217 @@ var AccessibleWebWidget = (function () {
             "Text to Speech On": "Озвучування Увімкнено",
             "Text to Speech Off": "Озвучування Вимкнено",
             "Simplify Layout": "Simplify Layout",
+            "Speech": "Мовлення",
+            "Text": "Текст",
+            "Color & Contrast": "Колір і контраст",
+            "Reading Aids": "Допомога при читанні",
+            "Interaction": "Взаємодія",
+            "Contrast": "Контраст",
+            "Saturation": "Насиченість",
+            "Light": "Світлий",
+            "Dark": "Темний",
+            "High": "Висока",
+            "Low": "Низька",
             "Play": "Play",
             "Pause": "Pause",
             "Stop": "Stop",
+            "Loading voice...": "Завантаження голосу...",
             "Reading...": "Reading...",
+            "Profiles": "Профілі",
+            "Seizure Safe": "Захист від епілепсії",
+            "Vision Impaired": "Для людей з вадами зору",
+            "ADHD Friendly": "Для людей з РДУГ",
+            "Dyslexia Friendly": "Для людей з дислексією",
+            "On": "Увімкнено",
+            "Off": "Вимкнено",
+            "Mute Sounds": "Вимкнути звук",
+            "Page Structure": "Структура сторінки",
+            "Text Magnifier": "Текстова лупа",
+            "Headings": "Заголовки",
+            "Landmarks": "Орієнтири",
+            "Links": "Посилання",
+            "No items found": "Нічого не знайдено",
+            "Settings reset": "Налаштування скинуто",
+          },
+          ar: {
+            "Accessibility": "إمكانية الوصول",
+            "Accessibility Menu": "قائمة إمكانية الوصول",
+            "Reset settings": "إعادة تعيين الإعدادات",
+            "Reset All Settings": "إعادة تعيين جميع الإعدادات",
+            "Close": "إغلاق",
+            "Content Adjustments": "تعديلات المحتوى",
+            "Adjust Font Size": "تعديل حجم الخط",
+            "Highlight Title": "تمييز العناوين",
+            "Highlight Links": "تمييز الروابط",
+            "Readable Font": "خط سهل القراءة",
+            "Color Adjustments": "تعديلات الألوان",
+            "Invert Colors": "عكس الألوان",
+            "Light Contrast": "تباين فاتح",
+            "Dark Contrast": "تباين داكن",
+            "High Contrast": "تباين عالٍ",
+            "High Saturation": "تشبع عالٍ",
+            "Low Saturation": "تشبع منخفض",
+            "Monochrome": "أحادي اللون",
+            "Tools": "أدوات",
+            "Reading Guide": "دليل القراءة",
+            "Stop Animations": "إيقاف الرسوم المتحركة",
+            "Big Cursor": "مؤشر كبير",
+            "Increase Font Size": "تكبير حجم الخط",
+            "Decrease Font Size": "تصغير حجم الخط",
+            "Letter Spacing": "تباعد الأحرف",
+            "Line Height": "ارتفاع السطر",
+            "Font Weight": "سُمك الخط",
+            "Dyslexia Font": "خط لعُسر القراءة",
+            "Font Size": "حجم الخط",
+            "Language": "اللغة",
+            "All Languages": "جميع اللغات",
+            "Search language": "البحث عن لغة",
+            "Open Accessibility Menu": "فتح قائمة إمكانية الوصول",
+            "Open accessibility menu": "فتح قائمة إمكانية الوصول",
+            "Hide Images": "إخفاء الصور",
+            "Skip to accessibility menu": "الانتقال إلى قائمة إمكانية الوصول",
+            "Accessibility Report": "تقرير إمكانية الوصول",
+            "Run Accessibility Check": "تشغيل فحص إمكانية الوصول",
+            "Loading...": "جارٍ التحميل...",
+            "Analyzing page...": "جارٍ تحليل الصفحة...",
+            "Critical": "حرج",
+            "Serious": "خطير",
+            "Moderate": "متوسط",
+            "Minor": "طفيف",
+            "Violations Found": "المخالفات المكتشفة",
+            "No Issues Found": "لم يتم العثور على مشاكل",
+            "Element": "العنصر",
+            "Issue": "المشكلة",
+            "How to Fix": "كيفية الإصلاح",
+            "Close Report": "إغلاق التقرير",
+            "Passed Tests": "الاختبارات الناجحة",
+            "Items Need Review": "عناصر تحتاج إلى مراجعة",
+            "Annotations": "التعليقات التوضيحية",
+            "Text to Speech": "تحويل النص إلى كلام",
+            "Text to Speech On": "تحويل النص إلى كلام مفعّل",
+            "Text to Speech Off": "تحويل النص إلى كلام معطّل",
+            "Simplify Layout": "تبسيط التخطيط",
+            "Speech": "الكلام",
+            "Text": "النص",
+            "Color & Contrast": "اللون والتباين",
+            "Reading Aids": "مساعدات القراءة",
+            "Interaction": "التفاعل",
+            "Contrast": "التباين",
+            "Saturation": "التشبع",
+            "Light": "فاتح",
+            "Dark": "داكن",
+            "High": "عالٍ",
+            "Low": "منخفض",
+            "Play": "تشغيل",
+            "Pause": "إيقاف مؤقت",
+            "Stop": "إيقاف",
+            "Loading voice...": "جارٍ تحميل الصوت...",
+            "Reading...": "جارٍ القراءة...",
+            "Profiles": "الملفات الشخصية",
+            "Seizure Safe": "آمن لمرضى الصرع",
+            "Vision Impaired": "لضعاف البصر",
+            "ADHD Friendly": "مناسب لفرط الحركة وتشتت الانتباه",
+            "Dyslexia Friendly": "مناسب لعُسر القراءة",
+            "On": "مفعّل",
+            "Off": "معطّل",
+            "Mute Sounds": "كتم الأصوات",
+            "Page Structure": "بنية الصفحة",
+            "Text Magnifier": "مكبّر النص",
+            "Headings": "العناوين",
+            "Landmarks": "المعالم",
+            "Links": "الروابط",
+            "No items found": "لم يتم العثور على عناصر",
+            "Settings reset": "تمت إعادة تعيين الإعدادات",
+          },
+          he: {
+            "Accessibility": "נגישות",
+            "Accessibility Menu": "תפריט נגישות",
+            "Reset settings": "איפוס הגדרות",
+            "Reset All Settings": "איפוס כל ההגדרות",
+            "Close": "סגירה",
+            "Content Adjustments": "התאמות תוכן",
+            "Adjust Font Size": "התאמת גודל גופן",
+            "Highlight Title": "הדגשת כותרות",
+            "Highlight Links": "הדגשת קישורים",
+            "Readable Font": "גופן קריא",
+            "Color Adjustments": "התאמות צבע",
+            "Invert Colors": "היפוך צבעים",
+            "Light Contrast": "ניגודיות בהירה",
+            "Dark Contrast": "ניגודיות כהה",
+            "High Contrast": "ניגודיות גבוהה",
+            "High Saturation": "רוויה גבוהה",
+            "Low Saturation": "רוויה נמוכה",
+            "Monochrome": "מונוכרום",
+            "Tools": "כלים",
+            "Reading Guide": "סרגל קריאה",
+            "Stop Animations": "עצירת אנימציות",
+            "Big Cursor": "סמן גדול",
+            "Increase Font Size": "הגדלת גודל גופן",
+            "Decrease Font Size": "הקטנת גודל גופן",
+            "Letter Spacing": "ריווח אותיות",
+            "Line Height": "גובה שורה",
+            "Font Weight": "עובי גופן",
+            "Dyslexia Font": "גופן מותאם לדיסלקציה",
+            "Font Size": "גודל גופן",
+            "Language": "שפה",
+            "All Languages": "כל השפות",
+            "Search language": "חיפוש שפה",
+            "Open Accessibility Menu": "פתיחת תפריט נגישות",
+            "Open accessibility menu": "פתיחת תפריט נגישות",
+            "Hide Images": "הסתרת תמונות",
+            "Skip to accessibility menu": "דילוג לתפריט הנגישות",
+            "Accessibility Report": "דוח נגישות",
+            "Run Accessibility Check": "הפעלת בדיקת נגישות",
+            "Loading...": "טוען...",
+            "Analyzing page...": "מנתח את הדף...",
+            "Critical": "קריטי",
+            "Serious": "חמור",
+            "Moderate": "בינוני",
+            "Minor": "קל",
+            "Violations Found": "הפרות שנמצאו",
+            "No Issues Found": "לא נמצאו בעיות",
+            "Element": "רכיב",
+            "Issue": "בעיה",
+            "How to Fix": "כיצד לתקן",
+            "Close Report": "סגירת הדוח",
+            "Passed Tests": "בדיקות שעברו",
+            "Items Need Review": "פריטים הדורשים בדיקה",
+            "Annotations": "הערות",
+            "Text to Speech": "הקראת טקסט",
+            "Text to Speech On": "הקראת טקסט פועלת",
+            "Text to Speech Off": "הקראת טקסט כבויה",
+            "Simplify Layout": "פישוט הפריסה",
+            "Speech": "דיבור",
+            "Text": "טקסט",
+            "Color & Contrast": "צבע וניגודיות",
+            "Reading Aids": "עזרי קריאה",
+            "Interaction": "אינטראקציה",
+            "Contrast": "ניגודיות",
+            "Saturation": "רוויה",
+            "Light": "בהיר",
+            "Dark": "כהה",
+            "High": "גבוהה",
+            "Low": "נמוכה",
+            "Play": "נגן",
+            "Pause": "השהה",
+            "Stop": "עצור",
+            "Loading voice...": "טוען קול...",
+            "Reading...": "מקריא...",
+            "Profiles": "פרופילים",
+            "Seizure Safe": "מותאם לאפילפסיה",
+            "Vision Impaired": "מותאם ללקויי ראייה",
+            "ADHD Friendly": "מותאם להפרעות קשב",
+            "Dyslexia Friendly": "מותאם לדיסלקציה",
+            "On": "מופעל",
+            "Off": "כבוי",
+            "Mute Sounds": "השתקת צלילים",
+            "Page Structure": "מבנה הדף",
+            "Text Magnifier": "זכוכית מגדלת לטקסט",
+            "Headings": "כותרות",
+            "Landmarks": "ציוני דרך",
+            "Links": "קישורים",
+            "No items found": "לא נמצאו פריטים",
+            "Settings reset": "ההגדרות אופסו",
           }
         };
 
@@ -782,7 +1283,9 @@ var AccessibleWebWidget = (function () {
           { code: "pl", label: "Polski (Polish)" },
           { code: "ro", label: "Română (Romanian)" },
           { code: "nl", label: "Nederlands (Dutch)" },
-          { code: "uk", label: "Українська (Ukrainian)" }
+          { code: "uk", label: "Українська (Ukrainian)" },
+          { code: "ar", label: "العربية (Arabic)" },
+          { code: "he", label: "עברית (Hebrew)" }
         ];
 
     /** @typedef {import('./index.js').default} AccessibleWebWidget */
@@ -1120,14 +1623,22 @@ var AccessibleWebWidget = (function () {
 
     var annotationsCSS = ".acc-annotation-layer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 0;\n  height: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 5);\n  pointer-events: none;\n}\n\n.acc-annotation-marker {\n  position: absolute;\n  width: 20px;\n  height: 20px;\n  border: none;\n  border-radius: 999px;\n  color: #fff;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);\n  cursor: pointer;\n  pointer-events: auto;\n  transform: translate(-40%, -50%);\n}\n\n.acc-annotation-marker svg {\n  width: 12px;\n  height: 12px;\n  fill: currentColor;\n}\n\n.acc-annotation-marker[data-impact=\"critical\"] {\n  background: #b71c1c;\n}\n\n.acc-annotation-marker[data-impact=\"serious\"] {\n  background: #d84315;\n}\n\n.acc-annotation-marker[data-impact=\"moderate\"] {\n  background: #ef6c00;\n}\n\n.acc-annotation-marker[data-impact=\"minor\"] {\n  background: #1565c0;\n}\n\n.acc-annotation-popup {\n  position: absolute;\n  width: min(320px, 92vw);\n  background: #fff;\n  color: #1a1a1a;\n  border: 1px solid #d7d7d7;\n  border-radius: 10px;\n  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);\n  padding: 12px;\n  pointer-events: auto;\n}\n\n.acc-annotation-popup-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n}\n\n.acc-annotation-popup-title {\n  margin: 0;\n  font-size: 14px;\n  line-height: 1.3;\n}\n\n.acc-annotation-popup-close {\n  border: 0;\n  background: transparent;\n  padding: 2px;\n  width: 24px;\n  height: 24px;\n  color: #444;\n  cursor: pointer;\n}\n\n.acc-annotation-popup-close svg {\n  width: 20px;\n  height: 20px;\n  fill: currentColor;\n}\n\n.acc-annotation-popup p {\n  margin: 8px 0;\n  font-size: 13px;\n  line-height: 1.45;\n}\n\n.acc-annotation-popup a {\n  color: #0d47a1;\n  font-weight: 600;\n  text-decoration: underline;\n}\n";
 
+    var extrasCSS = "/* Text magnifier — fixed banner showing enlarged copy of hovered text */\n.acc-text-magnifier {\n  position: fixed;\n  left: 50%;\n  bottom: 24px;\n  transform: translateX(-50%);\n  max-width: min(90vw, 880px);\n  background: #111827;\n  color: #ffffff;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, Arial, sans-serif;\n  font-size: 28px;\n  line-height: 1.45;\n  padding: 14px 22px;\n  border-radius: 10px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);\n  z-index: 2147483646;\n  pointer-events: none;\n  display: none;\n}\n\n.acc-text-magnifier.acc-visible {\n  display: block;\n}\n\n/* Page structure navigator — list styling inside the shared report dialog */\n.acc-structure-list {\n  list-style: none;\n  margin: 0 0 16px;\n  padding: 0;\n}\n\n.acc-structure-list li {\n  margin: 0;\n  padding: 0;\n}\n\n.acc-structure-item {\n  display: block;\n  width: 100%;\n  text-align: start;\n  background: transparent;\n  border: none;\n  border-radius: 6px;\n  padding: 8px 12px;\n  font-size: 14px;\n  line-height: 1.4;\n  color: var(--acc-text-color, #1f2937);\n  cursor: pointer;\n}\n\n.acc-structure-item:hover {\n  background: var(--acc-hover-color, #f3f4f6);\n}\n\n.acc-structure-item:focus-visible {\n  outline: 2px solid var(--acc-focus-ring-color, #1976d2);\n  outline-offset: -2px;\n}\n\n.acc-structure-empty {\n  color: #6b7280;\n  font-size: 14px;\n  margin: 0 0 16px;\n  padding: 0 12px;\n}\n";
+
     const STATIC_STYLE_ID = 'acc-static-styles';
-    const STATIC_STYLES = [
+    // Widget UI styles live inside the shadow root so host-page CSS cannot
+    // override them; page-level overlay styles (report modal, reading guide,
+    // skip link, annotations) target light-DOM elements and stay in <head>.
+    const WIDGET_UI_STYLES = [
       menuCSS,
-      widgetCSS,
+      widgetCSS
+    ].join('\n');
+    const PAGE_OVERLAY_STYLES = [
       reportCSS,
       readingGuideCSS,
       skipLinkCSS,
-      annotationsCSS
+      annotationsCSS,
+      extrasCSS
     ].join('\n');
 
     /** @typedef {import('./index.js').default} AccessibleWebWidget */
@@ -1236,73 +1747,55 @@ var AccessibleWebWidget = (function () {
 
       registerStaticStyles() {
         if (this.staticStylesRegistered) return;
-        this.injectStyle(STATIC_STYLE_ID, STATIC_STYLES);
+        this.injectStyle(STATIC_STYLE_ID, PAGE_OVERLAY_STYLES);
         this.staticStylesRegistered = true;
+      },
+
+      getWidgetUiStyles() {
+        return WIDGET_UI_STYLES;
+      },
+
+      // Query the widget's own UI. Before the shadow root exists (or if
+      // attachShadow is unavailable) this falls back to the document.
+      queryWidget(selector) {
+        const root = this.widgetRoot || document;
+        try {
+          return root.querySelector(selector);
+        } catch (e) {
+          console.warn(`Failed to query widget selector: ${selector}`, e);
+          return null;
+        }
+      },
+
+      queryWidgetAll(selector) {
+        const root = this.widgetRoot || document;
+        try {
+          return Array.from(root.querySelectorAll(selector));
+        } catch (e) {
+          console.warn(`Failed to query widget selector: ${selector}`, e);
+          return [];
+        }
+      },
+
+      // document.activeElement reports the shadow host once focus moves inside
+      // the shadow root; resolve the real focused element.
+      getActiveElement() {
+        if (typeof document === 'undefined') return null;
+        if (this.widgetRoot && this.widgetRoot.activeElement) {
+          return this.widgetRoot.activeElement;
+        }
+        return document.activeElement;
       }
 
     };
 
-    /** @typedef {import('./index.js').default} AccessibleWebWidget */
+    /** @typedef {import('../index.js').default} AccessibleWebWidget */
 
-    const AXE_CORE_VERSION = '4.11.1';
-    const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
-    const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
-    const AXE_RUN_OPTIONS = {
-      runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
-    };
-    const MAX_ANNOTATIONS = 50;
     const SYSTEM_PREFERS_REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
+    const SYSTEM_PREFERS_CONTRAST = '(prefers-contrast: more)';
 
     /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
-    const featureMethods = {
-
-      getContrastToggleDisplay(index) {
-          if (index === 0) {
-            return { key: 'light-contrast', label: 'Light', icon: this.widgetIcons.lightContrast };
-          }
-          if (index === 1) {
-            return { key: 'dark-contrast', label: 'Dark', icon: this.widgetIcons.darkContrast };
-          }
-          return { key: null, label: 'Contrast', icon: this.widgetIcons.contrast };
-        },
-
-      applyModeToggleButtonDisplay(button, display, modeAttribute) {
-          if (!button) return;
-          const iconNode = button.querySelector('svg');
-          if (iconNode) {
-            iconNode.outerHTML = display.icon;
-          } else {
-            button.insertAdjacentHTML('afterbegin', display.icon);
-          }
-
-          const translatedLabel = this.translate(display.label);
-          const labelNode = button.querySelector('.acc-label');
-          if (labelNode) {
-            labelNode.setAttribute('data-acc-text', display.label);
-            labelNode.innerText = translatedLabel;
-          }
-          button.setAttribute('title', translatedLabel);
-          button.setAttribute('aria-label', translatedLabel);
-          button.setAttribute(modeAttribute, display.key || 'off');
-        },
-
-      updateContrastToggleButton(button, index) {
-          this.applyModeToggleButtonDisplay(button, this.getContrastToggleDisplay(index), 'data-contrast-mode');
-        },
-
-      getSaturationToggleDisplay(index) {
-          if (index === 0) {
-            return { key: 'low-saturation', label: 'Low', icon: this.widgetIcons.lowSaturation };
-          }
-          if (index === 1) {
-            return { key: 'high-saturation', label: 'High', icon: this.widgetIcons.highSaturation };
-          }
-          return { key: null, label: 'Saturation', icon: this.widgetIcons.saturation };
-        },
-
-      updateSaturationToggleButton(button, index) {
-          this.applyModeToggleButtonDisplay(button, this.getSaturationToggleDisplay(index), 'data-saturation-mode');
-        },
+    const coreFeatureMethods = {
 
       ensureSkipLink() {
           if (typeof document === 'undefined') return null;
@@ -1876,157 +2369,6 @@ var AccessibleWebWidget = (function () {
         }
       },
 
-      loadAxeCore() {
-        if (this.axeCoreLoaded && window.axe) {
-          return Promise.resolve(window.axe);
-        }
-      
-        if (this.axeCorePromise) {
-          return this.axeCorePromise;
-        }
-      
-        this.axeCoreLoading = true;
-        this.axeCorePromise = new Promise((resolve, reject) => {
-          let script = document.querySelector('script[data-acc-axe-core="true"]');
-          let settled = false;
-          let timeoutId = null;
-      
-          const settleSuccess = () => {
-            if (settled) return;
-            settled = true;
-            if (timeoutId) clearTimeout(timeoutId);
-            if (!window.axe) {
-              this.axeCoreLoading = false;
-              this.axeCoreLoaded = false;
-              this.axeCorePromise = null;
-              reject(new Error('axe-core loaded but window.axe is unavailable'));
-              return;
-            }
-            this.axeCoreLoading = false;
-            this.axeCoreLoaded = true;
-            if (script) {
-              script.setAttribute('data-acc-axe-core-loaded', 'true');
-            }
-            resolve(window.axe);
-          };
-      
-          const settleError = (error) => {
-            if (settled) return;
-            settled = true;
-            if (timeoutId) clearTimeout(timeoutId);
-            this.axeCoreLoading = false;
-            this.axeCoreLoaded = false;
-            this.axeCorePromise = null;
-            reject(error);
-          };
-      
-          if (window.axe) {
-            settleSuccess();
-            return;
-          }
-      
-          if (script && !script.src.includes(`/axe-core@${AXE_CORE_VERSION}/`)) {
-            script.remove();
-            script = null;
-          }
-
-          if (!script) {
-            script = document.createElement('script');
-            script.src = AXE_CORE_SRC;
-            script.async = true;
-            script.integrity = AXE_CORE_INTEGRITY;
-            script.crossOrigin = 'anonymous';
-            script.setAttribute('data-acc-axe-core', 'true');
-            document.head.appendChild(script);
-          }
-      
-          script.addEventListener('load', settleSuccess, { once: true });
-          script.addEventListener('error', () => settleError(new Error('Failed to load axe-core')), { once: true });
-          timeoutId = setTimeout(() => {
-            settleError(new Error('Timed out loading axe-core'));
-          }, 15000);
-        });
-      
-        return this.axeCorePromise;
-      },
-
-      getAxeRunOptions() {
-        return { ...AXE_RUN_OPTIONS };
-      },
-
-      getViolationCounts(results = {}) {
-        const counts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
-        const violations = Array.isArray(results.violations) ? results.violations : [];
-        violations.forEach((violation) => {
-          const impact = violation?.impact;
-          if (impact && counts[impact] !== undefined) {
-            counts[impact] += Array.isArray(violation.nodes) ? violation.nodes.length : 0;
-          }
-        });
-        return counts;
-      },
-
-      updateViolationBubble(results = null) {
-        const bubble = this.violationBubble || this.findElement('.acc-violation-bubble');
-        if (!bubble) return;
-
-        const counts = this.getViolationCounts(results || this.axeScanResults || {});
-        const devMode = this.isDevMode();
-
-        let displayCount = 0;
-        let severity = '';
-
-        if (counts.critical > 0) {
-          displayCount = counts.critical;
-          severity = 'critical';
-        } else if (devMode && counts.serious > 0) {
-          displayCount = counts.serious;
-          severity = 'serious';
-        } else if (devMode && counts.moderate > 0) {
-          displayCount = counts.moderate;
-          severity = 'moderate';
-        }
-
-        if (displayCount <= 0) {
-          bubble.textContent = '';
-          bubble.hidden = true;
-          bubble.removeAttribute('data-severity');
-          return;
-        }
-
-        bubble.hidden = false;
-        bubble.dataset.severity = severity;
-        bubble.textContent = displayCount > 99 ? '99+' : String(displayCount);
-      },
-
-      async runBackgroundAxeScan({ force = false } = {}) {
-        if (!force && this.axeScanResults) {
-          this.updateViolationBubble(this.axeScanResults);
-          return this.axeScanResults;
-        }
-
-        if (!force && this.axeScanPromise) {
-          return this.axeScanPromise;
-        }
-
-        this.axeScanPromise = (async () => {
-          try {
-            const axe = await this.loadAxeCore();
-            const results = await axe.run(document, this.getAxeRunOptions());
-            this.axeScanResults = results;
-            this.updateViolationBubble(results);
-            return results;
-          } catch (error) {
-            this.updateViolationBubble({ violations: [] });
-            throw error;
-          } finally {
-            this.axeScanPromise = null;
-          }
-        })();
-
-        return this.axeScanPromise;
-      },
-
       ensureMediaQuery(query) {
         if (!query || typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
           return null;
@@ -2040,19 +2382,29 @@ var AccessibleWebWidget = (function () {
         return this.systemPreferenceMediaQueries[query];
       },
 
-      applySystemMotionPreference(shouldEnable) {
+      // Apply a system-derived default for a feature. An explicit user choice
+      // always wins; returns true when the stored state actually changed.
+      applySystemTogglePreference(key, shouldEnable) {
         this.loadConfig();
-        if (this.hasExplicitStatePreference('pause-motion')) {
+        if (this.hasExplicitStatePreference(key)) {
           return false;
         }
 
-        const currentValue = !!this.retrieveState('pause-motion');
-        if (currentValue === shouldEnable && this.isSystemControlledPreference('pause-motion')) {
+        const currentValue = !!this.retrieveState(key);
+        if (currentValue === shouldEnable && this.isSystemControlledPreference(key)) {
           return false;
         }
 
-        this.updateState({ 'pause-motion': shouldEnable }, { source: 'system' });
+        this.updateState({ [key]: shouldEnable }, { source: 'system' });
         return true;
+      },
+
+      applySystemMotionPreference(shouldEnable) {
+        return this.applySystemTogglePreference('pause-motion', shouldEnable);
+      },
+
+      applySystemContrastPreference(shouldEnable) {
+        return this.applySystemTogglePreference('high-contrast-mode', shouldEnable);
       },
 
       detectSystemPreferences() {
@@ -2062,7 +2414,15 @@ var AccessibleWebWidget = (function () {
         const shouldPauseMotion = !!reducedMotionQuery?.matches;
         const motionChanged = this.applySystemMotionPreference(shouldPauseMotion);
 
-        if (motionChanged) {
+        // prefers-contrast: more → high-contrast mode by default (user override
+        // wins). prefers-color-scheme is intentionally NOT auto-applied: most
+        // sites handle dark mode themselves and force-filtering them would make
+        // things worse, not better.
+        const contrastQuery = this.ensureMediaQuery(SYSTEM_PREFERS_CONTRAST);
+        const shouldHighContrast = !!contrastQuery?.matches;
+        const contrastChanged = this.applySystemContrastPreference(shouldHighContrast);
+
+        if (motionChanged || contrastChanged) {
           this.applyEnhancements();
         }
       },
@@ -2082,6 +2442,7 @@ var AccessibleWebWidget = (function () {
         if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
 
         const reducedMotionQuery = this.ensureMediaQuery(SYSTEM_PREFERS_REDUCED_MOTION);
+        const contrastQuery = this.ensureMediaQuery(SYSTEM_PREFERS_CONTRAST);
 
         const listen = (mediaQuery, handler) => {
           if (!mediaQuery || typeof handler !== 'function') return;
@@ -2098,298 +2459,20 @@ var AccessibleWebWidget = (function () {
           const changed = this.applySystemMotionPreference(!!event.matches);
           if (changed) {
             this.applyEnhancements();
+            this.syncMenuUI();
+          }
+        };
+
+        const onContrastChange = (event) => {
+          const changed = this.applySystemContrastPreference(!!event.matches);
+          if (changed) {
+            this.applyEnhancements();
+            this.syncMenuUI();
           }
         };
 
         listen(reducedMotionQuery, onReducedMotionChange);
-      },
-
-      async runAccessibilityReport() {
-        // Create or get report panel
-        let panel = this.findElement('.acc-report-panel');
-      
-        if (!panel) {
-          panel = this.createReportPanel();
-          document.body.appendChild(panel);
-        }
-      
-        this.openReportPanel(panel);
-      
-        const contentArea = this.findElement('.acc-report-content', panel);
-        const statusArea = this.findElement('.acc-report-status', panel);
-      
-        // Show loading state
-        statusArea.textContent = this.translate('Loading...');
-        contentArea.innerHTML = `<div class="acc-report-loading">${this.translate('Analyzing page...')}</div>`;
-      
-        try {
-          const results = await this.runBackgroundAxeScan({ force: true });
-
-          this.displayReportResults(panel, results);
-      
-        } catch (error) {
-          contentArea.innerHTML = `<div class="acc-report-error">Error: ${error.message}</div>`;
-          statusArea.textContent = '';
-        }
-      },
-
-      getReportFocusableElements(panel) {
-        if (!panel) return [];
-        const dialog = this.findElement('.acc-report-dialog', panel);
-        return this.getFocusableElements(dialog || panel);
-      },
-
-      openReportPanel(panel) {
-        if (!panel) return;
-      
-        this.reportPreviousFocus = document.activeElement && typeof document.activeElement.focus === 'function'
-          ? document.activeElement
-          : null;
-      
-        panel.classList.add('acc-report-visible');
-        panel.setAttribute('aria-hidden', 'false');
-      
-        const dialog = this.findElement('.acc-report-dialog', panel);
-        const focusTarget = dialog || panel;
-        if (!focusTarget.hasAttribute('tabindex')) {
-          focusTarget.setAttribute('tabindex', '-1');
-        }
-      
-        if (this.reportKeyListener) {
-          document.removeEventListener('keydown', this.reportKeyListener, true);
-        }
-      
-        this.reportKeyListener = (event) => {
-          if (!panel.classList.contains('acc-report-visible')) return;
-      
-          if (event.key === 'Escape' || event.key === 'Esc') {
-            event.preventDefault();
-            event.stopPropagation();
-            this.closeReportPanel();
-            return;
-          }
-      
-          if (event.key !== 'Tab') return;
-      
-          const focusables = this.getReportFocusableElements(panel);
-          if (!focusables.length) {
-            event.preventDefault();
-            focusTarget.focus();
-            return;
-          }
-      
-          const first = focusables[0];
-          const last = focusables[focusables.length - 1];
-          const active = document.activeElement;
-          const outsidePanel = !panel.contains(active);
-      
-          if (event.shiftKey) {
-            if (active === first || outsidePanel) {
-              event.preventDefault();
-              last.focus();
-            }
-            return;
-          }
-      
-          if (active === last || outsidePanel) {
-            event.preventDefault();
-            first.focus();
-          }
-        };
-      
-        document.addEventListener('keydown', this.reportKeyListener, true);
-      
-        requestAnimationFrame(() => {
-          const focusables = this.getReportFocusableElements(panel);
-          if (focusables.length) {
-            focusables[0].focus();
-            return;
-          }
-          focusTarget.focus();
-        });
-      },
-
-      createReportPanel() {
-        const panel = document.createElement('div');
-        panel.className = 'acc-report-panel acc-container';
-        panel.setAttribute('role', 'dialog');
-        panel.setAttribute('aria-modal', 'true');
-        panel.setAttribute('aria-hidden', 'true');
-        panel.setAttribute('aria-labelledby', 'acc-report-title');
-      
-        panel.innerHTML = `
-      <div class="acc-report-overlay"></div>
-      <div class="acc-report-dialog">
-        <div class="acc-report-header">
-          <h2 id="acc-report-title" class="acc-report-title">${this.translate('Accessibility Report')}</h2>
-          <button type="button" class="acc-report-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
-        </div>
-        <div class="acc-report-status"></div>
-        <div class="acc-report-content"></div>
-        <div class="acc-report-footer">
-          <span class="acc-report-powered">Powered by axe-core</span>
-        </div>
-      </div>
-    `;
-      
-        // Close handlers
-        const closeBtn = panel.querySelector('.acc-report-close');
-        const overlay = panel.querySelector('.acc-report-overlay');
-      
-        closeBtn.addEventListener('click', () => this.closeReportPanel());
-        overlay.addEventListener('click', () => this.closeReportPanel());
-      
-        return panel;
-      },
-
-      displayReportResults(panel, results) {
-        const contentArea = this.findElement('.acc-report-content', panel);
-        const statusArea = this.findElement('.acc-report-status', panel);
-      
-        const violations = results.violations || [];
-        const passes = results.passes || [];
-        const incomplete = results.incomplete || [];
-      
-        // Count by severity
-        const counts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
-        violations.forEach(v => {
-          if (counts[v.impact] !== undefined) {
-            counts[v.impact] += v.nodes.length;
-          }
-        });
-      
-        const totalViolations = Object.values(counts).reduce((a, b) => a + b, 0);
-      
-        statusArea.textContent = totalViolations > 0
-          ? `${totalViolations} ${this.translate('Violations Found')}`
-          : this.translate('No Issues Found');
-      
-        let html = `
-      <div class="acc-report-summary">
-        <div class="acc-report-stat critical">
-          <span class="acc-report-stat-value">${counts.critical}</span>
-          <span class="acc-report-stat-label">${this.translate('Critical')}</span>
-        </div>
-        <div class="acc-report-stat serious">
-          <span class="acc-report-stat-value">${counts.serious}</span>
-          <span class="acc-report-stat-label">${this.translate('Serious')}</span>
-        </div>
-        <div class="acc-report-stat moderate">
-          <span class="acc-report-stat-value">${counts.moderate}</span>
-          <span class="acc-report-stat-label">${this.translate('Moderate')}</span>
-        </div>
-        <div class="acc-report-stat minor">
-          <span class="acc-report-stat-value">${counts.minor}</span>
-          <span class="acc-report-stat-label">${this.translate('Minor')}</span>
-        </div>
-        <div class="acc-report-stat passed">
-          <span class="acc-report-stat-value">${passes.length}</span>
-          <span class="acc-report-stat-label">${this.translate('Passed Tests')}</span>
-        </div>
-      </div>
-    `;
-      
-        if (violations.length === 0) {
-          html += `
-        <div class="acc-report-success">
-          <div class="acc-report-success-icon">
-            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-          </div>
-          <h3>${this.translate('No Issues Found')}</h3>
-        </div>
-      `;
-        } else {
-          html += `<div class="acc-report-section">
-        <div class="acc-report-section-title">${this.translate('Violations Found')} (${violations.length})</div>
-      `;
-      
-          // Sort by severity
-          const severityOrder = { critical: 0, serious: 1, moderate: 2, minor: 3 };
-          violations.sort((a, b) => (severityOrder[a.impact] || 4) - (severityOrder[b.impact] || 4));
-      
-          violations.forEach((violation, index) => {
-            const safeHelpUrl = this.sanitizeUrl(violation.helpUrl);
-            html += `
-          <div class="acc-report-violation" data-index="${index}">
-            <div class="acc-report-violation-header">
-              <span class="acc-report-violation-impact ${violation.impact}">${this.translate(this.capitalizeFirst(violation.impact))}</span>
-              <span class="acc-report-violation-title">${this.escapeHtml(violation.help)}</span>
-              <span class="acc-report-violation-count">${violation.nodes.length} ${this.translate('Element')}${violation.nodes.length > 1 ? 's' : ''}</span>
-            </div>
-            <div class="acc-report-violation-details">
-              <p class="acc-report-violation-desc">${this.escapeHtml(violation.description)}</p>
-              ${safeHelpUrl ? `<p class="acc-report-violation-help">
-                <a href="${safeHelpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
-              </p>` : ''}
-              ${violation.nodes.slice(0, 5).map(node => `
-                <div class="acc-report-node">
-                  <div class="acc-report-node-html">${this.escapeHtml(node.html)}</div>
-                  ${node.failureSummary ? `<div class="acc-report-node-fix"><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(node.failureSummary)}</div>` : ''}
-                </div>
-              `).join('')}
-              ${violation.nodes.length > 5 ? `<p style="color:#666;font-size:13px;margin-top:12px;">... and ${violation.nodes.length - 5} more elements</p>` : ''}
-            </div>
-          </div>
-        `;
-          });
-      
-          html += `</div>`;
-        }
-      
-        if (incomplete.length > 0) {
-          html += `
-        <div class="acc-report-section">
-          <div class="acc-report-section-title">${this.translate('Items Need Review')} (${incomplete.length})</div>
-          <p style="color:#666;font-size:14px;">These items require manual verification.</p>
-        </div>
-      `;
-        }
-      
-        contentArea.innerHTML = html;
-      
-        // Add click handlers for expandable violations
-        contentArea.querySelectorAll('.acc-report-violation-header').forEach(header => {
-          header.addEventListener('click', () => {
-            header.parentElement.classList.toggle('expanded');
-          });
-        });
-      },
-
-      capitalizeFirst(str) {
-        if (!str) return '';
-        return str.charAt(0).toUpperCase() + str.slice(1);
-      },
-
-      escapeHtml(str) {
-        if (!str) return '';
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-      },
-
-      sanitizeUrl(url) {
-        const value = String(url || '').trim();
-        if (!/^https?:\/\//i.test(value)) return '';
-        return value.replace(/"/g, '%22').replace(/'/g, '%27');
-      },
-
-      closeReportPanel() {
-        const panel = this.findElement('.acc-report-panel');
-        if (panel) {
-          panel.classList.remove('acc-report-visible');
-          panel.setAttribute('aria-hidden', 'true');
-        }
-      
-        if (this.reportKeyListener) {
-          document.removeEventListener('keydown', this.reportKeyListener, true);
-          this.reportKeyListener = null;
-        }
-      
-        const focusTarget = this.reportPreviousFocus;
-        this.reportPreviousFocus = null;
-        if (focusTarget && typeof focusTarget.focus === 'function') {
-          focusTarget.focus();
-        }
+        listen(contrastQuery, onContrastChange);
       },
 
       concealImages(enable = false) {
@@ -2413,6 +2496,419 @@ var AccessibleWebWidget = (function () {
           this.injectStyle(styleId, css);
         }
       },
+
+      clearSimpleLayoutDomMutations() {
+        if (this.simpleLayoutRoot) {
+          this.simpleLayoutRoot.classList.remove('acc-simple-layout-root');
+          this.simpleLayoutRoot = null;
+        }
+
+        if (Array.isArray(this.simpleLayoutHiddenElements)) {
+          this.simpleLayoutHiddenElements.forEach((element) => {
+            if (element && element.classList) {
+              element.classList.remove('acc-simple-layout-hidden');
+            }
+          });
+        }
+        this.simpleLayoutHiddenElements = [];
+      },
+
+      applySimpleLayoutDomMutations() {
+        const root = this.getPrimaryContentRoot();
+        if (!root || !document.body) return;
+
+        this.simpleLayoutRoot = root;
+        root.classList.add('acc-simple-layout-root');
+
+        const hiddenElements = [];
+        Array.from(document.body.children).forEach((child) => {
+          if (!(child instanceof Element)) return;
+          if (child.classList.contains('acc-container')) return;
+          if (child === root || child.contains(root)) return;
+          child.classList.add('acc-simple-layout-hidden');
+          hiddenElements.push(child);
+        });
+
+        const clutterSelectors = [
+          'aside',
+          'nav',
+          'form',
+          'footer',
+          '[role="complementary"]',
+          '[role="search"]',
+          '[role="contentinfo"]',
+          '[aria-hidden="true"]',
+          '[class*="cookie"]',
+          '[id*="cookie"]',
+          '[class*="banner"]',
+          '[id*="banner"]',
+          '[class*="popup"]',
+          '[id*="popup"]',
+          '[class*="modal"]',
+          '[id*="modal"]',
+          '[class*="advert"]',
+          '[id*="advert"]',
+          '[class*="ads"]',
+          '[id*="ads"]',
+          '[class*="sidebar"]',
+          '[id*="sidebar"]',
+          '[class*="social"]',
+          '[id*="social"]',
+          '[class*="share"]',
+          '[id*="share"]',
+          '[class*="newsletter"]',
+          '[id*="newsletter"]',
+          '[class*="related"]',
+          '[id*="related"]',
+          '[class*="comment"]',
+          '[id*="comment"]',
+          '[class*="footer"]',
+          '[id*="footer"]',
+          '[class*="promo"]',
+          '[id*="promo"]'
+        ].join(',');
+
+        root.querySelectorAll(clutterSelectors).forEach((element) => {
+          if (!(element instanceof Element)) return;
+          if (element.closest('.acc-container')) return;
+          if (element === root) return;
+          element.classList.add('acc-simple-layout-hidden');
+          hiddenElements.push(element);
+        });
+
+        this.simpleLayoutHiddenElements = hiddenElements;
+      },
+
+      enableSimpleLayout(enable = false) {
+        const S = 'body.acc-simple-layout-enabled';
+        const R = `${S} .acc-simple-layout-root`;
+        const X = ':not(.acc-container):not(.acc-container *)';
+        const config = {
+          id: 'simple-layout',
+          css: `
+        /* ── Body & root container ── */
+        ${S} {
+          background: #fff !important;
+        }
+
+        ${S} .acc-simple-layout-hidden {
+          display: none !important;
+        }
+
+        ${R} {
+          max-width: 72ch !important;
+          margin: 0 auto !important;
+          padding: clamp(20px, 4vw, 40px) 20px !important;
+          position: relative !important;
+          border-radius: 0 !important;
+          box-shadow: none !important;
+        }
+
+        /* ── Universal decoration strip ── */
+        ${R} :where(*)${X} {
+          background-color: transparent !important;
+          background-image: none !important;
+          box-shadow: none !important;
+          text-shadow: none !important;
+          border-color: transparent !important;
+        }
+
+        /* ── Layout linearization ── */
+        ${R} :where(div, section, article, header, main, footer, figure, figcaption, details, summary, hgroup, search)${X} {
+          display: block !important;
+          position: static !important;
+          float: none !important;
+          transform: none !important;
+          columns: auto !important;
+          column-count: auto !important;
+          width: auto !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+
+        /* ── Color reset ── */
+        ${R} :where(h1, h2, h3, h4, h5, h6)${X} {
+          color: #111 !important;
+        }
+
+        ${R} :where(p, li, dt, dd, td, th, span, blockquote, figcaption, label, summary, details)${X} {
+          color: #222 !important;
+        }
+
+        ${R} :where(a)${X} {
+          color: #1a0dab !important;
+        }
+
+        ${R} :where(a:visited)${X} {
+          color: #681da8 !important;
+        }
+
+        /* ── Typography ── */
+        ${R} :where(*)${X} {
+          font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+        }
+
+        ${R} :where(p, li, dt, dd, blockquote, figcaption, td, th, label, summary)${X} {
+          font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem) !important;
+          line-height: 1.8 !important;
+          letter-spacing: 0.01em !important;
+          max-width: 70ch !important;
+        }
+
+        ${R} :where(h1)${X} {
+          font-size: 2em !important;
+          line-height: 1.2 !important;
+          margin: 0.67em 0 !important;
+          font-weight: 700 !important;
+        }
+
+        ${R} :where(h2)${X} {
+          font-size: 1.5em !important;
+          line-height: 1.25 !important;
+          margin: 0.83em 0 !important;
+          font-weight: 700 !important;
+        }
+
+        ${R} :where(h3)${X} {
+          font-size: 1.25em !important;
+          line-height: 1.3 !important;
+          margin: 1em 0 !important;
+          font-weight: 600 !important;
+        }
+
+        ${R} :where(h4, h5, h6)${X} {
+          font-size: 1.1em !important;
+          line-height: 1.35 !important;
+          margin: 1em 0 !important;
+          font-weight: 600 !important;
+        }
+
+        /* ── Decorative images hidden ── */
+        ${R} :where(img[role="presentation"], img[alt=""], img:not([alt]), svg[aria-hidden="true"])${X} {
+          display: none !important;
+        }
+
+        /* ── Meaningful borders restored ── */
+        ${R} :where(hr)${X} {
+          border: none !important;
+          border-top: 1px solid #d1d5db !important;
+          margin: 1.5em 0 !important;
+        }
+
+        ${R} :where(blockquote)${X} {
+          border-left: 4px solid #d1d5db !important;
+          padding-left: 1em !important;
+          margin-left: 0 !important;
+          font-style: italic !important;
+        }
+
+        ${R} :where(table)${X} {
+          border-collapse: collapse !important;
+          max-width: 100% !important;
+          overflow-x: auto !important;
+          display: table !important;
+        }
+
+        ${R} :where(th, td)${X} {
+          border: 1px solid #d1d5db !important;
+          padding: 8px 12px !important;
+          text-align: left !important;
+        }
+
+        ${R} :where(th)${X} {
+          font-weight: 600 !important;
+          background: #f8f9fa !important;
+        }
+
+        /* ── Lists ── */
+        ${R} :where(ul, ol)${X} {
+          padding-left: 1.5em !important;
+          margin: 0.75em 0 !important;
+        }
+
+        ${R} :where(li)${X} {
+          display: list-item !important;
+          margin: 0.25em 0 !important;
+        }
+
+        /* ── Code blocks ── */
+        ${R} :where(pre)${X} {
+          background: #f6f8fa !important;
+          border-radius: 6px !important;
+          padding: 1em !important;
+          overflow-x: auto !important;
+          max-width: 100% !important;
+        }
+
+        ${R} :where(code, kbd, samp)${X} {
+          font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
+          font-size: 0.9em !important;
+        }
+
+        ${R} :where(code):not(pre code)${X} {
+          background: #f0f2f5 !important;
+          padding: 0.15em 0.4em !important;
+          border-radius: 3px !important;
+        }
+
+        /* ── Empty wrapper collapse ── */
+        ${R} :where(div:empty)${X} {
+          display: none !important;
+        }
+
+        /* ── Media ── */
+        ${R} :where(img, video, iframe)${X} {
+          max-width: 100% !important;
+          height: auto !important;
+          border-radius: 4px !important;
+        }
+      `
+        };
+
+        this.applyToolStyle({ ...config, enable });
+        document.body?.classList.toggle('acc-simple-layout-enabled', !!enable);
+
+        this.clearSimpleLayoutDomMutations();
+        if (enable) {
+          this.applySimpleLayoutDomMutations();
+        }
+      },
+
+      applyEnhancements() {
+          const { states } = this.loadConfig();
+          // Handle font size scaling
+          const hasTextScaleState = !!(states && Object.prototype.hasOwnProperty.call(states, 'text-scale'));
+          if (hasTextScaleState) {
+            const storedScale = states['text-scale'] === false ? 1 : states['text-scale'];
+            const appliedScale = this.setTextScaleFromPercent(storedScale, { persist: false });
+            this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), appliedScale);
+          } else {
+            this.textScaleIndex = 0;
+            if (this.multiLevelFeatures['text-scale']) {
+              this.multiLevelFeatures['text-scale'].currentIndex = -1;
+            }
+            this.scaleText(1);
+            this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), 1);
+          }
+          // Apply other enhancements
+          this.concealImages(states && states['hide-images']);
+          this.highlightTitles(states && states['highlight-title']);
+          this.highlightLinks(states && states['highlight-links']);
+          this.adjustLetterSpacing(states && states['letter-spacing']);
+          this.adjustLineSpacing(states && states['line-spacing']);
+          this.enableBoldText(states && states['bold-text']);
+          this.enableReadableText(states && states['readable-text']);
+          this.enableReadingAid(states && states['reading-aid']);
+          this.pauseMotion(states && states['pause-motion']);
+          this.enableLargePointer(states && states['large-pointer']);
+          this.enableHighContrastMode(states && states['high-contrast-mode']);
+          this.enableAnnotations(states && states['annotations']);
+          this.enableTextToSpeech(states && states['text-to-speech']);
+          this.enableSimpleLayout(states && states['simple-layout']);
+          this.enableMuteSounds(states && states['mute-sounds']);
+          this.enableTextMagnifier(states && states['text-magnifier']);
+        },
+
+      resetEnhancements() {
+          this.saveConfig({ states: {}, systemDefaults: {} });
+          this.textScaleIndex = 0;
+          this.activeColorFilterKey = null;
+          Object.keys(this.multiLevelFeatures).forEach(key => {
+            this.multiLevelFeatures[key].currentIndex = -1;
+          });
+          const selected = this.queryWidgetAll('.acc-selected');
+          selected.forEach(el => {
+            el.classList.remove("acc-selected");
+            el.setAttribute('aria-pressed', 'false');
+          });
+          const indicators = this.queryWidgetAll('.acc-progress-indicator');
+          indicators.forEach(indicator => {
+            const dots = indicator.querySelectorAll('.acc-progress-dot');
+            dots.forEach(dot => dot.classList.remove('active'));
+          });
+          const menu = this.queryWidget('.acc-menu');
+          if (menu) {
+            this.setColorFilterUI(menu, null);
+            this.syncTextScaleControlUI(menu, 1);
+          }
+          
+          // Remove focus from active element to fix the persistent focus ring bug
+          const focused = this.getActiveElement();
+          if (focused && typeof focused.blur === 'function') {
+            focused.blur();
+          }
+          const styleIds = [
+            'acc-bold-text',
+            'acc-letter-spacing',
+            'acc-line-spacing',
+            'acc-large-pointer',
+            'acc-highlight-links',
+            'acc-highlight-title',
+            'acc-readable-text',
+            'acc-pause-motion',
+            'acc-hide-images',
+            'acc-filter-style',
+            'acc-simple-layout'
+          ];
+          styleIds.forEach(id => {
+            const style = document.getElementById(id);
+            if (style) style.remove();
+          });
+          this.clearSimpleLayoutDomMutations();
+          document.documentElement.classList.remove(
+            'acc-filter',
+            'acc-saturation',
+            'acc-bold-text',
+            'acc-letter-spacing',
+            'acc-line-spacing',
+            'acc-large-pointer',
+            'acc-highlight-links',
+            'acc-highlight-title',
+            'acc-readable-text',
+            'acc-pause-motion',
+            'acc-hide-images',
+            'acc-high-contrast-mode',
+            'acc-simple-layout'
+          );
+          document.body?.classList.remove('acc-simple-layout-enabled');
+          document.body?.classList.remove('acc-high-contrast-mode');
+          this.disconnectTextScaleObserver();
+          this.currentTextScaleMultiplier = 1;
+          const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
+          scaledElements.forEach(el => {
+            if (!(el instanceof Element) || this.shouldSkipScaling(el)) return;
+            el.style.fontSize = '';
+            el.removeAttribute('data-acc-baseSize');
+          });
+          let guide = this.findElement('.acc-rg-container');
+          if (guide) {
+            guide.remove();
+            if (window.__accweb__scrollGuide) {
+              document.removeEventListener('mousemove', window.__accweb__scrollGuide);
+              delete window.__accweb__scrollGuide;
+            }
+          }
+          this.disableAnnotations();
+          this.stopSpeech();
+          this.stopTtsClickMode();
+          this.enableMuteSounds(false);
+          this.enableTextMagnifier(false);
+          this.clearSystemPreferenceListeners();
+          this.detectSystemPreferences();
+          this.setupMediaQueryListeners();
+          this.updateViolationBubble(this.axeScanResults);
+        },
+
+    };
+
+    /** @typedef {import('../index.js').default} AccessibleWebWidget */
+
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
+    const ttsMethods = {
 
       supportsSpeechSynthesis() {
         if (typeof window === 'undefined') return false;
@@ -2439,7 +2935,9 @@ var AccessibleWebWidget = (function () {
           pl: 'pl-PL',
           ro: 'ro-RO',
           nl: 'nl-NL',
-          uk: 'uk-UA'
+          uk: 'uk-UA',
+          ar: 'ar-SA',
+          he: 'he-IL'
         };
         return languageMap[code] || code;
       },
@@ -2944,6 +3442,472 @@ var AccessibleWebWidget = (function () {
         synth.speak(utterance);
       },
 
+    };
+
+    /** @typedef {import('../index.js').default} AccessibleWebWidget */
+
+    const AXE_CORE_VERSION = '4.11.1';
+    const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
+    const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
+    const AXE_RUN_OPTIONS = {
+      runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
+    };
+
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
+    const axeReportMethods = {
+
+      loadAxeCore() {
+        if (this.axeCoreLoaded && window.axe) {
+          return Promise.resolve(window.axe);
+        }
+      
+        if (this.axeCorePromise) {
+          return this.axeCorePromise;
+        }
+      
+        this.axeCoreLoading = true;
+        this.axeCorePromise = new Promise((resolve, reject) => {
+          let script = document.querySelector('script[data-acc-axe-core="true"]');
+          let settled = false;
+          let timeoutId = null;
+      
+          const settleSuccess = () => {
+            if (settled) return;
+            settled = true;
+            if (timeoutId) clearTimeout(timeoutId);
+            if (!window.axe) {
+              this.axeCoreLoading = false;
+              this.axeCoreLoaded = false;
+              this.axeCorePromise = null;
+              reject(new Error('axe-core loaded but window.axe is unavailable'));
+              return;
+            }
+            this.axeCoreLoading = false;
+            this.axeCoreLoaded = true;
+            if (script) {
+              script.setAttribute('data-acc-axe-core-loaded', 'true');
+            }
+            resolve(window.axe);
+          };
+      
+          const settleError = (error) => {
+            if (settled) return;
+            settled = true;
+            if (timeoutId) clearTimeout(timeoutId);
+            this.axeCoreLoading = false;
+            this.axeCoreLoaded = false;
+            this.axeCorePromise = null;
+            reject(error);
+          };
+      
+          if (window.axe) {
+            settleSuccess();
+            return;
+          }
+      
+          if (script && !script.src.includes(`/axe-core@${AXE_CORE_VERSION}/`)) {
+            script.remove();
+            script = null;
+          }
+
+          if (!script) {
+            script = document.createElement('script');
+            script.src = AXE_CORE_SRC;
+            script.async = true;
+            script.integrity = AXE_CORE_INTEGRITY;
+            script.crossOrigin = 'anonymous';
+            script.setAttribute('data-acc-axe-core', 'true');
+            document.head.appendChild(script);
+          }
+      
+          script.addEventListener('load', settleSuccess, { once: true });
+          script.addEventListener('error', () => settleError(new Error('Failed to load axe-core')), { once: true });
+          timeoutId = setTimeout(() => {
+            settleError(new Error('Timed out loading axe-core'));
+          }, 15000);
+        });
+      
+        return this.axeCorePromise;
+      },
+
+      getAxeRunOptions() {
+        return { ...AXE_RUN_OPTIONS };
+      },
+
+      getViolationCounts(results = {}) {
+        const counts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
+        const violations = Array.isArray(results.violations) ? results.violations : [];
+        violations.forEach((violation) => {
+          const impact = violation?.impact;
+          if (impact && counts[impact] !== undefined) {
+            counts[impact] += Array.isArray(violation.nodes) ? violation.nodes.length : 0;
+          }
+        });
+        return counts;
+      },
+
+      updateViolationBubble(results = null) {
+        const bubble = this.violationBubble || this.queryWidget('.acc-violation-bubble');
+        if (!bubble) return;
+
+        const counts = this.getViolationCounts(results || this.axeScanResults || {});
+        const devMode = this.isDevMode();
+
+        let displayCount = 0;
+        let severity = '';
+
+        if (counts.critical > 0) {
+          displayCount = counts.critical;
+          severity = 'critical';
+        } else if (devMode && counts.serious > 0) {
+          displayCount = counts.serious;
+          severity = 'serious';
+        } else if (devMode && counts.moderate > 0) {
+          displayCount = counts.moderate;
+          severity = 'moderate';
+        }
+
+        if (displayCount <= 0) {
+          bubble.textContent = '';
+          bubble.hidden = true;
+          bubble.removeAttribute('data-severity');
+          return;
+        }
+
+        bubble.hidden = false;
+        bubble.dataset.severity = severity;
+        bubble.textContent = displayCount > 99 ? '99+' : String(displayCount);
+      },
+
+      async runBackgroundAxeScan({ force = false } = {}) {
+        if (!force && this.axeScanResults) {
+          this.updateViolationBubble(this.axeScanResults);
+          return this.axeScanResults;
+        }
+
+        if (!force && this.axeScanPromise) {
+          return this.axeScanPromise;
+        }
+
+        this.axeScanPromise = (async () => {
+          try {
+            const axe = await this.loadAxeCore();
+            const results = await axe.run(document, this.getAxeRunOptions());
+            this.axeScanResults = results;
+            this.updateViolationBubble(results);
+            return results;
+          } catch (error) {
+            this.updateViolationBubble({ violations: [] });
+            throw error;
+          } finally {
+            this.axeScanPromise = null;
+          }
+        })();
+
+        return this.axeScanPromise;
+      },
+
+      async runAccessibilityReport() {
+        // Create or get report panel
+        let panel = this.reportPanel && document.body.contains(this.reportPanel)
+          ? this.reportPanel
+          : null;
+
+        if (!panel) {
+          panel = this.createReportPanel();
+          document.body.appendChild(panel);
+          this.reportPanel = panel;
+        }
+      
+        this.openReportPanel(panel);
+      
+        const contentArea = this.findElement('.acc-report-content', panel);
+        const statusArea = this.findElement('.acc-report-status', panel);
+      
+        // Show loading state
+        statusArea.textContent = this.translate('Loading...');
+        contentArea.innerHTML = `<div class="acc-report-loading">${this.translate('Analyzing page...')}</div>`;
+      
+        try {
+          const results = await this.runBackgroundAxeScan({ force: true });
+
+          this.displayReportResults(panel, results);
+      
+        } catch (error) {
+          contentArea.innerHTML = `<div class="acc-report-error">Error: ${error.message}</div>`;
+          statusArea.textContent = '';
+        }
+      },
+
+      getReportFocusableElements(panel) {
+        if (!panel) return [];
+        const dialog = this.findElement('.acc-report-dialog', panel);
+        return this.getFocusableElements(dialog || panel);
+      },
+
+      openReportPanel(panel) {
+        if (!panel) return;
+      
+        const currentlyFocused = this.getActiveElement();
+        this.reportPreviousFocus = currentlyFocused && typeof currentlyFocused.focus === 'function'
+          ? currentlyFocused
+          : null;
+      
+        panel.classList.add('acc-report-visible');
+        panel.setAttribute('aria-hidden', 'false');
+        panel.setAttribute('dir', this.getUiDirection());
+      
+        const dialog = this.findElement('.acc-report-dialog', panel);
+        const focusTarget = dialog || panel;
+        if (!focusTarget.hasAttribute('tabindex')) {
+          focusTarget.setAttribute('tabindex', '-1');
+        }
+      
+        if (this.reportKeyListener) {
+          document.removeEventListener('keydown', this.reportKeyListener, true);
+        }
+      
+        this.reportKeyListener = (event) => {
+          if (!panel.classList.contains('acc-report-visible')) return;
+      
+          if (event.key === 'Escape' || event.key === 'Esc') {
+            event.preventDefault();
+            event.stopPropagation();
+            this.closeReportPanel(panel);
+            return;
+          }
+      
+          if (event.key !== 'Tab') return;
+      
+          const focusables = this.getReportFocusableElements(panel);
+          if (!focusables.length) {
+            event.preventDefault();
+            focusTarget.focus();
+            return;
+          }
+      
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          const active = this.getActiveElement();
+          const outsidePanel = !panel.contains(active);
+      
+          if (event.shiftKey) {
+            if (active === first || outsidePanel) {
+              event.preventDefault();
+              last.focus();
+            }
+            return;
+          }
+      
+          if (active === last || outsidePanel) {
+            event.preventDefault();
+            first.focus();
+          }
+        };
+      
+        document.addEventListener('keydown', this.reportKeyListener, true);
+      
+        requestAnimationFrame(() => {
+          const focusables = this.getReportFocusableElements(panel);
+          if (focusables.length) {
+            focusables[0].focus();
+            return;
+          }
+          focusTarget.focus();
+        });
+      },
+
+      createReportPanel() {
+        const panel = document.createElement('div');
+        panel.className = 'acc-report-panel acc-container';
+        panel.setAttribute('role', 'dialog');
+        panel.setAttribute('aria-modal', 'true');
+        panel.setAttribute('aria-hidden', 'true');
+        panel.setAttribute('aria-labelledby', 'acc-report-title');
+      
+        panel.innerHTML = `
+      <div class="acc-report-overlay"></div>
+      <div class="acc-report-dialog">
+        <div class="acc-report-header">
+          <h2 id="acc-report-title" class="acc-report-title">${this.translate('Accessibility Report')}</h2>
+          <button type="button" class="acc-report-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
+        </div>
+        <div class="acc-report-status"></div>
+        <div class="acc-report-content"></div>
+        <div class="acc-report-footer">
+          <span class="acc-report-powered">Powered by axe-core</span>
+        </div>
+      </div>
+    `;
+      
+        // Close handlers
+        const closeBtn = panel.querySelector('.acc-report-close');
+        const overlay = panel.querySelector('.acc-report-overlay');
+      
+        closeBtn.addEventListener('click', () => this.closeReportPanel(panel));
+        overlay.addEventListener('click', () => this.closeReportPanel(panel));
+      
+        return panel;
+      },
+
+      displayReportResults(panel, results) {
+        const contentArea = this.findElement('.acc-report-content', panel);
+        const statusArea = this.findElement('.acc-report-status', panel);
+      
+        const violations = results.violations || [];
+        const passes = results.passes || [];
+        const incomplete = results.incomplete || [];
+      
+        // Count by severity
+        const counts = { critical: 0, serious: 0, moderate: 0, minor: 0 };
+        violations.forEach(v => {
+          if (counts[v.impact] !== undefined) {
+            counts[v.impact] += v.nodes.length;
+          }
+        });
+      
+        const totalViolations = Object.values(counts).reduce((a, b) => a + b, 0);
+      
+        statusArea.textContent = totalViolations > 0
+          ? `${totalViolations} ${this.translate('Violations Found')}`
+          : this.translate('No Issues Found');
+      
+        let html = `
+      <div class="acc-report-summary">
+        <div class="acc-report-stat critical">
+          <span class="acc-report-stat-value">${counts.critical}</span>
+          <span class="acc-report-stat-label">${this.translate('Critical')}</span>
+        </div>
+        <div class="acc-report-stat serious">
+          <span class="acc-report-stat-value">${counts.serious}</span>
+          <span class="acc-report-stat-label">${this.translate('Serious')}</span>
+        </div>
+        <div class="acc-report-stat moderate">
+          <span class="acc-report-stat-value">${counts.moderate}</span>
+          <span class="acc-report-stat-label">${this.translate('Moderate')}</span>
+        </div>
+        <div class="acc-report-stat minor">
+          <span class="acc-report-stat-value">${counts.minor}</span>
+          <span class="acc-report-stat-label">${this.translate('Minor')}</span>
+        </div>
+        <div class="acc-report-stat passed">
+          <span class="acc-report-stat-value">${passes.length}</span>
+          <span class="acc-report-stat-label">${this.translate('Passed Tests')}</span>
+        </div>
+      </div>
+    `;
+      
+        if (violations.length === 0) {
+          html += `
+        <div class="acc-report-success">
+          <div class="acc-report-success-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+          </div>
+          <h3>${this.translate('No Issues Found')}</h3>
+        </div>
+      `;
+        } else {
+          html += `<div class="acc-report-section">
+        <div class="acc-report-section-title">${this.translate('Violations Found')} (${violations.length})</div>
+      `;
+      
+          // Sort by severity
+          const severityOrder = { critical: 0, serious: 1, moderate: 2, minor: 3 };
+          violations.sort((a, b) => (severityOrder[a.impact] || 4) - (severityOrder[b.impact] || 4));
+      
+          violations.forEach((violation, index) => {
+            const safeHelpUrl = this.sanitizeUrl(violation.helpUrl);
+            html += `
+          <div class="acc-report-violation" data-index="${index}">
+            <div class="acc-report-violation-header">
+              <span class="acc-report-violation-impact ${violation.impact}">${this.translate(this.capitalizeFirst(violation.impact))}</span>
+              <span class="acc-report-violation-title">${this.escapeHtml(violation.help)}</span>
+              <span class="acc-report-violation-count">${violation.nodes.length} ${this.translate('Element')}${violation.nodes.length > 1 ? 's' : ''}</span>
+            </div>
+            <div class="acc-report-violation-details">
+              <p class="acc-report-violation-desc">${this.escapeHtml(violation.description)}</p>
+              ${safeHelpUrl ? `<p class="acc-report-violation-help">
+                <a href="${safeHelpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
+              </p>` : ''}
+              ${violation.nodes.slice(0, 5).map(node => `
+                <div class="acc-report-node">
+                  <div class="acc-report-node-html">${this.escapeHtml(node.html)}</div>
+                  ${node.failureSummary ? `<div class="acc-report-node-fix"><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(node.failureSummary)}</div>` : ''}
+                </div>
+              `).join('')}
+              ${violation.nodes.length > 5 ? `<p style="color:#666;font-size:13px;margin-top:12px;">... and ${violation.nodes.length - 5} more elements</p>` : ''}
+            </div>
+          </div>
+        `;
+          });
+      
+          html += `</div>`;
+        }
+      
+        if (incomplete.length > 0) {
+          html += `
+        <div class="acc-report-section">
+          <div class="acc-report-section-title">${this.translate('Items Need Review')} (${incomplete.length})</div>
+          <p style="color:#666;font-size:14px;">These items require manual verification.</p>
+        </div>
+      `;
+        }
+      
+        contentArea.innerHTML = html;
+      
+        // Add click handlers for expandable violations
+        contentArea.querySelectorAll('.acc-report-violation-header').forEach(header => {
+          header.addEventListener('click', () => {
+            header.parentElement.classList.toggle('expanded');
+          });
+        });
+      },
+
+      capitalizeFirst(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      },
+
+      escapeHtml(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      },
+
+      sanitizeUrl(url) {
+        const value = String(url || '').trim();
+        if (!/^https?:\/\//i.test(value)) return '';
+        return value.replace(/"/g, '%22').replace(/'/g, '%27');
+      },
+
+      closeReportPanel(panel = this.reportPanel) {
+        if (panel) {
+          panel.classList.remove('acc-report-visible');
+          panel.setAttribute('aria-hidden', 'true');
+        }
+      
+        if (this.reportKeyListener) {
+          document.removeEventListener('keydown', this.reportKeyListener, true);
+          this.reportKeyListener = null;
+        }
+      
+        const focusTarget = this.reportPreviousFocus;
+        this.reportPreviousFocus = null;
+        if (focusTarget && typeof focusTarget.focus === 'function') {
+          focusTarget.focus();
+        }
+      },
+
+    };
+
+    /** @typedef {import('../index.js').default} AccessibleWebWidget */
+
+    const MAX_ANNOTATIONS = 50;
+
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
+    const annotationMethods = {
+
       ensureAnnotationLayer() {
         if (this.annotationLayer && document.body.contains(this.annotationLayer)) {
           return this.annotationLayer;
@@ -3189,319 +4153,59 @@ var AccessibleWebWidget = (function () {
         this.annotationItems = [];
       },
 
+    };
 
-      clearSimpleLayoutDomMutations() {
-        if (this.simpleLayoutRoot) {
-          this.simpleLayoutRoot.classList.remove('acc-simple-layout-root');
-          this.simpleLayoutRoot = null;
-        }
+    /** @typedef {import('../index.js').default} AccessibleWebWidget */
 
-        if (Array.isArray(this.simpleLayoutHiddenElements)) {
-          this.simpleLayoutHiddenElements.forEach((element) => {
-            if (element && element.classList) {
-              element.classList.remove('acc-simple-layout-hidden');
-            }
-          });
-        }
-        this.simpleLayoutHiddenElements = [];
-      },
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
+    const visualFilterMethods = {
 
-      applySimpleLayoutDomMutations() {
-        const root = this.getPrimaryContentRoot();
-        if (!root || !document.body) return;
-
-        this.simpleLayoutRoot = root;
-        root.classList.add('acc-simple-layout-root');
-
-        const hiddenElements = [];
-        Array.from(document.body.children).forEach((child) => {
-          if (!(child instanceof Element)) return;
-          if (child.classList.contains('acc-container')) return;
-          if (child === root || child.contains(root)) return;
-          child.classList.add('acc-simple-layout-hidden');
-          hiddenElements.push(child);
-        });
-
-        const clutterSelectors = [
-          'aside',
-          'nav',
-          'form',
-          'footer',
-          '[role="complementary"]',
-          '[role="search"]',
-          '[role="contentinfo"]',
-          '[aria-hidden="true"]',
-          '[class*="cookie"]',
-          '[id*="cookie"]',
-          '[class*="banner"]',
-          '[id*="banner"]',
-          '[class*="popup"]',
-          '[id*="popup"]',
-          '[class*="modal"]',
-          '[id*="modal"]',
-          '[class*="advert"]',
-          '[id*="advert"]',
-          '[class*="ads"]',
-          '[id*="ads"]',
-          '[class*="sidebar"]',
-          '[id*="sidebar"]',
-          '[class*="social"]',
-          '[id*="social"]',
-          '[class*="share"]',
-          '[id*="share"]',
-          '[class*="newsletter"]',
-          '[id*="newsletter"]',
-          '[class*="related"]',
-          '[id*="related"]',
-          '[class*="comment"]',
-          '[id*="comment"]',
-          '[class*="footer"]',
-          '[id*="footer"]',
-          '[class*="promo"]',
-          '[id*="promo"]'
-        ].join(',');
-
-        root.querySelectorAll(clutterSelectors).forEach((element) => {
-          if (!(element instanceof Element)) return;
-          if (element.closest('.acc-container')) return;
-          if (element === root) return;
-          element.classList.add('acc-simple-layout-hidden');
-          hiddenElements.push(element);
-        });
-
-        this.simpleLayoutHiddenElements = hiddenElements;
-      },
-
-      enableSimpleLayout(enable = false) {
-        const S = 'body.acc-simple-layout-enabled';
-        const R = `${S} .acc-simple-layout-root`;
-        const X = ':not(.acc-container):not(.acc-container *)';
-        const config = {
-          id: 'simple-layout',
-          css: `
-        /* ── Body & root container ── */
-        ${S} {
-          background: #fff !important;
-        }
-
-        ${S} .acc-simple-layout-hidden {
-          display: none !important;
-        }
-
-        ${R} {
-          max-width: 72ch !important;
-          margin: 0 auto !important;
-          padding: clamp(20px, 4vw, 40px) 20px !important;
-          position: relative !important;
-          border-radius: 0 !important;
-          box-shadow: none !important;
-        }
-
-        /* ── Universal decoration strip ── */
-        ${R} :where(*)${X} {
-          background-color: transparent !important;
-          background-image: none !important;
-          box-shadow: none !important;
-          text-shadow: none !important;
-          border-color: transparent !important;
-        }
-
-        /* ── Layout linearization ── */
-        ${R} :where(div, section, article, header, main, footer, figure, figcaption, details, summary, hgroup, search)${X} {
-          display: block !important;
-          position: static !important;
-          float: none !important;
-          transform: none !important;
-          columns: auto !important;
-          column-count: auto !important;
-          width: auto !important;
-          min-width: 0 !important;
-          max-width: 100% !important;
-          margin-left: 0 !important;
-          margin-right: 0 !important;
-          padding-left: 0 !important;
-          padding-right: 0 !important;
-        }
-
-        /* ── Color reset ── */
-        ${R} :where(h1, h2, h3, h4, h5, h6)${X} {
-          color: #111 !important;
-        }
-
-        ${R} :where(p, li, dt, dd, td, th, span, blockquote, figcaption, label, summary, details)${X} {
-          color: #222 !important;
-        }
-
-        ${R} :where(a)${X} {
-          color: #1a0dab !important;
-        }
-
-        ${R} :where(a:visited)${X} {
-          color: #681da8 !important;
-        }
-
-        /* ── Typography ── */
-        ${R} :where(*)${X} {
-          font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-        }
-
-        ${R} :where(p, li, dt, dd, blockquote, figcaption, td, th, label, summary)${X} {
-          font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem) !important;
-          line-height: 1.8 !important;
-          letter-spacing: 0.01em !important;
-          max-width: 70ch !important;
-        }
-
-        ${R} :where(h1)${X} {
-          font-size: 2em !important;
-          line-height: 1.2 !important;
-          margin: 0.67em 0 !important;
-          font-weight: 700 !important;
-        }
-
-        ${R} :where(h2)${X} {
-          font-size: 1.5em !important;
-          line-height: 1.25 !important;
-          margin: 0.83em 0 !important;
-          font-weight: 700 !important;
-        }
-
-        ${R} :where(h3)${X} {
-          font-size: 1.25em !important;
-          line-height: 1.3 !important;
-          margin: 1em 0 !important;
-          font-weight: 600 !important;
-        }
-
-        ${R} :where(h4, h5, h6)${X} {
-          font-size: 1.1em !important;
-          line-height: 1.35 !important;
-          margin: 1em 0 !important;
-          font-weight: 600 !important;
-        }
-
-        /* ── Decorative images hidden ── */
-        ${R} :where(img[role="presentation"], img[alt=""], img:not([alt]), svg[aria-hidden="true"])${X} {
-          display: none !important;
-        }
-
-        /* ── Meaningful borders restored ── */
-        ${R} :where(hr)${X} {
-          border: none !important;
-          border-top: 1px solid #d1d5db !important;
-          margin: 1.5em 0 !important;
-        }
-
-        ${R} :where(blockquote)${X} {
-          border-left: 4px solid #d1d5db !important;
-          padding-left: 1em !important;
-          margin-left: 0 !important;
-          font-style: italic !important;
-        }
-
-        ${R} :where(table)${X} {
-          border-collapse: collapse !important;
-          max-width: 100% !important;
-          overflow-x: auto !important;
-          display: table !important;
-        }
-
-        ${R} :where(th, td)${X} {
-          border: 1px solid #d1d5db !important;
-          padding: 8px 12px !important;
-          text-align: left !important;
-        }
-
-        ${R} :where(th)${X} {
-          font-weight: 600 !important;
-          background: #f8f9fa !important;
-        }
-
-        /* ── Lists ── */
-        ${R} :where(ul, ol)${X} {
-          padding-left: 1.5em !important;
-          margin: 0.75em 0 !important;
-        }
-
-        ${R} :where(li)${X} {
-          display: list-item !important;
-          margin: 0.25em 0 !important;
-        }
-
-        /* ── Code blocks ── */
-        ${R} :where(pre)${X} {
-          background: #f6f8fa !important;
-          border-radius: 6px !important;
-          padding: 1em !important;
-          overflow-x: auto !important;
-          max-width: 100% !important;
-        }
-
-        ${R} :where(code, kbd, samp)${X} {
-          font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace !important;
-          font-size: 0.9em !important;
-        }
-
-        ${R} :where(code):not(pre code)${X} {
-          background: #f0f2f5 !important;
-          padding: 0.15em 0.4em !important;
-          border-radius: 3px !important;
-        }
-
-        /* ── Empty wrapper collapse ── */
-        ${R} :where(div:empty)${X} {
-          display: none !important;
-        }
-
-        /* ── Media ── */
-        ${R} :where(img, video, iframe)${X} {
-          max-width: 100% !important;
-          height: auto !important;
-          border-radius: 4px !important;
-        }
-      `
-        };
-
-        this.applyToolStyle({ ...config, enable });
-        document.body?.classList.toggle('acc-simple-layout-enabled', !!enable);
-
-        this.clearSimpleLayoutDomMutations();
-        if (enable) {
-          this.applySimpleLayoutDomMutations();
-        }
-      },
-
-      applyEnhancements() {
-          const { states } = this.loadConfig();
-          // Handle font size scaling
-          const hasTextScaleState = !!(states && Object.prototype.hasOwnProperty.call(states, 'text-scale'));
-          if (hasTextScaleState) {
-            const storedScale = states['text-scale'] === false ? 1 : states['text-scale'];
-            const appliedScale = this.setTextScaleFromPercent(storedScale, { persist: false });
-            this.syncTextScaleControlUI(document.querySelector('.acc-menu'), appliedScale);
-          } else {
-            this.textScaleIndex = 0;
-            if (this.multiLevelFeatures['text-scale']) {
-              this.multiLevelFeatures['text-scale'].currentIndex = -1;
-            }
-            this.scaleText(1);
-            this.syncTextScaleControlUI(document.querySelector('.acc-menu'), 1);
+      getContrastToggleDisplay(index) {
+          if (index === 0) {
+            return { key: 'light-contrast', label: 'Light', icon: this.widgetIcons.lightContrast };
           }
-          // Apply other enhancements
-          this.concealImages(states && states['hide-images']);
-          this.highlightTitles(states && states['highlight-title']);
-          this.highlightLinks(states && states['highlight-links']);
-          this.adjustLetterSpacing(states && states['letter-spacing']);
-          this.adjustLineSpacing(states && states['line-spacing']);
-          this.enableBoldText(states && states['bold-text']);
-          this.enableReadableText(states && states['readable-text']);
-          this.enableReadingAid(states && states['reading-aid']);
-          this.pauseMotion(states && states['pause-motion']);
-          this.enableLargePointer(states && states['large-pointer']);
-          this.enableHighContrastMode(states && states['high-contrast-mode']);
-          this.enableAnnotations(states && states['annotations']);
-          this.enableTextToSpeech(states && states['text-to-speech']);
-          this.enableSimpleLayout(states && states['simple-layout']);
+          if (index === 1) {
+            return { key: 'dark-contrast', label: 'Dark', icon: this.widgetIcons.darkContrast };
+          }
+          return { key: null, label: 'Contrast', icon: this.widgetIcons.contrast };
+        },
+
+      applyModeToggleButtonDisplay(button, display, modeAttribute) {
+          if (!button) return;
+          const iconNode = button.querySelector('svg');
+          if (iconNode) {
+            iconNode.outerHTML = display.icon;
+          } else {
+            button.insertAdjacentHTML('afterbegin', display.icon);
+          }
+
+          const translatedLabel = this.translate(display.label);
+          const labelNode = button.querySelector('.acc-label');
+          if (labelNode) {
+            labelNode.setAttribute('data-acc-text', display.label);
+            labelNode.innerText = translatedLabel;
+          }
+          button.setAttribute('title', translatedLabel);
+          button.setAttribute('aria-label', translatedLabel);
+          button.setAttribute(modeAttribute, display.key || 'off');
+        },
+
+      updateContrastToggleButton(button, index) {
+          this.applyModeToggleButtonDisplay(button, this.getContrastToggleDisplay(index), 'data-contrast-mode');
+        },
+
+      getSaturationToggleDisplay(index) {
+          if (index === 0) {
+            return { key: 'low-saturation', label: 'Low', icon: this.widgetIcons.lowSaturation };
+          }
+          if (index === 1) {
+            return { key: 'high-saturation', label: 'High', icon: this.widgetIcons.highSaturation };
+          }
+          return { key: null, label: 'Saturation', icon: this.widgetIcons.saturation };
+        },
+
+      updateSaturationToggleButton(button, index) {
+          this.applyModeToggleButtonDisplay(button, this.getSaturationToggleDisplay(index), 'data-saturation-mode');
         },
 
       isColorFilterKey(key) {
@@ -3689,95 +4393,320 @@ var AccessibleWebWidget = (function () {
           this.updateColorFilterState(newActiveKey);
           this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
           this.applyVisualFilters();
+          // setColorFilterUI re-labels the button with the active mode.
+          this.announceFeatureState(button.getAttribute('aria-label'), !!newActiveKey);
         },
 
-      resetEnhancements() {
-          this.saveConfig({ states: {}, systemDefaults: {} });
-          this.textScaleIndex = 0;
-          this.activeColorFilterKey = null;
-          Object.keys(this.multiLevelFeatures).forEach(key => {
-            this.multiLevelFeatures[key].currentIndex = -1;
-          });
-          const selected = document.querySelectorAll(".acc-selected");
-          selected.forEach(el => {
-            el.classList.remove("acc-selected");
-            el.setAttribute('aria-pressed', 'false');
-          });
-          const indicators = document.querySelectorAll('.acc-progress-indicator');
-          indicators.forEach(indicator => {
-            const dots = indicator.querySelectorAll('.acc-progress-dot');
-            dots.forEach(dot => dot.classList.remove('active'));
-          });
-          const menu = document.querySelector('.acc-menu');
-          if (menu) {
-            this.setColorFilterUI(menu, null);
-            this.syncTextScaleControlUI(menu, 1);
+    };
+
+    /** @typedef {import('../index.js').default} AccessibleWebWidget */
+
+    const STRUCTURE_MAX_ITEMS = 100;
+
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
+    const pageToolMethods = {
+
+      // ── Accessibility profiles ─────────────────────────────────────────
+
+      toggleAccessibilityProfile(profileKey, menu = this.queryWidget('.acc-menu')) {
+        const profile = (this.accessibilityProfiles || []).find(p => p.key === profileKey);
+        if (!profile) return;
+
+        const enable = !this.retrieveState(profileKey);
+        const payload = { [profileKey]: enable };
+        let touchesColorFilter = false;
+        let colorFilterKey = null;
+
+        Object.entries(profile.states).forEach(([key, value]) => {
+          if (this.isColorFilterKey(key)) {
+            touchesColorFilter = true;
+            if (enable) colorFilterKey = key;
+            return;
           }
-          
-          // Remove focus from active element to fix the persistent focus ring bug
-          if (document.activeElement) {
-            document.activeElement.blur();
+          payload[key] = enable ? value : (key === 'text-scale' ? 1 : false);
+        });
+
+        // Turning a profile off also clears its state keys from any other
+        // active profile that shares them — last action wins, kept simple.
+        this.updateState(payload);
+        if (touchesColorFilter) {
+          this.updateColorFilterState(colorFilterKey);
+        }
+
+        this.applyEnhancements();
+        this.applyVisualFilters();
+        this.syncMenuUI(menu);
+        this.announceFeatureState(this.translate(profile.label), enable);
+      },
+
+      // ── Mute sounds ────────────────────────────────────────────────────
+
+      applyMuteToMediaElements(root) {
+        if (!root || typeof root.querySelectorAll !== 'function') return;
+        root.querySelectorAll('audio,video').forEach((media) => {
+          if (media.muted) return;
+          media.muted = true;
+          media.setAttribute('data-acc-muted', 'true');
+        });
+      },
+
+      enableMuteSounds(enable = false) {
+        if (typeof document === 'undefined') return;
+        if (enable) {
+          this.applyMuteToMediaElements(document);
+          if (!this.muteSoundsObserver && document.body && typeof MutationObserver === 'function') {
+            this.muteSoundsObserver = new MutationObserver((mutations) => {
+              mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                  if (!(node instanceof Element)) return;
+                  if (node.matches && node.matches('audio,video') && !node.muted) {
+                    node.muted = true;
+                    node.setAttribute('data-acc-muted', 'true');
+                  }
+                  this.applyMuteToMediaElements(node);
+                });
+              });
+            });
+            this.muteSoundsObserver.observe(document.body, { childList: true, subtree: true });
           }
-          const styleIds = [
-            'acc-bold-text',
-            'acc-letter-spacing',
-            'acc-line-spacing',
-            'acc-large-pointer',
-            'acc-highlight-links',
-            'acc-highlight-title',
-            'acc-readable-text',
-            'acc-pause-motion',
-            'acc-hide-images',
-            'acc-filter-style',
-            'acc-simple-layout'
-          ];
-          styleIds.forEach(id => {
-            const style = document.getElementById(id);
-            if (style) style.remove();
+        } else {
+          if (this.muteSoundsObserver) {
+            this.muteSoundsObserver.disconnect();
+            this.muteSoundsObserver = null;
+          }
+          document.querySelectorAll('[data-acc-muted]').forEach((media) => {
+            media.muted = false;
+            media.removeAttribute('data-acc-muted');
           });
-          this.clearSimpleLayoutDomMutations();
-          document.documentElement.classList.remove(
-            'acc-filter',
-            'acc-saturation',
-            'acc-bold-text',
-            'acc-letter-spacing',
-            'acc-line-spacing',
-            'acc-large-pointer',
-            'acc-highlight-links',
-            'acc-highlight-title',
-            'acc-readable-text',
-            'acc-pause-motion',
-            'acc-hide-images',
-            'acc-high-contrast-mode',
-            'acc-simple-layout'
-          );
-          document.body?.classList.remove('acc-simple-layout-enabled');
-          document.body?.classList.remove('acc-high-contrast-mode');
-          this.disconnectTextScaleObserver();
-          this.currentTextScaleMultiplier = 1;
-          const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
-          scaledElements.forEach(el => {
-            if (!(el instanceof Element) || this.shouldSkipScaling(el)) return;
-            el.style.fontSize = '';
-            el.removeAttribute('data-acc-baseSize');
+        }
+      },
+
+      // ── Text magnifier ─────────────────────────────────────────────────
+
+      enableTextMagnifier(enable = false) {
+        if (typeof document === 'undefined') return;
+        if (enable) {
+          if (!this.magnifierElement || !document.body.contains(this.magnifierElement)) {
+            const element = document.createElement('div');
+            element.className = 'acc-text-magnifier acc-container';
+            element.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(element);
+            this.magnifierElement = element;
+          }
+          if (!this.magnifierMoveHandler) {
+            this.magnifierMoveHandler = this.throttle((event) => this.updateTextMagnifier(event), 50);
+          }
+          document.addEventListener('mousemove', this.magnifierMoveHandler, { passive: true });
+        } else {
+          if (this.magnifierMoveHandler) {
+            document.removeEventListener('mousemove', this.magnifierMoveHandler);
+            this.magnifierMoveHandler = null;
+          }
+          if (this.magnifierElement) {
+            this.magnifierElement.remove();
+            this.magnifierElement = null;
+          }
+        }
+      },
+
+      updateTextMagnifier(event) {
+        const magnifier = this.magnifierElement;
+        if (!magnifier) return;
+        const target = event.target instanceof Element ? event.target : null;
+        let text = '';
+        if (target && !target.closest('.acc-container') && !target.closest('.acc-rg-container')) {
+          const block = target.closest('h1,h2,h3,h4,h5,h6,p,li,dt,dd,a,button,label,blockquote,figcaption,caption,th,td,span,summary');
+          if (block) {
+            text = this.normalizeReadableText(block.innerText || block.textContent || '').slice(0, 220);
+          }
+        }
+        if (text) {
+          magnifier.textContent = text;
+          magnifier.classList.add('acc-visible');
+        } else {
+          magnifier.classList.remove('acc-visible');
+          magnifier.textContent = '';
+        }
+      },
+
+      // ── Page structure navigator ───────────────────────────────────────
+
+      isStructureCandidate(element) {
+        if (!(element instanceof Element)) return false;
+        if (element.closest('.acc-container')) return false;
+        if (element.closest('[aria-hidden="true"]')) return false;
+        return this.isElementVisibleForTts(element);
+      },
+
+      getAccessibleLabel(element) {
+        const ariaLabel = element.getAttribute('aria-label');
+        if (ariaLabel && ariaLabel.trim()) return ariaLabel.trim();
+        const labelledBy = element.getAttribute('aria-labelledby');
+        if (labelledBy) {
+          const labels = labelledBy.split(/\s+/)
+            .map(id => document.getElementById(id))
+            .filter(Boolean)
+            .map(node => this.normalizeReadableText(node.textContent))
+            .filter(Boolean);
+          if (labels.length) return labels.join(' ');
+        }
+        return '';
+      },
+
+      collectPageHeadings() {
+        return Array.from(document.querySelectorAll('h1,h2,h3,h4,h5,h6'))
+          .filter(el => this.isStructureCandidate(el))
+          .map(el => ({
+            element: el,
+            level: Number(el.tagName.charAt(1)),
+            label: this.normalizeReadableText(el.innerText || el.textContent || '').slice(0, 120)
+          }))
+          .filter(item => item.label)
+          .slice(0, STRUCTURE_MAX_ITEMS);
+      },
+
+      collectPageLandmarks() {
+        const selector = 'main,nav,header,footer,aside,form,section[aria-label],section[aria-labelledby],[role="main"],[role="navigation"],[role="banner"],[role="contentinfo"],[role="complementary"],[role="search"],[role="form"],[role="region"]';
+        const seen = new Set();
+        const landmarks = [];
+        document.querySelectorAll(selector).forEach((el) => {
+          if (seen.has(el) || !this.isStructureCandidate(el)) return;
+          seen.add(el);
+          const role = el.getAttribute('role') || el.tagName.toLowerCase();
+          const name = this.getAccessibleLabel(el);
+          landmarks.push({
+            element: el,
+            label: name ? `${role} — ${name}`.slice(0, 120) : role
           });
-          let guide = this.findElement('.acc-rg-container');
-          if (guide) {
-            guide.remove();
-            if (window.__accweb__scrollGuide) {
-              document.removeEventListener('mousemove', window.__accweb__scrollGuide);
-              delete window.__accweb__scrollGuide;
+        });
+        return landmarks.slice(0, STRUCTURE_MAX_ITEMS);
+      },
+
+      collectPageLinks() {
+        const seen = new Set();
+        const links = [];
+        document.querySelectorAll('a[href]').forEach((el) => {
+          if (!this.isStructureCandidate(el)) return;
+          const label = this.normalizeReadableText(el.innerText || el.textContent || '').slice(0, 120)
+            || this.getAccessibleLabel(el).slice(0, 120);
+          if (!label) return;
+          const dedupeKey = `${label}::${el.getAttribute('href')}`;
+          if (seen.has(dedupeKey)) return;
+          seen.add(dedupeKey);
+          links.push({ element: el, label });
+        });
+        return links.slice(0, STRUCTURE_MAX_ITEMS);
+      },
+
+      focusStructureTarget(element) {
+        if (!(element instanceof Element)) return;
+        element.scrollIntoView({ block: 'center' });
+        if (!element.hasAttribute('tabindex')) {
+          element.setAttribute('tabindex', '-1');
+          element.setAttribute('data-acc-temp-tabindex', 'true');
+          element.addEventListener('blur', () => {
+            if (element.hasAttribute('data-acc-temp-tabindex')) {
+              element.removeAttribute('tabindex');
+              element.removeAttribute('data-acc-temp-tabindex');
             }
-          }
-          this.disableAnnotations();
-          this.stopSpeech();
-          this.stopTtsClickMode();
-          this.clearSystemPreferenceListeners();
-          this.detectSystemPreferences();
-          this.setupMediaQueryListeners();
-          this.updateViolationBubble(this.axeScanResults);
-        },
+          }, { once: true });
+        }
+        element.focus({ preventScroll: true });
+      },
 
+      buildStructureSection(titleKey, items, options = {}) {
+        const section = document.createElement('div');
+        section.className = 'acc-report-section';
+
+        const title = document.createElement('div');
+        title.className = 'acc-report-section-title';
+        title.textContent = `${this.translate(titleKey)} (${items.length})`;
+        section.appendChild(title);
+
+        if (!items.length) {
+          const empty = document.createElement('p');
+          empty.className = 'acc-structure-empty';
+          empty.textContent = this.translate('No items found');
+          section.appendChild(empty);
+          return section;
+        }
+
+        const list = document.createElement('ul');
+        list.className = 'acc-structure-list';
+        items.forEach((item) => {
+          const entry = document.createElement('li');
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'acc-structure-item';
+          if (options.indentByLevel && item.level) {
+            button.style.paddingLeft = `${12 + (item.level - 1) * 16}px`;
+            button.dataset.level = String(item.level);
+          }
+          button.textContent = options.indentByLevel && item.level
+            ? `H${item.level} · ${item.label}`
+            : item.label;
+          button.addEventListener('click', () => {
+            this.closeReportPanel(this.structurePanel);
+            this.focusStructureTarget(item.element);
+          });
+          entry.appendChild(button);
+          list.appendChild(entry);
+        });
+        section.appendChild(list);
+        return section;
+      },
+
+      openPageStructurePanel() {
+        if (typeof document === 'undefined') return;
+        let panel = this.structurePanel && document.body.contains(this.structurePanel)
+          ? this.structurePanel
+          : null;
+        if (!panel) {
+          panel = document.createElement('div');
+          panel.className = 'acc-report-panel acc-structure-panel acc-container';
+          panel.setAttribute('role', 'dialog');
+          panel.setAttribute('aria-modal', 'true');
+          panel.setAttribute('aria-hidden', 'true');
+          panel.setAttribute('aria-labelledby', 'acc-structure-title');
+          document.body.appendChild(panel);
+          this.structurePanel = panel;
+        }
+
+        // Rebuild on every open — the page may have changed.
+        panel.innerHTML = `
+      <div class="acc-report-overlay"></div>
+      <div class="acc-report-dialog">
+        <div class="acc-report-header">
+          <h2 id="acc-structure-title" class="acc-report-title">${this.translate('Page Structure')}</h2>
+          <button type="button" class="acc-report-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
+        </div>
+        <div class="acc-report-content"></div>
+      </div>
+    `;
+
+        panel.querySelector('.acc-report-close').addEventListener('click', () => this.closeReportPanel(panel));
+        panel.querySelector('.acc-report-overlay').addEventListener('click', () => this.closeReportPanel(panel));
+
+        const content = panel.querySelector('.acc-report-content');
+        content.appendChild(this.buildStructureSection('Headings', this.collectPageHeadings(), { indentByLevel: true }));
+        content.appendChild(this.buildStructureSection('Landmarks', this.collectPageLandmarks()));
+        content.appendChild(this.buildStructureSection('Links', this.collectPageLinks()));
+
+        this.openReportPanel(panel);
+      },
+
+    };
+
+    /** @typedef {import('./index.js').default} AccessibleWebWidget */
+
+    /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
+    const featureMethods = {
+      ...coreFeatureMethods,
+      ...ttsMethods,
+      ...axeReportMethods,
+      ...annotationMethods,
+      ...visualFilterMethods,
+      ...pageToolMethods
     };
 
     /** @typedef {import('./index.js').default} AccessibleWebWidget */
@@ -3789,6 +4718,16 @@ var AccessibleWebWidget = (function () {
           const { lang } = this.loadConfig();
           const dictionary = this.translations[lang] || this.translations["en"];
           return dictionary[label] || label;
+        },
+
+      isRtlLanguage(languageCode) {
+          const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+          const code = String(languageCode || '').split(/[_-]/)[0].toLowerCase();
+          return rtlLanguages.includes(code);
+        },
+
+      getUiDirection(languageCode = this.loadConfig().lang) {
+          return this.isRtlLanguage(languageCode) ? 'rtl' : 'ltr';
         },
 
       getLanguageCountryLabel(languageCode) {
@@ -3803,7 +4742,9 @@ var AccessibleWebWidget = (function () {
             pl: 'Poland',
             ro: 'Romania',
             nl: 'Netherlands',
-            uk: 'Ukraine'
+            uk: 'Ukraine',
+            ar: 'Saudi Arabia',
+            he: 'Israel'
           };
           return countryByLanguage[languageCode] || String(languageCode || '').toUpperCase();
         },
@@ -3820,7 +4761,9 @@ var AccessibleWebWidget = (function () {
             pl: 'PL',
             ro: 'RO',
             nl: 'NL',
-            uk: 'UA'
+            uk: 'UA',
+            ar: 'SA',
+            he: 'IL'
           };
           const countryCode = (countryCodeByLanguage[languageCode] || String(languageCode || '').slice(0, 2)).toUpperCase();
           if (!/^[A-Z]{2}$/.test(countryCode)) {
@@ -3854,6 +4797,69 @@ var AccessibleWebWidget = (function () {
           };
         },
 
+      ensureLiveRegion() {
+          if (typeof document === 'undefined') return null;
+          if (this.liveRegion && document.body.contains(this.liveRegion)) {
+            return this.liveRegion;
+          }
+          const region = document.createElement('div');
+          region.id = 'acc-live-region';
+          region.className = 'acc-container';
+          region.setAttribute('role', 'status');
+          region.setAttribute('aria-live', 'polite');
+          Object.assign(region.style, {
+            position: 'absolute',
+            width: '1px',
+            height: '1px',
+            margin: '-1px',
+            padding: '0',
+            border: '0',
+            overflow: 'hidden',
+            clip: 'rect(0 0 0 0)',
+            whiteSpace: 'nowrap'
+          });
+          document.body.appendChild(region);
+          this.liveRegion = region;
+          return region;
+        },
+
+      announce(message) {
+          if (!message) return;
+          const region = this.ensureLiveRegion();
+          if (!region) return;
+          // Clear first so repeating the same message is re-announced.
+          region.textContent = '';
+          if (this.liveRegionTimer) {
+            clearTimeout(this.liveRegionTimer);
+          }
+          this.liveRegionTimer = setTimeout(() => {
+            region.textContent = message;
+            this.liveRegionTimer = null;
+          }, 50);
+        },
+
+      announceFeatureState(label, enabled) {
+          if (!label) return;
+          this.announce(`${label} ${this.translate(enabled ? 'On' : 'Off')}`);
+        },
+
+      syncMenuUI(menu = this.queryWidget('.acc-menu')) {
+          if (!menu || !menu.querySelectorAll) return;
+          const states = this.loadConfig().states || {};
+          menu.querySelectorAll('.acc-btn[data-key]').forEach(btn => {
+            const key = btn.dataset.key;
+            if (!key || this.isColorFilterKey(key) || this.multiLevelFeatures[key]) return;
+            const option = [...(this.accessTools || []), ...(this.contentOptions || [])].find(o => o.key === key);
+            if (option?.isAction) return;
+            const isActive = !!states[key];
+            btn.classList.toggle('acc-selected', isActive);
+            btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          });
+          const activeColorFilter = this.getActiveColorFilterKey(states);
+          this.setColorFilterUI(menu, activeColorFilter);
+          this.syncTextScaleControlUI(menu, states['text-scale'] || 1);
+        },
+
       getFocusableElements(root) {
           if (!root) return [];
           const selectors = [
@@ -3865,7 +4871,7 @@ var AccessibleWebWidget = (function () {
             '[tabindex]:not([tabindex="-1"])'
           ].join(',');
           const hasDocument = typeof document !== 'undefined';
-          const activeElement = hasDocument ? document.activeElement : null;
+          const activeElement = hasDocument ? this.getActiveElement() : null;
           return Array.from(root.querySelectorAll(selectors)).filter(el => {
             if (el.hasAttribute('disabled')) return false;
             if (el.getAttribute('aria-hidden') === 'true') return false;
@@ -3883,8 +4889,9 @@ var AccessibleWebWidget = (function () {
           const menu = this.findElement('.acc-menu', menuContainer);
           this.activeMenuContainer = menuContainer;
           this.activeMenuToggle = toggleBtn || this.activeMenuToggle;
-          this.previousFocus = document.activeElement && typeof document.activeElement.focus === 'function'
-            ? document.activeElement
+          const currentlyFocused = this.getActiveElement();
+          this.previousFocus = currentlyFocused && typeof currentlyFocused.focus === 'function'
+            ? currentlyFocused
             : null;
       
           menuContainer.style.display = 'block';
@@ -3926,12 +4933,14 @@ var AccessibleWebWidget = (function () {
               }
               const first = focusables[0];
               const last = focusables[focusables.length - 1];
+              const active = this.getActiveElement();
+              const insideMenu = this.activeMenuContainer.contains(active);
               if (event.shiftKey) {
-                if (document.activeElement === first) {
+                if (active === first || !insideMenu) {
                   event.preventDefault();
                   last.focus();
                 }
-              } else if (document.activeElement === last) {
+              } else if (active === last || !insideMenu) {
                 event.preventDefault();
                 first.focus();
               }
@@ -4068,6 +5077,13 @@ var AccessibleWebWidget = (function () {
         },
 
       translateMenuUI(menu) {
+          const direction = this.getUiDirection();
+          const menuElement = menu.classList && menu.classList.contains('acc-menu')
+            ? menu
+            : menu.querySelector && menu.querySelector('.acc-menu');
+          if (menuElement) {
+            menuElement.setAttribute('dir', direction);
+          }
           menu.querySelectorAll(".acc-section-title, .acc-label").forEach(el => {
             el.innerText = this.getTranslatedText(el, el.innerText.trim());
           });
@@ -4173,7 +5189,7 @@ var AccessibleWebWidget = (function () {
 
             const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text']);
             const colorKeys = new Set(['contrast-toggle', 'invert-colors', 'saturation-toggle', 'high-contrast-mode']);
-            const readingAidsKeys = new Set(['reading-aid', 'highlight-links', 'highlight-title', 'simple-layout']);
+            const readingAidsKeys = new Set(['reading-aid', 'highlight-links', 'highlight-title', 'simple-layout', 'text-magnifier', 'page-structure']);
 
             const sourceOptions = [
               ...this.contentOptions.map(option => ({ ...option })),
@@ -4182,6 +5198,7 @@ var AccessibleWebWidget = (function () {
             ];
 
             const groupedOptions = {
+              profiles: (this.accessibilityProfiles || []).map(profile => ({ ...profile })),
               speech: [],
               text: [],
               color: [],
@@ -4214,6 +5231,7 @@ var AccessibleWebWidget = (function () {
             });
 
             const sectionConfig = [
+              { key: 'profiles', label: 'Profiles', containerClass: 'acc-options' },
               { key: 'speech', label: 'Speech', containerClass: 'acc-tts-toggle-container', optionClass: 'acc-tts-toggle' },
               { key: 'text', label: 'Text', containerClass: 'acc-options acc-options-text' },
               { key: 'color', label: 'Color & Contrast', containerClass: 'acc-options' },
@@ -4288,7 +5306,7 @@ var AccessibleWebWidget = (function () {
 
               if (section.key === 'reading') {
                 return renderThinRowSection(section, sectionOptions, {
-                  order: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout'],
+                  order: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'],
                   firstRowKeys: new Set(['highlight-links', 'highlight-title']),
                   secondRowKeys: new Set(['reading-aid', 'simple-layout'])
                 });
@@ -4402,6 +5420,7 @@ var AccessibleWebWidget = (function () {
               textScaleRange.addEventListener('change', () => {
                 const multiplier = this.setTextScaleFromPercent(textScaleRange.value, { persist: true });
                 this.syncTextScaleControlUI(menu, multiplier);
+                this.announce(`${this.translate('Font Size')} ${this.getTextScalePercent(multiplier)}%`);
               });
               this.syncTextScaleControlUI(menu, config.states?.['text-scale'] || 1);
             }
@@ -4424,14 +5443,22 @@ var AccessibleWebWidget = (function () {
               }
               if (target.classList.contains('acc-footer-reset')) {
                 this.resetEnhancements();
+                this.announce(this.translate('Settings reset'));
                 return;
               }
               const btn = target.classList.contains('acc-btn') ? target : null;
               if (btn) {
                 const key = btn.dataset.key;
-                // Handle accessibility report action
+                // Handle action buttons (open a panel; no persistent state).
                 if (key === 'accessibility-report') {
                   this.runAccessibilityReport();
+                }
+                else if (key === 'page-structure') {
+                  this.openPageStructurePanel();
+                }
+                // One-tap profiles bundle several feature states.
+                else if (key && key.startsWith('profile-')) {
+                  this.toggleAccessibilityProfile(key, menu);
                 }
                 // Handle multi-level features (font size, contrast).
                 else if (this.multiLevelFeatures[key]) {
@@ -4444,6 +5471,7 @@ var AccessibleWebWidget = (function () {
                   this.setColorFilterUI(menu, newActiveKey);
                   this.updateColorFilterState(newActiveKey);
                   this.applyVisualFilters();
+                  this.announceFeatureState(btn.getAttribute('aria-label'), !isCurrentlyActive);
                 }
                 // For other adjustments, simply toggle.
                 else {
@@ -4457,28 +5485,13 @@ var AccessibleWebWidget = (function () {
                   } finally {
                     this.userInitiatedToggleKey = null;
                   }
+                  this.announceFeatureState(btn.getAttribute('aria-label'), isSelected);
                 }
               }
             });
             this.translateMenuUI(menuContainer);
-            const activeColorFilter = this.getActiveColorFilterKey(config.states);
-            this.setColorFilterUI(menu, activeColorFilter);
-            this.updateColorFilterState(activeColorFilter);
-            if (config.states) {
-              for (let key in config.states) {
-                if (this.isColorFilterKey(key)) {
-                  continue;
-                }
-                if (config.states[key] && key !== "text-scale") {
-                  const selector = key; // keys now directly match our updated options.
-                  const btn = this.findElement(`.acc-btn[data-key="${selector}"]`, menu);
-                  if (btn) {
-                    btn.classList.add("acc-selected");
-                    btn.setAttribute('aria-pressed', 'true');
-                  }
-                }
-              }
-            }
+            this.updateColorFilterState(this.getActiveColorFilterKey(config.states));
+            this.syncMenuUI(menu);
             container.appendChild(menuContainer);
             return menuContainer;
           } catch (e) {
@@ -4504,6 +5517,26 @@ var AccessibleWebWidget = (function () {
             const widget = document.createElement("div");
             widget.innerHTML = widgetTemplate;
             widget.classList.add("acc-container");
+
+            // Encapsulate the widget UI in a shadow root so host-page CSS cannot
+            // break it (and widget UI styles cannot leak out). Falls back to
+            // light DOM when attachShadow is unavailable.
+            const host = document.createElement('div');
+            host.className = 'acc-container';
+            host.id = 'acc-widget-host';
+            this.shadowHost = host;
+            if (typeof host.attachShadow === 'function') {
+              this.widgetRoot = host.attachShadow({ mode: 'open' });
+              const uiStyle = document.createElement('style');
+              uiStyle.textContent = this.getWidgetUiStyles();
+              this.widgetRoot.appendChild(uiStyle);
+              this.widgetRoot.appendChild(widget);
+            } else {
+              this.widgetRoot = null;
+              this.injectStyle('acc-widget-ui-styles', this.getWidgetUiStyles());
+              host.appendChild(widget);
+            }
+
             const btn = this.findElement(".acc-toggle-btn", widget);
             this.violationBubble = this.findElement('.acc-violation-bubble', widget);
       
@@ -4560,7 +5593,7 @@ var AccessibleWebWidget = (function () {
               }
             });
 
-            document.body.appendChild(widget);
+            document.body.appendChild(host);
             this.translateMenuUI(widget);
             this.ensureSkipLink();
             this.runBackgroundAxeScan().catch(() => {
@@ -4605,7 +5638,7 @@ var AccessibleWebWidget = (function () {
 
       startAccessibleWebWidget() {
               try {
-                if (document.querySelector('.acc-widget .acc-toggle-btn')) {
+                if (document.getElementById('acc-widget-host') || document.querySelector('.acc-widget .acc-toggle-btn')) {
                   return;
                 }
       
@@ -4744,7 +5777,44 @@ var AccessibleWebWidget = (function () {
             requiresSpeechSynthesis: true
           },
           { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
-          { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout }
+          { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout },
+          { label: 'Mute Sounds', key: 'mute-sounds', icon: this.widgetIcons.muteSounds },
+          { label: 'Text Magnifier', key: 'text-magnifier', icon: this.widgetIcons.textMagnifier },
+          {
+            label: 'Page Structure',
+            key: 'page-structure',
+            icon: this.widgetIcons.pageStructure,
+            isAction: true
+          }
+        ];
+
+        // One-tap presets bundling existing features. Each profile persists its
+        // own state key plus the bundled feature states.
+        this.accessibilityProfiles = [
+          {
+            label: 'Seizure Safe',
+            key: 'profile-seizure-safe',
+            icon: this.widgetIcons.pauseMotion,
+            states: { 'pause-motion': true, 'low-saturation': true }
+          },
+          {
+            label: 'Vision Impaired',
+            key: 'profile-vision',
+            icon: this.widgetIcons.highContrast,
+            states: { 'text-scale': 1.4, 'high-contrast-mode': true, 'large-pointer': true }
+          },
+          {
+            label: 'ADHD Friendly',
+            key: 'profile-adhd',
+            icon: this.widgetIcons.readingAid,
+            states: { 'reading-aid': true, 'pause-motion': true }
+          },
+          {
+            label: 'Dyslexia Friendly',
+            key: 'profile-dyslexia',
+            icon: this.widgetIcons.dyslexiaFont,
+            states: { 'readable-text': true, 'line-spacing': true, 'letter-spacing': true }
+          }
         ];
 
         // Add dev-only tools (?acc-dev=true)
@@ -4769,6 +5839,7 @@ var AccessibleWebWidget = (function () {
         this.violationBubble = null;
 
         // Accessibility report modal state
+        this.reportPanel = null;
         this.reportPreviousFocus = null;
         this.reportKeyListener = null;
 
@@ -4881,6 +5952,24 @@ var AccessibleWebWidget = (function () {
         this.cookieKey = 'accweb';
         this.readingAidVisible = false;
         this.readableFontLoaded = false;
+
+        // Shadow DOM host for the widget UI
+        this.shadowHost = null;
+        this.widgetRoot = null;
+
+        // Screen-reader live region
+        this.liveRegion = null;
+        this.liveRegionTimer = null;
+
+        // Mute sounds state
+        this.muteSoundsObserver = null;
+
+        // Text magnifier state
+        this.magnifierElement = null;
+        this.magnifierMoveHandler = null;
+
+        // Page structure panel state
+        this.structurePanel = null;
 
         // Menu state tracking for focus management
         this.activeMenuContainer = null;

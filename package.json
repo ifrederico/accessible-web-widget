@@ -3,14 +3,41 @@
   "version": "1.1.4",
   "description": "A lightweight, customizable accessibility widget for websites.",
   "type": "module",
+  "main": "dist/accessible-web-widget.js",
+  "exports": {
+    ".": "./dist/accessible-web-widget.js",
+    "./min": "./dist/accessible-web-widget.min.js"
+  },
+  "files": [
+    "dist",
+    "types",
+    "README.md",
+    "LICENSE",
+    "DISCLAIMER.md"
+  ],
+  "unpkg": "dist/accessible-web-widget.min.js",
+  "jsdelivr": "dist/accessible-web-widget.min.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ifrederico/accessible-web-widget.git"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "widget",
+    "wcag",
+    "text-to-speech",
+    "high-contrast"
+  ],
   "scripts": {
     "lint": "eslint . --max-warnings=0",
     "build": "rollup -c",
     "dev": "rollup -c --watch",
     "check:axe-version": "npm view axe-core version",
+    "test:unit": "node --test tests/unit/*.test.js",
     "test:smoke": "playwright test",
-    "test": "npm run test:smoke",
-    "ci": "npm run lint && npm run build && npm run test:smoke"
+    "test": "npm run test:unit && npm run test:smoke",
+    "ci": "npm run lint && npm run build && npm run test:unit && npm run test:smoke"
   },
   "license": "MIT",
   "devDependencies": {

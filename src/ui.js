@@ -9,6 +9,16 @@ export const uiMethods = {
       return dictionary[label] || label;
     },
 
+  isRtlLanguage(languageCode) {
+      const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+      const code = String(languageCode || '').split(/[_-]/)[0].toLowerCase();
+      return rtlLanguages.includes(code);
+    },
+
+  getUiDirection(languageCode = this.loadConfig().lang) {
+      return this.isRtlLanguage(languageCode) ? 'rtl' : 'ltr';
+    },
+
   getLanguageCountryLabel(languageCode) {
       const countryByLanguage = {
         en: 'USA',
@@ -21,7 +31,9 @@ export const uiMethods = {
         pl: 'Poland',
         ro: 'Romania',
         nl: 'Netherlands',
-        uk: 'Ukraine'
+        uk: 'Ukraine',
+        ar: 'Saudi Arabia',
+        he: 'Israel'
       };
       return countryByLanguage[languageCode] || String(languageCode || '').toUpperCase();
     },
@@ -38,7 +50,9 @@ export const uiMethods = {
         pl: 'PL',
         ro: 'RO',
         nl: 'NL',
-        uk: 'UA'
+        uk: 'UA',
+        ar: 'SA',
+        he: 'IL'
       };
       const countryCode = (countryCodeByLanguage[languageCode] || String(languageCode || '').slice(0, 2)).toUpperCase();
       if (!/^[A-Z]{2}$/.test(countryCode)) {
@@ -72,6 +86,69 @@ export const uiMethods = {
       };
     },
 
+  ensureLiveRegion() {
+      if (typeof document === 'undefined') return null;
+      if (this.liveRegion && document.body.contains(this.liveRegion)) {
+        return this.liveRegion;
+      }
+      const region = document.createElement('div');
+      region.id = 'acc-live-region';
+      region.className = 'acc-container';
+      region.setAttribute('role', 'status');
+      region.setAttribute('aria-live', 'polite');
+      Object.assign(region.style, {
+        position: 'absolute',
+        width: '1px',
+        height: '1px',
+        margin: '-1px',
+        padding: '0',
+        border: '0',
+        overflow: 'hidden',
+        clip: 'rect(0 0 0 0)',
+        whiteSpace: 'nowrap'
+      });
+      document.body.appendChild(region);
+      this.liveRegion = region;
+      return region;
+    },
+
+  announce(message) {
+      if (!message) return;
+      const region = this.ensureLiveRegion();
+      if (!region) return;
+      // Clear first so repeating the same message is re-announced.
+      region.textContent = '';
+      if (this.liveRegionTimer) {
+        clearTimeout(this.liveRegionTimer);
+      }
+      this.liveRegionTimer = setTimeout(() => {
+        region.textContent = message;
+        this.liveRegionTimer = null;
+      }, 50);
+    },
+
+  announceFeatureState(label, enabled) {
+      if (!label) return;
+      this.announce(`${label} ${this.translate(enabled ? 'On' : 'Off')}`);
+    },
+
+  syncMenuUI(menu = this.queryWidget('.acc-menu')) {
+      if (!menu || !menu.querySelectorAll) return;
+      const states = this.loadConfig().states || {};
+      menu.querySelectorAll('.acc-btn[data-key]').forEach(btn => {
+        const key = btn.dataset.key;
+        if (!key || this.isColorFilterKey(key) || this.multiLevelFeatures[key]) return;
+        const option = [...(this.accessTools || []), ...(this.contentOptions || [])].find(o => o.key === key);
+        if (option?.isAction) return;
+        const isActive = !!states[key];
+        btn.classList.toggle('acc-selected', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+      const activeColorFilter = this.getActiveColorFilterKey(states);
+      this.setColorFilterUI(menu, activeColorFilter);
+      this.syncTextScaleControlUI(menu, states['text-scale'] || 1);
+    },
+
   getFocusableElements(root) {
       if (!root) return [];
       const selectors = [
@@ -83,7 +160,7 @@ export const uiMethods = {
         '[tabindex]:not([tabindex="-1"])'
       ].join(',');
       const hasDocument = typeof document !== 'undefined';
-      const activeElement = hasDocument ? document.activeElement : null;
+      const activeElement = hasDocument ? this.getActiveElement() : null;
       return Array.from(root.querySelectorAll(selectors)).filter(el => {
         if (el.hasAttribute('disabled')) return false;
         if (el.getAttribute('aria-hidden') === 'true') return false;
@@ -101,8 +178,9 @@ export const uiMethods = {
       const menu = this.findElement('.acc-menu', menuContainer);
       this.activeMenuContainer = menuContainer;
       this.activeMenuToggle = toggleBtn || this.activeMenuToggle;
-      this.previousFocus = document.activeElement && typeof document.activeElement.focus === 'function'
-        ? document.activeElement
+      const currentlyFocused = this.getActiveElement();
+      this.previousFocus = currentlyFocused && typeof currentlyFocused.focus === 'function'
+        ? currentlyFocused
         : null;
   
       menuContainer.style.display = 'block';
@@ -144,12 +222,14 @@ export const uiMethods = {
           }
           const first = focusables[0];
           const last = focusables[focusables.length - 1];
+          const active = this.getActiveElement();
+          const insideMenu = this.activeMenuContainer.contains(active);
           if (event.shiftKey) {
-            if (document.activeElement === first) {
+            if (active === first || !insideMenu) {
               event.preventDefault();
               last.focus();
             }
-          } else if (document.activeElement === last) {
+          } else if (active === last || !insideMenu) {
             event.preventDefault();
             first.focus();
           }
@@ -286,6 +366,13 @@ export const uiMethods = {
     },
 
   translateMenuUI(menu) {
+      const direction = this.getUiDirection();
+      const menuElement = menu.classList && menu.classList.contains('acc-menu')
+        ? menu
+        : menu.querySelector && menu.querySelector('.acc-menu');
+      if (menuElement) {
+        menuElement.setAttribute('dir', direction);
+      }
       menu.querySelectorAll(".acc-section-title, .acc-label").forEach(el => {
         el.innerText = this.getTranslatedText(el, el.innerText.trim());
       });
@@ -391,7 +478,7 @@ export const uiMethods = {
 
         const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text']);
         const colorKeys = new Set(['contrast-toggle', 'invert-colors', 'saturation-toggle', 'high-contrast-mode']);
-        const readingAidsKeys = new Set(['reading-aid', 'highlight-links', 'highlight-title', 'simple-layout']);
+        const readingAidsKeys = new Set(['reading-aid', 'highlight-links', 'highlight-title', 'simple-layout', 'text-magnifier', 'page-structure']);
 
         const sourceOptions = [
           ...this.contentOptions.map(option => ({ ...option })),
@@ -400,6 +487,7 @@ export const uiMethods = {
         ];
 
         const groupedOptions = {
+          profiles: (this.accessibilityProfiles || []).map(profile => ({ ...profile })),
           speech: [],
           text: [],
           color: [],
@@ -432,6 +520,7 @@ export const uiMethods = {
         });
 
         const sectionConfig = [
+          { key: 'profiles', label: 'Profiles', containerClass: 'acc-options' },
           { key: 'speech', label: 'Speech', containerClass: 'acc-tts-toggle-container', optionClass: 'acc-tts-toggle' },
           { key: 'text', label: 'Text', containerClass: 'acc-options acc-options-text' },
           { key: 'color', label: 'Color & Contrast', containerClass: 'acc-options' },
@@ -506,7 +595,7 @@ export const uiMethods = {
 
           if (section.key === 'reading') {
             return renderThinRowSection(section, sectionOptions, {
-              order: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout'],
+              order: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'],
               firstRowKeys: new Set(['highlight-links', 'highlight-title']),
               secondRowKeys: new Set(['reading-aid', 'simple-layout'])
             });
@@ -620,6 +709,7 @@ export const uiMethods = {
           textScaleRange.addEventListener('change', () => {
             const multiplier = this.setTextScaleFromPercent(textScaleRange.value, { persist: true });
             this.syncTextScaleControlUI(menu, multiplier);
+            this.announce(`${this.translate('Font Size')} ${this.getTextScalePercent(multiplier)}%`);
           });
           this.syncTextScaleControlUI(menu, config.states?.['text-scale'] || 1);
         }
@@ -642,14 +732,22 @@ export const uiMethods = {
           }
           if (target.classList.contains('acc-footer-reset')) {
             this.resetEnhancements();
+            this.announce(this.translate('Settings reset'));
             return;
           }
           const btn = target.classList.contains('acc-btn') ? target : null;
           if (btn) {
             const key = btn.dataset.key;
-            // Handle accessibility report action
+            // Handle action buttons (open a panel; no persistent state).
             if (key === 'accessibility-report') {
               this.runAccessibilityReport();
+            }
+            else if (key === 'page-structure') {
+              this.openPageStructurePanel();
+            }
+            // One-tap profiles bundle several feature states.
+            else if (key && key.startsWith('profile-')) {
+              this.toggleAccessibilityProfile(key, menu);
             }
             // Handle multi-level features (font size, contrast).
             else if (this.multiLevelFeatures[key]) {
@@ -662,6 +760,7 @@ export const uiMethods = {
               this.setColorFilterUI(menu, newActiveKey);
               this.updateColorFilterState(newActiveKey);
               this.applyVisualFilters();
+              this.announceFeatureState(btn.getAttribute('aria-label'), !isCurrentlyActive);
             }
             // For other adjustments, simply toggle.
             else {
@@ -675,28 +774,13 @@ export const uiMethods = {
               } finally {
                 this.userInitiatedToggleKey = null;
               }
+              this.announceFeatureState(btn.getAttribute('aria-label'), isSelected);
             }
           }
         });
         this.translateMenuUI(menuContainer);
-        const activeColorFilter = this.getActiveColorFilterKey(config.states);
-        this.setColorFilterUI(menu, activeColorFilter);
-        this.updateColorFilterState(activeColorFilter);
-        if (config.states) {
-          for (let key in config.states) {
-            if (this.isColorFilterKey(key)) {
-              continue;
-            }
-            if (config.states[key] && key !== "text-scale") {
-              const selector = key; // keys now directly match our updated options.
-              const btn = this.findElement(`.acc-btn[data-key="${selector}"]`, menu);
-              if (btn) {
-                btn.classList.add("acc-selected");
-                btn.setAttribute('aria-pressed', 'true');
-              }
-            }
-          }
-        }
+        this.updateColorFilterState(this.getActiveColorFilterKey(config.states));
+        this.syncMenuUI(menu);
         container.appendChild(menuContainer);
         return menuContainer;
       } catch (e) {
@@ -722,6 +806,26 @@ export const uiMethods = {
         const widget = document.createElement("div");
         widget.innerHTML = widgetTemplate;
         widget.classList.add("acc-container");
+
+        // Encapsulate the widget UI in a shadow root so host-page CSS cannot
+        // break it (and widget UI styles cannot leak out). Falls back to
+        // light DOM when attachShadow is unavailable.
+        const host = document.createElement('div');
+        host.className = 'acc-container';
+        host.id = 'acc-widget-host';
+        this.shadowHost = host;
+        if (typeof host.attachShadow === 'function') {
+          this.widgetRoot = host.attachShadow({ mode: 'open' });
+          const uiStyle = document.createElement('style');
+          uiStyle.textContent = this.getWidgetUiStyles();
+          this.widgetRoot.appendChild(uiStyle);
+          this.widgetRoot.appendChild(widget);
+        } else {
+          this.widgetRoot = null;
+          this.injectStyle('acc-widget-ui-styles', this.getWidgetUiStyles());
+          host.appendChild(widget);
+        }
+
         const btn = this.findElement(".acc-toggle-btn", widget);
         this.violationBubble = this.findElement('.acc-violation-bubble', widget);
   
@@ -778,7 +882,7 @@ export const uiMethods = {
           }
         });
 
-        document.body.appendChild(widget);
+        document.body.appendChild(host);
         this.translateMenuUI(widget);
         this.ensureSkipLink();
         this.runBackgroundAxeScan().catch(() => {
@@ -823,7 +927,7 @@ export const uiMethods = {
 
   startAccessibleWebWidget() {
           try {
-            if (document.querySelector('.acc-widget .acc-toggle-btn')) {
+            if (document.getElementById('acc-widget-host') || document.querySelector('.acc-widget .acc-toggle-btn')) {
               return;
             }
   
