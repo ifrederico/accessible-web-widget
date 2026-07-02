@@ -1,6 +1,7 @@
 export const TRANSLATIONS = {
       en: {
         "Accessibility": "Accessibility",
+        "Accessibility Options": "Accessibility Options",
         "Accessibility Menu": "Accessibility Menu",
         "Reset settings": "Reset settings",
         "Reset All Settings": "Reset All Settings",
@@ -91,6 +92,7 @@ export const TRANSLATIONS = {
       },
       pt: {
         "Accessibility": "Acessibilidade",
+        "Accessibility Options": "Opções de acessibilidade",
         "Accessibility Menu": "Menu de Acessibilidade",
         "Reset settings": "Redefinir configurações",
         "Reset All Settings": "Redefinir todas as configurações",
@@ -181,6 +183,7 @@ export const TRANSLATIONS = {
       },
       it: {
         "Accessibility": "Accessibilità",
+        "Accessibility Options": "Opzioni di accessibilità",
         "Accessibility Menu": "Menu Accessibilità",
         "Reset settings": "Ripristina impostazioni",
         "Reset All Settings": "Ripristina tutte le impostazioni",
@@ -271,6 +274,7 @@ export const TRANSLATIONS = {
       },
       fr: {
         "Accessibility": "Accessibilité",
+        "Accessibility Options": "Options d'accessibilité",
         "Accessibility Menu": "Menu Accessibilité",
         "Reset settings": "Réinitialiser les paramètres",
         "Reset All Settings": "Réinitialiser tous les paramètres",
@@ -361,6 +365,7 @@ export const TRANSLATIONS = {
       },
       de: {
         "Accessibility": "Barrierefreiheit",
+        "Accessibility Options": "Optionen für Barrierefreiheit",
         "Accessibility Menu": "Barrierefreiheit-Menü",
         "Reset settings": "Einstellungen zurücksetzen",
         "Reset All Settings": "Alle Einstellungen zurücksetzen",
@@ -451,6 +456,7 @@ export const TRANSLATIONS = {
       },
       es: {
         "Accessibility": "Accesibilidad",
+        "Accessibility Options": "Opciones de accesibilidad",
         "Accessibility Menu": "Menú de Accesibilidad",
         "Reset settings": "Restablecer configuración",
         "Reset All Settings": "Restablecer toda la configuración",
@@ -541,6 +547,7 @@ export const TRANSLATIONS = {
       },
       ru: {
         "Accessibility": "Доступность",
+        "Accessibility Options": "Настройки доступности",
         "Accessibility Menu": "Меню доступности",
         "Reset settings": "Сбросить настройки",
         "Reset All Settings": "Сбросить все настройки",
@@ -631,6 +638,7 @@ export const TRANSLATIONS = {
       },
       pl: {
         "Accessibility": "Dostępność",
+        "Accessibility Options": "Opcje dostępności",
         "Accessibility Menu": "Menu Dostępności",
         "Reset settings": "Zresetuj ustawienia",
         "Reset All Settings": "Zresetuj wszystkie ustawienia",
@@ -721,6 +729,7 @@ export const TRANSLATIONS = {
       },
       ro: {
         "Accessibility": "Accesibilitate",
+        "Accessibility Options": "Opțiuni de accesibilitate",
         "Accessibility Menu": "Meniu Accesibilitate",
         "Reset settings": "Resetare setări",
         "Reset All Settings": "Resetare toate setările",
@@ -811,6 +820,7 @@ export const TRANSLATIONS = {
       },
       nl: {
         "Accessibility": "Toegankelijkheid",
+        "Accessibility Options": "Toegankelijkheidsopties",
         "Accessibility Menu": "Toegankelijkheidsmenu",
         "Reset settings": "Instellingen resetten",
         "Reset All Settings": "Alle instellingen resetten",
@@ -901,6 +911,7 @@ export const TRANSLATIONS = {
       },
       uk: {
         "Accessibility": "Доступність",
+        "Accessibility Options": "Параметри доступності",
         "Accessibility Menu": "Меню доступності",
         "Reset settings": "Скинути налаштування",
         "Reset All Settings": "Скинути всі налаштування",
@@ -991,6 +1002,7 @@ export const TRANSLATIONS = {
       },
       ar: {
         "Accessibility": "إمكانية الوصول",
+        "Accessibility Options": "خيارات إمكانية الوصول",
         "Accessibility Menu": "قائمة إمكانية الوصول",
         "Reset settings": "إعادة تعيين الإعدادات",
         "Reset All Settings": "إعادة تعيين جميع الإعدادات",
@@ -1081,6 +1093,7 @@ export const TRANSLATIONS = {
       },
       he: {
         "Accessibility": "נגישות",
+        "Accessibility Options": "אפשרויות נגישות",
         "Accessibility Menu": "תפריט נגישות",
         "Reset settings": "איפוס הגדרות",
         "Reset All Settings": "איפוס כל ההגדרות",

@@ -199,11 +199,14 @@ export const uiMethods = {
         this.activeMenuToggle.setAttribute('aria-expanded', 'true');
       }
   
-      const focusable = this.getFocusableElements(menuContainer);
-      if (focusable.length) {
-        focusable[0].focus();
-      } else if (menu) {
+      // Focus the dialog itself rather than its first control: screen
+      // readers announce the dialog name, and the first Tab lands on the
+      // first control without implying any one of them is the primary action.
+      if (menu) {
         menu.focus();
+      } else {
+        const focusable = this.getFocusableElements(menuContainer);
+        if (focusable.length) focusable[0].focus();
       }
   
       if (this.menuKeyListener) {
@@ -227,8 +230,11 @@ export const uiMethods = {
           const last = focusables[focusables.length - 1];
           const active = this.getActiveElement();
           const insideMenu = this.activeMenuContainer.contains(active);
+          // Focus can rest on the dialog itself right after opening;
+          // Shift+Tab must wrap to the last control instead of escaping.
+          const onDialog = active === this.findElement('.acc-menu', this.activeMenuContainer);
           if (event.shiftKey) {
-            if (active === first || !insideMenu) {
+            if (active === first || onDialog || !insideMenu) {
               event.preventDefault();
               last.focus();
             }
@@ -257,7 +263,7 @@ export const uiMethods = {
         langModal.setAttribute('hidden', '');
       }
 
-      const langToggle = this.findElement('.acc-footer-lang-toggle', targetContainer);
+      const langToggle = this.findElement('.acc-header-lang-toggle', targetContainer);
       if (langToggle) {
         langToggle.setAttribute('aria-expanded', 'false');
       }
@@ -388,7 +394,7 @@ export const uiMethods = {
       this.updateSkipLinkLabel();
     },
 
-  displayMenu({ container, lang, position = 'bottom-right', offset = [20, 20], size, icon }) {
+  displayMenu({ container, lang, position = 'bottom-right' }) {
       try {
         this.applyThemeVariables();
         this.registerStaticStyles();
@@ -399,11 +405,37 @@ export const uiMethods = {
         <div class="acc-menu" role="dialog" aria-labelledby="accessibility-title">
           <div class="acc-menu-header">
             <div id="accessibility-title" class="acc-menu-title">
-              <span class="acc-menu-title-icon" aria-hidden="true">${this.getWidgetIconMarkup(icon)}</span>
-              <span class="acc-label">Accessibility</span>
+              <span class="acc-label">Accessibility Options</span>
             </div>
             <div class="acc-header-actions">
-              
+              <button type="button" class="acc-header-lang-toggle" title="Language" aria-label="Language" aria-expanded="false" aria-controls="acc-lang-modal">
+                <span id="acc-current-language" class="acc-header-lang-current">${String(activeLanguageCode || 'en').toUpperCase()}</span>
+                <span class="acc-header-lang-arrow" aria-hidden="true"> </span>
+              </button>
+              <button type="button" class="acc-menu-close" title="Close" aria-label="Close">
+                ${this.widgetIcons.close}
+              </button>
+            </div>
+          </div>
+          <div id="acc-lang-modal" class="acc-lang-modal" hidden>
+            <div class="acc-lang-modal-header">
+              <div class="acc-section-title acc-label">All Languages</div>
+            </div>
+            <div class="acc-lang-search-wrapper">
+              <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
+            </div>
+            <div class="acc-lang-list">
+              ${this.supportedLanguages.map(language => {
+                const languageLabel = this.formatLanguageLabel(language);
+                const languageFlag = this.getLanguageFlag(language.code);
+                return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
+                  <span class="acc-lang-item-main">
+                    <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
+                    <span class="acc-lang-item-label">${languageLabel}</span>
+                  </span>
+                  <span class="acc-icon-check" aria-hidden="true"> </span>
+                </button>`;
+              }).join('')}
             </div>
           </div>
           <div id="acc-menu-content" class="acc-menu-content">
@@ -416,31 +448,6 @@ export const uiMethods = {
             </button>
             <div class="acc-footer-meta">
               <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>
-              <button type="button" class="acc-footer-lang-toggle" title="Language" aria-label="Language" aria-expanded="false" aria-controls="acc-lang-modal">
-                <span id="acc-current-language" class="acc-footer-lang-current">${String(activeLanguageCode || 'en').toUpperCase()}</span>
-                <span class="acc-footer-lang-arrow" aria-hidden="true"> </span>
-              </button>
-            </div>
-            <div id="acc-lang-modal" class="acc-lang-modal" hidden>
-              <div class="acc-lang-modal-header">
-                <div class="acc-section-title acc-label">All Languages</div>
-              </div>
-              <div class="acc-lang-search-wrapper">
-                <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
-              </div>
-              <div class="acc-lang-list">
-                ${this.supportedLanguages.map(language => {
-                  const languageLabel = this.formatLanguageLabel(language);
-                  const languageFlag = this.getLanguageFlag(language.code);
-                  return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
-                    <span class="acc-lang-item-main">
-                      <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
-                      <span class="acc-lang-item-label">${languageLabel}</span>
-                    </span>
-                    <span class="acc-icon-check" aria-hidden="true"> </span>
-                  </button>`;
-                }).join('')}
-              </div>
             </div>
           </div>
         </div>
@@ -456,6 +463,8 @@ export const uiMethods = {
             menu.setAttribute('tabindex', '-1');
           }
         }
+        // The menu opens as a full-height side panel (top/bottom gaps come
+        // from the base CSS) docked to whichever edge hosts the button.
         const isRightAligned = position === 'bottom-right' || position === 'top-right' || this.widgetTheme.menuPosition === 'right';
         if (isRightAligned) {
           menu.style.right = 'var(--acc-menu-inline-gap, 12px)';
@@ -465,18 +474,6 @@ export const uiMethods = {
           menu.style.right = 'auto';
         }
 
-        const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
-        const offsetY = normalizedOffset[1] ?? 25;
-        const buttonSize = size !== undefined && size !== null && String(size).trim() !== ''
-          ? this.normalizeButtonSize(size)
-          : (this.widgetTheme?.buttonSize || '48px');
-
-        if (position === 'bottom-right' || position === 'bottom-left') {
-          menu.style.bottom = `calc(${offsetY}px + ${buttonSize} + 16px)`;
-        } else if (position === 'top-right' || position === 'top-left') {
-          menu.style.top = `calc(${offsetY}px + ${buttonSize} + 16px)`;
-        }
-  
         const config = this.loadConfig();
 
         const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text']);
@@ -523,7 +520,7 @@ export const uiMethods = {
         });
 
         const sectionConfig = [
-          { key: 'profiles', label: 'Profiles', containerClass: 'acc-options' },
+          { key: 'profiles', label: 'Profiles', containerClass: 'acc-tts-toggle-container', optionClass: 'acc-tts-toggle' },
           { key: 'speech', label: 'Speech', containerClass: 'acc-tts-toggle-container', optionClass: 'acc-tts-toggle' },
           { key: 'text', label: 'Text', containerClass: 'acc-options acc-options-text' },
           { key: 'color', label: 'Color & Contrast', containerClass: 'acc-options' },
@@ -541,31 +538,28 @@ export const uiMethods = {
           });
         };
 
-        const renderThinRowSection = (section, sectionOptions, { order, firstRowKeys, secondRowKeys, specialContent = '' }) => {
+        const renderThinRowSection = (section, sectionOptions, { order, rows = [], specialContent = '' }) => {
           sortOptionsByOrder(sectionOptions, order);
-          const firstRowOptions = sectionOptions.filter(option => firstRowKeys.has(option.key));
-          const secondRowOptions = sectionOptions.filter(option => secondRowKeys.has(option.key));
+          const rowsHtml = rows.map(rowKeys => {
+            const rowOptions = sectionOptions.filter(option => rowKeys.has(option.key));
+            return rowOptions.length
+              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(rowOptions, 'acc-text-inline')}</div>`
+              : '';
+          }).join('');
           const remainingOptions = sectionOptions.filter(option => (
-            !firstRowKeys.has(option.key) && !secondRowKeys.has(option.key)
+            !rows.some(rowKeys => rowKeys.has(option.key))
           ));
-          const firstRowHtml = firstRowOptions.length
-            ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(firstRowOptions, 'acc-text-inline')}</div>`
-            : '';
-          const secondRowHtml = secondRowOptions.length
-            ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(secondRowOptions, 'acc-text-inline')}</div>`
-            : '';
           const remainingHtml = remainingOptions.length
             ? `<div class="${section.containerClass}">${this.renderOptions(remainingOptions, section.optionClass || '')}</div>`
             : '';
 
-          if (!specialContent && !firstRowHtml && !secondRowHtml && !remainingHtml) return '';
+          if (!specialContent && !rowsHtml && !remainingHtml) return '';
 
           return `
             <section class="acc-option-category acc-option-category-${section.key}">
               <div class="acc-section-title acc-label">${section.label}</div>
               ${specialContent}
-              ${firstRowHtml}
-              ${secondRowHtml}
+              ${rowsHtml}
               ${remainingHtml}
             </section>
           `;
@@ -580,8 +574,10 @@ export const uiMethods = {
             sectionOptions = sectionOptions.filter(option => option.key !== 'text-scale');
             return renderThinRowSection(section, sectionOptions, {
               order: ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'],
-              firstRowKeys: new Set(['line-spacing', 'letter-spacing']),
-              secondRowKeys: new Set(['bold-text', 'readable-text']),
+              rows: [
+                new Set(['line-spacing', 'letter-spacing']),
+                new Set(['bold-text', 'readable-text'])
+              ],
               specialContent: textScaleOption
                 ? this.renderTextScaleControl(config.states?.['text-scale'] || 1)
                 : ''
@@ -591,16 +587,21 @@ export const uiMethods = {
           if (section.key === 'color') {
             return renderThinRowSection(section, sectionOptions, {
               order: ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'],
-              firstRowKeys: new Set(['contrast-toggle', 'saturation-toggle']),
-              secondRowKeys: new Set(['invert-colors', 'high-contrast-mode'])
+              rows: [
+                new Set(['contrast-toggle', 'saturation-toggle']),
+                new Set(['invert-colors', 'high-contrast-mode'])
+              ]
             });
           }
 
           if (section.key === 'reading') {
             return renderThinRowSection(section, sectionOptions, {
               order: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'],
-              firstRowKeys: new Set(['highlight-links', 'highlight-title']),
-              secondRowKeys: new Set(['reading-aid', 'simple-layout'])
+              rows: [
+                new Set(['highlight-links', 'highlight-title']),
+                new Set(['reading-aid', 'simple-layout']),
+                new Set(['text-magnifier', 'page-structure'])
+              ]
             });
           }
 
@@ -625,7 +626,7 @@ export const uiMethods = {
 
         menu.querySelector(".acc-options-all").innerHTML = sectionMarkup;
         const langModal = this.findElement("#acc-lang-modal", menu);
-        const langToggle = this.findElement(".acc-footer-lang-toggle", menu);
+        const langToggle = this.findElement(".acc-header-lang-toggle", menu);
         const langSearch = this.findElement("#acc-lang-search", menu);
         const langItems = menu.querySelectorAll(".acc-lang-item");
 
@@ -721,7 +722,7 @@ export const uiMethods = {
         menu.addEventListener('click', (e) => {
           if (langModal && !langModal.hasAttribute('hidden')) {
             const clickedInsideLanguageModal = Boolean(e.target.closest('.acc-lang-modal'));
-            const clickedLanguageToggle = Boolean(e.target.closest('.acc-footer-lang-toggle'));
+            const clickedLanguageToggle = Boolean(e.target.closest('.acc-header-lang-toggle'));
             if (!clickedInsideLanguageModal && !clickedLanguageToggle) {
               closeLanguageModal();
             }

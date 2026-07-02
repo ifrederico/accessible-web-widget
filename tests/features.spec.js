@@ -192,12 +192,12 @@ test('switching to Arabic flips the menu to RTL and back', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  await page.locator('.acc-footer-lang-toggle').click();
+  await page.locator('.acc-header-lang-toggle').click();
   await page.locator('.acc-lang-item[data-lang="ar"]').click();
   await expect(page.locator('.acc-menu')).toHaveAttribute('dir', 'rtl');
   await expect(page.locator('#acc-current-language')).toHaveText('AR');
 
-  await page.locator('.acc-footer-lang-toggle').click();
+  await page.locator('.acc-header-lang-toggle').click();
   await page.locator('.acc-lang-item[data-lang="en"]').click();
   await expect(page.locator('.acc-menu')).toHaveAttribute('dir', 'ltr');
 });

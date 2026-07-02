@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -14,7 +14,7 @@ Adds the AccessibleWeb accessibility widget to your site: font sizing, contrast 
 
 AccessibleWeb Widget is a small floating panel that gives your visitors accessibility controls they actually want — font sizing, contrast modes, a dyslexia-friendly font, animation pausing, text-to-speech, and more.
 
-This plugin loads the widget from the jsDelivr CDN (pinned to version 1.2.0) and lets you configure its position, button size, and language from Settings > AccessibleWeb Widget.
+This plugin loads the widget from the jsDelivr CDN (pinned to version 1.3.0) and lets you configure its position, button size, and language from Settings > AccessibleWeb Widget.
 
 Note: this widget is a complement to — not a substitute for — real accessibility work (semantic HTML, ARIA, keyboard navigation, alt text). It does not guarantee compliance with WCAG, ADA, Section 508, or any other standard.
 
@@ -32,9 +32,13 @@ No. No overlay does. Use it as a convenience layer on top of a properly built, a
 
 = Where does the script load from? =
 
-From the jsDelivr CDN, pinned to a specific release: https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.2.0/dist/accessible-web-widget.min.js
+From the jsDelivr CDN, pinned to a specific release: https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.0/dist/accessible-web-widget.min.js
 
 == Changelog ==
+
+= 1.3.0 =
+* Bundles widget version 1.3.0: the menu now opens as a full-height side panel with an "Accessibility Options" header, the language picker beside the close button, one-tap profiles as toggle switches, and a roughly 20% wider layout.
+* Improved keyboard and screen-reader behavior: opening the menu focuses the dialog itself and the focus trap handles Shift+Tab from the dialog.
 
 = 1.2.0 =
 * Bundles widget version 1.2.0: accessibility profiles, page structure navigator, text magnifier, mute sounds, Shadow DOM UI, RTL layout with Arabic and Hebrew, and pt-BR translations.
