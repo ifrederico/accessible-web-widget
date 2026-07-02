@@ -23,7 +23,7 @@ It initializes on page load. No config needed.
 For production, pin a specific version — `@latest` resolves to the newest release automatically, which means updates ship to your site without review:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.1/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.2/dist/accessible-web-widget.min.js"></script>
 ```
 
 Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widget.min.js` and serve it yourself.

@@ -3,7 +3,7 @@
  * Plugin Name:       AccessibleWeb Widget
  * Plugin URI:        https://github.com/ifrederico/accessible-web-widget
  * Description:       Adds the AccessibleWeb accessibility widget to your site — font sizing, contrast modes, dyslexia-friendly font, text-to-speech, and more.
- * Version:           1.3.1
+ * Version:           1.3.2
  * Requires at least: 5.0
  * Requires PHP:      7.2
  * Author:            ifrederico
@@ -19,8 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'AWW_VERSION', '1.3.1' );
-define( 'AWW_SCRIPT_URL', 'https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.1/dist/accessible-web-widget.min.js' );
+define( 'AWW_VERSION', '1.3.2' );
+define( 'AWW_SCRIPT_URL', 'https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.2/dist/accessible-web-widget.min.js' );
 define( 'AWW_OPTION_NAME', 'aww_settings' );
 
 /**
