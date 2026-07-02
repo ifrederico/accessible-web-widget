@@ -52,42 +52,13 @@
     transform: scale(1.12);
   }
 
-  .acc-toggle-btn::before,
-  .acc-toggle-btn::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 44%;
-    height: 2.6px;
-    border-radius: 999px;
-    background: var(--acc-text-color-inverted, #fff);
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -50%) rotate(0deg);
-    transition: none;
-  }
-
+  /* The menu panel replaces the button while open; closeMenu() restores
+     aria-expanded before moving focus back here, so the button is visible
+     and focusable again by the time it receives focus. */
   .acc-toggle-btn[aria-expanded="true"] {
-    background: var(--acc-primary-color, #1976d2) !important;
-    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #1976d2), inset 0 0 0 6px white, 0 6px 14px rgba(0, 0, 0, 0.24) !important;
-  }
-
-  .acc-toggle-btn[aria-expanded="true"] .acc-toggle-icon svg {
     opacity: 0;
-  }
-
-  .acc-toggle-btn[aria-expanded="true"]::before,
-  .acc-toggle-btn[aria-expanded="true"]::after {
-    opacity: 1;
-  }
-
-  .acc-toggle-btn[aria-expanded="true"]::before {
-    transform: translate(-50%, -50%) rotate(45deg);
-  }
-
-  .acc-toggle-btn[aria-expanded="true"]::after {
-    transform: translate(-50%, -50%) rotate(-45deg);
+    visibility: hidden;
+    pointer-events: none;
   }
 
   .acc-violation-bubble {
@@ -143,9 +114,7 @@
       transition: none;
     }
 
-    .acc-toggle-btn .acc-toggle-icon svg,
-    .acc-toggle-btn::before,
-    .acc-toggle-btn::after {
+    .acc-toggle-btn .acc-toggle-icon svg {
       transition: none;
     }
 

@@ -23,7 +23,7 @@ export const WIDGET_THEME = {
       warningColor: '#f57c00', // Orange
       
       // Other UI properties
-      headerHeight: '54px',
+      headerHeight: '64px',
       borderRadius: '8px',
       buttonBorderRadius: '0.4rem',
       menuPosition: 'right', // or 'left'

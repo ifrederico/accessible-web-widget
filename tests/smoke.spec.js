@@ -21,11 +21,22 @@ test('menu opens and closes with Escape', async ({ page }) => {
   await expect(menu).toBeHidden();
 });
 
-test('language selector renders as expandable row in menu content', async ({ page }) => {
+test('menu closes via the header close button', async ({ page }) => {
+  await page.goto('index.html');
+  const toggle = page.locator('.acc-toggle-btn');
+  await toggle.click();
+  const menu = page.locator('.acc-menu');
+  await expect(menu).toBeVisible();
+  await page.locator('.acc-menu-close').click();
+  await expect(menu).toBeHidden();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('language selector opens from the menu header', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  const languageToggle = page.locator('.acc-footer-lang-toggle');
+  const languageToggle = page.locator('.acc-header-lang-toggle');
   const languageModal = page.locator('#acc-lang-modal');
   await expect(languageToggle).toHaveCount(1);
   await expect(languageModal).toHaveAttribute('hidden', '');
