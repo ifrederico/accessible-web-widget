@@ -10,28 +10,37 @@
 </head>
 
 <body class="customize-page">
-    <nav class="navbar">
-        <a href="./index.html" class="logo">AccessibleWeb</a>
-        <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="nav-links">
-            <a href="./customize.html" class="nav-link is-active">Customize</a>
-            <a href="./faq.html" class="nav-link">FAQ</a>
-            <a href="./audit.html" class="nav-link">Audit</a>
-            <a href="./get-widget.html" class="btn-primary">Get Widget</a>
-        </div>
-    </nav>
+    <div class="page-glows" aria-hidden="true">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
 
-    <header class="hero">
-        <h1 class="hero-title">Build your widget config and export ready-to-paste code.</h1>
-        <p class="hero-subtitle">Choose position, offset, size, accent color, and text-to-speech voice settings. Changes
-            update live in preview, so you can test interactions before copying the generated snippet.</p>
+    <div class="nav-wrap">
+        <nav class="navbar">
+            <a href="./index.html" class="logo">AccessibleWeb</a>
+            <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links">
+                <a href="./index.html" class="nav-link">Home</a>
+                <a href="./customize.html" class="nav-link is-active">Customize</a>
+                <a href="./faq.html" class="nav-link">FAQ</a>
+                <a href="./audit.html" class="nav-link">Audit</a>
+                <a href="./get-widget.html" class="btn-primary">Get widget</a>
+            </div>
+        </nav>
+    </div>
+
+    <header class="page-hero">
+        <h1 class="page-title">Build your config, export <em>ready-to-paste</em> code.</h1>
+        <p class="page-sub">Choose position, offset, size, accent color, and text-to-speech voice settings. Changes
+            update live in preview before you copy the snippet.</p>
     </header>
 
-    <main class="container">
+    <main class="inner">
         <div class="builder-layout">
             <section class="panel" aria-labelledby="config-heading">
                 <h2 id="config-heading">Customize Settings</h2>
@@ -202,7 +211,8 @@
     </main>
 
     <footer class="footer">
-        <div class="footer-left">AccessibleWeb Widget &middot; MIT License</div>
+        <div class="wordmark">AccessibleWeb</div>
+        <div>MIT License · Free forever</div>
         <div class="footer-links">
             <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -934,6 +944,30 @@
             updateVoiceButtonState();
             setFormValues(defaults);
             applyPreview();
+        })();
+    </script>
+    <script>
+        (function () {
+            var ranges = document.querySelectorAll('input[type="range"]');
+
+            function syncFill(range) {
+                var min = Number(range.min) || 0;
+                var max = Number(range.max) || 100;
+                var value = Number(range.value);
+                var percent = max > min ? ((value - min) / (max - min)) * 100 : 0;
+                range.style.setProperty('--fill', percent + '%');
+            }
+
+            ranges.forEach(function (range) {
+                syncFill(range);
+                range.addEventListener('input', function () {
+                    syncFill(range);
+                });
+            });
+
+            document.getElementById('reset-defaults').addEventListener('click', function () {
+                ranges.forEach(syncFill);
+            });
         })();
     </script>
 </body>
