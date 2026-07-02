@@ -299,6 +299,14 @@ test('violation bubble appears for serious and critical issues', async ({ page }
   await expect(bubble).toHaveText('2');
 });
 
+test('axe-core never loads and bubble stays hidden outside dev mode', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.waitForTimeout(400);
+  await expect(page.locator('script[data-acc-axe-core]')).toHaveCount(0);
+  await expect(page.locator('.acc-violation-bubble')).toBeHidden();
+});
+
 test('violation bubble stays hidden when no violations exist', async ({ page }) => {
   await page.goto('index.html?acc-dev=true');
   await page.evaluate(() => {
