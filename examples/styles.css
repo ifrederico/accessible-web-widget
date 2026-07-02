@@ -73,11 +73,12 @@ code { font-family: var(--mono); }
 
 /* ---- nav ---- */
 .nav-wrap {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 20;
   display: flex;
   justify-content: center;
-  padding: 28px 16px 0;
+  padding: 28px 16px 12px;
 }
 
 .navbar {
