@@ -178,7 +178,10 @@ export const annotationMethods = {
   },
 
   enableAnnotations(enable = false) {
-    if (!enable) {
+    // Annotations are dev tooling. A persisted 'annotations' state must not
+    // activate (or pull axe-core) on later visits outside ?acc-dev=true;
+    // the state is kept so the tool revives when dev mode returns.
+    if (!enable || !this.isDevMode()) {
       this.disableAnnotations();
       return;
     }

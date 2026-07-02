@@ -3515,6 +3515,13 @@ const axeReportMethods = {
   },
 
   async runBackgroundAxeScan({ force = false } = {}) {
+    // Hard guarantee that axe-core is never fetched or run outside dev
+    // mode, regardless of which feature asks for a scan.
+    if (!this.isDevMode()) {
+      this.updateViolationBubble({ violations: [] });
+      return { violations: [] };
+    }
+
     if (!force && this.axeScanResults) {
       this.updateViolationBubble(this.axeScanResults);
       return this.axeScanResults;
@@ -4023,7 +4030,10 @@ const annotationMethods = {
   },
 
   enableAnnotations(enable = false) {
-    if (!enable) {
+    // Annotations are dev tooling. A persisted 'annotations' state must not
+    // activate (or pull axe-core) on later visits outside ?acc-dev=true;
+    // the state is kept so the tool revives when dev mode returns.
+    if (!enable || !this.isDevMode()) {
       this.disableAnnotations();
       return;
     }

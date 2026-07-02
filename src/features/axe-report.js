@@ -129,6 +129,13 @@ export const axeReportMethods = {
   },
 
   async runBackgroundAxeScan({ force = false } = {}) {
+    // Hard guarantee that axe-core is never fetched or run outside dev
+    // mode, regardless of which feature asks for a scan.
+    if (!this.isDevMode()) {
+      this.updateViolationBubble({ violations: [] });
+      return { violations: [] };
+    }
+
     if (!force && this.axeScanResults) {
       this.updateViolationBubble(this.axeScanResults);
       return this.axeScanResults;
