@@ -465,7 +465,13 @@ export const uiMethods = {
         }
         // The menu opens as a full-height side panel (top/bottom gaps come
         // from the base CSS) docked to whichever edge hosts the button.
-        const isRightAligned = position === 'bottom-right' || position === 'top-right' || this.widgetTheme.menuPosition === 'right';
+        // theme.menuPosition ('left' | 'right'), when set, overrides that.
+        const dockOverride = this.widgetTheme.menuPosition === 'left' || this.widgetTheme.menuPosition === 'right'
+          ? this.widgetTheme.menuPosition
+          : null;
+        const isRightAligned = dockOverride
+          ? dockOverride === 'right'
+          : position === 'bottom-right' || position === 'top-right';
         if (isRightAligned) {
           menu.style.right = 'var(--acc-menu-inline-gap, 12px)';
           menu.style.left = 'auto';

@@ -321,7 +321,8 @@ class AccessibleWebWidget {
       'headerHeight',
       'focusBorderWidth',
       'focusOutlineOffset',
-      'zIndex'
+      'zIndex',
+      'menuPosition'
     ];
 
     themeKeys.forEach((key) => {

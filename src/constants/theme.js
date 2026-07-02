@@ -26,7 +26,7 @@ export const WIDGET_THEME = {
       headerHeight: '64px',
       borderRadius: '8px',
       buttonBorderRadius: '0.4rem',
-      menuPosition: 'right', // or 'left'
+      menuPosition: '', // optional 'left' | 'right'; empty follows the button position
       zIndex: 100000,
       
       // WCAG-specific
