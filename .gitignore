@@ -5,3 +5,10 @@ test.html
 node_modules
 playwright-report
 test-results
+
+# design-sync machine state (staged scripts, build output, caches)
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules

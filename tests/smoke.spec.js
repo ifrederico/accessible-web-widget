@@ -21,6 +21,20 @@ test('menu opens and closes with Escape', async ({ page }) => {
   await expect(menu).toBeHidden();
 });
 
+test('menu docks to the left when the button is bottom-left', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.AccessibleWebWidgetOptions = { position: 'bottom-left' };
+  });
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const menu = page.locator('.acc-menu');
+  await expect(menu).toBeVisible();
+  const styles = await menu.evaluate((el) => ({ left: el.style.left, right: el.style.right }));
+  expect(styles.right).toBe('auto');
+  expect(styles.left).not.toBe('auto');
+  expect(styles.left).not.toBe('');
+});
+
 test('menu closes via the header close button', async ({ page }) => {
   await page.goto('index.html');
   const toggle = page.locator('.acc-toggle-btn');
