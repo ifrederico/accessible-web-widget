@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.2.0
+ * AccessibleWeb Widget v1.3.0
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
@@ -5732,7 +5732,8 @@ const uiMethods = {
 };
 
 /*!
- * AccessibleWeb Widget v1.1.4
+ * AccessibleWeb Widget
+ * (version is injected into dist builds from package.json at build time)
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
