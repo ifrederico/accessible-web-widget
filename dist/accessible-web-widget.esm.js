@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.3.0
+ * AccessibleWeb Widget v1.3.1
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
