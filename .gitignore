@@ -12,3 +12,7 @@ ds-bundle/
 .design-sync/.cache/
 .design-sync/learnings/
 .design-sync/node_modules
+
+# local design handoff materials
+Accessible Web Widget.zip
+design_handoff_site_redesign/

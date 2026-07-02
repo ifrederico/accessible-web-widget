@@ -10,33 +10,42 @@
 </head>
 
 <body class="get-widget-page audit-page">
-    <nav class="navbar">
-        <a href="./index.html" class="logo">AccessibleWeb</a>
-        <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="nav-links">
-            <a href="./customize.html" class="nav-link">Customize</a>
-            <a href="./faq.html" class="nav-link">FAQ</a>
-            <a href="./audit.html" class="nav-link is-active">Audit</a>
-            <a href="./get-widget.html" class="btn-primary">Get Widget</a>
-        </div>
-    </nav>
+    <div class="page-glows" aria-hidden="true">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
 
-    <header class="hero">
-        <h1 class="hero-title">Audit in 4 simple steps</h1>
-        <p class="hero-subtitle">Use dev mode to run a page audit with axe-core and review real accessibility issues.</p>
-        <div class="audit-cta">
-            <button type="button" id="try-dev-mode" class="btn-secondary">Enable dev mode</button>
+    <div class="nav-wrap">
+        <nav class="navbar">
+            <a href="./index.html" class="logo">AccessibleWeb</a>
+            <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links">
+                <a href="./index.html" class="nav-link">Home</a>
+                <a href="./customize.html" class="nav-link">Customize</a>
+                <a href="./faq.html" class="nav-link">FAQ</a>
+                <a href="./audit.html" class="nav-link is-active">Audit</a>
+                <a href="./get-widget.html" class="btn-primary">Get widget</a>
+            </div>
+        </nav>
+    </div>
+
+    <header class="page-hero">
+        <h1 class="page-title">Audit in <em>4 simple</em> steps.</h1>
+        <p class="page-sub">Use dev mode to run a page audit with axe-core and review real accessibility issues.</p>
+        <div class="hero-ctas audit-cta">
+            <button type="button" id="try-dev-mode" class="cta-main">Enable dev mode</button>
         </div>
         <small class="audit-cta-note">When dev mode is enabled, open the widget, scroll down, and you should see
             Annotations and Accessibility Report.</small>
     </header>
 
     <main>
-        <div class="container">
+        <div class="inner">
             <section class="get-widget-steps get-widget-steps-timeline" aria-label="Audit setup steps">
                 <div class="get-step">
                     <div class="get-step-marker" aria-hidden="true">
@@ -100,7 +109,7 @@
                         <p class="get-step-number">Step 4</p>
                         <h2>Fix issues and disable dev mode</h2>
                         <p>Use the findings to update your code, then remove <code>acc-dev=true</code> from the URL for normal browsing.</p>
-                        <p class="implementation-note get-step-hint">Important: dev mode is for testing only, not production use.</p>
+                        <p class="implementation-note get-step-hint"><strong>Important:</strong> dev mode is for testing only, not production use.</p>
                     </article>
                 </div>
             </section>
@@ -108,7 +117,8 @@
     </main>
 
     <footer class="footer">
-        <div class="footer-left">AccessibleWeb Widget &middot; MIT License</div>
+        <div class="wordmark">AccessibleWeb</div>
+        <div>MIT License · Free forever</div>
         <div class="footer-links">
             <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

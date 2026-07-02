@@ -41,7 +41,7 @@
   });
 
   window.addEventListener('resize', function () {
-    if (window.innerWidth > 640) {
+    if (window.innerWidth > 720) {
       closeMenu();
     }
   });

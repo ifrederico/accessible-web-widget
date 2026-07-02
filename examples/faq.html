@@ -10,36 +10,47 @@
 </head>
 
 <body class="faq-page">
-    <nav class="navbar">
-        <a href="./index.html" class="logo">AccessibleWeb</a>
-        <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="nav-links">
-            <a href="./customize.html" class="nav-link">Customize</a>
-            <a href="./faq.html" class="nav-link is-active">FAQ</a>
-            <a href="./audit.html" class="nav-link">Audit</a>
-            <a href="./get-widget.html" class="btn-primary">Get Widget</a>
-        </div>
-    </nav>
+    <div class="page-glows" aria-hidden="true">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
 
-    <header class="hero">
-        <h1 class="hero-title">Accessibility FAQ</h1>
-        <p class="hero-subtitle">Quick answers about WCAG, overlays, implementation details, supported features, and how
-            to use this widget correctly.</p>
+    <div class="nav-wrap">
+        <nav class="navbar">
+            <a href="./index.html" class="logo">AccessibleWeb</a>
+            <button type="button" class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links">
+                <a href="./index.html" class="nav-link">Home</a>
+                <a href="./customize.html" class="nav-link">Customize</a>
+                <a href="./faq.html" class="nav-link is-active">FAQ</a>
+                <a href="./audit.html" class="nav-link">Audit</a>
+                <a href="./get-widget.html" class="btn-primary">Get widget</a>
+            </div>
+        </nav>
+    </div>
+
+    <header class="page-hero">
+        <h1 class="page-title">Questions, <em>honest</em> answers.</h1>
+        <p class="page-sub">Quick answers about WCAG, overlays, implementation details, supported features, and how to
+            use this widget correctly.</p>
     </header>
 
-    <main>
-        <div class="container">
-            <section class="faq-search-center" aria-label="FAQ search">
-                <input id="faq-search" class="faq-search-input" type="search"
-                    placeholder="Search WCAG, contrast, keyboard, overlay, language, text-to-speech"
-                    aria-label="Search FAQ">
-            </section>
+    <div class="faq-search">
+        <div class="faq-search-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input id="faq-search" class="faq-search-input" type="search"
+                placeholder="Search WCAG, contrast, keyboard, overlay, language, text-to-speech"
+                aria-label="Search FAQ">
+        </div>
+    </div>
 
-            <h2 class="section-header">Frequently Asked Questions</h2>
+    <main>
+        <div class="inner">
             <div class="faq-list" id="faq-list">
                 <details class="faq-item">
                     <summary class="faq-question">What does this widget actually do?</summary>
@@ -182,7 +193,8 @@
     </main>
 
     <footer class="footer">
-        <div class="footer-left">AccessibleWeb Widget &middot; MIT License</div>
+        <div class="wordmark">AccessibleWeb</div>
+        <div>MIT License · Free forever</div>
         <div class="footer-links">
             <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
