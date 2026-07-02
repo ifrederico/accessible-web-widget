@@ -5609,10 +5609,13 @@ const uiMethods = {
         document.body.appendChild(host);
         this.translateMenuUI(widget);
         this.ensureSkipLink();
-        this.runBackgroundAxeScan().catch(() => {
-          this.updateViolationBubble({ violations: [] });
-        });
+        // axe-core and the violation bubble are dev tooling: only fetch the
+        // engine and scan the page in dev mode (?acc-dev=true), so regular
+        // visitors never download or run the audit.
         if (this.isDevMode()) {
+          this.runBackgroundAxeScan().catch(() => {
+            this.updateViolationBubble({ violations: [] });
+          });
           const rerunDevScan = () => {
             this.runBackgroundAxeScan({ force: true }).catch(() => {
               this.updateViolationBubble(this.axeScanResults || { violations: [] });
