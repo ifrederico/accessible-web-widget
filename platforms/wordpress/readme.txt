@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.2
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -14,7 +14,7 @@ Adds the AccessibleWeb accessibility widget to your site: font sizing, contrast 
 
 AccessibleWeb Widget is a small floating panel that gives your visitors accessibility controls they actually want — font sizing, contrast modes, a dyslexia-friendly font, animation pausing, text-to-speech, and more.
 
-This plugin loads the widget from the jsDelivr CDN (pinned to version 1.3.2) and lets you configure its position, button size, and language from Settings > AccessibleWeb Widget.
+This plugin loads the widget from the jsDelivr CDN (pinned to version 1.3.3) and lets you configure its position, button size, and language from Settings > AccessibleWeb Widget.
 
 Note: this widget is a complement to — not a substitute for — real accessibility work (semantic HTML, ARIA, keyboard navigation, alt text). It does not guarantee compliance with WCAG, ADA, Section 508, or any other standard.
 
@@ -32,9 +32,12 @@ No. No overlay does. Use it as a convenience layer on top of a properly built, a
 
 = Where does the script load from? =
 
-From the jsDelivr CDN, pinned to a specific release: https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.2/dist/accessible-web-widget.min.js
+From the jsDelivr CDN, pinned to a specific release: https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.3/dist/accessible-web-widget.min.js
 
 == Changelog ==
+
+= 1.3.3 =
+* Completes the developer-mode gating from 1.3.2: a previously saved Annotations preference no longer downloads or runs the audit engine (axe-core) on normal visits. The audit engine now loads only with ?acc-dev=true, without exceptions.
 
 = 1.3.2 =
 * The background accessibility scan (axe-core) and the violation-count bubble now run only in developer mode (?acc-dev=true). Regular visitors no longer download or execute the audit engine, making the widget lighter on every page view.
