@@ -446,9 +446,6 @@ export const uiMethods = {
               ${this.widgetIcons.reset}
               <span class="acc-label">Reset settings</span>
             </button>
-            <div class="acc-footer-meta">
-              <a href="https://github.com/ifrederico/accessible-web-widget" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>
-            </div>
           </div>
         </div>
         <div class="acc-overlay"> </div>

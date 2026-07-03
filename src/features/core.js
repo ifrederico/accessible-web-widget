@@ -1,5 +1,7 @@
 /** @typedef {import('../index.js').default} AccessibleWebWidget */
 
+import { DYSLEXIA_FONT_SRC } from '../constants/remote-defaults.js';
+
 const SYSTEM_PREFERS_REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 const SYSTEM_PREFERS_CONTRAST = '(prefers-contrast: more)';
 
@@ -353,10 +355,13 @@ export const coreFeatureMethods = {
       }
       const rawFontUrl = typeof this.options?.dyslexiaFontUrl === 'string' ? this.options.dyslexiaFontUrl.trim() : '';
       const customFontUrl = rawFontUrl && !/["'()\\]/.test(rawFontUrl) ? rawFontUrl : '';
-      const fontSrc = customFontUrl
-        ? `url("${customFontUrl}")`
-        : `url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"),
-               url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype")`;
+      const fontSrc = customFontUrl ? `url("${customFontUrl}")` : DYSLEXIA_FONT_SRC;
+      if (!fontSrc) {
+        // No font source available (WordPress build without a configured
+        // dyslexiaFontUrl): the feature falls back to the system font stack.
+        this.readableFontLoaded = true;
+        return;
+      }
       const style = document.createElement('style');
       style.id = 'acc-readable-text-font';
       style.textContent = `

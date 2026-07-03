@@ -1,8 +1,7 @@
 /** @typedef {import('../index.js').default} AccessibleWebWidget */
 
-const AXE_CORE_VERSION = '4.11.1';
-const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
-const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
+import { AXE_CORE_SRC, AXE_CORE_INTEGRITY } from '../constants/remote-defaults.js';
+
 const AXE_RUN_OPTIONS = {
   runOnly: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice']
 };
@@ -64,6 +63,10 @@ export const axeReportMethods = {
       }
   
       const { src, integrity } = this.getAxeCoreSource();
+      if (!src) {
+        settleError(new Error('No axe-core source is configured; set the axeCoreUrl option.'));
+        return;
+      }
       let resolvedSrc = src;
       try {
         resolvedSrc = new URL(src, document.baseURI).href;
