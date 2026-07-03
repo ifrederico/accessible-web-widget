@@ -3,7 +3,7 @@
  * Plugin Name:       AccessibleWeb Widget
  * Plugin URI:        https://github.com/ifrederico/accessible-web-widget
  * Description:       Adds the AccessibleWeb accessibility widget to your site — font sizing, contrast modes, dyslexia-friendly font, text-to-speech, and more.
- * Version:           1.3.3
+ * Version:           1.3.4
  * Requires at least: 5.0
  * Requires PHP:      7.2
  * Author:            ifrederico
@@ -19,16 +19,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'AWW_VERSION', '1.3.3' );
-define( 'AWW_SCRIPT_URL', 'https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.3/dist/accessible-web-widget.min.js' );
-define( 'AWW_OPTION_NAME', 'aww_settings' );
+define( 'ACCWEB_VERSION', '1.3.4' );
+define( 'ACCWEB_OPTION_NAME', 'accweb_settings' );
 
 /**
  * Default settings.
  *
  * @return array
  */
-function aww_get_defaults() {
+function accweb_get_defaults() {
 	return array(
 		'position' => 'bottom-right',
 		'size'     => 44,
@@ -41,9 +40,9 @@ function aww_get_defaults() {
  *
  * @return array
  */
-function aww_get_settings() {
-	$settings = get_option( AWW_OPTION_NAME, array() );
-	return wp_parse_args( is_array( $settings ) ? $settings : array(), aww_get_defaults() );
+function accweb_get_settings() {
+	$settings = get_option( ACCWEB_OPTION_NAME, array() );
+	return wp_parse_args( is_array( $settings ) ? $settings : array(), accweb_get_defaults() );
 }
 
 /**
@@ -51,7 +50,7 @@ function aww_get_settings() {
  *
  * @return array
  */
-function aww_get_positions() {
+function accweb_get_positions() {
 	return array(
 		'bottom-right' => __( 'Bottom right', 'accessible-web-widget' ),
 		'bottom-left'  => __( 'Bottom left', 'accessible-web-widget' ),
@@ -63,20 +62,22 @@ function aww_get_positions() {
 /**
  * Enqueue the widget script and inline options on the front end.
  */
-function aww_enqueue_script() {
+function accweb_enqueue_script() {
 	wp_enqueue_script(
 		'accessible-web-widget',
-		AWW_SCRIPT_URL,
+		plugins_url( 'js/accessible-web-widget.min.js', __FILE__ ),
 		array(),
-		AWW_VERSION,
+		ACCWEB_VERSION,
 		true // Load in footer.
 	);
 
-	$settings = aww_get_settings();
+	$settings = accweb_get_settings();
 
 	$options = array(
-		'position' => $settings['position'],
-		'size'     => absint( $settings['size'] ),
+		'position'        => $settings['position'],
+		'size'            => absint( $settings['size'] ),
+		'dyslexiaFontUrl' => plugins_url( 'fonts/OpenDyslexic3-Regular.woff', __FILE__ ),
+		'axeCoreUrl'      => plugins_url( 'js/axe.min.js', __FILE__ ),
 	);
 
 	if ( 'auto' !== $settings['language'] ) {
@@ -89,57 +90,57 @@ function aww_enqueue_script() {
 		'before'
 	);
 }
-add_action( 'wp_enqueue_scripts', 'aww_enqueue_script' );
+add_action( 'wp_enqueue_scripts', 'accweb_enqueue_script' );
 
 /**
  * Register settings, sections, and fields.
  */
-function aww_register_settings() {
+function accweb_register_settings() {
 	register_setting(
-		'aww_settings_group',
-		AWW_OPTION_NAME,
+		'accweb_settings_group',
+		ACCWEB_OPTION_NAME,
 		array(
 			'type'              => 'array',
-			'sanitize_callback' => 'aww_sanitize_settings',
-			'default'           => aww_get_defaults(),
+			'sanitize_callback' => 'accweb_sanitize_settings',
+			'default'           => accweb_get_defaults(),
 		)
 	);
 
 	add_settings_section(
-		'aww_main_section',
+		'accweb_main_section',
 		__( 'Widget Settings', 'accessible-web-widget' ),
 		'__return_false',
 		'accessible-web-widget'
 	);
 
 	add_settings_field(
-		'aww_position',
+		'accweb_position',
 		__( 'Position', 'accessible-web-widget' ),
-		'aww_render_position_field',
+		'accweb_render_position_field',
 		'accessible-web-widget',
-		'aww_main_section',
-		array( 'label_for' => 'aww_position' )
+		'accweb_main_section',
+		array( 'label_for' => 'accweb_position' )
 	);
 
 	add_settings_field(
-		'aww_size',
+		'accweb_size',
 		__( 'Button size (px)', 'accessible-web-widget' ),
-		'aww_render_size_field',
+		'accweb_render_size_field',
 		'accessible-web-widget',
-		'aww_main_section',
-		array( 'label_for' => 'aww_size' )
+		'accweb_main_section',
+		array( 'label_for' => 'accweb_size' )
 	);
 
 	add_settings_field(
-		'aww_language',
+		'accweb_language',
 		__( 'Language', 'accessible-web-widget' ),
-		'aww_render_language_field',
+		'accweb_render_language_field',
 		'accessible-web-widget',
-		'aww_main_section',
-		array( 'label_for' => 'aww_language' )
+		'accweb_main_section',
+		array( 'label_for' => 'accweb_language' )
 	);
 }
-add_action( 'admin_init', 'aww_register_settings' );
+add_action( 'admin_init', 'accweb_register_settings' );
 
 /**
  * Sanitize settings before saving.
@@ -147,13 +148,13 @@ add_action( 'admin_init', 'aww_register_settings' );
  * @param mixed $input Raw input.
  * @return array
  */
-function aww_sanitize_settings( $input ) {
-	$defaults = aww_get_defaults();
+function accweb_sanitize_settings( $input ) {
+	$defaults = accweb_get_defaults();
 	$input    = is_array( $input ) ? $input : array();
 	$output   = array();
 
 	$position           = isset( $input['position'] ) ? sanitize_key( $input['position'] ) : '';
-	$output['position'] = array_key_exists( $position, aww_get_positions() ) ? $position : $defaults['position'];
+	$output['position'] = array_key_exists( $position, accweb_get_positions() ) ? $position : $defaults['position'];
 
 	$size           = isset( $input['size'] ) ? absint( $input['size'] ) : 0;
 	$output['size'] = ( $size >= 24 && $size <= 128 ) ? $size : $defaults['size'];
@@ -167,11 +168,11 @@ function aww_sanitize_settings( $input ) {
 /**
  * Render the position field.
  */
-function aww_render_position_field() {
-	$settings = aww_get_settings();
+function accweb_render_position_field() {
+	$settings = accweb_get_settings();
 	?>
-	<select id="aww_position" name="<?php echo esc_attr( AWW_OPTION_NAME ); ?>[position]">
-		<?php foreach ( aww_get_positions() as $value => $label ) : ?>
+	<select id="accweb_position" name="<?php echo esc_attr( ACCWEB_OPTION_NAME ); ?>[position]">
+		<?php foreach ( accweb_get_positions() as $value => $label ) : ?>
 			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $settings['position'], $value ); ?>>
 				<?php echo esc_html( $label ); ?>
 			</option>
@@ -183,10 +184,10 @@ function aww_render_position_field() {
 /**
  * Render the size field.
  */
-function aww_render_size_field() {
-	$settings = aww_get_settings();
+function accweb_render_size_field() {
+	$settings = accweb_get_settings();
 	?>
-	<input type="number" id="aww_size" name="<?php echo esc_attr( AWW_OPTION_NAME ); ?>[size]"
+	<input type="number" id="accweb_size" name="<?php echo esc_attr( ACCWEB_OPTION_NAME ); ?>[size]"
 		value="<?php echo esc_attr( $settings['size'] ); ?>" min="24" max="128" step="1" class="small-text" />
 	<p class="description"><?php esc_html_e( 'Size of the widget button in pixels (24–128). Default: 44.', 'accessible-web-widget' ); ?></p>
 	<?php
@@ -195,10 +196,10 @@ function aww_render_size_field() {
 /**
  * Render the language field.
  */
-function aww_render_language_field() {
-	$settings = aww_get_settings();
+function accweb_render_language_field() {
+	$settings = accweb_get_settings();
 	?>
-	<input type="text" id="aww_language" name="<?php echo esc_attr( AWW_OPTION_NAME ); ?>[language]"
+	<input type="text" id="accweb_language" name="<?php echo esc_attr( ACCWEB_OPTION_NAME ); ?>[language]"
 		value="<?php echo esc_attr( $settings['language'] ); ?>" class="regular-text" />
 	<p class="description"><?php esc_html_e( 'Language code such as "en", "es", or "pt-BR". Use "auto" to detect from the browser. Default: auto.', 'accessible-web-widget' ); ?></p>
 	<?php
@@ -207,21 +208,21 @@ function aww_render_language_field() {
 /**
  * Add the settings page under Settings.
  */
-function aww_add_settings_page() {
+function accweb_add_settings_page() {
 	add_options_page(
 		__( 'AccessibleWeb Widget', 'accessible-web-widget' ),
 		__( 'AccessibleWeb Widget', 'accessible-web-widget' ),
 		'manage_options',
 		'accessible-web-widget',
-		'aww_render_settings_page'
+		'accweb_render_settings_page'
 	);
 }
-add_action( 'admin_menu', 'aww_add_settings_page' );
+add_action( 'admin_menu', 'accweb_add_settings_page' );
 
 /**
  * Render the settings page.
  */
-function aww_render_settings_page() {
+function accweb_render_settings_page() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
@@ -230,7 +231,7 @@ function aww_render_settings_page() {
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 		<form action="options.php" method="post">
 			<?php
-			settings_fields( 'aww_settings_group' );
+			settings_fields( 'accweb_settings_group' );
 			do_settings_sections( 'accessible-web-widget' );
 			submit_button();
 			?>
@@ -245,7 +246,7 @@ function aww_render_settings_page() {
  * @param array $links Existing action links.
  * @return array
  */
-function aww_plugin_action_links( $links ) {
+function accweb_plugin_action_links( $links ) {
 	$settings_link = sprintf(
 		'<a href="%s">%s</a>',
 		esc_url( admin_url( 'options-general.php?page=accessible-web-widget' ) ),
@@ -254,4 +255,4 @@ function aww_plugin_action_links( $links ) {
 	array_unshift( $links, $settings_link );
 	return $links;
 }
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'aww_plugin_action_links' );
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'accweb_plugin_action_links' );

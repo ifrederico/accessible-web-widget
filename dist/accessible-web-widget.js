@@ -3399,6 +3399,15 @@ var AccessibleWebWidget = (function () {
     /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
     const axeReportMethods = {
 
+      getAxeCoreSource() {
+        const rawUrl = typeof this.options?.axeCoreUrl === 'string' ? this.options.axeCoreUrl.trim() : '';
+        if (rawUrl && !/["'\\\s]/.test(rawUrl)) {
+          const rawIntegrity = typeof this.options?.axeCoreIntegrity === 'string' ? this.options.axeCoreIntegrity.trim() : '';
+          return { src: rawUrl, integrity: rawIntegrity };
+        }
+        return { src: AXE_CORE_SRC, integrity: AXE_CORE_INTEGRITY };
+      },
+
       loadAxeCore() {
         if (this.axeCoreLoaded && window.axe) {
           return Promise.resolve(window.axe);
@@ -3443,17 +3452,27 @@ var AccessibleWebWidget = (function () {
             return;
           }
       
-          if (script && !script.src.includes(`/axe-core@${AXE_CORE_VERSION}/`)) {
+          const { src, integrity } = this.getAxeCoreSource();
+          let resolvedSrc = src;
+          try {
+            resolvedSrc = new URL(src, document.baseURI).href;
+          } catch {
+            // Keep the raw value; the browser will surface a load error if it is invalid.
+          }
+
+          if (script && script.src !== resolvedSrc) {
             script.remove();
             script = null;
           }
 
           if (!script) {
             script = document.createElement('script');
-            script.src = AXE_CORE_SRC;
+            script.src = src;
             script.async = true;
-            script.integrity = AXE_CORE_INTEGRITY;
-            script.crossOrigin = 'anonymous';
+            if (integrity) {
+              script.integrity = integrity;
+              script.crossOrigin = 'anonymous';
+            }
             script.setAttribute('data-acc-axe-core', 'true');
             document.head.appendChild(script);
           }
