@@ -1,20 +1,20 @@
-=== AccessibleWeb Widget ===
+=== Handrail Accessibility Widget ===
 Contributors: ifrederico
 Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Adds the AccessibleWeb accessibility widget to your site: font sizing, contrast modes, dyslexia-friendly font, text-to-speech, and more.
+Adds the Handrail accessibility widget to your site: font sizing, contrast modes, dyslexia-friendly font, text-to-speech, and more.
 
 == Description ==
 
-AccessibleWeb Widget is a small floating panel that gives your visitors accessibility controls they actually want — font sizing, contrast modes, a dyslexia-friendly font, animation pausing, text-to-speech, and more.
+Handrail is a small floating panel that gives your visitors accessibility controls they actually want — font sizing, contrast modes, a dyslexia-friendly font, animation pausing, text-to-speech, and more. Like a real handrail: quiet support that helps without claiming to fix the building.
 
-Everything the widget needs is bundled with the plugin and served from your own site — the widget script, the OpenDyslexic font, and the optional audit engine. No external requests, no CDNs, no tracking, no accounts. Configure position, button size, and language from Settings > AccessibleWeb Widget.
+Everything the widget needs is bundled with the plugin and served from your own site — the widget script, the OpenDyslexic font, and the optional audit engine. No external requests, no CDNs, no tracking, no accounts. Configure position, button size, and language from Settings > Handrail Accessibility Widget.
 
 The widget is free and open source (MIT), with no paid tier. Visitor preferences are stored locally in their browser and never sent anywhere.
 
@@ -22,9 +22,9 @@ Note: this widget is a complement to — not a substitute for — real accessibi
 
 == Installation ==
 
-1. Upload the `accessible-web-widget` folder to `/wp-content/plugins/`, or install via the Plugins screen.
+1. Upload the `handrail-widget` folder to `/wp-content/plugins/`, or install via the Plugins screen.
 2. Activate the plugin through the Plugins screen in WordPress.
-3. Go to Settings > AccessibleWeb Widget to configure position, size, and language.
+3. Go to Settings > Handrail Accessibility Widget to configure position, size, and language.
 
 == Frequently Asked Questions ==
 
@@ -40,7 +40,20 @@ From your own site. The widget script, the OpenDyslexic font, and the audit engi
 
 No. There is no tracking, no analytics, and no phoning home. Visitor preferences (such as font size or contrast choices) are stored in their own browser.
 
+== Source Code ==
+
+The bundled JavaScript is built from public, human-readable source code:
+
+* `js/accessible-web-widget.wp.min.js` — the widget itself. Source repository: https://github.com/ifrederico/accessible-web-widget (MIT). Build with `npm install && npm run build` (Rollup); this file is the `dist/accessible-web-widget.wp.min.js` output, a WordPress-specific build with no remote fallback URLs.
+* `js/axe.min.js` — axe-core 4.11.1 by Deque Systems, unmodified. Source repository: https://github.com/dequelabs/axe-core (MPL-2.0). Loaded only in developer mode (`?acc-dev=true`).
+* `fonts/OpenDyslexic3-Regular.*` — OpenDyslexic by Abbie Gonzalez, https://opendyslexic.org/ (SIL OFL 1.1; see `fonts/LICENSE.txt`).
+
 == Changelog ==
+
+= 1.3.5 =
+* Renamed to Handrail Accessibility Widget.
+* Removed the credit link from the widget panel.
+* The bundled widget script is now a WordPress-specific build that contains no remote fallback URLs, and the readme documents where all bundled source code lives.
 
 = 1.3.4 =
 * All assets are now bundled with the plugin and served from your own site: the widget script (previously loaded from the jsDelivr CDN), the OpenDyslexic font, and the axe-core audit engine used in developer mode. The plugin no longer makes any external requests.

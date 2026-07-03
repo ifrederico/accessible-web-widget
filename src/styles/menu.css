@@ -769,15 +769,6 @@
   overflow: visible;
 }
 
-.acc-footer-meta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-  flex-wrap: nowrap;
-}
-
 .acc-footer-reset {
   display: flex;
   width: 100%;
@@ -811,33 +802,6 @@
 }
 
 .acc-footer-reset:focus {
-  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
-  outline-offset: var(--acc-focus-outline-offset);
-}
-
-.acc-footer a {
-  font-size: 12px !important;
-  text-decoration: none !important;
-  color: #6b7280 !important;
-  background: transparent !important;
-  font-weight: 500 !important;
-  padding: 4px 0;
-  border-radius: 4px;
-  transition: color 0.15s ease;
-  letter-spacing: 0.01em !important;
-  align-self: center;
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-  line-height: 1.2 !important;
-}
-
-.acc-footer a:hover {
-  text-decoration: none !important;
-  color: var(--acc-primary-color) !important;
-}
-
-.acc-footer a:focus {
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
 }

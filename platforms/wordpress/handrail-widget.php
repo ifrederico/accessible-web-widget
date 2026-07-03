@@ -1,25 +1,25 @@
 <?php
 /**
- * Plugin Name:       AccessibleWeb Widget
+ * Plugin Name:       Handrail Accessibility Widget
  * Plugin URI:        https://github.com/ifrederico/accessible-web-widget
- * Description:       Adds the AccessibleWeb accessibility widget to your site — font sizing, contrast modes, dyslexia-friendly font, text-to-speech, and more.
- * Version:           1.3.4
+ * Description:       Adds the Handrail accessibility widget to your site — font sizing, contrast modes, dyslexia-friendly font, text-to-speech, and more.
+ * Version:           1.3.5
  * Requires at least: 5.0
  * Requires PHP:      7.2
  * Author:            ifrederico
  * Author URI:        https://github.com/ifrederico
  * License:           MIT
  * License URI:       https://opensource.org/licenses/MIT
- * Text Domain:       accessible-web-widget
+ * Text Domain:       handrail-widget
  *
- * @package AccessibleWebWidget
+ * @package HandrailWidget
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'ACCWEB_VERSION', '1.3.4' );
+define( 'ACCWEB_VERSION', '1.3.5' );
 define( 'ACCWEB_OPTION_NAME', 'accweb_settings' );
 
 /**
@@ -52,10 +52,10 @@ function accweb_get_settings() {
  */
 function accweb_get_positions() {
 	return array(
-		'bottom-right' => __( 'Bottom right', 'accessible-web-widget' ),
-		'bottom-left'  => __( 'Bottom left', 'accessible-web-widget' ),
-		'top-right'    => __( 'Top right', 'accessible-web-widget' ),
-		'top-left'     => __( 'Top left', 'accessible-web-widget' ),
+		'bottom-right' => __( 'Bottom right', 'handrail-widget' ),
+		'bottom-left'  => __( 'Bottom left', 'handrail-widget' ),
+		'top-right'    => __( 'Top right', 'handrail-widget' ),
+		'top-left'     => __( 'Top left', 'handrail-widget' ),
 	);
 }
 
@@ -64,8 +64,8 @@ function accweb_get_positions() {
  */
 function accweb_enqueue_script() {
 	wp_enqueue_script(
-		'accessible-web-widget',
-		plugins_url( 'js/accessible-web-widget.min.js', __FILE__ ),
+		'handrail-widget',
+		plugins_url( 'js/accessible-web-widget.wp.min.js', __FILE__ ),
 		array(),
 		ACCWEB_VERSION,
 		true // Load in footer.
@@ -85,7 +85,7 @@ function accweb_enqueue_script() {
 	}
 
 	wp_add_inline_script(
-		'accessible-web-widget',
+		'handrail-widget',
 		'window.AccessibleWebWidgetOptions = ' . wp_json_encode( $options ) . ';',
 		'before'
 	);
@@ -108,34 +108,34 @@ function accweb_register_settings() {
 
 	add_settings_section(
 		'accweb_main_section',
-		__( 'Widget Settings', 'accessible-web-widget' ),
+		__( 'Widget Settings', 'handrail-widget' ),
 		'__return_false',
-		'accessible-web-widget'
+		'handrail-widget'
 	);
 
 	add_settings_field(
 		'accweb_position',
-		__( 'Position', 'accessible-web-widget' ),
+		__( 'Position', 'handrail-widget' ),
 		'accweb_render_position_field',
-		'accessible-web-widget',
+		'handrail-widget',
 		'accweb_main_section',
 		array( 'label_for' => 'accweb_position' )
 	);
 
 	add_settings_field(
 		'accweb_size',
-		__( 'Button size (px)', 'accessible-web-widget' ),
+		__( 'Button size (px)', 'handrail-widget' ),
 		'accweb_render_size_field',
-		'accessible-web-widget',
+		'handrail-widget',
 		'accweb_main_section',
 		array( 'label_for' => 'accweb_size' )
 	);
 
 	add_settings_field(
 		'accweb_language',
-		__( 'Language', 'accessible-web-widget' ),
+		__( 'Language', 'handrail-widget' ),
 		'accweb_render_language_field',
-		'accessible-web-widget',
+		'handrail-widget',
 		'accweb_main_section',
 		array( 'label_for' => 'accweb_language' )
 	);
@@ -189,7 +189,7 @@ function accweb_render_size_field() {
 	?>
 	<input type="number" id="accweb_size" name="<?php echo esc_attr( ACCWEB_OPTION_NAME ); ?>[size]"
 		value="<?php echo esc_attr( $settings['size'] ); ?>" min="24" max="128" step="1" class="small-text" />
-	<p class="description"><?php esc_html_e( 'Size of the widget button in pixels (24–128). Default: 44.', 'accessible-web-widget' ); ?></p>
+	<p class="description"><?php esc_html_e( 'Size of the widget button in pixels (24–128). Default: 44.', 'handrail-widget' ); ?></p>
 	<?php
 }
 
@@ -201,7 +201,7 @@ function accweb_render_language_field() {
 	?>
 	<input type="text" id="accweb_language" name="<?php echo esc_attr( ACCWEB_OPTION_NAME ); ?>[language]"
 		value="<?php echo esc_attr( $settings['language'] ); ?>" class="regular-text" />
-	<p class="description"><?php esc_html_e( 'Language code such as "en", "es", or "pt-BR". Use "auto" to detect from the browser. Default: auto.', 'accessible-web-widget' ); ?></p>
+	<p class="description"><?php esc_html_e( 'Language code such as "en", "es", or "pt-BR". Use "auto" to detect from the browser. Default: auto.', 'handrail-widget' ); ?></p>
 	<?php
 }
 
@@ -210,10 +210,10 @@ function accweb_render_language_field() {
  */
 function accweb_add_settings_page() {
 	add_options_page(
-		__( 'AccessibleWeb Widget', 'accessible-web-widget' ),
-		__( 'AccessibleWeb Widget', 'accessible-web-widget' ),
+		__( 'Handrail Accessibility Widget', 'handrail-widget' ),
+		__( 'Handrail Accessibility Widget', 'handrail-widget' ),
 		'manage_options',
-		'accessible-web-widget',
+		'handrail-widget',
 		'accweb_render_settings_page'
 	);
 }
@@ -232,7 +232,7 @@ function accweb_render_settings_page() {
 		<form action="options.php" method="post">
 			<?php
 			settings_fields( 'accweb_settings_group' );
-			do_settings_sections( 'accessible-web-widget' );
+			do_settings_sections( 'handrail-widget' );
 			submit_button();
 			?>
 		</form>
@@ -249,8 +249,8 @@ function accweb_render_settings_page() {
 function accweb_plugin_action_links( $links ) {
 	$settings_link = sprintf(
 		'<a href="%s">%s</a>',
-		esc_url( admin_url( 'options-general.php?page=accessible-web-widget' ) ),
-		esc_html__( 'Settings', 'accessible-web-widget' )
+		esc_url( admin_url( 'options-general.php?page=handrail-widget' ) ),
+		esc_html__( 'Settings', 'handrail-widget' )
 	);
 	array_unshift( $links, $settings_link );
 	return $links;
