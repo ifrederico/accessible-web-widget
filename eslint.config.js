@@ -6,6 +6,7 @@ export default [
     ignores: [
       'dist/**',
       'node_modules/**',
+      'platforms/wordpress/js/**',
       'test-results/**',
       'playwright-report/**',
       'repomix-*.xml'

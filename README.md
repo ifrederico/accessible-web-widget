@@ -23,7 +23,7 @@ It initializes on page load. No config needed.
 For production, pin a specific version — `@latest` resolves to the newest release automatically, which means updates ship to your site without review:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.3/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.4/dist/accessible-web-widget.min.js"></script>
 ```
 
 Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widget.min.js` and serve it yourself.
@@ -93,6 +93,17 @@ The "Dyslexia Font" feature loads OpenDyslexic from a CDN by default. To self-ho
 ### Dev tools
 
 Add `?acc-dev=true` to any page URL to get inline annotation markers and a full accessibility report powered by axe-core. Useful for development, not meant for production.
+
+The audit engine (axe-core) loads from the jsDelivr CDN by default, pinned to a specific version with subresource integrity. To self-host it instead:
+
+```html
+<script>
+  window.AccessibleWebWidgetOptions = {
+    axeCoreUrl: "/js/axe.min.js",        // absolute or relative URL
+    axeCoreIntegrity: ""                 // optional SRI hash for your copy
+  };
+</script>
+```
 
 ## Browser support
 
