@@ -73,3 +73,22 @@ test('getTextScalePercent accepts multipliers and percentages', () => {
   assert.equal(scaleCtx.getTextScalePercent(undefined), 100);
   assert.equal(scaleCtx.getTextScalePercent(-5), 100);
 });
+
+const langFlagCtx = (config) => ({
+  ...stateMethods,
+  fetchSavedConfig() { return JSON.stringify(config); }
+});
+
+test('getUserSelectedLanguage honors the langUserSelected flag', () => {
+  // Explicit pick in the language menu always wins.
+  assert.equal(langFlagCtx({ lang: 'de', langUserSelected: true }).getUserSelectedLanguage(), 'de');
+  // New-scheme auto-saves must not outrank embed config / <html lang>.
+  assert.equal(langFlagCtx({ lang: 'de', langUserSelected: false }).getUserSelectedLanguage(), null);
+  assert.equal(langFlagCtx({}).getUserSelectedLanguage(), null);
+});
+
+test('getUserSelectedLanguage treats legacy flagless configs as user-selected', () => {
+  // Pre-1.4.0 configs saved lang without the flag and the saved value always
+  // won; upgrading must not switch languages on returning visitors.
+  assert.equal(langFlagCtx({ lang: 'de' }).getUserSelectedLanguage(), 'de');
+});

@@ -1346,15 +1346,16 @@ const stateMethods = {
       return null;
     },
 
-  // A language counts as user-selected only when picked in the widget's
-  // language menu (langUserSelected flag). The lang launchWidget auto-saves
-  // on every load must not outrank the embed config or <html lang>, or a
-  // site owner's later configuration change would never reach returning
-  // visitors.
+  // A language counts as user-selected when picked in the widget's language
+  // menu (langUserSelected: true). Auto-saves stamp the flag false so they
+  // never outrank the embed config or <html lang>. Pre-1.4.0 configs saved
+  // lang with no flag at all, and under the old semantics the saved value
+  // always won — so a missing flag also counts as user-selected, otherwise
+  // upgrading would switch languages on returning visitors.
   getUserSelectedLanguage() {
       try {
         const config = JSON.parse(this.fetchSavedConfig());
-        if (config.langUserSelected && config.lang) return config.lang;
+        if (config.lang && config.langUserSelected !== false) return config.lang;
       } catch {
         // Ignore parsing errors
       }
@@ -6031,7 +6032,15 @@ const uiMethods = {
             options.lang = this.resolveSupportedLanguage(options.lang);
 
             if (options.lang) {
-              this.saveConfig({ lang: options.lang });
+              // Preserve an existing langUserSelected flag. Legacy configs
+              // (lang without the flag) migrate to true — their saved value
+              // always won pre-1.4.0; fresh visitors get an explicit false
+              // so embed config / <html lang> keep applying on later visits.
+              const previousFlag = this.widgetConfig?.langUserSelected;
+              const langUserSelected = previousFlag !== undefined
+                ? previousFlag
+                : !!this.widgetConfig?.lang;
+              this.saveConfig({ lang: options.lang, langUserSelected });
             }
 
             // Display the widget UI
@@ -6411,7 +6420,14 @@ Object.assign(
 );
 
 if (typeof window !== 'undefined') {
+  // A second copy of the script re-evaluates this module and replaces the
+  // global; carry the already-started instance over so the public API
+  // (AccessibleWebWidget.instance.open()) keeps pointing at the live widget.
+  const previousGlobal = window.AccessibleWebWidget;
   window.AccessibleWebWidget = AccessibleWebWidget;
+  if (previousGlobal?.instance) {
+    AccessibleWebWidget.instance = previousGlobal.instance;
+  }
 }
 
 if (typeof document !== 'undefined') {
@@ -6434,8 +6450,12 @@ if (typeof document !== 'undefined') {
   /** @type {AccessibleWebWidgetInstance} */
   const widgetInstance = new AccessibleWebWidget(globalAutoInitOptions);
   // Programmatic access for host pages: AccessibleWebWidget.instance.open()
-  // / .close() / .toggle() (pairs with the hideButton option).
-  AccessibleWebWidget.instance = widgetInstance;
+  // / .close() / .toggle() (pairs with the hideButton option). Never clobber
+  // an instance that a first copy of the script already started — this one's
+  // startAccessibleWebWidget() will see the existing host and no-op.
+  if (!AccessibleWebWidget.instance) {
+    AccessibleWebWidget.instance = widgetInstance;
+  }
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     widgetInstance.startAccessibleWebWidget();
   } else {
