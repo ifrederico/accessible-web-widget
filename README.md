@@ -23,7 +23,7 @@ It initializes on page load. No config needed.
 For production, pin a specific version — `@latest` resolves to the newest release automatically, which means updates ship to your site without review:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.5.1/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.5.2/dist/accessible-web-widget.min.js"></script>
 ```
 
 Also on npm for bundler setups:
@@ -115,12 +115,17 @@ TTS uses native browser voices. When enabled, visitors click any text block to h
 
 ### Readable font sources
 
-The "Readable Font" control cycles through three fonts — OpenDyslexic, Atkinson Hyperlegible, and Lexend — loaded from accessibleweb.pages.dev by default (all three are SIL OFL licensed). To self-host the dyslexia font, point the widget at your own copy:
+The "Readable Font" control cycles through three fonts — OpenDyslexic, Atkinson Hyperlegible, and Lexend — loaded from accessibleweb.pages.dev by default (all three are SIL OFL licensed). To self-host any of them, point the widget at your own copies:
 
 ```html
 <script>
   window.AccessibleWebWidgetOptions = {
-    dyslexiaFontUrl: "/fonts/OpenDyslexic3-Regular.woff"  // absolute or relative URL
+    readableFontUrls: {
+      dyslexic: "/fonts/OpenDyslexic3-Regular.woff",
+      legible: "/fonts/AtkinsonHyperlegible-Regular.woff2",
+      lexend: "/fonts/Lexend-Regular.woff2"
+    }
+    // dyslexiaFontUrl: "..." still works as a shorthand for the dyslexic entry
   };
 </script>
 ```

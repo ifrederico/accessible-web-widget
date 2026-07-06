@@ -92,3 +92,17 @@ test('getUserSelectedLanguage treats legacy flagless configs as user-selected', 
   // won; upgrading must not switch languages on returning visitors.
   assert.equal(langFlagCtx({ lang: 'de' }).getUserSelectedLanguage(), 'de');
 });
+
+test('getCustomReadableFontUrl prefers per-font overrides and validates URLs', () => {
+  const ctx = {
+    ...coreFeatureMethods,
+    options: { readableFontUrls: { legible: ' /fonts/a.woff2 ' }, dyslexiaFontUrl: '/fonts/d.woff' }
+  };
+  assert.equal(ctx.getCustomReadableFontUrl('legible'), '/fonts/a.woff2');
+  // dyslexiaFontUrl remains the legacy alias for the dyslexic entry.
+  assert.equal(ctx.getCustomReadableFontUrl('dyslexic'), '/fonts/d.woff');
+  assert.equal(ctx.getCustomReadableFontUrl('lexend'), '');
+  // Values that could break out of the url("...") wrapper are rejected.
+  const hostile = { ...coreFeatureMethods, options: { readableFontUrls: { legible: 'x") } body { display:none' } } };
+  assert.equal(hostile.getCustomReadableFontUrl('legible'), '');
+});
