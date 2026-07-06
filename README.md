@@ -23,7 +23,17 @@ It initializes on page load. No config needed.
 For production, pin a specific version — `@latest` resolves to the newest release automatically, which means updates ship to your site without review:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.3.6/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.4.0/dist/accessible-web-widget.min.js"></script>
+```
+
+Also on npm for bundler setups:
+
+```bash
+npm install accessible-web-widget
+```
+
+```js
+import 'accessible-web-widget'; // auto-initializes, same as the script tag
 ```
 
 Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widget.min.js` and serve it yourself.
@@ -34,7 +44,7 @@ Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widg
 - **Text** — Font size, bold, line height, letter spacing
 - **Color** — Contrast (light/dark), invert, saturation controls, high contrast
 - **Reading** — OpenDyslexic font, reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, page structure navigator (headings/landmarks/links)
-- **Interaction** — Large cursor, pause animations, hide images, mute sounds
+- **Interaction** — Large cursor, pause animations (including videos and animated GIFs), hide images, mute sounds
 
 Plus: 13 languages (including RTL Arabic and Hebrew), persistent settings, system preference detection (`prefers-reduced-motion`, `prefers-contrast`), screen-reader announcements for every toggle, keyboard accessible, and mobile friendly. The widget UI lives in a shadow root, so your site's CSS can't break it and its styles can't leak into your page.
 
@@ -63,6 +73,31 @@ Everything below is optional. The widget works with zero config.
 <div data-acc-icon="default"></div>   <!-- default | icon-2 | icon-3 | icon-4 -->
 ```
 
+Language resolves in this order: the visitor's own pick in the widget menu → `data-acc-lang` / `options.lang` → the page's `<html lang>` → the browser language → English.
+
+### Hide the button, open the panel from your own UI
+
+If you already have a toolbar or footer link for accessibility, hide the floating button and drive the panel yourself:
+
+```html
+<script src="…/accessible-web-widget.min.js" data-acc-hide-button="true" defer></script>
+
+<button type="button" onclick="AccessibleWebWidget.instance.open()">Accessibility options</button>
+```
+
+`AccessibleWebWidget.instance` exposes `open()`, `close()`, and `toggle()`. They also work with the default button visible.
+
+### Content Security Policy
+
+In modern browsers the widget works under a strict CSP with no configuration — styles are applied through constructable stylesheets, which `style-src` doesn't block. For older browsers, pass your page's nonce so the `<style>`-element fallback is allowed. The widget picks it up automatically from its own script tag's `nonce` attribute, or you can pass it explicitly:
+
+```html
+<script nonce="YOUR_NONCE" src="…/accessible-web-widget.min.js" defer></script>
+<!-- or: data-acc-nonce="YOUR_NONCE" / window.AccessibleWebWidgetOptions = { nonce: "YOUR_NONCE" } -->
+```
+
+If your policy locks down remote requests, also allow `font-src https://accessibleweb.pages.dev` for the dyslexia font (or self-host it via `dyslexiaFontUrl`), and — dev mode only — `script-src https://cdn.jsdelivr.net` for axe-core.
+
 ### Text-to-speech voices
 
 TTS uses native browser voices. When enabled, visitors click any text block to hear it read aloud.
@@ -80,7 +115,7 @@ TTS uses native browser voices. When enabled, visitors click any text block to h
 
 ### Dyslexia font source
 
-The "Dyslexia Font" feature loads OpenDyslexic from a CDN by default. To self-host the font, point the widget at your own copy:
+The "Dyslexia Font" feature loads OpenDyslexic from accessibleweb.pages.dev by default. To self-host the font, point the widget at your own copy:
 
 ```html
 <script>

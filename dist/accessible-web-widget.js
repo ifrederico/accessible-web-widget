@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.3.6
+ * AccessibleWeb Widget v1.4.0
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
@@ -1349,6 +1349,21 @@ var AccessibleWebWidget = (function () {
           return null;
         },
 
+      // A language counts as user-selected only when picked in the widget's
+      // language menu (langUserSelected flag). The lang launchWidget auto-saves
+      // on every load must not outrank the embed config or <html lang>, or a
+      // site owner's later configuration change would never reach returning
+      // visitors.
+      getUserSelectedLanguage() {
+          try {
+            const config = JSON.parse(this.fetchSavedConfig());
+            if (config.langUserSelected && config.lang) return config.lang;
+          } catch {
+            // Ignore parsing errors
+          }
+          return null;
+        },
+
       getBrowserLanguage() {
           if (typeof navigator === 'undefined') return 'en';
       
@@ -1412,7 +1427,7 @@ var AccessibleWebWidget = (function () {
           const options = {};
           if (typeof document === 'undefined') return options;
       
-          const attributes = ['lang', 'position', 'offset', 'size', 'icon'];
+          const attributes = ['lang', 'position', 'offset', 'size', 'icon', 'nonce', 'hide-button'];
       
           const assignValue = (key, value) => {
             if (value === null || typeof value === 'undefined' || value === '') return;
@@ -1442,6 +1457,15 @@ var AccessibleWebWidget = (function () {
                 if (icon) options.icon = icon;
                 break;
               }
+              case 'nonce': {
+                const nonce = String(value).trim();
+                if (nonce) options.nonce = nonce;
+                break;
+              }
+              case 'hide-button': {
+                options.hideButton = String(value).trim().toLowerCase() !== 'false';
+                break;
+              }
             }
           };
       
@@ -1458,7 +1482,7 @@ var AccessibleWebWidget = (function () {
           if (document.currentScript) {
             scriptCandidates.push(document.currentScript);
           }
-          document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon]').forEach(script => {
+          document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon],script[data-acc-nonce],script[data-acc-hide-button]').forEach(script => {
             if (!scriptCandidates.includes(script)) {
               scriptCandidates.push(script);
             }
@@ -1664,11 +1688,46 @@ var AccessibleWebWidget = (function () {
         }
       },
 
-      injectStyle(id, css) {
+      // Constructable stylesheets are exempt from CSP style-src, so strict-CSP
+      // pages work without any configuration. The <style>-element fallback
+      // (old browsers, @font-face) carries the nonce when one is configured.
+      canUseAdoptedStyleSheets() {
+        if (this._adoptedSheetsSupported === undefined) {
+          this._adoptedSheetsSupported = typeof document !== 'undefined' &&
+            'adoptedStyleSheets' in document &&
+            typeof CSSStyleSheet === 'function' &&
+            (() => {
+              try {
+                new CSSStyleSheet();
+                return true;
+              } catch {
+                return false;
+              }
+            })();
+        }
+        return this._adoptedSheetsSupported;
+      },
+
+      injectStyle(id, css, { forceElement = false } = {}) {
         if (!css || typeof document === 'undefined') return;
         try {
+          if (!forceElement && this.canUseAdoptedStyleSheets()) {
+            let sheet = this.adoptedSheets.get(id);
+            if (!sheet) {
+              sheet = new CSSStyleSheet();
+              this.adoptedSheets.set(id, sheet);
+            }
+            sheet.replaceSync(css);
+            if (!document.adoptedStyleSheets.includes(sheet)) {
+              document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+            }
+            return;
+          }
           let style = document.getElementById(id) || document.createElement('style');
-          style.innerHTML = css;
+          style.textContent = css;
+          if (this.styleNonce) {
+            style.nonce = this.styleNonce;
+          }
           if (!style.id) {
             style.id = id;
             document.head.appendChild(style);
@@ -1676,6 +1735,50 @@ var AccessibleWebWidget = (function () {
         } catch (e) {
           console.warn('Error adding stylesheet:', e);
         }
+      },
+
+      removeStyle(id) {
+        if (typeof document === 'undefined') return;
+        try {
+          const sheet = this.adoptedSheets?.get(id);
+          if (sheet) {
+            this.adoptedSheets.delete(id);
+            document.adoptedStyleSheets = document.adoptedStyleSheets.filter(s => s !== sheet);
+          }
+          const style = document.getElementById(id);
+          if (style && style.tagName === 'STYLE') {
+            style.remove();
+          }
+        } catch (e) {
+          console.warn('Error removing stylesheet:', e);
+        }
+      },
+
+      hasStyle(id) {
+        if (typeof document === 'undefined') return false;
+        return !!(this.adoptedSheets?.has(id) || document.getElementById(id));
+      },
+
+      // Widget UI styles live inside the shadow root; use its adoptedStyleSheets
+      // when available so strict-CSP pages need no nonce.
+      applyWidgetUiStyles(shadowRoot) {
+        const css = this.getWidgetUiStyles();
+        if (this.canUseAdoptedStyleSheets() && shadowRoot && 'adoptedStyleSheets' in shadowRoot) {
+          try {
+            const sheet = new CSSStyleSheet();
+            sheet.replaceSync(css);
+            shadowRoot.adoptedStyleSheets = [...shadowRoot.adoptedStyleSheets, sheet];
+            return;
+          } catch (e) {
+            console.warn('Falling back to <style> for widget UI styles:', e);
+          }
+        }
+        const style = document.createElement('style');
+        style.textContent = css;
+        if (this.styleNonce) {
+          style.nonce = this.styleNonce;
+        }
+        shadowRoot.appendChild(style);
       },
 
       createCSS(styles) {
@@ -1719,8 +1822,7 @@ var AccessibleWebWidget = (function () {
           let css = this.buildCSS(config);
           this.injectStyle(styleId, css);
         } else {
-          let style = document.getElementById(styleId);
-          if (style) style.remove();
+          this.removeStyle(styleId);
         }
         document.documentElement.classList.toggle(styleId, enable);
       },
@@ -1807,7 +1909,7 @@ var AccessibleWebWidget = (function () {
     const AXE_CORE_VERSION = '4.11.1';
     const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
     const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
-    const DYSLEXIA_FONT_SRC = 'url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"), url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype")';
+    const DYSLEXIA_FONT_SRC = 'url("https://accessibleweb.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"), url("https://accessibleweb.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype")';
 
     /** @typedef {import('../index.js').default} AccessibleWebWidget */
 
@@ -1845,26 +1947,17 @@ var AccessibleWebWidget = (function () {
       
           button.addEventListener('click', (event) => {
             event.preventDefault();
-            const toggle = this.widgetToggleButton;
-            if (!toggle) return;
-      
-            const currentMenu = this.activeMenuContainer || this.menuContainer;
-            const menuIsVisible = currentMenu && currentMenu.style.display !== 'none';
-      
-            const focusMenu = () => {
-              const targetMenu = this.activeMenuContainer || this.menuContainer;
-              if (!targetMenu) return;
-              const focusables = this.getFocusableElements(targetMenu);
-              if (focusables.length) {
-                focusables[0].focus();
-              }
-            };
-      
-            if (!menuIsVisible) {
-              toggle.click();
-              requestAnimationFrame(focusMenu);
-            } else {
-              focusMenu();
+            // open() creates the menu on demand and focuses the dialog, so this
+            // works whether or not the floating button exists (hideButton).
+            if (!this.isMenuOpen()) {
+              this.open();
+              return;
+            }
+            const targetMenu = this.activeMenuContainer || this.menuContainer;
+            if (!targetMenu) return;
+            const focusables = this.getFocusableElements(targetMenu);
+            if (focusables.length) {
+              focusables[0].focus();
             }
           });
       
@@ -2158,8 +2251,7 @@ var AccessibleWebWidget = (function () {
 
       ensureReadableFontLoaded() {
           if (this.readableFontLoaded) return;
-          const existing = document.getElementById('acc-readable-text-font');
-          if (existing) {
+          if (this.hasStyle('acc-readable-text-font')) {
             this.readableFontLoaded = true;
             return;
           }
@@ -2172,16 +2264,15 @@ var AccessibleWebWidget = (function () {
             this.readableFontLoaded = true;
             return;
           }
-          const style = document.createElement('style');
-          style.id = 'acc-readable-text-font';
-          style.textContent = `
+          // @font-face stays a real <style> element (nonce'd under CSP):
+          // constructed-stylesheet @font-face support is still inconsistent.
+          this.injectStyle('acc-readable-text-font', `
         @font-face {
           font-family: "OpenDyslexic3";
           src: ${fontSrc};
           font-display: swap;
         }
-      `;
-          document.head.appendChild(style);
+      `, { forceElement: true });
           this.readableFontLoaded = true;
         },
 
@@ -2237,6 +2328,128 @@ var AccessibleWebWidget = (function () {
           styles: { 'transition': 'none', 'animation-fill-mode': 'forwards', 'animation-iteration-count': '1', 'animation-duration': '.01s' }
         };
         this.applyToolStyle({ ...config, enable });
+        // CSS only stops transitions and keyframe animations; videos and
+        // animated GIFs need DOM work. The Seizure Safe profile bundles this
+        // feature, so flashing media has to actually stop.
+        this.setMediaMotionPaused(!!enable);
+      },
+
+      isMotionPauseActive() {
+        return typeof document !== 'undefined' &&
+          document.documentElement.classList.contains('acc-pause-motion');
+      },
+
+      pauseVideoElement(video) {
+        if (!(video instanceof HTMLVideoElement)) return;
+        if (video.closest('.acc-container')) return;
+        try {
+          if (!video.paused && !video.ended) {
+            video.setAttribute('data-acc-motion-paused', 'true');
+          }
+          video.pause();
+        } catch {
+          // Ignore playback errors from detached or unsupported media.
+        }
+      },
+
+      freezeGifImage(img) {
+        if (!(img instanceof HTMLImageElement)) return;
+        if (img.closest('.acc-container') || img.getAttribute('data-acc-gif-frozen')) return;
+        const src = img.currentSrc || img.src || '';
+        if (!/\.gif($|[?#])/i.test(src) && !/^data:image\/gif/i.test(src)) return;
+        if (!img.complete || !img.naturalWidth) {
+          if (img.getAttribute('data-acc-gif-pending')) return;
+          img.setAttribute('data-acc-gif-pending', 'true');
+          img.addEventListener('load', () => {
+            img.removeAttribute('data-acc-gif-pending');
+            if (this.isMotionPauseActive()) this.freezeGifImage(img);
+          }, { once: true });
+          return;
+        }
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          const context = canvas.getContext('2d');
+          if (!context) return;
+          // drawImage captures the GIF's current frame. Pixels are never read
+          // back, so cross-origin GIFs work too (the canvas is merely tainted).
+          context.drawImage(img, 0, 0);
+          canvas.setAttribute('role', 'img');
+          const alt = img.getAttribute('alt');
+          if (alt) canvas.setAttribute('aria-label', alt);
+          const rect = img.getBoundingClientRect();
+          if (rect.width && rect.height) {
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${rect.height}px`;
+          } else {
+            canvas.style.maxWidth = '100%';
+          }
+          img.setAttribute('data-acc-gif-frozen', 'true');
+          img.insertAdjacentElement('afterend', canvas);
+          this.frozenGifs.push({ img, canvas, inlineDisplay: img.style.display });
+          img.style.display = 'none';
+        } catch {
+          // Leave the GIF animated rather than risk breaking the image.
+        }
+      },
+
+      unfreezeGifImages() {
+        (this.frozenGifs || []).forEach(({ img, canvas, inlineDisplay }) => {
+          if (canvas) canvas.remove();
+          if (img) {
+            img.style.display = inlineDisplay || '';
+            img.removeAttribute('data-acc-gif-frozen');
+          }
+        });
+        this.frozenGifs = [];
+      },
+
+      applyMotionPauseToMedia(root) {
+        if (!root || typeof root.querySelectorAll !== 'function') return;
+        if (root instanceof Element) {
+          if (root.matches?.('video')) this.pauseVideoElement(root);
+          if (root.matches?.('img')) this.freezeGifImage(root);
+        }
+        root.querySelectorAll('video').forEach((video) => this.pauseVideoElement(video));
+        root.querySelectorAll('img').forEach((img) => this.freezeGifImage(img));
+      },
+
+      setMediaMotionPaused(enable) {
+        if (typeof document === 'undefined') return;
+        if (enable) {
+          this.applyMotionPauseToMedia(document);
+          if (!this.motionPauseObserver && document.body && typeof MutationObserver === 'function') {
+            this.motionPauseObserver = new MutationObserver((mutations) => {
+              mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                  if (!(node instanceof Element)) return;
+                  this.applyMotionPauseToMedia(node);
+                });
+              });
+            });
+            this.motionPauseObserver.observe(document.body, { childList: true, subtree: true });
+          }
+        } else {
+          if (this.motionPauseObserver) {
+            this.motionPauseObserver.disconnect();
+            this.motionPauseObserver = null;
+          }
+          document.querySelectorAll('video[data-acc-motion-paused]').forEach((video) => {
+            video.removeAttribute('data-acc-motion-paused');
+            // Only autoplay media restarts on its own; anything the visitor
+            // started stays paused so audio doesn't blast back unexpectedly.
+            if (video.hasAttribute('autoplay')) {
+              try {
+                const playResult = video.play();
+                playResult?.catch?.(() => {});
+              } catch {
+                // Ignore autoplay rejections.
+              }
+            }
+          });
+          this.unfreezeGifImages();
+        }
       },
 
       enableHighContrastMode(enable = false) {
@@ -2481,8 +2694,7 @@ var AccessibleWebWidget = (function () {
 
       concealImages(enable = false) {
         const styleId = `acc-hide-images`;
-        const existingStyle = document.getElementById(styleId);
-        if (existingStyle) existingStyle.remove();
+        this.removeStyle(styleId);
         document.documentElement.classList.toggle(styleId, enable);
         if (enable) {
           const css = `
@@ -2853,10 +3065,7 @@ var AccessibleWebWidget = (function () {
             'acc-filter-style',
             'acc-simple-layout'
           ];
-          styleIds.forEach(id => {
-            const style = document.getElementById(id);
-            if (style) style.remove();
-          });
+          styleIds.forEach(id => this.removeStyle(id));
           this.clearSimpleLayoutDomMutations();
           document.documentElement.classList.remove(
             'acc-filter',
@@ -2894,6 +3103,7 @@ var AccessibleWebWidget = (function () {
           this.disableAnnotations();
           this.stopSpeech();
           this.stopTtsClickMode();
+          this.setMediaMotionPaused(false);
           this.enableMuteSounds(false);
           this.enableTextMagnifier(false);
           this.clearSystemPreferenceListeners();
@@ -4346,14 +4556,12 @@ var AccessibleWebWidget = (function () {
           this.activeColorFilterKey = activeKey;
       
           if (!activeKey) {
-            const style = document.getElementById('acc-filter-style');
-            if (style) style.remove();
+            this.removeStyle('acc-filter-style');
             return;
           }
           const filter = this.visualFilters[activeKey];
           if (!filter) {
-            const style = document.getElementById('acc-filter-style');
-            if (style) style.remove();
+            this.removeStyle('acc-filter-style');
             return;
           }
           const adjustedFilter = {
@@ -5459,8 +5667,10 @@ var AccessibleWebWidget = (function () {
                 }
                 closeLanguageModal();
                 
-                // Save language preference and update UI
-                this.saveConfig({ lang: langCode });
+                // Save language preference and update UI. langUserSelected marks
+                // this as an explicit visitor choice that outranks the embed
+                // config and <html lang> on future visits.
+                this.saveConfig({ lang: langCode, langUserSelected: true });
                 this.translateMenuUI(menuContainer);
               });
             });
@@ -5560,6 +5770,68 @@ var AccessibleWebWidget = (function () {
           }
         },
 
+      // ── Public panel API ─────────────────────────────────────────────
+      // Used by the toggle button, the skip link, and host pages that hide
+      // the default button (AccessibleWebWidget.instance.open()).
+
+      ensureMenuCreated() {
+          if (this.menuContainer) return this.menuContainer;
+          if (!this.widgetContainerEl) return null;
+          const launchOptions = this.launchOptions || this.options || {};
+          const menu = this.displayMenu({ ...launchOptions, container: this.widgetContainerEl });
+          if (!menu) return null;
+          this.menuContainer = menu;
+
+          const overlay = menu.querySelector('.acc-overlay');
+          if (overlay) {
+            overlay.addEventListener('click', (overlayEvent) => {
+              overlayEvent.stopPropagation();
+              this.close();
+            });
+          }
+
+          const closeBtn = menu.querySelector('.acc-menu-close');
+          if (closeBtn) {
+            closeBtn.addEventListener('click', (closeEvent) => {
+              closeEvent.stopPropagation();
+              this.close();
+            });
+          }
+          return menu;
+        },
+
+      isMenuOpen() {
+          const menu = this.menuContainer;
+          if (!menu) return false;
+          if (menu.style.display === 'none') return false;
+          if (typeof window !== 'undefined' && window.getComputedStyle(menu).display === 'none') {
+            return false;
+          }
+          return true;
+        },
+
+      open() {
+          const menu = this.ensureMenuCreated();
+          if (!menu) return false;
+          if (!this.isMenuOpen()) {
+            this.openMenu(menu, this.widgetToggleButton);
+          }
+          return true;
+        },
+
+      close() {
+          if (!this.menuContainer || !this.isMenuOpen()) return;
+          this.closeMenu(this.menuContainer, this.widgetToggleButton);
+        },
+
+      toggle() {
+          if (this.isMenuOpen()) {
+            this.close();
+          } else {
+            this.open();
+          }
+        },
+
       displayWidget(options) {
         try {
           this.applyThemeVariables();
@@ -5587,9 +5859,7 @@ var AccessibleWebWidget = (function () {
             this.shadowHost = host;
             if (typeof host.attachShadow === 'function') {
               this.widgetRoot = host.attachShadow({ mode: 'open' });
-              const uiStyle = document.createElement('style');
-              uiStyle.textContent = this.getWidgetUiStyles();
-              this.widgetRoot.appendChild(uiStyle);
+              this.applyWidgetUiStyles(this.widgetRoot);
               this.widgetRoot.appendChild(widget);
             } else {
               this.widgetRoot = null;
@@ -5598,60 +5868,44 @@ var AccessibleWebWidget = (function () {
             }
 
             const btn = this.findElement(".acc-toggle-btn", widget);
-            this.violationBubble = this.findElement('.acc-violation-bubble', widget);
-      
-            this.widgetToggleButton = btn;
-          
-            const { position = "bottom-right", offset = [20, 20], size } = options;
-            const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
-            const offsetX = normalizedOffset[0] ?? 20;
-            const offsetY = normalizedOffset[1] ?? 25;
-            let buttonStyle = { left: `${offsetX}px`, bottom: `${offsetY}px` };
-            if (position === "bottom-right") {
-              buttonStyle = { right: `${offsetX}px`, left: "auto", bottom: `${offsetY}px` };
-            } else if (position === "top-left") {
-              buttonStyle = { top: `${offsetY}px`, bottom: "auto", left: `${offsetX}px` };
-            } else if (position === "top-right") {
-              buttonStyle = { top: `${offsetY}px`, right: `${offsetX}px`, bottom: "auto", left: "auto" };
-            }
-            Object.assign(btn.style, buttonStyle);
-      
-            if (size !== undefined && size !== null && String(size).trim() !== '') {
-              const buttonSize = this.normalizeButtonSize(size);
-              btn.style.setProperty('--acc-button-size', buttonSize);
-            }
-            
-            let menu;
-            btn.addEventListener("click", () => {
-              if (!menu) {
-                menu = this.displayMenu({ ...options, container: widget });
-                if (!menu) return;
-                this.menuContainer = menu;
-      
-                const overlay = menu.querySelector('.acc-overlay');
-                if (overlay) {
-                  overlay.addEventListener('click', (overlayEvent) => {
-                    overlayEvent.stopPropagation();
-                    this.closeMenu(menu, btn);
-                  });
-                }
-      
-                const closeBtn = menu.querySelector('.acc-menu-close');
-                if (closeBtn) {
-                  closeBtn.addEventListener('click', (closeEvent) => {
-                    closeEvent.stopPropagation();
-                    this.closeMenu(menu, btn);
-                  });
-                }
+            this.widgetContainerEl = widget;
+            this.launchOptions = { ...options };
+
+            const hideButton = options.hideButton === true ||
+              String(options.hideButton).trim().toLowerCase() === 'true';
+
+            if (hideButton) {
+              // Host page provides its own trigger and drives the panel via
+              // open()/close()/toggle(). The bubble lives inside the button,
+              // so it goes with it.
+              if (btn) btn.remove();
+              this.widgetToggleButton = null;
+              this.violationBubble = null;
+            } else {
+              this.violationBubble = this.findElement('.acc-violation-bubble', widget);
+              this.widgetToggleButton = btn;
+
+              const { position = "bottom-right", offset = [20, 20], size } = options;
+              const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
+              const offsetX = normalizedOffset[0] ?? 20;
+              const offsetY = normalizedOffset[1] ?? 25;
+              let buttonStyle = { left: `${offsetX}px`, bottom: `${offsetY}px` };
+              if (position === "bottom-right") {
+                buttonStyle = { right: `${offsetX}px`, left: "auto", bottom: `${offsetY}px` };
+              } else if (position === "top-left") {
+                buttonStyle = { top: `${offsetY}px`, bottom: "auto", left: `${offsetX}px` };
+              } else if (position === "top-right") {
+                buttonStyle = { top: `${offsetY}px`, right: `${offsetX}px`, bottom: "auto", left: "auto" };
               }
-      
-              const isHidden = menu.style.display === 'none' || window.getComputedStyle(menu).display === 'none';
-              if (isHidden) {
-                this.openMenu(menu, btn);
-              } else {
-                this.closeMenu(menu, btn);
+              Object.assign(btn.style, buttonStyle);
+
+              if (size !== undefined && size !== null && String(size).trim() !== '') {
+                const buttonSize = this.normalizeButtonSize(size);
+                btn.style.setProperty('--acc-button-size', buttonSize);
               }
-            });
+
+              btn.addEventListener("click", () => this.toggle());
+            }
 
             document.body.appendChild(host);
             this.translateMenuUI(widget);
@@ -5681,18 +5935,19 @@ var AccessibleWebWidget = (function () {
             // e.target is retargeted to the shadow host for clicks inside the shadow
             // root, so resolve the real click path via composedPath().
             document.addEventListener('click', (e) => {
-              if (!btn) return;
+              const toggleBtn = this.widgetToggleButton;
               const path = typeof e.composedPath === 'function' ? e.composedPath() : [e.target];
-              const clickedToggle = path.includes(btn);
+              const clickedToggle = toggleBtn ? path.includes(toggleBtn) : false;
               const clickedInsideWidget = path.some((node) =>
                 node instanceof Element && node.classList.contains('acc-container'));
+              const menu = this.menuContainer;
               if (menu && this.activeMenuContainer === menu && menu.style.display !== 'none') {
                 const clickedInsideMenu = path.includes(menu);
                 if (!clickedToggle && !clickedInsideMenu && !clickedInsideWidget) {
-                  this.closeMenu(menu, btn);
+                  this.closeMenu(menu, toggleBtn);
                 }
-              } else if (!clickedToggle) {
-                btn.blur();
+              } else if (toggleBtn && !clickedToggle) {
+                toggleBtn.blur();
               }
             });
             
@@ -5719,11 +5974,15 @@ var AccessibleWebWidget = (function () {
                 }
       
                 const baseOptions = { ...this.options };
-                const lang = baseOptions.lang ||
-                  document.querySelector('html')?.getAttribute('lang')?.replace(/[_-].*/, '') ||
-                  navigator.language ||
-                  "en";
-                baseOptions.lang = lang;
+                // Language priority: the visitor's own pick in the language menu
+                // wins, then the embed config (options.lang / data-acc-lang),
+                // then the page's declared <html lang>. Anything empty or
+                // unsupported falls back to the browser language inside
+                // resolveSupportedLanguage() → getDefaultLanguage().
+                baseOptions.lang = this.getUserSelectedLanguage() ||
+                  baseOptions.lang ||
+                  document.documentElement?.getAttribute('lang') ||
+                  '';
       
                 baseOptions.position = baseOptions.position || "bottom-right";
       
@@ -6020,6 +6279,10 @@ var AccessibleWebWidget = (function () {
         // Mute sounds state
         this.muteSoundsObserver = null;
 
+        // Stop Animations media state (paused videos / frozen GIFs)
+        this.motionPauseObserver = null;
+        this.frozenGifs = [];
+
         // Text magnifier state
         this.magnifierElement = null;
         this.magnifierMoveHandler = null;
@@ -6035,20 +6298,30 @@ var AccessibleWebWidget = (function () {
         this.widgetToggleButton = null;
         this.skipLinkElement = null;
         this.menuContainer = null;
+        this.widgetContainerEl = null;
+        this.launchOptions = null;
 
         // Style registration state
         this.staticStylesRegistered = false;
+        // id → CSSStyleSheet for the constructable-stylesheet injection path
+        this.adoptedSheets = new Map();
+        this.styleNonce = '';
 
         this.dataOptions = this.getDataAttributeOptions();
 
+        // `lang` is intentionally not defaulted here: startAccessibleWebWidget()
+        // resolves it as saved user pick → embed config → <html lang> → browser.
         this.options = {
-          lang: this.getDefaultLanguage(),
           position: 'bottom-right',
           ...this.dataOptions,
           ...options
         };
 
         this.applyThemeOverrides(this.options);
+
+        // CSP nonce for the <style>-element fallback path (options.nonce,
+        // data-acc-nonce, or auto-captured from document.currentScript).
+        this.styleNonce = typeof this.options.nonce === 'string' ? this.options.nonce.trim() : '';
 
         // Raw values; getNativeTtsRate()/getNativeTtsPitch() clamp on read.
         this.nativeTtsConfig = {
@@ -6145,14 +6418,27 @@ var AccessibleWebWidget = (function () {
     }
 
     if (typeof document !== 'undefined') {
-      const globalAutoInitOptions = (
+      const configuredOptions = (
         typeof window !== 'undefined' &&
         window.AccessibleWebWidgetOptions &&
         typeof window.AccessibleWebWidgetOptions === 'object'
       ) ? window.AccessibleWebWidgetOptions : {};
 
+      // document.currentScript is only valid during initial script evaluation,
+      // so the CSP nonce has to be captured here, not at DOMContentLoaded.
+      const scriptNonce = (
+        document.currentScript &&
+        typeof document.currentScript.nonce === 'string'
+      ) ? document.currentScript.nonce : '';
+      const globalAutoInitOptions = (scriptNonce && configuredOptions.nonce === undefined)
+        ? { ...configuredOptions, nonce: scriptNonce }
+        : configuredOptions;
+
       /** @type {AccessibleWebWidgetInstance} */
       const widgetInstance = new AccessibleWebWidget(globalAutoInitOptions);
+      // Programmatic access for host pages: AccessibleWebWidget.instance.open()
+      // / .close() / .toggle() (pairs with the hideButton option).
+      AccessibleWebWidget.instance = widgetInstance;
       if (document.readyState === 'complete' || document.readyState === 'interactive') {
         widgetInstance.startAccessibleWebWidget();
       } else {
