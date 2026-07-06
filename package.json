@@ -1,6 +1,6 @@
 {
   "name": "accessible-web-widget",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "description": "A lightweight, customizable accessibility widget for websites.",
   "type": "module",
   "main": "dist/accessible-web-widget.esm.js",
