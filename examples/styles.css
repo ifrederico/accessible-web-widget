@@ -1095,6 +1095,7 @@ pre.export-code code {
   border-radius: 16px;
   padding: 26px 30px 28px;
   box-shadow: 0 8px 20px rgba(15, 23, 42, .04);
+  min-width: 0;
 }
 
 .get-step-number {

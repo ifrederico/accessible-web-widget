@@ -48,6 +48,10 @@ The bundled JavaScript is built from public, human-readable source code:
 * `js/axe.min.js` — axe-core 4.11.1 by Deque Systems, unmodified. Source repository: https://github.com/dequelabs/axe-core (MPL-2.0). Loaded only in developer mode (`?acc-dev=true`).
 * `fonts/OpenDyslexic3-Regular.*` — OpenDyslexic by Abbie Gonzalez, https://opendyslexic.org/ (SIL OFL 1.1; see `fonts/LICENSE.txt`).
 
+== Screenshots ==
+
+1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
+
 == Changelog ==
 
 = 1.3.5 =
