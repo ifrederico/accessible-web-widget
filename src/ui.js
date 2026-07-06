@@ -36,7 +36,14 @@ export const uiMethods = {
         nl: 'Netherlands',
         uk: 'Ukraine',
         ar: 'Saudi Arabia',
-        he: 'Israel'
+        he: 'Israel',
+        sv: 'Sweden',
+        da: 'Denmark',
+        ca: 'Spain',
+        sl: 'Slovenia',
+        lv: 'Latvia',
+        el: 'Greece',
+        ka: 'Georgia'
       };
       return countryByLanguage[languageCode] || String(languageCode || '').toUpperCase();
     },
@@ -55,7 +62,16 @@ export const uiMethods = {
         nl: 'NL',
         uk: 'UA',
         ar: 'SA',
-        he: 'IL'
+        he: 'IL',
+        // Explicit codes required: the slice-two-letters fallback maps
+        // sv→SV (El Salvador) and sl→SL (Sierra Leone).
+        sv: 'SE',
+        da: 'DK',
+        ca: 'ES',
+        sl: 'SI',
+        lv: 'LV',
+        el: 'GR',
+        ka: 'GE'
       };
       const countryCode = (countryCodeByLanguage[languageCode] || String(languageCode || '').slice(0, 2)).toUpperCase();
       if (!/^[A-Z]{2}$/.test(countryCode)) {
