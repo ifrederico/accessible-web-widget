@@ -128,7 +128,7 @@ export const stateMethods = {
       const options = {};
       if (typeof document === 'undefined') return options;
   
-      const attributes = ['lang', 'position', 'offset', 'size', 'icon', 'nonce'];
+      const attributes = ['lang', 'position', 'offset', 'size', 'icon', 'nonce', 'hide-button'];
   
       const assignValue = (key, value) => {
         if (value === null || typeof value === 'undefined' || value === '') return;
@@ -163,6 +163,10 @@ export const stateMethods = {
             if (nonce) options.nonce = nonce;
             break;
           }
+          case 'hide-button': {
+            options.hideButton = String(value).trim().toLowerCase() !== 'false';
+            break;
+          }
           default:
             break;
         }
@@ -181,7 +185,7 @@ export const stateMethods = {
       if (document.currentScript) {
         scriptCandidates.push(document.currentScript);
       }
-      document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon],script[data-acc-nonce]').forEach(script => {
+      document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon],script[data-acc-nonce],script[data-acc-hide-button]').forEach(script => {
         if (!scriptCandidates.includes(script)) {
           scriptCandidates.push(script);
         }

@@ -258,6 +258,8 @@ class AccessibleWebWidget {
     this.widgetToggleButton = null;
     this.skipLinkElement = null;
     this.menuContainer = null;
+    this.widgetContainerEl = null;
+    this.launchOptions = null;
 
     // Style registration state
     this.staticStylesRegistered = false;
@@ -394,6 +396,9 @@ if (typeof document !== 'undefined') {
 
   /** @type {AccessibleWebWidgetInstance} */
   const widgetInstance = new AccessibleWebWidget(globalAutoInitOptions);
+  // Programmatic access for host pages: AccessibleWebWidget.instance.open()
+  // / .close() / .toggle() (pairs with the hideButton option).
+  AccessibleWebWidget.instance = widgetInstance;
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     widgetInstance.startAccessibleWebWidget();
   } else {

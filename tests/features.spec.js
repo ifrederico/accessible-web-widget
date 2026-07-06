@@ -148,6 +148,26 @@ test('mute sounds mutes existing and dynamically added media', async ({ page }) 
   await expect.poll(() => page.evaluate(() => document.getElementById('test-video').muted)).toBe(false);
 });
 
+test('public API toggles the panel alongside the default button', async ({ page }) => {
+  await page.goto('index.html');
+  await page.evaluate(() => window.AccessibleWebWidget.instance.toggle());
+  await expect(page.locator('.acc-menu')).toBeVisible();
+  await page.evaluate(() => window.AccessibleWebWidget.instance.toggle());
+  await expect(page.locator('.acc-menu')).toBeHidden();
+});
+
+test('hideButton removes the floating toggle and the public API drives the panel', async ({ page }) => {
+  await page.goto('fixtures/hide-button.html');
+  await expect(page.locator('.acc-toggle-btn')).toHaveCount(0);
+
+  const opened = await page.evaluate(() => window.AccessibleWebWidget.instance.open());
+  expect(opened).toBe(true);
+  await expect(page.locator('.acc-menu')).toBeVisible();
+
+  await page.evaluate(() => window.AccessibleWebWidget.instance.close());
+  await expect(page.locator('.acc-menu')).toBeHidden();
+});
+
 test('stop animations pauses videos and freezes GIF images', async ({ page }) => {
   await page.goto('index.html');
   await page.evaluate(() => {

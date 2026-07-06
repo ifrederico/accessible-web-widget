@@ -805,6 +805,68 @@ export const uiMethods = {
       }
     },
 
+  // ── Public panel API ─────────────────────────────────────────────
+  // Used by the toggle button, the skip link, and host pages that hide
+  // the default button (AccessibleWebWidget.instance.open()).
+
+  ensureMenuCreated() {
+      if (this.menuContainer) return this.menuContainer;
+      if (!this.widgetContainerEl) return null;
+      const launchOptions = this.launchOptions || this.options || {};
+      const menu = this.displayMenu({ ...launchOptions, container: this.widgetContainerEl });
+      if (!menu) return null;
+      this.menuContainer = menu;
+
+      const overlay = menu.querySelector('.acc-overlay');
+      if (overlay) {
+        overlay.addEventListener('click', (overlayEvent) => {
+          overlayEvent.stopPropagation();
+          this.close();
+        });
+      }
+
+      const closeBtn = menu.querySelector('.acc-menu-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (closeEvent) => {
+          closeEvent.stopPropagation();
+          this.close();
+        });
+      }
+      return menu;
+    },
+
+  isMenuOpen() {
+      const menu = this.menuContainer;
+      if (!menu) return false;
+      if (menu.style.display === 'none') return false;
+      if (typeof window !== 'undefined' && window.getComputedStyle(menu).display === 'none') {
+        return false;
+      }
+      return true;
+    },
+
+  open() {
+      const menu = this.ensureMenuCreated();
+      if (!menu) return false;
+      if (!this.isMenuOpen()) {
+        this.openMenu(menu, this.widgetToggleButton);
+      }
+      return true;
+    },
+
+  close() {
+      if (!this.menuContainer || !this.isMenuOpen()) return;
+      this.closeMenu(this.menuContainer, this.widgetToggleButton);
+    },
+
+  toggle() {
+      if (this.isMenuOpen()) {
+        this.close();
+      } else {
+        this.open();
+      }
+    },
+
   displayWidget(options) {
     try {
       this.applyThemeVariables();
@@ -841,60 +903,44 @@ export const uiMethods = {
         }
 
         const btn = this.findElement(".acc-toggle-btn", widget);
-        this.violationBubble = this.findElement('.acc-violation-bubble', widget);
-  
-        this.widgetToggleButton = btn;
-      
-        const { position = "bottom-right", offset = [20, 20], size } = options;
-        const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
-        const offsetX = normalizedOffset[0] ?? 20;
-        const offsetY = normalizedOffset[1] ?? 25;
-        let buttonStyle = { left: `${offsetX}px`, bottom: `${offsetY}px` };
-        if (position === "bottom-right") {
-          buttonStyle = { right: `${offsetX}px`, left: "auto", bottom: `${offsetY}px` };
-        } else if (position === "top-left") {
-          buttonStyle = { top: `${offsetY}px`, bottom: "auto", left: `${offsetX}px` };
-        } else if (position === "top-right") {
-          buttonStyle = { top: `${offsetY}px`, right: `${offsetX}px`, bottom: "auto", left: "auto" };
-        }
-        Object.assign(btn.style, buttonStyle);
-  
-        if (size !== undefined && size !== null && String(size).trim() !== '') {
-          const buttonSize = this.normalizeButtonSize(size);
-          btn.style.setProperty('--acc-button-size', buttonSize);
-        }
-        
-        let menu;
-        btn.addEventListener("click", () => {
-          if (!menu) {
-            menu = this.displayMenu({ ...options, container: widget });
-            if (!menu) return;
-            this.menuContainer = menu;
-  
-            const overlay = menu.querySelector('.acc-overlay');
-            if (overlay) {
-              overlay.addEventListener('click', (overlayEvent) => {
-                overlayEvent.stopPropagation();
-                this.closeMenu(menu, btn);
-              });
-            }
-  
-            const closeBtn = menu.querySelector('.acc-menu-close');
-            if (closeBtn) {
-              closeBtn.addEventListener('click', (closeEvent) => {
-                closeEvent.stopPropagation();
-                this.closeMenu(menu, btn);
-              });
-            }
+        this.widgetContainerEl = widget;
+        this.launchOptions = { ...options };
+
+        const hideButton = options.hideButton === true ||
+          String(options.hideButton).trim().toLowerCase() === 'true';
+
+        if (hideButton) {
+          // Host page provides its own trigger and drives the panel via
+          // open()/close()/toggle(). The bubble lives inside the button,
+          // so it goes with it.
+          if (btn) btn.remove();
+          this.widgetToggleButton = null;
+          this.violationBubble = null;
+        } else {
+          this.violationBubble = this.findElement('.acc-violation-bubble', widget);
+          this.widgetToggleButton = btn;
+
+          const { position = "bottom-right", offset = [20, 20], size } = options;
+          const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
+          const offsetX = normalizedOffset[0] ?? 20;
+          const offsetY = normalizedOffset[1] ?? 25;
+          let buttonStyle = { left: `${offsetX}px`, bottom: `${offsetY}px` };
+          if (position === "bottom-right") {
+            buttonStyle = { right: `${offsetX}px`, left: "auto", bottom: `${offsetY}px` };
+          } else if (position === "top-left") {
+            buttonStyle = { top: `${offsetY}px`, bottom: "auto", left: `${offsetX}px` };
+          } else if (position === "top-right") {
+            buttonStyle = { top: `${offsetY}px`, right: `${offsetX}px`, bottom: "auto", left: "auto" };
           }
-  
-          const isHidden = menu.style.display === 'none' || window.getComputedStyle(menu).display === 'none';
-          if (isHidden) {
-            this.openMenu(menu, btn);
-          } else {
-            this.closeMenu(menu, btn);
+          Object.assign(btn.style, buttonStyle);
+
+          if (size !== undefined && size !== null && String(size).trim() !== '') {
+            const buttonSize = this.normalizeButtonSize(size);
+            btn.style.setProperty('--acc-button-size', buttonSize);
           }
-        });
+
+          btn.addEventListener("click", () => this.toggle());
+        }
 
         document.body.appendChild(host);
         this.translateMenuUI(widget);
@@ -924,18 +970,19 @@ export const uiMethods = {
         // e.target is retargeted to the shadow host for clicks inside the shadow
         // root, so resolve the real click path via composedPath().
         document.addEventListener('click', (e) => {
-          if (!btn) return;
+          const toggleBtn = this.widgetToggleButton;
           const path = typeof e.composedPath === 'function' ? e.composedPath() : [e.target];
-          const clickedToggle = path.includes(btn);
+          const clickedToggle = toggleBtn ? path.includes(toggleBtn) : false;
           const clickedInsideWidget = path.some((node) =>
             node instanceof Element && node.classList.contains('acc-container'));
+          const menu = this.menuContainer;
           if (menu && this.activeMenuContainer === menu && menu.style.display !== 'none') {
             const clickedInsideMenu = path.includes(menu);
             if (!clickedToggle && !clickedInsideMenu && !clickedInsideWidget) {
-              this.closeMenu(menu, btn);
+              this.closeMenu(menu, toggleBtn);
             }
-          } else if (!clickedToggle) {
-            btn.blur();
+          } else if (toggleBtn && !clickedToggle) {
+            toggleBtn.blur();
           }
         });
         
