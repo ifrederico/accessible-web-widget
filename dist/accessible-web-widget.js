@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.5.0
+ * AccessibleWeb Widget v1.5.1
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
@@ -6297,6 +6297,19 @@ var AccessibleWebWidget = (function () {
             const sectionMarkup = sectionConfig.map(section => {
               let sectionOptions = groupedOptions[section.key];
               let specialContent = '';
+
+              // Profiles render two-up like the Text/Color/Reading sections;
+              // a profile added without a row assignment falls through to a
+              // full-width row via section.containerClass.
+              if (section.key === 'profiles') {
+                return renderThinRowSection(section, sectionOptions, {
+                  order: ['profile-seizure-safe', 'profile-vision', 'profile-adhd', 'profile-dyslexia'],
+                  rows: [
+                    new Set(['profile-seizure-safe', 'profile-vision']),
+                    new Set(['profile-adhd', 'profile-dyslexia'])
+                  ]
+                });
+              }
 
               if (section.key === 'text') {
                 const textScaleOption = sectionOptions.find(option => option.key === 'text-scale');
