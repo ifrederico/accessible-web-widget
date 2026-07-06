@@ -374,7 +374,14 @@ Object.assign(
 );
 
 if (typeof window !== 'undefined') {
+  // A second copy of the script re-evaluates this module and replaces the
+  // global; carry the already-started instance over so the public API
+  // (AccessibleWebWidget.instance.open()) keeps pointing at the live widget.
+  const previousGlobal = window.AccessibleWebWidget;
   window.AccessibleWebWidget = AccessibleWebWidget;
+  if (previousGlobal?.instance) {
+    AccessibleWebWidget.instance = previousGlobal.instance;
+  }
 }
 
 if (typeof document !== 'undefined') {
@@ -397,8 +404,12 @@ if (typeof document !== 'undefined') {
   /** @type {AccessibleWebWidgetInstance} */
   const widgetInstance = new AccessibleWebWidget(globalAutoInitOptions);
   // Programmatic access for host pages: AccessibleWebWidget.instance.open()
-  // / .close() / .toggle() (pairs with the hideButton option).
-  AccessibleWebWidget.instance = widgetInstance;
+  // / .close() / .toggle() (pairs with the hideButton option). Never clobber
+  // an instance that a first copy of the script already started — this one's
+  // startAccessibleWebWidget() will see the existing host and no-op.
+  if (!AccessibleWebWidget.instance) {
+    AccessibleWebWidget.instance = widgetInstance;
+  }
   if (document.readyState === 'complete' || document.readyState === 'interactive') {
     widgetInstance.startAccessibleWebWidget();
   } else {

@@ -1069,7 +1069,15 @@ export const uiMethods = {
             options.lang = this.resolveSupportedLanguage(options.lang);
 
             if (options.lang) {
-              this.saveConfig({ lang: options.lang });
+              // Preserve an existing langUserSelected flag. Legacy configs
+              // (lang without the flag) migrate to true — their saved value
+              // always won pre-1.4.0; fresh visitors get an explicit false
+              // so embed config / <html lang> keep applying on later visits.
+              const previousFlag = this.widgetConfig?.langUserSelected;
+              const langUserSelected = previousFlag !== undefined
+                ? previousFlag
+                : !!this.widgetConfig?.lang;
+              this.saveConfig({ lang: options.lang, langUserSelected });
             }
 
             // Display the widget UI

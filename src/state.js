@@ -50,15 +50,16 @@ export const stateMethods = {
       return null;
     },
 
-  // A language counts as user-selected only when picked in the widget's
-  // language menu (langUserSelected flag). The lang launchWidget auto-saves
-  // on every load must not outrank the embed config or <html lang>, or a
-  // site owner's later configuration change would never reach returning
-  // visitors.
+  // A language counts as user-selected when picked in the widget's language
+  // menu (langUserSelected: true). Auto-saves stamp the flag false so they
+  // never outrank the embed config or <html lang>. Pre-1.4.0 configs saved
+  // lang with no flag at all, and under the old semantics the saved value
+  // always won — so a missing flag also counts as user-selected, otherwise
+  // upgrading would switch languages on returning visitors.
   getUserSelectedLanguage() {
       try {
         const config = JSON.parse(this.fetchSavedConfig());
-        if (config.langUserSelected && config.lang) return config.lang;
+        if (config.lang && config.langUserSelected !== false) return config.lang;
       } catch {
         // Ignore parsing errors
       }
