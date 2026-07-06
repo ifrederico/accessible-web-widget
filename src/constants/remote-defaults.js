@@ -7,4 +7,4 @@
 export const AXE_CORE_VERSION = '4.11.1';
 export const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
 export const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
-export const DYSLEXIA_FONT_SRC = 'url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"), url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype")';
+export const DYSLEXIA_FONT_SRC = 'url("https://accessibleweb.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"), url("https://accessibleweb.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype")';
