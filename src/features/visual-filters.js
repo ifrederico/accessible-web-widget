@@ -198,14 +198,12 @@ export const visualFilterMethods = {
       this.activeColorFilterKey = activeKey;
   
       if (!activeKey) {
-        const style = document.getElementById('acc-filter-style');
-        if (style) style.remove();
+        this.removeStyle('acc-filter-style');
         return;
       }
       const filter = this.visualFilters[activeKey];
       if (!filter) {
-        const style = document.getElementById('acc-filter-style');
-        if (style) style.remove();
+        this.removeStyle('acc-filter-style');
         return;
       }
       const adjustedFilter = {

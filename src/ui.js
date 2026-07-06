@@ -832,9 +832,7 @@ export const uiMethods = {
         this.shadowHost = host;
         if (typeof host.attachShadow === 'function') {
           this.widgetRoot = host.attachShadow({ mode: 'open' });
-          const uiStyle = document.createElement('style');
-          uiStyle.textContent = this.getWidgetUiStyles();
-          this.widgetRoot.appendChild(uiStyle);
+          this.applyWidgetUiStyles(this.widgetRoot);
           this.widgetRoot.appendChild(widget);
         } else {
           this.widgetRoot = null;

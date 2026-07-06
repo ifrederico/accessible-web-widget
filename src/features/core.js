@@ -348,8 +348,7 @@ export const coreFeatureMethods = {
 
   ensureReadableFontLoaded() {
       if (this.readableFontLoaded) return;
-      const existing = document.getElementById('acc-readable-text-font');
-      if (existing) {
+      if (this.hasStyle('acc-readable-text-font')) {
         this.readableFontLoaded = true;
         return;
       }
@@ -362,16 +361,15 @@ export const coreFeatureMethods = {
         this.readableFontLoaded = true;
         return;
       }
-      const style = document.createElement('style');
-      style.id = 'acc-readable-text-font';
-      style.textContent = `
+      // @font-face stays a real <style> element (nonce'd under CSP):
+      // constructed-stylesheet @font-face support is still inconsistent.
+      this.injectStyle('acc-readable-text-font', `
         @font-face {
           font-family: "OpenDyslexic3";
           src: ${fontSrc};
           font-display: swap;
         }
-      `;
-      document.head.appendChild(style);
+      `, { forceElement: true });
       this.readableFontLoaded = true;
     },
 
@@ -671,8 +669,7 @@ export const coreFeatureMethods = {
 
   concealImages(enable = false) {
     const styleId = `acc-hide-images`;
-    const existingStyle = document.getElementById(styleId);
-    if (existingStyle) existingStyle.remove();
+    this.removeStyle(styleId);
     document.documentElement.classList.toggle(styleId, enable);
     if (enable) {
       const css = `
@@ -1043,10 +1040,7 @@ export const coreFeatureMethods = {
         'acc-filter-style',
         'acc-simple-layout'
       ];
-      styleIds.forEach(id => {
-        const style = document.getElementById(id);
-        if (style) style.remove();
-      });
+      styleIds.forEach(id => this.removeStyle(id));
       this.clearSimpleLayoutDomMutations();
       document.documentElement.classList.remove(
         'acc-filter',

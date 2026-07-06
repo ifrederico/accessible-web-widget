@@ -148,13 +148,18 @@ test('mute sounds mutes existing and dynamically added media', async ({ page }) 
   await expect.poll(() => page.evaluate(() => document.getElementById('test-video').muted)).toBe(false);
 });
 
-test('TTS page-level styles are injected into the document head', async ({ page }) => {
+test('TTS page-level styles are registered at document level', async ({ page }) => {
   await page.goto('index.html');
-  const staticCss = await page.evaluate(() =>
-    document.getElementById('acc-static-styles')?.textContent || ''
-  );
-  // These selectors target light-DOM page content, so they must live in
-  // <head> — inside the widget shadow root they can never match.
+  const staticCss = await page.evaluate(() => {
+    const fromElement = document.getElementById('acc-static-styles')?.textContent || '';
+    const fromAdopted = (document.adoptedStyleSheets || [])
+      .map((sheet) => Array.from(sheet.cssRules).map((rule) => rule.cssText).join('\n'))
+      .join('\n');
+    return fromElement + fromAdopted;
+  });
+  // These selectors target light-DOM page content, so they must be
+  // document-level (adopted stylesheet or <style> in <head>) — inside the
+  // widget shadow root they can never match.
   expect(staticCss).toContain('.acc-tts-active-block');
   expect(staticCss).toContain('acc-tts-click-mode');
 });

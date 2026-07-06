@@ -257,6 +257,9 @@ class AccessibleWebWidget {
 
     // Style registration state
     this.staticStylesRegistered = false;
+    // id → CSSStyleSheet for the constructable-stylesheet injection path
+    this.adoptedSheets = new Map();
+    this.styleNonce = '';
 
     this.dataOptions = this.getDataAttributeOptions();
 
@@ -269,6 +272,10 @@ class AccessibleWebWidget {
     };
 
     this.applyThemeOverrides(this.options);
+
+    // CSP nonce for the <style>-element fallback path (options.nonce,
+    // data-acc-nonce, or auto-captured from document.currentScript).
+    this.styleNonce = typeof this.options.nonce === 'string' ? this.options.nonce.trim() : '';
 
     // Raw values; getNativeTtsRate()/getNativeTtsPitch() clamp on read.
     this.nativeTtsConfig = {
@@ -365,11 +372,21 @@ if (typeof window !== 'undefined') {
 }
 
 if (typeof document !== 'undefined') {
-  const globalAutoInitOptions = (
+  const configuredOptions = (
     typeof window !== 'undefined' &&
     window.AccessibleWebWidgetOptions &&
     typeof window.AccessibleWebWidgetOptions === 'object'
   ) ? window.AccessibleWebWidgetOptions : {};
+
+  // document.currentScript is only valid during initial script evaluation,
+  // so the CSP nonce has to be captured here, not at DOMContentLoaded.
+  const scriptNonce = (
+    document.currentScript &&
+    typeof document.currentScript.nonce === 'string'
+  ) ? document.currentScript.nonce : '';
+  const globalAutoInitOptions = (scriptNonce && configuredOptions.nonce === undefined)
+    ? { ...configuredOptions, nonce: scriptNonce }
+    : configuredOptions;
 
   /** @type {AccessibleWebWidgetInstance} */
   const widgetInstance = new AccessibleWebWidget(globalAutoInitOptions);
