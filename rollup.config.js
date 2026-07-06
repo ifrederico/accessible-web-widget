@@ -20,7 +20,12 @@ const stripRemoteDefaults = {
         "export const AXE_CORE_VERSION = '4.11.1';",
         "export const AXE_CORE_SRC = '';",
         "export const AXE_CORE_INTEGRITY = '';",
-        "export const DYSLEXIA_FONT_SRC = '';"
+        "export const DYSLEXIA_FONT_SRC = '';",
+        "export const READABLE_FONT_FACES = {",
+        "  dyslexic: { family: 'OpenDyslexic3', src: '' },",
+        "  legible: { family: 'Atkinson Hyperlegible', src: '' },",
+        "  lexend: { family: 'Lexend', src: '' }",
+        "};"
       ].join('\n'),
       map: null
     };

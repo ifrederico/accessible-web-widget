@@ -51,6 +51,36 @@ export const visualFilterMethods = {
       this.applyModeToggleButtonDisplay(button, this.getSaturationToggleDisplay(index), 'data-saturation-mode');
     },
 
+  getReadableFontDisplay(index) {
+      const choices = this.readableFontChoices || [];
+      const choice = index >= 0 ? choices[index] : null;
+      return {
+        key: choice ? choice.key : null,
+        label: choice ? choice.label : 'Readable Font',
+        icon: this.widgetIcons.dyslexiaFont
+      };
+    },
+
+  setReadableFontUI(menu, activeKey = null) {
+      if (!menu || !menu.querySelector) return;
+      const feature = this.multiLevelFeatures?.['readable-text'];
+      if (!feature) return;
+      const index = activeKey ? feature.values.indexOf(activeKey) : -1;
+      feature.currentIndex = index;
+      const button = menu.querySelector('.acc-btn[data-key="readable-text"]');
+      if (!button) return;
+      this.applyModeToggleButtonDisplay(button, this.getReadableFontDisplay(index), 'data-readable-font-mode');
+      const isActive = index >= 0;
+      button.classList.toggle('acc-selected', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      const indicator = button.querySelector('.acc-progress-indicator[data-feature="readable-text"]');
+      if (indicator) {
+        indicator.querySelectorAll('.acc-progress-dot').forEach((dot, dotIndex) => {
+          dot.classList.toggle('active', dotIndex === index);
+        });
+      }
+    },
+
   isColorFilterKey(key) {
       return Array.isArray(this.colorFilterKeys) && this.colorFilterKeys.includes(key);
     },
@@ -225,8 +255,20 @@ export const visualFilterMethods = {
   cycleMultiLevelFeature(featureKey, button) {
       const feature = this.multiLevelFeatures[featureKey];
       if (!feature || !button) return;
-      // Only the color filter toggles render as cycling buttons; text scale
-      // is controlled by the slider in the Text section.
+
+      if (featureKey === 'readable-text') {
+        const newIndex = feature.currentIndex + 1;
+        const newFontKey = newIndex >= feature.levels ? null : feature.values[newIndex];
+        this.updateState({ 'readable-text': newFontKey || false });
+        this.enableReadableText(newFontKey || false);
+        this.setReadableFontUI(button.closest('.acc-menu'), newFontKey);
+        // setReadableFontUI re-labels the button with the active font.
+        this.announceFeatureState(button.getAttribute('aria-label'), !!newFontKey);
+        return;
+      }
+
+      // Beyond those, only the color filter toggles render as cycling
+      // buttons; text scale is controlled by the slider in the Text section.
       if (featureKey !== 'contrast-toggle' && featureKey !== 'saturation-toggle') return;
 
       const newIndex = feature.currentIndex + 1;

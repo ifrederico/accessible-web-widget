@@ -165,6 +165,8 @@ export const uiMethods = {
       });
       const activeColorFilter = this.getActiveColorFilterKey(states);
       this.setColorFilterUI(menu, activeColorFilter);
+      const readableChoice = this.resolveReadableFontChoice(states['readable-text']);
+      this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
       this.syncTextScaleControlUI(menu, states['text-scale'] || 1);
     },
 

@@ -33,7 +33,7 @@ test('profile applies and clears its bundled feature states', async ({ page }) =
 
   let states = await readStates(page);
   expect(states['profile-dyslexia']).toBe(true);
-  expect(states['readable-text']).toBe(true);
+  expect(states['readable-text']).toBe('dyslexic');
   expect(states['line-spacing']).toBe(true);
   expect(states['letter-spacing']).toBe(true);
   await expect(profileBtn).toHaveAttribute('aria-pressed', 'true');
@@ -146,6 +146,44 @@ test('mute sounds mutes existing and dynamically added media', async ({ page }) 
 
   await page.locator('.acc-btn[data-key="mute-sounds"]').click();
   await expect.poll(() => page.evaluate(() => document.getElementById('test-video').muted)).toBe(false);
+});
+
+test('readable font cycles through dyslexic, legible, and lexend', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const btn = page.locator('.acc-btn[data-key="readable-text"]');
+  await btn.click();
+  await expect(btn).toHaveAttribute('data-readable-font-mode', 'dyslexic');
+  let states = await readStates(page);
+  expect(states['readable-text']).toBe('dyslexic');
+  expect(await page.evaluate(() =>
+    document.documentElement.classList.contains('acc-readable-text'))).toBe(true);
+
+  await btn.click();
+  await expect(btn).toHaveAttribute('data-readable-font-mode', 'legible');
+  await btn.click();
+  await expect(btn).toHaveAttribute('data-readable-font-mode', 'lexend');
+  states = await readStates(page);
+  expect(states['readable-text']).toBe('lexend');
+
+  await btn.click();
+  await expect(btn).toHaveAttribute('data-readable-font-mode', 'off');
+  states = await readStates(page);
+  expect(states['readable-text']).toBe(false);
+  expect(await page.evaluate(() =>
+    document.documentElement.classList.contains('acc-readable-text'))).toBe(false);
+});
+
+test('legacy readable-text boolean state maps to the dyslexia font', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('accweb', JSON.stringify({ states: { 'readable-text': true } }));
+  });
+  await page.goto('index.html');
+  await expect.poll(() => page.evaluate(() =>
+    document.documentElement.classList.contains('acc-readable-text'))).toBe(true);
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-btn[data-key="readable-text"]')).toHaveAttribute('data-readable-font-mode', 'dyslexic');
 });
 
 test('public API toggles the panel alongside the default button', async ({ page }) => {
