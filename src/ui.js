@@ -702,8 +702,10 @@ export const uiMethods = {
             }
             closeLanguageModal();
             
-            // Save language preference and update UI
-            this.saveConfig({ lang: langCode });
+            // Save language preference and update UI. langUserSelected marks
+            // this as an explicit visitor choice that outranks the embed
+            // config and <html lang> on future visits.
+            this.saveConfig({ lang: langCode, langUserSelected: true });
             this.translateMenuUI(menuContainer);
           });
         });
@@ -962,11 +964,15 @@ export const uiMethods = {
             }
   
             const baseOptions = { ...this.options };
-            const lang = baseOptions.lang ||
-              document.querySelector('html')?.getAttribute('lang')?.replace(/[_-].*/, '') ||
-              navigator.language ||
-              "en";
-            baseOptions.lang = lang;
+            // Language priority: the visitor's own pick in the language menu
+            // wins, then the embed config (options.lang / data-acc-lang),
+            // then the page's declared <html lang>. Anything empty or
+            // unsupported falls back to the browser language inside
+            // resolveSupportedLanguage() → getDefaultLanguage().
+            baseOptions.lang = this.getUserSelectedLanguage() ||
+              baseOptions.lang ||
+              document.documentElement?.getAttribute('lang') ||
+              '';
   
             baseOptions.position = baseOptions.position || "bottom-right";
   

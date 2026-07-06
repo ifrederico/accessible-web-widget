@@ -260,8 +260,9 @@ class AccessibleWebWidget {
 
     this.dataOptions = this.getDataAttributeOptions();
 
+    // `lang` is intentionally not defaulted here: startAccessibleWebWidget()
+    // resolves it as saved user pick → embed config → <html lang> → browser.
     this.options = {
-      lang: this.getDefaultLanguage(),
       position: 'bottom-right',
       ...this.dataOptions,
       ...options
