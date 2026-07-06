@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.4.0
+ * AccessibleWeb Widget v1.5.0
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
@@ -126,6 +126,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Line Height",
             "Font Weight": "Font Weight",
             "Dyslexia Font": "Dyslexia Font",
+            "Legible Font": "Legible Font",
             "Font Size": "Font Size",
             "Language": "Language",
             "All Languages": "All Languages",
@@ -217,6 +218,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Altura da Linha",
             "Font Weight": "Peso da Fonte",
             "Dyslexia Font": "Fonte para Dislexia",
+            "Legible Font": "Fonte Legível",
             "Font Size": "Tamanho da Fonte",
             "Language": "Idioma",
             "All Languages": "Todos os Idiomas",
@@ -308,6 +310,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Altezza Riga",
             "Font Weight": "Grassetto",
             "Dyslexia Font": "Font Dislessia",
+            "Legible Font": "Carattere Leggibile",
             "Font Size": "Dimensione Font",
             "Language": "Lingua",
             "All Languages": "Tutte le Lingue",
@@ -399,6 +402,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Hauteur de Ligne",
             "Font Weight": "Graisse de Police",
             "Dyslexia Font": "Police Dyslexie",
+            "Legible Font": "Police Lisible",
             "Font Size": "Taille de Police",
             "Language": "Langue",
             "All Languages": "Toutes les Langues",
@@ -490,6 +494,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Zeilenhöhe",
             "Font Weight": "Schriftstärke",
             "Dyslexia Font": "Legasthenie-Schrift",
+            "Legible Font": "Gut lesbare Schrift",
             "Font Size": "Schriftgröße",
             "Language": "Sprache",
             "All Languages": "Alle Sprachen",
@@ -581,6 +586,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Altura de Línea",
             "Font Weight": "Grosor de Fuente",
             "Dyslexia Font": "Fuente para Dislexia",
+            "Legible Font": "Fuente Legible",
             "Font Size": "Tamaño de Fuente",
             "Language": "Idioma",
             "All Languages": "Todos los Idiomas",
@@ -672,6 +678,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Высота строки",
             "Font Weight": "Жирный шрифт",
             "Dyslexia Font": "Шрифт для дислексии",
+            "Legible Font": "Разборчивый шрифт",
             "Font Size": "Размер шрифта",
             "Language": "Язык",
             "All Languages": "Все языки",
@@ -763,6 +770,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Wysokość Linii",
             "Font Weight": "Grubość Czcionki",
             "Dyslexia Font": "Czcionka dla Dysleksji",
+            "Legible Font": "Czytelna Czcionka",
             "Font Size": "Rozmiar Czcionki",
             "Language": "Język",
             "All Languages": "Wszystkie Języki",
@@ -854,6 +862,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Înălțime Linie",
             "Font Weight": "Grosime Font",
             "Dyslexia Font": "Font pentru Dislexie",
+            "Legible Font": "Font Lizibil",
             "Font Size": "Dimensiune Font",
             "Language": "Limbă",
             "All Languages": "Toate Limbile",
@@ -945,6 +954,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Regelhoogte",
             "Font Weight": "Letterdikte",
             "Dyslexia Font": "Dyslexie Lettertype",
+            "Legible Font": "Leesbaar Lettertype",
             "Font Size": "Lettergrootte",
             "Language": "Taal",
             "All Languages": "Alle Talen",
@@ -1036,6 +1046,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "Висота рядка",
             "Font Weight": "Жирний шрифт",
             "Dyslexia Font": "Шрифт для дислексії",
+            "Legible Font": "Розбірливий шрифт",
             "Font Size": "Розмір шрифту",
             "Language": "Мова",
             "All Languages": "Усі мови",
@@ -1127,6 +1138,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "ارتفاع السطر",
             "Font Weight": "سُمك الخط",
             "Dyslexia Font": "خط لعُسر القراءة",
+            "Legible Font": "خط واضح",
             "Font Size": "حجم الخط",
             "Language": "اللغة",
             "All Languages": "جميع اللغات",
@@ -1218,6 +1230,7 @@ var AccessibleWebWidget = (function () {
             "Line Height": "גובה שורה",
             "Font Weight": "עובי גופן",
             "Dyslexia Font": "גופן מותאם לדיסלקציה",
+            "Legible Font": "גופן קריא",
             "Font Size": "גודל גופן",
             "Language": "שפה",
             "All Languages": "כל השפות",
@@ -1278,6 +1291,650 @@ var AccessibleWebWidget = (function () {
             "Links": "קישורים",
             "No items found": "לא נמצאו פריטים",
             "Settings reset": "ההגדרות אופסו",
+          },
+          sv: {
+            "Accessibility": "Tillgänglighet",
+            "Accessibility Options": "Tillgänglighetsalternativ",
+            "Accessibility Menu": "Tillgänglighetsmeny",
+            "Reset settings": "Återställ inställningar",
+            "Reset All Settings": "Återställ alla inställningar",
+            "Close": "Stäng",
+            "Content Adjustments": "Innehållsjusteringar",
+            "Adjust Font Size": "Justera textstorlek",
+            "Highlight Title": "Markera rubriker",
+            "Highlight Links": "Markera länkar",
+            "Readable Font": "Läsbart typsnitt",
+            "Color Adjustments": "Färgjusteringar",
+            "Invert Colors": "Invertera färger",
+            "Light Contrast": "Ljus kontrast",
+            "Dark Contrast": "Mörk kontrast",
+            "High Contrast": "Hög kontrast",
+            "High Saturation": "Hög mättnad",
+            "Low Saturation": "Låg mättnad",
+            "Monochrome": "Monokrom",
+            "Tools": "Verktyg",
+            "Reading Guide": "Läslinjal",
+            "Stop Animations": "Stoppa animationer",
+            "Big Cursor": "Stor muspekare",
+            "Increase Font Size": "Öka textstorlek",
+            "Decrease Font Size": "Minska textstorlek",
+            "Letter Spacing": "Teckenavstånd",
+            "Line Height": "Radavstånd",
+            "Font Weight": "Teckentjocklek",
+            "Dyslexia Font": "Dyslexitypsnitt",
+            "Legible Font": "Tydligt typsnitt",
+            "Font Size": "Textstorlek",
+            "Language": "Språk",
+            "All Languages": "Alla språk",
+            "Search language": "Sök språk",
+            "Open Accessibility Menu": "Öppna tillgänglighetsmenyn",
+            "Open accessibility menu": "Öppna tillgänglighetsmenyn",
+            "Hide Images": "Dölj bilder",
+            "Skip to accessibility menu": "Hoppa till tillgänglighetsmenyn",
+            "Accessibility Report": "Tillgänglighetsrapport",
+            "Run Accessibility Check": "Kör tillgänglighetskontroll",
+            "Loading...": "Läser in...",
+            "Analyzing page...": "Analyserar sidan...",
+            "Critical": "Kritisk",
+            "Serious": "Allvarlig",
+            "Moderate": "Måttlig",
+            "Minor": "Mindre",
+            "Violations Found": "Problem hittade",
+            "No Issues Found": "Inga problem hittade",
+            "Element": "Element",
+            "Issue": "Problem",
+            "How to Fix": "Så åtgärdar du",
+            "Close Report": "Stäng rapport",
+            "Passed Tests": "Godkända tester",
+            "Items Need Review": "Objekt som behöver granskas",
+            "Annotations": "Markeringar",
+            "Text to Speech": "Text till tal",
+            "Text to Speech On": "Text till tal på",
+            "Text to Speech Off": "Text till tal av",
+            "Simplify Layout": "Förenkla layout",
+            "Speech": "Tal",
+            "Text": "Text",
+            "Color & Contrast": "Färg och kontrast",
+            "Reading Aids": "Läshjälpmedel",
+            "Interaction": "Interaktion",
+            "Contrast": "Kontrast",
+            "Saturation": "Mättnad",
+            "Light": "Ljus",
+            "Dark": "Mörk",
+            "High": "Hög",
+            "Low": "Låg",
+            "Play": "Spela upp",
+            "Pause": "Pausa",
+            "Stop": "Stoppa",
+            "Loading voice...": "Läser in röst...",
+            "Reading...": "Läser...",
+            "Profiles": "Profiler",
+            "Seizure Safe": "Anfallssäker",
+            "Vision Impaired": "Nedsatt syn",
+            "ADHD Friendly": "ADHD-vänlig",
+            "Dyslexia Friendly": "Dyslexivänlig",
+            "On": "På",
+            "Off": "Av",
+            "Mute Sounds": "Stäng av ljud",
+            "Page Structure": "Sidstruktur",
+            "Text Magnifier": "Textförstorare",
+            "Headings": "Rubriker",
+            "Landmarks": "Landmärken",
+            "Links": "Länkar",
+            "No items found": "Inga objekt hittades",
+            "Settings reset": "Inställningarna har återställts",
+          },
+          da: {
+            "Accessibility": "Tilgængelighed",
+            "Accessibility Options": "Tilgængelighedsindstillinger",
+            "Accessibility Menu": "Tilgængelighedsmenu",
+            "Reset settings": "Nulstil indstillinger",
+            "Reset All Settings": "Nulstil alle indstillinger",
+            "Close": "Luk",
+            "Content Adjustments": "Indholdsjusteringer",
+            "Adjust Font Size": "Juster skriftstørrelse",
+            "Highlight Title": "Fremhæv overskrifter",
+            "Highlight Links": "Fremhæv links",
+            "Readable Font": "Letlæselig skrifttype",
+            "Color Adjustments": "Farvejusteringer",
+            "Invert Colors": "Invertér farver",
+            "Light Contrast": "Lys kontrast",
+            "Dark Contrast": "Mørk kontrast",
+            "High Contrast": "Høj kontrast",
+            "High Saturation": "Høj mætning",
+            "Low Saturation": "Lav mætning",
+            "Monochrome": "Monokrom",
+            "Tools": "Værktøjer",
+            "Reading Guide": "Læselinjal",
+            "Stop Animations": "Stop animationer",
+            "Big Cursor": "Stor markør",
+            "Increase Font Size": "Større skrift",
+            "Decrease Font Size": "Mindre skrift",
+            "Letter Spacing": "Bogstavafstand",
+            "Line Height": "Linjeafstand",
+            "Font Weight": "Skriftvægt",
+            "Dyslexia Font": "Ordblindevenlig skrifttype",
+            "Legible Font": "Tydelig skrifttype",
+            "Font Size": "Skriftstørrelse",
+            "Language": "Sprog",
+            "All Languages": "Alle sprog",
+            "Search language": "Søg sprog",
+            "Open Accessibility Menu": "Åbn tilgængelighedsmenu",
+            "Open accessibility menu": "Åbn tilgængelighedsmenu",
+            "Hide Images": "Skjul billeder",
+            "Skip to accessibility menu": "Spring til tilgængelighedsmenu",
+            "Accessibility Report": "Tilgængelighedsrapport",
+            "Run Accessibility Check": "Kør tilgængelighedstjek",
+            "Loading...": "Indlæser...",
+            "Analyzing page...": "Analyserer siden...",
+            "Critical": "Kritisk",
+            "Serious": "Alvorlig",
+            "Moderate": "Moderat",
+            "Minor": "Mindre",
+            "Violations Found": "Problemer fundet",
+            "No Issues Found": "Ingen problemer fundet",
+            "Element": "Element",
+            "Issue": "Problem",
+            "How to Fix": "Sådan rettes det",
+            "Close Report": "Luk rapport",
+            "Passed Tests": "Beståede test",
+            "Items Need Review": "Elementer kræver gennemgang",
+            "Annotations": "Markeringer",
+            "Text to Speech": "Tekst til tale",
+            "Text to Speech On": "Tekst til tale slået til",
+            "Text to Speech Off": "Tekst til tale slået fra",
+            "Simplify Layout": "Forenkl layout",
+            "Speech": "Tale",
+            "Text": "Tekst",
+            "Color & Contrast": "Farve og kontrast",
+            "Reading Aids": "Læsehjælpemidler",
+            "Interaction": "Interaktion",
+            "Contrast": "Kontrast",
+            "Saturation": "Mætning",
+            "Light": "Lys",
+            "Dark": "Mørk",
+            "High": "Høj",
+            "Low": "Lav",
+            "Play": "Afspil",
+            "Pause": "Pause",
+            "Stop": "Stop",
+            "Loading voice...": "Indlæser stemme...",
+            "Reading...": "Læser...",
+            "Profiles": "Profiler",
+            "Seizure Safe": "Epilepsisikker",
+            "Vision Impaired": "Nedsat syn",
+            "ADHD Friendly": "ADHD-venlig",
+            "Dyslexia Friendly": "Ordblindevenlig",
+            "On": "Til",
+            "Off": "Fra",
+            "Mute Sounds": "Slå lyd fra",
+            "Page Structure": "Sidestruktur",
+            "Text Magnifier": "Tekstforstørrer",
+            "Headings": "Overskrifter",
+            "Landmarks": "Landemærker",
+            "Links": "Links",
+            "No items found": "Ingen elementer fundet",
+            "Settings reset": "Indstillinger nulstillet",
+          },
+          ca: {
+            "Accessibility": "Accessibilitat",
+            "Accessibility Options": "Opcions d'accessibilitat",
+            "Accessibility Menu": "Menú d'accessibilitat",
+            "Reset settings": "Restableix la configuració",
+            "Reset All Settings": "Restableix tota la configuració",
+            "Close": "Tanca",
+            "Content Adjustments": "Ajustos de contingut",
+            "Adjust Font Size": "Ajusta la mida del text",
+            "Highlight Title": "Ressalta els títols",
+            "Highlight Links": "Ressalta els enllaços",
+            "Readable Font": "Tipografia llegible",
+            "Color Adjustments": "Ajustos de color",
+            "Invert Colors": "Inverteix els colors",
+            "Light Contrast": "Contrast clar",
+            "Dark Contrast": "Contrast fosc",
+            "High Contrast": "Contrast alt",
+            "High Saturation": "Saturació alta",
+            "Low Saturation": "Saturació baixa",
+            "Monochrome": "Monocrom",
+            "Tools": "Eines",
+            "Reading Guide": "Guia de lectura",
+            "Stop Animations": "Atura les animacions",
+            "Big Cursor": "Cursor gran",
+            "Increase Font Size": "Augmenta la mida del text",
+            "Decrease Font Size": "Redueix la mida del text",
+            "Letter Spacing": "Espaiat entre lletres",
+            "Line Height": "Interlineat",
+            "Font Weight": "Gruix de la lletra",
+            "Dyslexia Font": "Tipografia per a dislèxia",
+            "Legible Font": "Tipografia clara",
+            "Font Size": "Mida del text",
+            "Language": "Idioma",
+            "All Languages": "Tots els idiomes",
+            "Search language": "Cerca un idioma",
+            "Open Accessibility Menu": "Obre el menú d'accessibilitat",
+            "Open accessibility menu": "Obre el menú d'accessibilitat",
+            "Hide Images": "Amaga les imatges",
+            "Skip to accessibility menu": "Ves al menú d'accessibilitat",
+            "Accessibility Report": "Informe d'accessibilitat",
+            "Run Accessibility Check": "Executa la comprovació d'accessibilitat",
+            "Loading...": "S'està carregant...",
+            "Analyzing page...": "S'està analitzant la pàgina...",
+            "Critical": "Crític",
+            "Serious": "Greu",
+            "Moderate": "Moderat",
+            "Minor": "Menor",
+            "Violations Found": "Problemes trobats",
+            "No Issues Found": "No s'han trobat problemes",
+            "Element": "Element",
+            "Issue": "Problema",
+            "How to Fix": "Com solucionar-ho",
+            "Close Report": "Tanca l'informe",
+            "Passed Tests": "Proves superades",
+            "Items Need Review": "Elements per revisar",
+            "Annotations": "Anotacions",
+            "Text to Speech": "Text a veu",
+            "Text to Speech On": "Text a veu activat",
+            "Text to Speech Off": "Text a veu desactivat",
+            "Simplify Layout": "Simplifica el disseny",
+            "Speech": "Veu",
+            "Text": "Text",
+            "Color & Contrast": "Color i contrast",
+            "Reading Aids": "Ajudes de lectura",
+            "Interaction": "Interacció",
+            "Contrast": "Contrast",
+            "Saturation": "Saturació",
+            "Light": "Clar",
+            "Dark": "Fosc",
+            "High": "Alt",
+            "Low": "Baix",
+            "Play": "Reprodueix",
+            "Pause": "Pausa",
+            "Stop": "Atura",
+            "Loading voice...": "S'està carregant la veu...",
+            "Reading...": "S'està llegint...",
+            "Profiles": "Perfils",
+            "Seizure Safe": "Segur per a epilèpsia",
+            "Vision Impaired": "Visió reduïda",
+            "ADHD Friendly": "Adaptat per a TDAH",
+            "Dyslexia Friendly": "Adaptat per a dislèxia",
+            "On": "Activat",
+            "Off": "Desactivat",
+            "Mute Sounds": "Silencia els sons",
+            "Page Structure": "Estructura de la pàgina",
+            "Text Magnifier": "Lupa de text",
+            "Headings": "Encapçalaments",
+            "Landmarks": "Punts de referència",
+            "Links": "Enllaços",
+            "No items found": "No s'han trobat elements",
+            "Settings reset": "S'ha restablert la configuració",
+          },
+          sl: {
+            "Accessibility": "Dostopnost",
+            "Accessibility Options": "Možnosti dostopnosti",
+            "Accessibility Menu": "Meni dostopnosti",
+            "Reset settings": "Ponastavi nastavitve",
+            "Reset All Settings": "Ponastavi vse nastavitve",
+            "Close": "Zapri",
+            "Content Adjustments": "Prilagoditve vsebine",
+            "Adjust Font Size": "Prilagodi velikost pisave",
+            "Highlight Title": "Označi naslove",
+            "Highlight Links": "Označi povezave",
+            "Readable Font": "Berljiva pisava",
+            "Color Adjustments": "Prilagoditve barv",
+            "Invert Colors": "Obrni barve",
+            "Light Contrast": "Svetli kontrast",
+            "Dark Contrast": "Temni kontrast",
+            "High Contrast": "Visok kontrast",
+            "High Saturation": "Visoka nasičenost",
+            "Low Saturation": "Nizka nasičenost",
+            "Monochrome": "Enobarvno",
+            "Tools": "Orodja",
+            "Reading Guide": "Bralno ravnilo",
+            "Stop Animations": "Ustavi animacije",
+            "Big Cursor": "Velik kazalec",
+            "Increase Font Size": "Povečaj pisavo",
+            "Decrease Font Size": "Zmanjšaj pisavo",
+            "Letter Spacing": "Razmik med črkami",
+            "Line Height": "Razmik med vrsticami",
+            "Font Weight": "Debelina pisave",
+            "Dyslexia Font": "Pisava za disleksijo",
+            "Legible Font": "Čitljiva pisava",
+            "Font Size": "Velikost pisave",
+            "Language": "Jezik",
+            "All Languages": "Vsi jeziki",
+            "Search language": "Išči jezik",
+            "Open Accessibility Menu": "Odpri meni dostopnosti",
+            "Open accessibility menu": "Odpri meni dostopnosti",
+            "Hide Images": "Skrij slike",
+            "Skip to accessibility menu": "Skoči na meni dostopnosti",
+            "Accessibility Report": "Poročilo o dostopnosti",
+            "Run Accessibility Check": "Zaženi preverjanje dostopnosti",
+            "Loading...": "Nalaganje ...",
+            "Analyzing page...": "Analiziranje strani ...",
+            "Critical": "Kritično",
+            "Serious": "Resno",
+            "Moderate": "Zmerno",
+            "Minor": "Manjše",
+            "Violations Found": "Najdene težave",
+            "No Issues Found": "Ni najdenih težav",
+            "Element": "Element",
+            "Issue": "Težava",
+            "How to Fix": "Kako odpraviti",
+            "Close Report": "Zapri poročilo",
+            "Passed Tests": "Uspešni preizkusi",
+            "Items Need Review": "Elementi za pregled",
+            "Annotations": "Oznake",
+            "Text to Speech": "Besedilo v govor",
+            "Text to Speech On": "Besedilo v govor vklopljeno",
+            "Text to Speech Off": "Besedilo v govor izklopljeno",
+            "Simplify Layout": "Poenostavi postavitev",
+            "Speech": "Govor",
+            "Text": "Besedilo",
+            "Color & Contrast": "Barva in kontrast",
+            "Reading Aids": "Bralni pripomočki",
+            "Interaction": "Interakcija",
+            "Contrast": "Kontrast",
+            "Saturation": "Nasičenost",
+            "Light": "Svetlo",
+            "Dark": "Temno",
+            "High": "Visoko",
+            "Low": "Nizko",
+            "Play": "Predvajaj",
+            "Pause": "Premor",
+            "Stop": "Ustavi",
+            "Loading voice...": "Nalaganje glasu ...",
+            "Reading...": "Branje ...",
+            "Profiles": "Profili",
+            "Seizure Safe": "Varno pri epilepsiji",
+            "Vision Impaired": "Okvara vida",
+            "ADHD Friendly": "Prijazno za ADHD",
+            "Dyslexia Friendly": "Prijazno za disleksijo",
+            "On": "Vklopljeno",
+            "Off": "Izklopljeno",
+            "Mute Sounds": "Izklopi zvok",
+            "Page Structure": "Struktura strani",
+            "Text Magnifier": "Povečevalnik besedila",
+            "Headings": "Naslovi",
+            "Landmarks": "Mejniki",
+            "Links": "Povezave",
+            "No items found": "Ni najdenih elementov",
+            "Settings reset": "Nastavitve so ponastavljene",
+          },
+          lv: {
+            "Accessibility": "Piekļūstamība",
+            "Accessibility Options": "Piekļūstamības opcijas",
+            "Accessibility Menu": "Piekļūstamības izvēlne",
+            "Reset settings": "Atiestatīt iestatījumus",
+            "Reset All Settings": "Atiestatīt visus iestatījumus",
+            "Close": "Aizvērt",
+            "Content Adjustments": "Satura pielāgojumi",
+            "Adjust Font Size": "Pielāgot fonta lielumu",
+            "Highlight Title": "Izcelt virsrakstus",
+            "Highlight Links": "Izcelt saites",
+            "Readable Font": "Lasāms fonts",
+            "Color Adjustments": "Krāsu pielāgojumi",
+            "Invert Colors": "Invertēt krāsas",
+            "Light Contrast": "Gaišs kontrasts",
+            "Dark Contrast": "Tumšs kontrasts",
+            "High Contrast": "Augsts kontrasts",
+            "High Saturation": "Augsts piesātinājums",
+            "Low Saturation": "Zems piesātinājums",
+            "Monochrome": "Vienkrāsains",
+            "Tools": "Rīki",
+            "Reading Guide": "Lasīšanas līnija",
+            "Stop Animations": "Apturēt animācijas",
+            "Big Cursor": "Liels kursors",
+            "Increase Font Size": "Palielināt fontu",
+            "Decrease Font Size": "Samazināt fontu",
+            "Letter Spacing": "Burtu atstarpe",
+            "Line Height": "Rindstarpa",
+            "Font Weight": "Fonta biezums",
+            "Dyslexia Font": "Disleksijas fonts",
+            "Legible Font": "Salasāms fonts",
+            "Font Size": "Fonta lielums",
+            "Language": "Valoda",
+            "All Languages": "Visas valodas",
+            "Search language": "Meklēt valodu",
+            "Open Accessibility Menu": "Atvērt piekļūstamības izvēlni",
+            "Open accessibility menu": "Atvērt piekļūstamības izvēlni",
+            "Hide Images": "Paslēpt attēlus",
+            "Skip to accessibility menu": "Pāriet uz piekļūstamības izvēlni",
+            "Accessibility Report": "Piekļūstamības pārskats",
+            "Run Accessibility Check": "Palaist piekļūstamības pārbaudi",
+            "Loading...": "Notiek ielāde...",
+            "Analyzing page...": "Analizē lapu...",
+            "Critical": "Kritisks",
+            "Serious": "Nopietns",
+            "Moderate": "Mērens",
+            "Minor": "Neliels",
+            "Violations Found": "Atrastas problēmas",
+            "No Issues Found": "Problēmas nav atrastas",
+            "Element": "Elements",
+            "Issue": "Problēma",
+            "How to Fix": "Kā novērst",
+            "Close Report": "Aizvērt pārskatu",
+            "Passed Tests": "Izturētie testi",
+            "Items Need Review": "Vienumi jāpārskata",
+            "Annotations": "Anotācijas",
+            "Text to Speech": "Teksta nolasīšana",
+            "Text to Speech On": "Teksta nolasīšana ieslēgta",
+            "Text to Speech Off": "Teksta nolasīšana izslēgta",
+            "Simplify Layout": "Vienkāršot izkārtojumu",
+            "Speech": "Runa",
+            "Text": "Teksts",
+            "Color & Contrast": "Krāsa un kontrasts",
+            "Reading Aids": "Lasīšanas palīgi",
+            "Interaction": "Mijiedarbība",
+            "Contrast": "Kontrasts",
+            "Saturation": "Piesātinājums",
+            "Light": "Gaišs",
+            "Dark": "Tumšs",
+            "High": "Augsts",
+            "Low": "Zems",
+            "Play": "Atskaņot",
+            "Pause": "Pauzēt",
+            "Stop": "Apturēt",
+            "Loading voice...": "Ielādē balsi...",
+            "Reading...": "Lasa...",
+            "Profiles": "Profili",
+            "Seizure Safe": "Drošs epilepsijai",
+            "Vision Impaired": "Redzes traucējumi",
+            "ADHD Friendly": "ADHD draudzīgs",
+            "Dyslexia Friendly": "Disleksijai draudzīgs",
+            "On": "Ieslēgts",
+            "Off": "Izslēgts",
+            "Mute Sounds": "Izslēgt skaņu",
+            "Page Structure": "Lapas struktūra",
+            "Text Magnifier": "Teksta lupa",
+            "Headings": "Virsraksti",
+            "Landmarks": "Orientieri",
+            "Links": "Saites",
+            "No items found": "Nekas nav atrasts",
+            "Settings reset": "Iestatījumi atiestatīti",
+          },
+          el: {
+            "Accessibility": "Προσβασιμότητα",
+            "Accessibility Options": "Επιλογές προσβασιμότητας",
+            "Accessibility Menu": "Μενού προσβασιμότητας",
+            "Reset settings": "Επαναφορά ρυθμίσεων",
+            "Reset All Settings": "Επαναφορά όλων των ρυθμίσεων",
+            "Close": "Κλείσιμο",
+            "Content Adjustments": "Προσαρμογές περιεχομένου",
+            "Adjust Font Size": "Προσαρμογή μεγέθους γραμματοσειράς",
+            "Highlight Title": "Επισήμανση τίτλων",
+            "Highlight Links": "Επισήμανση συνδέσμων",
+            "Readable Font": "Ευανάγνωστη γραμματοσειρά",
+            "Color Adjustments": "Προσαρμογές χρωμάτων",
+            "Invert Colors": "Αντιστροφή χρωμάτων",
+            "Light Contrast": "Φωτεινή αντίθεση",
+            "Dark Contrast": "Σκοτεινή αντίθεση",
+            "High Contrast": "Υψηλή αντίθεση",
+            "High Saturation": "Υψηλός κορεσμός",
+            "Low Saturation": "Χαμηλός κορεσμός",
+            "Monochrome": "Μονόχρωμο",
+            "Tools": "Εργαλεία",
+            "Reading Guide": "Οδηγός ανάγνωσης",
+            "Stop Animations": "Διακοπή κινούμενων στοιχείων",
+            "Big Cursor": "Μεγάλος δείκτης",
+            "Increase Font Size": "Αύξηση μεγέθους γραμματοσειράς",
+            "Decrease Font Size": "Μείωση μεγέθους γραμματοσειράς",
+            "Letter Spacing": "Απόσταση γραμμάτων",
+            "Line Height": "Διάστιχο",
+            "Font Weight": "Πάχος γραμματοσειράς",
+            "Dyslexia Font": "Γραμματοσειρά για δυσλεξία",
+            "Legible Font": "Καθαρή γραμματοσειρά",
+            "Font Size": "Μέγεθος γραμματοσειράς",
+            "Language": "Γλώσσα",
+            "All Languages": "Όλες οι γλώσσες",
+            "Search language": "Αναζήτηση γλώσσας",
+            "Open Accessibility Menu": "Άνοιγμα μενού προσβασιμότητας",
+            "Open accessibility menu": "Άνοιγμα μενού προσβασιμότητας",
+            "Hide Images": "Απόκρυψη εικόνων",
+            "Skip to accessibility menu": "Μετάβαση στο μενού προσβασιμότητας",
+            "Accessibility Report": "Αναφορά προσβασιμότητας",
+            "Run Accessibility Check": "Εκτέλεση ελέγχου προσβασιμότητας",
+            "Loading...": "Φόρτωση...",
+            "Analyzing page...": "Ανάλυση σελίδας...",
+            "Critical": "Κρίσιμο",
+            "Serious": "Σοβαρό",
+            "Moderate": "Μέτριο",
+            "Minor": "Μικρό",
+            "Violations Found": "Βρέθηκαν προβλήματα",
+            "No Issues Found": "Δεν βρέθηκαν προβλήματα",
+            "Element": "Στοιχείο",
+            "Issue": "Πρόβλημα",
+            "How to Fix": "Τρόπος διόρθωσης",
+            "Close Report": "Κλείσιμο αναφοράς",
+            "Passed Tests": "Επιτυχημένοι έλεγχοι",
+            "Items Need Review": "Στοιχεία προς έλεγχο",
+            "Annotations": "Επισημάνσεις",
+            "Text to Speech": "Κείμενο σε ομιλία",
+            "Text to Speech On": "Κείμενο σε ομιλία ενεργό",
+            "Text to Speech Off": "Κείμενο σε ομιλία ανενεργό",
+            "Simplify Layout": "Απλοποίηση διάταξης",
+            "Speech": "Ομιλία",
+            "Text": "Κείμενο",
+            "Color & Contrast": "Χρώμα και αντίθεση",
+            "Reading Aids": "Βοηθήματα ανάγνωσης",
+            "Interaction": "Αλληλεπίδραση",
+            "Contrast": "Αντίθεση",
+            "Saturation": "Κορεσμός",
+            "Light": "Φωτεινό",
+            "Dark": "Σκοτεινό",
+            "High": "Υψηλό",
+            "Low": "Χαμηλό",
+            "Play": "Αναπαραγωγή",
+            "Pause": "Παύση",
+            "Stop": "Διακοπή",
+            "Loading voice...": "Φόρτωση φωνής...",
+            "Reading...": "Ανάγνωση...",
+            "Profiles": "Προφίλ",
+            "Seizure Safe": "Ασφαλές για επιληψία",
+            "Vision Impaired": "Προβλήματα όρασης",
+            "ADHD Friendly": "Φιλικό για ΔΕΠΥ",
+            "Dyslexia Friendly": "Φιλικό για δυσλεξία",
+            "On": "Ενεργό",
+            "Off": "Ανενεργό",
+            "Mute Sounds": "Σίγαση ήχων",
+            "Page Structure": "Δομή σελίδας",
+            "Text Magnifier": "Μεγεθυντής κειμένου",
+            "Headings": "Επικεφαλίδες",
+            "Landmarks": "Ορόσημα",
+            "Links": "Σύνδεσμοι",
+            "No items found": "Δεν βρέθηκαν στοιχεία",
+            "Settings reset": "Οι ρυθμίσεις επαναφέρθηκαν",
+          },
+          ka: {
+            "Accessibility": "ხელმისაწვდომობა",
+            "Accessibility Options": "ხელმისაწვდომობის პარამეტრები",
+            "Accessibility Menu": "ხელმისაწვდომობის მენიუ",
+            "Reset settings": "პარამეტრების აღდგენა",
+            "Reset All Settings": "ყველა პარამეტრის აღდგენა",
+            "Close": "დახურვა",
+            "Content Adjustments": "შინაარსის მორგება",
+            "Adjust Font Size": "შრიფტის ზომის მორგება",
+            "Highlight Title": "სათაურების გამოკვეთა",
+            "Highlight Links": "ბმულების გამოკვეთა",
+            "Readable Font": "ადვილად წასაკითხი შრიფტი",
+            "Color Adjustments": "ფერების მორგება",
+            "Invert Colors": "ფერების ინვერსია",
+            "Light Contrast": "ღია კონტრასტი",
+            "Dark Contrast": "მუქი კონტრასტი",
+            "High Contrast": "მაღალი კონტრასტი",
+            "High Saturation": "მაღალი გაჯერებულობა",
+            "Low Saturation": "დაბალი გაჯერებულობა",
+            "Monochrome": "მონოქრომული",
+            "Tools": "ინსტრუმენტები",
+            "Reading Guide": "კითხვის ხაზი",
+            "Stop Animations": "ანიმაციების შეჩერება",
+            "Big Cursor": "დიდი კურსორი",
+            "Increase Font Size": "შრიფტის გაზრდა",
+            "Decrease Font Size": "შრიფტის შემცირება",
+            "Letter Spacing": "ასოებს შორის მანძილი",
+            "Line Height": "სტრიქონებს შორის მანძილი",
+            "Font Weight": "შრიფტის სისქე",
+            "Dyslexia Font": "დისლექსიის შრიფტი",
+            "Legible Font": "მკაფიო შრიფტი",
+            "Font Size": "შრიფტის ზომა",
+            "Language": "ენა",
+            "All Languages": "ყველა ენა",
+            "Search language": "ენის ძიება",
+            "Open Accessibility Menu": "ხელმისაწვდომობის მენიუს გახსნა",
+            "Open accessibility menu": "ხელმისაწვდომობის მენიუს გახსნა",
+            "Hide Images": "სურათების დამალვა",
+            "Skip to accessibility menu": "ხელმისაწვდომობის მენიუზე გადასვლა",
+            "Accessibility Report": "ხელმისაწვდომობის ანგარიში",
+            "Run Accessibility Check": "ხელმისაწვდომობის შემოწმების გაშვება",
+            "Loading...": "იტვირთება...",
+            "Analyzing page...": "გვერდის ანალიზი...",
+            "Critical": "კრიტიკული",
+            "Serious": "სერიოზული",
+            "Moderate": "ზომიერი",
+            "Minor": "მცირე",
+            "Violations Found": "ნაპოვნია პრობლემები",
+            "No Issues Found": "პრობლემები არ მოიძებნა",
+            "Element": "ელემენტი",
+            "Issue": "პრობლემა",
+            "How to Fix": "როგორ გამოვასწოროთ",
+            "Close Report": "ანგარიშის დახურვა",
+            "Passed Tests": "წარმატებული ტესტები",
+            "Items Need Review": "გადასამოწმებელი ელემენტები",
+            "Annotations": "ანოტაციები",
+            "Text to Speech": "ტექსტის გახმოვანება",
+            "Text to Speech On": "ტექსტის გახმოვანება ჩართულია",
+            "Text to Speech Off": "ტექსტის გახმოვანება გამორთულია",
+            "Simplify Layout": "განლაგების გამარტივება",
+            "Speech": "მეტყველება",
+            "Text": "ტექსტი",
+            "Color & Contrast": "ფერი და კონტრასტი",
+            "Reading Aids": "კითხვის დამხმარეები",
+            "Interaction": "ინტერაქცია",
+            "Contrast": "კონტრასტი",
+            "Saturation": "გაჯერებულობა",
+            "Light": "ღია",
+            "Dark": "მუქი",
+            "High": "მაღალი",
+            "Low": "დაბალი",
+            "Play": "დაკვრა",
+            "Pause": "პაუზა",
+            "Stop": "შეჩერება",
+            "Loading voice...": "ხმა იტვირთება...",
+            "Reading...": "იკითხება...",
+            "Profiles": "პროფილები",
+            "Seizure Safe": "უსაფრთხო ეპილეფსიისთვის",
+            "Vision Impaired": "მხედველობის დარღვევა",
+            "ADHD Friendly": "მოსახერხებელი ADHD-სთვის",
+            "Dyslexia Friendly": "მოსახერხებელი დისლექსიისთვის",
+            "On": "ჩართულია",
+            "Off": "გამორთულია",
+            "Mute Sounds": "ხმის გამორთვა",
+            "Page Structure": "გვერდის სტრუქტურა",
+            "Text Magnifier": "ტექსტის გამადიდებელი",
+            "Headings": "სათაურები",
+            "Landmarks": "ორიენტირები",
+            "Links": "ბმულები",
+            "No items found": "ელემენტები არ მოიძებნა",
+            "Settings reset": "პარამეტრები აღდგენილია",
           }
         };
 
@@ -1294,7 +1951,14 @@ var AccessibleWebWidget = (function () {
           { code: "nl", label: "Nederlands (Dutch)" },
           { code: "uk", label: "Українська (Ukrainian)" },
           { code: "ar", label: "العربية (Arabic)" },
-          { code: "he", label: "עברית (Hebrew)" }
+          { code: "he", label: "עברית (Hebrew)" },
+          { code: "sv", label: "Svenska (Swedish)" },
+          { code: "da", label: "Dansk (Danish)" },
+          { code: "ca", label: "Català (Catalan)" },
+          { code: "sl", label: "Slovenščina (Slovenian)" },
+          { code: "lv", label: "Latviešu (Latvian)" },
+          { code: "el", label: "Ελληνικά (Greek)" },
+          { code: "ka", label: "ქართული (Georgian)" }
         ];
 
     /** @typedef {import('./index.js').default} AccessibleWebWidget */
@@ -1911,6 +2575,14 @@ var AccessibleWebWidget = (function () {
     const AXE_CORE_SRC = `https://cdn.jsdelivr.net/npm/axe-core@${AXE_CORE_VERSION}/axe.min.js`;
     const AXE_CORE_INTEGRITY = 'sha384-wb3zgvLcZeMFSec08dk7g8K8yDFFAX2uNKVwOUuowwc/wIfE2t6XVUjTEgPrOJCS';
     const DYSLEXIA_FONT_SRC = 'url("https://accessibleweb.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"), url("https://accessibleweb.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype")';
+    // One @font-face source per Readable Font level. An empty src (WordPress
+    // build) skips the @font-face and the family falls back through its
+    // system font stack.
+    const READABLE_FONT_FACES = {
+      dyslexic: { family: 'OpenDyslexic3', src: DYSLEXIA_FONT_SRC },
+      legible: { family: 'Atkinson Hyperlegible', src: 'url("https://accessibleweb.pages.dev/fonts/AtkinsonHyperlegible-Regular.woff2") format("woff2")' },
+      lexend: { family: 'Lexend', src: 'url("https://accessibleweb.pages.dev/fonts/Lexend-Regular.woff2") format("woff2")' }
+    };
 
     /** @typedef {import('../index.js').default} AccessibleWebWidget */
 
@@ -2250,38 +2922,64 @@ var AccessibleWebWidget = (function () {
           this.applyToolStyle({ ...config, enable });
         },
 
-      ensureReadableFontLoaded() {
-          if (this.readableFontLoaded) return;
-          if (this.hasStyle('acc-readable-text-font')) {
-            this.readableFontLoaded = true;
+      // Map a persisted readable-text state to a font choice. Legacy configs
+      // stored a boolean (true = the old single dyslexia font).
+      resolveReadableFontChoice(value) {
+          const choices = this.readableFontChoices || [];
+          if (value === true) return choices[0] || null;
+          if (typeof value !== 'string') return null;
+          return choices.find((choice) => choice.key === value) || null;
+        },
+
+      ensureReadableFontLoaded(fontKey = 'dyslexic') {
+          if (!this.readableFontsLoaded) {
+            this.readableFontsLoaded = new Set();
+          }
+          if (this.readableFontsLoaded.has(fontKey)) return;
+          const styleId = `acc-font-${fontKey}`;
+          if (this.hasStyle(styleId)) {
+            this.readableFontsLoaded.add(fontKey);
             return;
           }
-          const rawFontUrl = typeof this.options?.dyslexiaFontUrl === 'string' ? this.options.dyslexiaFontUrl.trim() : '';
-          const customFontUrl = rawFontUrl && !/["'()\\]/.test(rawFontUrl) ? rawFontUrl : '';
-          const fontSrc = customFontUrl ? `url("${customFontUrl}")` : DYSLEXIA_FONT_SRC;
+          const face = READABLE_FONT_FACES[fontKey];
+          if (!face || !face.family) {
+            this.readableFontsLoaded.add(fontKey);
+            return;
+          }
+          let fontSrc = face.src || '';
+          if (fontKey === 'dyslexic') {
+            const rawFontUrl = typeof this.options?.dyslexiaFontUrl === 'string' ? this.options.dyslexiaFontUrl.trim() : '';
+            const customFontUrl = rawFontUrl && !/["'()\\]/.test(rawFontUrl) ? rawFontUrl : '';
+            if (customFontUrl) fontSrc = `url("${customFontUrl}")`;
+          }
           if (!fontSrc) {
             // No font source available (WordPress build without a configured
-            // dyslexiaFontUrl): the feature falls back to the system font stack.
-            this.readableFontLoaded = true;
+            // URL): the choice falls back through its system font stack.
+            this.readableFontsLoaded.add(fontKey);
             return;
           }
           // @font-face stays a real <style> element (nonce'd under CSP):
           // constructed-stylesheet @font-face support is still inconsistent.
-          this.injectStyle('acc-readable-text-font', `
+          this.injectStyle(styleId, `
         @font-face {
-          font-family: "OpenDyslexic3";
+          font-family: "${face.family}";
           src: ${fontSrc};
           font-display: swap;
         }
       `, { forceElement: true });
-          this.readableFontLoaded = true;
+          this.readableFontsLoaded.add(fontKey);
         },
 
-      enableReadableText(enable = false) {
-          const shouldEnable = !!enable;
-          if (shouldEnable) {
-            this.ensureReadableFontLoaded();
+      enableReadableText(value = false) {
+          const choice = this.resolveReadableFontChoice(value);
+          const feature = this.multiLevelFeatures?.['readable-text'];
+          if (feature) {
+            feature.currentIndex = choice ? feature.values.indexOf(choice.key) : -1;
           }
+          if (choice) {
+            this.ensureReadableFontLoaded(choice.key);
+          }
+          const fontFamily = choice ? choice.family : '';
           const contentSelector = [
             '*',
             ':not(.material-icons)',
@@ -2306,19 +3004,19 @@ var AccessibleWebWidget = (function () {
             id: "readable-text",
             selector: "body",
             childrenSelector: [contentSelector],
-            styles: { 
-              'font-family': '"OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif' 
+            styles: {
+              'font-family': fontFamily
             },
             css: `
           .acc-container, .acc-container *, .acc-menu, .acc-menu * {
             font-family: inherit !important;
           }
           input::placeholder, textarea::placeholder {
-            font-family: "OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif !important;
+            font-family: ${fontFamily || 'inherit'} !important;
           }
         `
           };
-          this.applyToolStyle({ ...config, enable: shouldEnable });
+          this.applyToolStyle({ ...config, enable: !!choice });
         },
 
       pauseMotion(enable = false) {
@@ -3045,6 +3743,7 @@ var AccessibleWebWidget = (function () {
           const menu = this.queryWidget('.acc-menu');
           if (menu) {
             this.setColorFilterUI(menu, null);
+            this.setReadableFontUI(menu, null);
             this.syncTextScaleControlUI(menu, 1);
           }
           
@@ -4410,6 +5109,36 @@ var AccessibleWebWidget = (function () {
           this.applyModeToggleButtonDisplay(button, this.getSaturationToggleDisplay(index), 'data-saturation-mode');
         },
 
+      getReadableFontDisplay(index) {
+          const choices = this.readableFontChoices || [];
+          const choice = index >= 0 ? choices[index] : null;
+          return {
+            key: choice ? choice.key : null,
+            label: choice ? choice.label : 'Readable Font',
+            icon: this.widgetIcons.dyslexiaFont
+          };
+        },
+
+      setReadableFontUI(menu, activeKey = null) {
+          if (!menu || !menu.querySelector) return;
+          const feature = this.multiLevelFeatures?.['readable-text'];
+          if (!feature) return;
+          const index = activeKey ? feature.values.indexOf(activeKey) : -1;
+          feature.currentIndex = index;
+          const button = menu.querySelector('.acc-btn[data-key="readable-text"]');
+          if (!button) return;
+          this.applyModeToggleButtonDisplay(button, this.getReadableFontDisplay(index), 'data-readable-font-mode');
+          const isActive = index >= 0;
+          button.classList.toggle('acc-selected', isActive);
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          const indicator = button.querySelector('.acc-progress-indicator[data-feature="readable-text"]');
+          if (indicator) {
+            indicator.querySelectorAll('.acc-progress-dot').forEach((dot, dotIndex) => {
+              dot.classList.toggle('active', dotIndex === index);
+            });
+          }
+        },
+
       isColorFilterKey(key) {
           return Array.isArray(this.colorFilterKeys) && this.colorFilterKeys.includes(key);
         },
@@ -4584,8 +5313,20 @@ var AccessibleWebWidget = (function () {
       cycleMultiLevelFeature(featureKey, button) {
           const feature = this.multiLevelFeatures[featureKey];
           if (!feature || !button) return;
-          // Only the color filter toggles render as cycling buttons; text scale
-          // is controlled by the slider in the Text section.
+
+          if (featureKey === 'readable-text') {
+            const newIndex = feature.currentIndex + 1;
+            const newFontKey = newIndex >= feature.levels ? null : feature.values[newIndex];
+            this.updateState({ 'readable-text': newFontKey || false });
+            this.enableReadableText(newFontKey || false);
+            this.setReadableFontUI(button.closest('.acc-menu'), newFontKey);
+            // setReadableFontUI re-labels the button with the active font.
+            this.announceFeatureState(button.getAttribute('aria-label'), !!newFontKey);
+            return;
+          }
+
+          // Beyond those, only the color filter toggles render as cycling
+          // buttons; text scale is controlled by the slider in the Text section.
           if (featureKey !== 'contrast-toggle' && featureKey !== 'saturation-toggle') return;
 
           const newIndex = feature.currentIndex + 1;
@@ -5002,7 +5743,14 @@ var AccessibleWebWidget = (function () {
             nl: 'Netherlands',
             uk: 'Ukraine',
             ar: 'Saudi Arabia',
-            he: 'Israel'
+            he: 'Israel',
+            sv: 'Sweden',
+            da: 'Denmark',
+            ca: 'Spain',
+            sl: 'Slovenia',
+            lv: 'Latvia',
+            el: 'Greece',
+            ka: 'Georgia'
           };
           return countryByLanguage[languageCode] || String(languageCode || '').toUpperCase();
         },
@@ -5021,7 +5769,16 @@ var AccessibleWebWidget = (function () {
             nl: 'NL',
             uk: 'UA',
             ar: 'SA',
-            he: 'IL'
+            he: 'IL',
+            // Explicit codes required: the slice-two-letters fallback maps
+            // sv→SV (El Salvador) and sl→SL (Sierra Leone).
+            sv: 'SE',
+            da: 'DK',
+            ca: 'ES',
+            sl: 'SI',
+            lv: 'LV',
+            el: 'GR',
+            ka: 'GE'
           };
           const countryCode = (countryCodeByLanguage[languageCode] || String(languageCode || '').slice(0, 2)).toUpperCase();
           if (!/^[A-Z]{2}$/.test(countryCode)) {
@@ -5115,6 +5872,8 @@ var AccessibleWebWidget = (function () {
           });
           const activeColorFilter = this.getActiveColorFilterKey(states);
           this.setColorFilterUI(menu, activeColorFilter);
+          const readableChoice = this.resolveReadableFontChoice(states['readable-text']);
+          this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
           this.syncTextScaleControlUI(menu, states['text-scale'] || 1);
         },
 
@@ -6151,7 +6910,7 @@ var AccessibleWebWidget = (function () {
             label: 'Dyslexia Friendly',
             key: 'profile-dyslexia',
             icon: this.widgetIcons.dyslexiaFont,
-            states: { 'readable-text': true, 'line-spacing': true, 'letter-spacing': true }
+            states: { 'readable-text': 'dyslexic', 'line-spacing': true, 'letter-spacing': true }
           }
         ];
 
@@ -6218,12 +6977,27 @@ var AccessibleWebWidget = (function () {
         this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
         this.saturationFilterValues = ['low-saturation', 'high-saturation'];
 
+        // Readable Font levels; the persisted readable-text state holds the
+        // active key ('dyslexic' | 'legible' | 'lexend'; legacy true maps to
+        // 'dyslexic'). Labels are translation keys except the Lexend brand name.
+        this.readableFontChoices = [
+          { key: 'dyslexic', label: 'Dyslexia Font', family: '"OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif' },
+          { key: 'legible', label: 'Legible Font', family: '"Atkinson Hyperlegible", Verdana, Arial, Helvetica, sans-serif' },
+          { key: 'lexend', label: 'Lexend', family: '"Lexend", "Segoe UI", Roboto, Arial, sans-serif' }
+        ];
+
         this.contentOptions = [
           { label: 'Font Weight', key: 'bold-text', icon: this.widgetIcons.boldText },
           { label: 'Line Height', key: 'line-spacing', icon: this.widgetIcons.lineSpacing },
           { label: 'Letter Spacing', key: 'letter-spacing', icon: this.widgetIcons.letterSpacing },
           { label: 'Hide Images', key: 'hide-images', icon: this.widgetIcons.hideImages },
-          { label: 'Dyslexia Font', key: 'readable-text', icon: this.widgetIcons.dyslexiaFont },
+          {
+            label: 'Readable Font',
+            key: 'readable-text',
+            icon: this.widgetIcons.dyslexiaFont,
+            multiLevel: true,
+            levels: this.readableFontChoices.length
+          },
           { label: 'Highlight Links', key: 'highlight-links', icon: this.widgetIcons.highlightLinks },
           { label: 'Highlight Title', key: 'highlight-title', icon: this.widgetIcons.highlightTitle },
           { label: 'Font Size', key: 'text-scale', icon: this.widgetIcons.adjustFontSize }
@@ -6239,6 +7013,11 @@ var AccessibleWebWidget = (function () {
             levels: this.saturationFilterValues.length,
             currentIndex: -1,
             values: this.saturationFilterValues
+          },
+          'readable-text': {
+            levels: this.readableFontChoices.length,
+            currentIndex: -1,
+            values: this.readableFontChoices.map((choice) => choice.key)
           }
         };
 
@@ -6275,7 +7054,7 @@ var AccessibleWebWidget = (function () {
         this.widgetConfig = {};
         this.cookieKey = 'accweb';
         this.readingAidVisible = false;
-        this.readableFontLoaded = false;
+        this.readableFontsLoaded = new Set();
 
         // Shadow DOM host for the widget UI
         this.shadowHost = null;
