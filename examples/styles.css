@@ -223,7 +223,7 @@ code { font-family: var(--mono); }
   text-wrap: balance;
 }
 
-.hero-title em { font-style: italic; letter-spacing: -1px; }
+.hero-title em { font-style: normal; }
 
 .hero-subtitle {
   font: 400 clamp(17px, 2.2vw, 21px)/1.6 var(--sans);
@@ -241,7 +241,7 @@ code { font-family: var(--mono); }
   text-wrap: balance;
 }
 
-.page-title em { font-style: italic; }
+.page-title em { font-style: normal; }
 
 .page-sub {
   font: 400 clamp(16px, 2vw, 19px)/1.6 var(--sans);
@@ -524,7 +524,6 @@ pre.export-code .val { color: var(--code-val); }
 
 .stance blockquote {
   font: 400 clamp(24px, 3vw, 34px)/1.4 var(--serif);
-  font-style: italic;
   letter-spacing: -0.5px;
   color: var(--text);
   max-width: 760px;
