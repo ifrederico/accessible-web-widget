@@ -346,6 +346,21 @@ export const coreFeatureMethods = {
       return choices.find((choice) => choice.key === value) || null;
     },
 
+  // Per-font self-hosting override: options.readableFontUrls = { dyslexic,
+  // legible, lexend }, with dyslexiaFontUrl kept as the legacy alias for
+  // the dyslexic entry. The WordPress build relies on this — its bundled
+  // widget strips the default remote sources.
+  getCustomReadableFontUrl(fontKey) {
+      const urls = this.options?.readableFontUrls;
+      let raw = (urls && typeof urls === 'object') ? urls[fontKey] : '';
+      if (fontKey === 'dyslexic' && (typeof raw !== 'string' || !raw.trim())) {
+        raw = this.options?.dyslexiaFontUrl;
+      }
+      if (typeof raw !== 'string') return '';
+      const trimmed = raw.trim();
+      return trimmed && !/["'()\\]/.test(trimmed) ? trimmed : '';
+    },
+
   ensureReadableFontLoaded(fontKey = 'dyslexic') {
       if (!this.readableFontsLoaded) {
         this.readableFontsLoaded = new Set();
@@ -362,11 +377,8 @@ export const coreFeatureMethods = {
         return;
       }
       let fontSrc = face.src || '';
-      if (fontKey === 'dyslexic') {
-        const rawFontUrl = typeof this.options?.dyslexiaFontUrl === 'string' ? this.options.dyslexiaFontUrl.trim() : '';
-        const customFontUrl = rawFontUrl && !/["'()\\]/.test(rawFontUrl) ? rawFontUrl : '';
-        if (customFontUrl) fontSrc = `url("${customFontUrl}")`;
-      }
+      const customFontUrl = this.getCustomReadableFontUrl(fontKey);
+      if (customFontUrl) fontSrc = `url("${customFontUrl}")`;
       if (!fontSrc) {
         // No font source available (WordPress build without a configured
         // URL): the choice falls back through its system font stack.

@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.3.5
+Stable tag: 1.5.2
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -53,6 +53,14 @@ The bundled JavaScript is built from public, human-readable source code:
 1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
 
 == Changelog ==
+
+= 1.5.2 =
+* Site language: the widget now follows the site's declared language (`<html lang>`) instead of defaulting to the visitor's browser language. A language the visitor picks in the widget menu still wins.
+* Stop Animations — and the Seizure Safe profile — now also pauses videos and freezes animated GIFs.
+* The Dyslexia Font toggle is now a Readable Font control with three choices: OpenDyslexic, Atkinson Hyperlegible, and Lexend. All three fonts are bundled with the plugin and served from your own site.
+* Seven new languages: Swedish, Danish, Catalan, Slovenian, Latvian, Greek, and Georgian (20 total).
+* Profiles display two per row, halving the menu's height.
+* The widget works on sites with a strict Content Security Policy.
 
 = 1.3.5 =
 * Renamed to Handrail Accessibility Widget.

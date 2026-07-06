@@ -3,7 +3,7 @@
  * Plugin Name:       Handrail Accessibility Widget
  * Plugin URI:        https://github.com/ifrederico/accessible-web-widget
  * Description:       Adds the Handrail accessibility widget to your site — font sizing, contrast modes, dyslexia-friendly font, text-to-speech, and more.
- * Version:           1.3.5
+ * Version:           1.5.2
  * Requires at least: 5.0
  * Requires PHP:      7.2
  * Author:            ifrederico
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'ACCWEB_VERSION', '1.3.5' );
+define( 'ACCWEB_VERSION', '1.5.2' );
 define( 'ACCWEB_OPTION_NAME', 'accweb_settings' );
 
 /**
@@ -74,12 +74,19 @@ function accweb_enqueue_script() {
 	$settings = accweb_get_settings();
 
 	$options = array(
-		'position'        => $settings['position'],
-		'size'            => absint( $settings['size'] ),
-		'dyslexiaFontUrl' => plugins_url( 'fonts/OpenDyslexic3-Regular.woff', __FILE__ ),
-		'axeCoreUrl'      => plugins_url( 'js/axe.min.js', __FILE__ ),
+		'position'          => $settings['position'],
+		'size'              => absint( $settings['size'] ),
+		// All three Readable Font choices are bundled with the plugin and
+		// served from this site; the WP widget build has no remote sources.
+		'readableFontUrls'  => array(
+			'dyslexic' => plugins_url( 'fonts/OpenDyslexic3-Regular.woff', __FILE__ ),
+			'legible'  => plugins_url( 'fonts/AtkinsonHyperlegible-Regular.woff2', __FILE__ ),
+			'lexend'   => plugins_url( 'fonts/Lexend-Regular.woff2', __FILE__ ),
+		),
+		'dyslexiaFontUrl'   => plugins_url( 'fonts/OpenDyslexic3-Regular.woff', __FILE__ ),
+		'axeCoreUrl'        => plugins_url( 'js/axe.min.js', __FILE__ ),
 		// wordpress.org guideline 10: no front-end credit links without opt-in.
-		'hideAttribution' => true,
+		'hideAttribution'   => true,
 	);
 
 	if ( 'auto' !== $settings['language'] ) {
