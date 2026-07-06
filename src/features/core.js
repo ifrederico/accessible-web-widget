@@ -35,26 +35,17 @@ export const coreFeatureMethods = {
   
       button.addEventListener('click', (event) => {
         event.preventDefault();
-        const toggle = this.widgetToggleButton;
-        if (!toggle) return;
-  
-        const currentMenu = this.activeMenuContainer || this.menuContainer;
-        const menuIsVisible = currentMenu && currentMenu.style.display !== 'none';
-  
-        const focusMenu = () => {
-          const targetMenu = this.activeMenuContainer || this.menuContainer;
-          if (!targetMenu) return;
-          const focusables = this.getFocusableElements(targetMenu);
-          if (focusables.length) {
-            focusables[0].focus();
-          }
-        };
-  
-        if (!menuIsVisible) {
-          toggle.click();
-          requestAnimationFrame(focusMenu);
-        } else {
-          focusMenu();
+        // open() creates the menu on demand and focuses the dialog, so this
+        // works whether or not the floating button exists (hideButton).
+        if (!this.isMenuOpen()) {
+          this.open();
+          return;
+        }
+        const targetMenu = this.activeMenuContainer || this.menuContainer;
+        if (!targetMenu) return;
+        const focusables = this.getFocusableElements(targetMenu);
+        if (focusables.length) {
+          focusables[0].focus();
         }
       });
   
