@@ -36,11 +36,46 @@ export const styleMethods = {
     }
   },
 
-  injectStyle(id, css) {
+  // Constructable stylesheets are exempt from CSP style-src, so strict-CSP
+  // pages work without any configuration. The <style>-element fallback
+  // (old browsers, @font-face) carries the nonce when one is configured.
+  canUseAdoptedStyleSheets() {
+    if (this._adoptedSheetsSupported === undefined) {
+      this._adoptedSheetsSupported = typeof document !== 'undefined' &&
+        'adoptedStyleSheets' in document &&
+        typeof CSSStyleSheet === 'function' &&
+        (() => {
+          try {
+            new CSSStyleSheet();
+            return true;
+          } catch {
+            return false;
+          }
+        })();
+    }
+    return this._adoptedSheetsSupported;
+  },
+
+  injectStyle(id, css, { forceElement = false } = {}) {
     if (!css || typeof document === 'undefined') return;
     try {
+      if (!forceElement && this.canUseAdoptedStyleSheets()) {
+        let sheet = this.adoptedSheets.get(id);
+        if (!sheet) {
+          sheet = new CSSStyleSheet();
+          this.adoptedSheets.set(id, sheet);
+        }
+        sheet.replaceSync(css);
+        if (!document.adoptedStyleSheets.includes(sheet)) {
+          document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+        }
+        return;
+      }
       let style = document.getElementById(id) || document.createElement('style');
-      style.innerHTML = css;
+      style.textContent = css;
+      if (this.styleNonce) {
+        style.nonce = this.styleNonce;
+      }
       if (!style.id) {
         style.id = id;
         document.head.appendChild(style);
@@ -48,6 +83,50 @@ export const styleMethods = {
     } catch (e) {
       console.warn('Error adding stylesheet:', e);
     }
+  },
+
+  removeStyle(id) {
+    if (typeof document === 'undefined') return;
+    try {
+      const sheet = this.adoptedSheets?.get(id);
+      if (sheet) {
+        this.adoptedSheets.delete(id);
+        document.adoptedStyleSheets = document.adoptedStyleSheets.filter(s => s !== sheet);
+      }
+      const style = document.getElementById(id);
+      if (style && style.tagName === 'STYLE') {
+        style.remove();
+      }
+    } catch (e) {
+      console.warn('Error removing stylesheet:', e);
+    }
+  },
+
+  hasStyle(id) {
+    if (typeof document === 'undefined') return false;
+    return !!(this.adoptedSheets?.has(id) || document.getElementById(id));
+  },
+
+  // Widget UI styles live inside the shadow root; use its adoptedStyleSheets
+  // when available so strict-CSP pages need no nonce.
+  applyWidgetUiStyles(shadowRoot) {
+    const css = this.getWidgetUiStyles();
+    if (this.canUseAdoptedStyleSheets() && shadowRoot && 'adoptedStyleSheets' in shadowRoot) {
+      try {
+        const sheet = new CSSStyleSheet();
+        sheet.replaceSync(css);
+        shadowRoot.adoptedStyleSheets = [...shadowRoot.adoptedStyleSheets, sheet];
+        return;
+      } catch (e) {
+        console.warn('Falling back to <style> for widget UI styles:', e);
+      }
+    }
+    const style = document.createElement('style');
+    style.textContent = css;
+    if (this.styleNonce) {
+      style.nonce = this.styleNonce;
+    }
+    shadowRoot.appendChild(style);
   },
 
   createCSS(styles) {
@@ -91,8 +170,7 @@ export const styleMethods = {
       let css = this.buildCSS(config);
       this.injectStyle(styleId, css);
     } else {
-      let style = document.getElementById(styleId);
-      if (style) style.remove();
+      this.removeStyle(styleId);
     }
     document.documentElement.classList.toggle(styleId, enable);
   },
