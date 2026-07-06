@@ -188,6 +188,33 @@ code { font-family: var(--mono); }
 
 .hero-mark svg { width: 48px; height: 48px; fill: #ffffff; }
 
+.hero-badge-row { margin: -12px 0 36px; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 14px/1 var(--sans);
+  color: var(--text-2);
+  text-decoration: none;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  padding: 7px 7px 7px 16px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, .06);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hero-badge:hover { border-color: #d3d0ca; box-shadow: 0 8px 22px rgba(15, 23, 42, .1); }
+
+.hero-badge-count {
+  font: 600 13px/1 var(--sans);
+  color: var(--text);
+  background: rgba(15, 23, 42, .05);
+  border-radius: 9999px;
+  padding: 6px 11px;
+}
+
 .hero-title {
   font: 400 clamp(40px, 6vw, 76px)/1.06 var(--serif);
   letter-spacing: -2px;
