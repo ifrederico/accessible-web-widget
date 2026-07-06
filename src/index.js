@@ -239,6 +239,10 @@ class AccessibleWebWidget {
     // Mute sounds state
     this.muteSoundsObserver = null;
 
+    // Stop Animations media state (paused videos / frozen GIFs)
+    this.motionPauseObserver = null;
+    this.frozenGifs = [];
+
     // Text magnifier state
     this.magnifierElement = null;
     this.magnifierMoveHandler = null;

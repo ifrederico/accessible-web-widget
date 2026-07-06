@@ -148,6 +148,54 @@ test('mute sounds mutes existing and dynamically added media', async ({ page }) 
   await expect.poll(() => page.evaluate(() => document.getElementById('test-video').muted)).toBe(false);
 });
 
+test('stop animations pauses videos and freezes GIF images', async ({ page }) => {
+  await page.goto('index.html');
+  await page.evaluate(() => {
+    const img = document.createElement('img');
+    img.id = 'test-gif';
+    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    document.body.appendChild(img);
+    const video = document.createElement('video');
+    video.id = 'test-motion-video';
+    // Sourceless videos report paused=true; fake playback so the pause
+    // path (mark + pause) is exercised.
+    Object.defineProperty(video, 'paused', { get: () => false, configurable: true });
+    document.body.appendChild(video);
+  });
+
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="pause-motion"]').click();
+
+  await expect.poll(() => page.evaluate(() =>
+    document.getElementById('test-gif').getAttribute('data-acc-gif-frozen'))).toBe('true');
+  const frozen = await page.evaluate(() => {
+    const img = document.getElementById('test-gif');
+    return {
+      hidden: img.style.display === 'none',
+      canvasNext: img.nextElementSibling?.tagName === 'CANVAS'
+    };
+  });
+  expect(frozen.hidden).toBe(true);
+  expect(frozen.canvasNext).toBe(true);
+  await expect.poll(() => page.evaluate(() =>
+    document.getElementById('test-motion-video').getAttribute('data-acc-motion-paused'))).toBe('true');
+
+  await page.locator('.acc-btn[data-key="pause-motion"]').click();
+  await expect.poll(() => page.evaluate(() =>
+    document.getElementById('test-gif').getAttribute('data-acc-gif-frozen'))).toBe(null);
+  const restored = await page.evaluate(() => {
+    const img = document.getElementById('test-gif');
+    return {
+      display: img.style.display,
+      canvasNext: img.nextElementSibling?.tagName === 'CANVAS'
+    };
+  });
+  expect(restored.display).toBe('');
+  expect(restored.canvasNext).toBe(false);
+  await expect.poll(() => page.evaluate(() =>
+    document.getElementById('test-motion-video').getAttribute('data-acc-motion-paused'))).toBe(null);
+});
+
 test('TTS page-level styles are registered at document level', async ({ page }) => {
   await page.goto('index.html');
   const staticCss = await page.evaluate(() => {
