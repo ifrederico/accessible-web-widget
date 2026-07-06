@@ -78,6 +78,8 @@ function accweb_enqueue_script() {
 		'size'            => absint( $settings['size'] ),
 		'dyslexiaFontUrl' => plugins_url( 'fonts/OpenDyslexic3-Regular.woff', __FILE__ ),
 		'axeCoreUrl'      => plugins_url( 'js/axe.min.js', __FILE__ ),
+		// wordpress.org guideline 10: no front-end credit links without opt-in.
+		'hideAttribution' => true,
 	);
 
 	if ( 'auto' !== $settings['language'] ) {

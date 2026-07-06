@@ -446,6 +446,7 @@ export const uiMethods = {
               ${this.widgetIcons.reset}
               <span class="acc-label">Reset settings</span>
             </button>
+            ${this.options.hideAttribution === true ? '' : '<a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>'}
           </div>
         </div>
         <div class="acc-overlay"> </div>

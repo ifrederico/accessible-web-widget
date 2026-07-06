@@ -806,6 +806,29 @@
   outline-offset: var(--acc-focus-outline-offset);
 }
 
+.acc-footer-brand {
+  display: block;
+  text-align: center;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+  font-weight: 400 !important;
+  color: var(--acc-text-color) !important;
+  opacity: 0.65;
+  text-decoration: none;
+  padding: 2px 0;
+}
+
+.acc-footer-brand:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.acc-footer-brand:focus {
+  opacity: 1;
+  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
+  outline-offset: var(--acc-focus-outline-offset);
+}
+
 .acc-header-lang-toggle {
   display: inline-flex;
   align-items: center;
