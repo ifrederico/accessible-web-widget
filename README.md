@@ -23,7 +23,7 @@ It initializes on page load. No config needed.
 For production, pin a specific version — `@latest` resolves to the newest release automatically, which means updates ship to your site without review:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.4.0/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.5.0/dist/accessible-web-widget.min.js"></script>
 ```
 
 Also on npm for bundler setups:
@@ -43,10 +43,10 @@ Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widg
 - **Profiles** — One-tap presets: Seizure Safe, Vision Impaired, ADHD Friendly, Dyslexia Friendly
 - **Text** — Font size, bold, line height, letter spacing
 - **Color** — Contrast (light/dark), invert, saturation controls, high contrast
-- **Reading** — OpenDyslexic font, reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, page structure navigator (headings/landmarks/links)
+- **Reading** — readable fonts (OpenDyslexic, Atkinson Hyperlegible, Lexend), reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, page structure navigator (headings/landmarks/links)
 - **Interaction** — Large cursor, pause animations (including videos and animated GIFs), hide images, mute sounds
 
-Plus: 13 languages (including RTL Arabic and Hebrew), persistent settings, system preference detection (`prefers-reduced-motion`, `prefers-contrast`), screen-reader announcements for every toggle, keyboard accessible, and mobile friendly. The widget UI lives in a shadow root, so your site's CSS can't break it and its styles can't leak into your page.
+Plus: 20 languages (including RTL Arabic and Hebrew), persistent settings, system preference detection (`prefers-reduced-motion`, `prefers-contrast`), screen-reader announcements for every toggle, keyboard accessible, and mobile friendly. The widget UI lives in a shadow root, so your site's CSS can't break it and its styles can't leak into your page.
 
 Platform wrappers for WordPress and Shopify live in [`platforms/`](platforms/).
 
@@ -113,9 +113,9 @@ TTS uses native browser voices. When enabled, visitors click any text block to h
 </script>
 ```
 
-### Dyslexia font source
+### Readable font sources
 
-The "Dyslexia Font" feature loads OpenDyslexic from accessibleweb.pages.dev by default. To self-host the font, point the widget at your own copy:
+The "Readable Font" control cycles through three fonts — OpenDyslexic, Atkinson Hyperlegible, and Lexend — loaded from accessibleweb.pages.dev by default (all three are SIL OFL licensed). To self-host the dyslexia font, point the widget at your own copy:
 
 ```html
 <script>
@@ -159,4 +159,4 @@ MIT — see [LICENSE](LICENSE).
 ## Acknowledgments
 
 - Icons: [Google Material Icons](https://fonts.google.com/icons)
-- Font: [OpenDyslexic](https://opendyslexic.org/) by Abbie Gonzalez
+- Fonts: [OpenDyslexic](https://opendyslexic.org/) by Abbie Gonzalez, [Atkinson Hyperlegible](https://brailleinstitute.org/freefont) by the Braille Institute, [Lexend](https://www.lexend.com/) by the Lexend Project

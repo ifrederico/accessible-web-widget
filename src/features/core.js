@@ -1,6 +1,6 @@
 /** @typedef {import('../index.js').default} AccessibleWebWidget */
 
-import { DYSLEXIA_FONT_SRC } from '../constants/remote-defaults.js';
+import { READABLE_FONT_FACES } from '../constants/remote-defaults.js';
 
 const SYSTEM_PREFERS_REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 const SYSTEM_PREFERS_CONTRAST = '(prefers-contrast: more)';
@@ -337,38 +337,64 @@ export const coreFeatureMethods = {
       this.applyToolStyle({ ...config, enable });
     },
 
-  ensureReadableFontLoaded() {
-      if (this.readableFontLoaded) return;
-      if (this.hasStyle('acc-readable-text-font')) {
-        this.readableFontLoaded = true;
+  // Map a persisted readable-text state to a font choice. Legacy configs
+  // stored a boolean (true = the old single dyslexia font).
+  resolveReadableFontChoice(value) {
+      const choices = this.readableFontChoices || [];
+      if (value === true) return choices[0] || null;
+      if (typeof value !== 'string') return null;
+      return choices.find((choice) => choice.key === value) || null;
+    },
+
+  ensureReadableFontLoaded(fontKey = 'dyslexic') {
+      if (!this.readableFontsLoaded) {
+        this.readableFontsLoaded = new Set();
+      }
+      if (this.readableFontsLoaded.has(fontKey)) return;
+      const styleId = `acc-font-${fontKey}`;
+      if (this.hasStyle(styleId)) {
+        this.readableFontsLoaded.add(fontKey);
         return;
       }
-      const rawFontUrl = typeof this.options?.dyslexiaFontUrl === 'string' ? this.options.dyslexiaFontUrl.trim() : '';
-      const customFontUrl = rawFontUrl && !/["'()\\]/.test(rawFontUrl) ? rawFontUrl : '';
-      const fontSrc = customFontUrl ? `url("${customFontUrl}")` : DYSLEXIA_FONT_SRC;
+      const face = READABLE_FONT_FACES[fontKey];
+      if (!face || !face.family) {
+        this.readableFontsLoaded.add(fontKey);
+        return;
+      }
+      let fontSrc = face.src || '';
+      if (fontKey === 'dyslexic') {
+        const rawFontUrl = typeof this.options?.dyslexiaFontUrl === 'string' ? this.options.dyslexiaFontUrl.trim() : '';
+        const customFontUrl = rawFontUrl && !/["'()\\]/.test(rawFontUrl) ? rawFontUrl : '';
+        if (customFontUrl) fontSrc = `url("${customFontUrl}")`;
+      }
       if (!fontSrc) {
         // No font source available (WordPress build without a configured
-        // dyslexiaFontUrl): the feature falls back to the system font stack.
-        this.readableFontLoaded = true;
+        // URL): the choice falls back through its system font stack.
+        this.readableFontsLoaded.add(fontKey);
         return;
       }
       // @font-face stays a real <style> element (nonce'd under CSP):
       // constructed-stylesheet @font-face support is still inconsistent.
-      this.injectStyle('acc-readable-text-font', `
+      this.injectStyle(styleId, `
         @font-face {
-          font-family: "OpenDyslexic3";
+          font-family: "${face.family}";
           src: ${fontSrc};
           font-display: swap;
         }
       `, { forceElement: true });
-      this.readableFontLoaded = true;
+      this.readableFontsLoaded.add(fontKey);
     },
 
-  enableReadableText(enable = false) {
-      const shouldEnable = !!enable;
-      if (shouldEnable) {
-        this.ensureReadableFontLoaded();
+  enableReadableText(value = false) {
+      const choice = this.resolveReadableFontChoice(value);
+      const feature = this.multiLevelFeatures?.['readable-text'];
+      if (feature) {
+        feature.currentIndex = choice ? feature.values.indexOf(choice.key) : -1;
       }
+      if (choice) {
+        this.ensureReadableFontLoaded(choice.key);
+      }
+      const fontFamily = choice ? choice.family : '';
       const contentSelector = [
         '*',
         ':not(.material-icons)',
@@ -393,19 +419,19 @@ export const coreFeatureMethods = {
         id: "readable-text",
         selector: "body",
         childrenSelector: [contentSelector],
-        styles: { 
-          'font-family': '"OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif' 
+        styles: {
+          'font-family': fontFamily
         },
         css: `
           .acc-container, .acc-container *, .acc-menu, .acc-menu * {
             font-family: inherit !important;
           }
           input::placeholder, textarea::placeholder {
-            font-family: "OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif !important;
+            font-family: ${fontFamily || 'inherit'} !important;
           }
         `
       };
-      this.applyToolStyle({ ...config, enable: shouldEnable });
+      this.applyToolStyle({ ...config, enable: !!choice });
     },
 
   pauseMotion(enable = false) {
@@ -1132,6 +1158,7 @@ export const coreFeatureMethods = {
       const menu = this.queryWidget('.acc-menu');
       if (menu) {
         this.setColorFilterUI(menu, null);
+        this.setReadableFontUI(menu, null);
         this.syncTextScaleControlUI(menu, 1);
       }
       

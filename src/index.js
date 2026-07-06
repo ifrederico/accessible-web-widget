@@ -102,7 +102,7 @@ class AccessibleWebWidget {
         label: 'Dyslexia Friendly',
         key: 'profile-dyslexia',
         icon: this.widgetIcons.dyslexiaFont,
-        states: { 'readable-text': true, 'line-spacing': true, 'letter-spacing': true }
+        states: { 'readable-text': 'dyslexic', 'line-spacing': true, 'letter-spacing': true }
       }
     ];
 
@@ -169,12 +169,27 @@ class AccessibleWebWidget {
     this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation'];
 
+    // Readable Font levels; the persisted readable-text state holds the
+    // active key ('dyslexic' | 'legible' | 'lexend'; legacy true maps to
+    // 'dyslexic'). Labels are translation keys except the Lexend brand name.
+    this.readableFontChoices = [
+      { key: 'dyslexic', label: 'Dyslexia Font', family: '"OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif' },
+      { key: 'legible', label: 'Legible Font', family: '"Atkinson Hyperlegible", Verdana, Arial, Helvetica, sans-serif' },
+      { key: 'lexend', label: 'Lexend', family: '"Lexend", "Segoe UI", Roboto, Arial, sans-serif' }
+    ];
+
     this.contentOptions = [
       { label: 'Font Weight', key: 'bold-text', icon: this.widgetIcons.boldText },
       { label: 'Line Height', key: 'line-spacing', icon: this.widgetIcons.lineSpacing },
       { label: 'Letter Spacing', key: 'letter-spacing', icon: this.widgetIcons.letterSpacing },
       { label: 'Hide Images', key: 'hide-images', icon: this.widgetIcons.hideImages },
-      { label: 'Dyslexia Font', key: 'readable-text', icon: this.widgetIcons.dyslexiaFont },
+      {
+        label: 'Readable Font',
+        key: 'readable-text',
+        icon: this.widgetIcons.dyslexiaFont,
+        multiLevel: true,
+        levels: this.readableFontChoices.length
+      },
       { label: 'Highlight Links', key: 'highlight-links', icon: this.widgetIcons.highlightLinks },
       { label: 'Highlight Title', key: 'highlight-title', icon: this.widgetIcons.highlightTitle },
       { label: 'Font Size', key: 'text-scale', icon: this.widgetIcons.adjustFontSize }
@@ -190,6 +205,11 @@ class AccessibleWebWidget {
         levels: this.saturationFilterValues.length,
         currentIndex: -1,
         values: this.saturationFilterValues
+      },
+      'readable-text': {
+        levels: this.readableFontChoices.length,
+        currentIndex: -1,
+        values: this.readableFontChoices.map((choice) => choice.key)
       }
     };
 
@@ -226,7 +246,7 @@ class AccessibleWebWidget {
     this.widgetConfig = {};
     this.cookieKey = 'accweb';
     this.readingAidVisible = false;
-    this.readableFontLoaded = false;
+    this.readableFontsLoaded = new Set();
 
     // Shadow DOM host for the widget UI
     this.shadowHost = null;

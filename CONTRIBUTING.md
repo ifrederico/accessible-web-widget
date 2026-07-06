@@ -37,6 +37,16 @@ npm run check:axe-version
 
 Please run `npm run ci` before submitting a PR.
 
+## Adding a language
+
+Translations are the easiest way to contribute — the whole change lives in two files:
+
+1. In `src/constants/translations.js`, copy the `en` dictionary block, rename it to your language's two-letter ISO 639-1 code, and translate every value. Keep the keys exactly as they are (they're English source strings). Then add an entry to `SUPPORTED_LANGUAGES` at the bottom of the same file, with the label in the form `Native name (English name)`.
+2. In `src/ui.js`, add your language to `countryByLanguage` (display name) and `countryCodeByLanguage` (two-letter ISO country code for the flag emoji) in `getLanguageCountryLabel`/`getLanguageFlag`. Don't rely on the fallback — it guesses the country from the language code and gets it wrong (e.g. `sv` would become El Salvador's flag).
+3. If the language is written right-to-left, add its code to `rtlLanguages` in `isRtlLanguage` (`src/ui.js`).
+
+Run `npm run test:unit` — the translation tests fail if any key is missing or empty, so a green run means your dictionary is complete. Native speakers reviewing existing translations are just as welcome as new languages: short UI labels are easy to get subtly wrong.
+
 ## axe-core pin maintenance
 
 `loadAxeCore()` uses a pinned jsDelivr URL and SRI hash in `src/features.js`. Run `npm run check:axe-version` periodically. If there is a new version:

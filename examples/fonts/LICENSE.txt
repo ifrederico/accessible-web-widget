@@ -1,6 +1,13 @@
+All fonts in this directory are licensed under the SIL Open Font License,
+Version 1.1: https://scripts.sil.org/OFL
+
 OpenDyslexic 3 — Copyright (c) 2019-07-29, Abbie Gonzalez
 (https://abbiecod.es | support@abbiecod.es),
 with Reserved Font Name OpenDyslexic.
 Copyright (c) 12/2012 - 2019
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is available at: https://scripts.sil.org/OFL
+
+Atkinson Hyperlegible — Copyright 2020 Braille Institute of America, Inc.
+(https://brailleinstitute.org/freefont)
+
+Lexend — Copyright 2018 The Lexend Project Authors
+(https://github.com/googlefonts/lexend), with Reserved Font Name Lexend.
