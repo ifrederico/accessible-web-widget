@@ -425,6 +425,128 @@ export const coreFeatureMethods = {
       styles: { 'transition': 'none', 'animation-fill-mode': 'forwards', 'animation-iteration-count': '1', 'animation-duration': '.01s' }
     };
     this.applyToolStyle({ ...config, enable });
+    // CSS only stops transitions and keyframe animations; videos and
+    // animated GIFs need DOM work. The Seizure Safe profile bundles this
+    // feature, so flashing media has to actually stop.
+    this.setMediaMotionPaused(!!enable);
+  },
+
+  isMotionPauseActive() {
+    return typeof document !== 'undefined' &&
+      document.documentElement.classList.contains('acc-pause-motion');
+  },
+
+  pauseVideoElement(video) {
+    if (!(video instanceof HTMLVideoElement)) return;
+    if (video.closest('.acc-container')) return;
+    try {
+      if (!video.paused && !video.ended) {
+        video.setAttribute('data-acc-motion-paused', 'true');
+      }
+      video.pause();
+    } catch {
+      // Ignore playback errors from detached or unsupported media.
+    }
+  },
+
+  freezeGifImage(img) {
+    if (!(img instanceof HTMLImageElement)) return;
+    if (img.closest('.acc-container') || img.getAttribute('data-acc-gif-frozen')) return;
+    const src = img.currentSrc || img.src || '';
+    if (!/\.gif($|[?#])/i.test(src) && !/^data:image\/gif/i.test(src)) return;
+    if (!img.complete || !img.naturalWidth) {
+      if (img.getAttribute('data-acc-gif-pending')) return;
+      img.setAttribute('data-acc-gif-pending', 'true');
+      img.addEventListener('load', () => {
+        img.removeAttribute('data-acc-gif-pending');
+        if (this.isMotionPauseActive()) this.freezeGifImage(img);
+      }, { once: true });
+      return;
+    }
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const context = canvas.getContext('2d');
+      if (!context) return;
+      // drawImage captures the GIF's current frame. Pixels are never read
+      // back, so cross-origin GIFs work too (the canvas is merely tainted).
+      context.drawImage(img, 0, 0);
+      canvas.setAttribute('role', 'img');
+      const alt = img.getAttribute('alt');
+      if (alt) canvas.setAttribute('aria-label', alt);
+      const rect = img.getBoundingClientRect();
+      if (rect.width && rect.height) {
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+      } else {
+        canvas.style.maxWidth = '100%';
+      }
+      img.setAttribute('data-acc-gif-frozen', 'true');
+      img.insertAdjacentElement('afterend', canvas);
+      this.frozenGifs.push({ img, canvas, inlineDisplay: img.style.display });
+      img.style.display = 'none';
+    } catch {
+      // Leave the GIF animated rather than risk breaking the image.
+    }
+  },
+
+  unfreezeGifImages() {
+    (this.frozenGifs || []).forEach(({ img, canvas, inlineDisplay }) => {
+      if (canvas) canvas.remove();
+      if (img) {
+        img.style.display = inlineDisplay || '';
+        img.removeAttribute('data-acc-gif-frozen');
+      }
+    });
+    this.frozenGifs = [];
+  },
+
+  applyMotionPauseToMedia(root) {
+    if (!root || typeof root.querySelectorAll !== 'function') return;
+    if (root instanceof Element) {
+      if (root.matches?.('video')) this.pauseVideoElement(root);
+      if (root.matches?.('img')) this.freezeGifImage(root);
+    }
+    root.querySelectorAll('video').forEach((video) => this.pauseVideoElement(video));
+    root.querySelectorAll('img').forEach((img) => this.freezeGifImage(img));
+  },
+
+  setMediaMotionPaused(enable) {
+    if (typeof document === 'undefined') return;
+    if (enable) {
+      this.applyMotionPauseToMedia(document);
+      if (!this.motionPauseObserver && document.body && typeof MutationObserver === 'function') {
+        this.motionPauseObserver = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (!(node instanceof Element)) return;
+              this.applyMotionPauseToMedia(node);
+            });
+          });
+        });
+        this.motionPauseObserver.observe(document.body, { childList: true, subtree: true });
+      }
+    } else {
+      if (this.motionPauseObserver) {
+        this.motionPauseObserver.disconnect();
+        this.motionPauseObserver = null;
+      }
+      document.querySelectorAll('video[data-acc-motion-paused]').forEach((video) => {
+        video.removeAttribute('data-acc-motion-paused');
+        // Only autoplay media restarts on its own; anything the visitor
+        // started stays paused so audio doesn't blast back unexpectedly.
+        if (video.hasAttribute('autoplay')) {
+          try {
+            const playResult = video.play();
+            playResult?.catch?.(() => {});
+          } catch {
+            // Ignore autoplay rejections.
+          }
+        }
+      });
+      this.unfreezeGifImages();
+    }
   },
 
   enableHighContrastMode(enable = false) {
@@ -1078,6 +1200,7 @@ export const coreFeatureMethods = {
       this.disableAnnotations();
       this.stopSpeech();
       this.stopTtsClickMode();
+      this.setMediaMotionPaused(false);
       this.enableMuteSounds(false);
       this.enableTextMagnifier(false);
       this.clearSystemPreferenceListeners();
