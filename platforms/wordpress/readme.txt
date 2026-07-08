@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -53,6 +53,9 @@ The bundled JavaScript is built from public, human-readable source code:
 1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
 
 == Changelog ==
+
+= 1.5.3 =
+* 34 new interface languages, for 54 total — including Chinese (Simplified and Traditional), Japanese, Korean, Hindi, Bengali, Arabic-script Persian and Urdu, and many more. Every UI label is translated.
 
 = 1.5.2 =
 * Site language: the widget now follows the site's declared language (`<html lang>`) instead of defaulting to the visitor's browser language. A language the visitor picks in the widget menu still wins.

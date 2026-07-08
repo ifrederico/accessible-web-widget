@@ -23,7 +23,7 @@ It initializes on page load. No config needed.
 For production, pin a specific version — `@latest` resolves to the newest release automatically, which means updates ship to your site without review:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.5.2/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.5.3/dist/accessible-web-widget.min.js"></script>
 ```
 
 Also on npm for bundler setups:
@@ -46,7 +46,7 @@ Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widg
 - **Reading** — readable fonts (OpenDyslexic, Atkinson Hyperlegible, Lexend), reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, page structure navigator (headings/landmarks/links)
 - **Interaction** — Large cursor, pause animations (including videos and animated GIFs), hide images, mute sounds
 
-Plus: 20 languages (including RTL Arabic and Hebrew), persistent settings, system preference detection (`prefers-reduced-motion`, `prefers-contrast`), screen-reader announcements for every toggle, keyboard accessible, and mobile friendly. The widget UI lives in a shadow root, so your site's CSS can't break it and its styles can't leak into your page.
+Plus: 54 languages (including RTL Arabic, Hebrew, Persian, and Urdu), persistent settings, system preference detection (`prefers-reduced-motion`, `prefers-contrast`), screen-reader announcements for every toggle, keyboard accessible, and mobile friendly. The widget UI lives in a shadow root, so your site's CSS can't break it and its styles can't leak into your page.
 
 Platform wrappers for WordPress and Shopify live in [`platforms/`](platforms/).
 
