@@ -9,7 +9,7 @@ Most accessibility overlays promise to magically fix your site. This isn't that.
 
 This is a small floating panel that gives your visitors controls they actually want — font sizing, contrast modes, a dyslexia-friendly font, animation pausing, text-to-speech, and more, in 54 languages. Think of it as the browser's built-in accessibility settings, just easier to find.
 
-Real accessibility means semantic HTML, proper ARIA, keyboard navigation, and alt text baked into your code. No widget replaces that work. We support the [Overlay Factsheet](https://overlayfactsheet.com/) and built this as a complement, not a substitute.
+Real accessibility means semantic HTML, proper ARIA, keyboard navigation, and alt text baked into your code. No widget replaces that work. We support the [Overlay Factsheet](https://overlayfactsheet.com/) and built this as a complement, not a substitute. To find the issues actually worth fixing, run the companion [Accessible Web Scanner](https://github.com/ifrederico/accessible-web-scanner) over your sitemap.
 
 <p align="center">
   <img src="docs/media/menu.png" width="380" alt="The widget panel: accessibility profiles, text-to-speech, font size, contrast, and reading controls">
