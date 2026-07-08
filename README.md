@@ -1,10 +1,19 @@
 # AccessibleWeb Widget
 
+[![npm](https://img.shields.io/npm/v/accessible-web-widget)](https://www.npmjs.com/package/accessible-web-widget)
+[![jsDelivr hits](https://img.shields.io/jsdelivr/gh/hm/ifrederico/accessible-web-widget)](https://www.jsdelivr.com/package/gh/ifrederico/accessible-web-widget)
+[![CI](https://github.com/ifrederico/accessible-web-widget/actions/workflows/ci.yml/badge.svg)](https://github.com/ifrederico/accessible-web-widget/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/accessible-web-widget)](LICENSE)
+
 Most accessibility overlays promise to magically fix your site. This isn't that.
 
-This is a small floating panel that gives your visitors controls they actually want — font sizing, contrast modes, a dyslexia-friendly font, animation pausing, text-to-speech, and more. Think of it as the browser's built-in accessibility settings, just easier to find.
+This is a small floating panel that gives your visitors controls they actually want — font sizing, contrast modes, a dyslexia-friendly font, animation pausing, text-to-speech, and more, in 54 languages. Think of it as the browser's built-in accessibility settings, just easier to find.
 
 Real accessibility means semantic HTML, proper ARIA, keyboard navigation, and alt text baked into your code. No widget replaces that work. We support the [Overlay Factsheet](https://overlayfactsheet.com/) and built this as a complement, not a substitute.
+
+<p align="center">
+  <img src="docs/media/menu.png" width="380" alt="The widget panel: accessibility profiles, text-to-speech, font size, contrast, and reading controls">
+</p>
 
 **[See the demo →](https://accessibleweb.pages.dev/)**
 
@@ -20,7 +29,7 @@ Drop this into your HTML and you're done:
 
 It initializes on page load. No config needed.
 
-For production, pin a specific version — `@latest` resolves to the newest release automatically, which means updates ship to your site without review:
+For production, pin a specific version — `@latest` ships new releases to your site without review:
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.5.3/dist/accessible-web-widget.min.js"></script>
@@ -36,7 +45,7 @@ npm install accessible-web-widget
 import 'accessible-web-widget'; // auto-initializes, same as the script tag
 ```
 
-Or [self-host](docs/self-hosting.md) — just download `dist/accessible-web-widget.min.js` and serve it yourself.
+Or self-host — just download `dist/accessible-web-widget.min.js` and serve it yourself.
 
 ## What you get
 
@@ -54,23 +63,14 @@ Platform wrappers for WordPress and Shopify live in [`platforms/`](platforms/).
 
 Everything below is optional. The widget works with zero config.
 
-### Position and offset
+### Position, size, and language
 
 ```html
-<div data-acc-position="bottom-right"></div>  <!-- default -->
-<div data-acc-position="bottom-left"></div>
-<div data-acc-position="top-left"></div>
-<div data-acc-position="top-right"></div>
-
-<div data-acc-offset="24,24"></div>   <!-- x, y in pixels -->
-```
-
-### Button size and language
-
-```html
-<div data-acc-size="44"></div>        <!-- px, rem, or any CSS unit -->
+<div data-acc-position="bottom-right"></div>  <!-- bottom-right (default) | bottom-left | top-left | top-right -->
+<div data-acc-offset="24,24"></div>           <!-- x, y in pixels -->
+<div data-acc-size="44"></div>                <!-- px, rem, or any CSS unit -->
 <div data-acc-lang="en"></div>
-<div data-acc-icon="default"></div>   <!-- default | icon-2 | icon-3 | icon-4 -->
+<div data-acc-icon="default"></div>           <!-- default | icon-2 | icon-3 | icon-4 -->
 ```
 
 Language resolves in this order: the visitor's own pick in the widget menu → `data-acc-lang` / `options.lang` → the page's `<html lang>` → the browser language → English.
