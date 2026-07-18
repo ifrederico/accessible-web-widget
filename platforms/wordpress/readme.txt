@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -53,6 +53,10 @@ The bundled JavaScript is built from public, human-readable source code:
 1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
 
 == Changelog ==
+
+= 1.5.4 =
+* Adds a logical text alignment control that cycles through Start, Center, End, and the page's original alignment. Start and End follow the text direction for left-to-right and right-to-left content, and the preference persists until reset.
+* Completes the Spanish translations for annotations, text-to-speech, speech playback, Simplify Layout, reading status, and the new text alignment control.
 
 = 1.5.3 =
 * 34 new interface languages, for 54 total — including Chinese (Simplified and Traditional), Japanese, Korean, Hindi, Bengali, Arabic-script Persian and Urdu, and many more. Every UI label is translated.

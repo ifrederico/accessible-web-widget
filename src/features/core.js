@@ -298,6 +298,31 @@ export const coreFeatureMethods = {
       this.applyToolStyle({ ...config, enable });
     },
 
+  resolveTextAlignment(value) {
+      const choices = this.textAlignmentChoices || [];
+      if (typeof value !== 'string') return null;
+      return choices.find(choice => choice.key === value) || null;
+    },
+
+  enableTextAlignment(value = false) {
+      const choice = this.resolveTextAlignment(value);
+      const feature = this.multiLevelFeatures?.['text-alignment'];
+      if (feature) {
+        feature.currentIndex = choice ? feature.values.indexOf(choice.key) : -1;
+      }
+      const config = {
+        id: 'text-alignment',
+        selector: 'body',
+        // Restrict the override to semantic text blocks. Navigation, form
+        // controls, code, media, and the widget UI keep their authored layout.
+        childrenSelector: [
+          ':where(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,th,td)'
+        ],
+        styles: { 'text-align': choice?.key || '' }
+      };
+      this.applyToolStyle({ ...config, enable: !!choice });
+    },
+
   enableLargePointer(enable = false) {
       const config = {
         id: "large-pointer",
@@ -1138,6 +1163,7 @@ export const coreFeatureMethods = {
       this.highlightLinks(states && states['highlight-links']);
       this.adjustLetterSpacing(states && states['letter-spacing']);
       this.adjustLineSpacing(states && states['line-spacing']);
+      this.enableTextAlignment(states && states['text-alignment']);
       this.enableBoldText(states && states['bold-text']);
       this.enableReadableText(states && states['readable-text']);
       this.enableReadingAid(states && states['reading-aid']);
@@ -1171,6 +1197,7 @@ export const coreFeatureMethods = {
       if (menu) {
         this.setColorFilterUI(menu, null);
         this.setReadableFontUI(menu, null);
+        this.setTextAlignmentUI(menu, null);
         this.syncTextScaleControlUI(menu, 1);
       }
       
@@ -1183,6 +1210,7 @@ export const coreFeatureMethods = {
         'acc-bold-text',
         'acc-letter-spacing',
         'acc-line-spacing',
+        'acc-text-alignment',
         'acc-large-pointer',
         'acc-highlight-links',
         'acc-highlight-title',
@@ -1200,6 +1228,7 @@ export const coreFeatureMethods = {
         'acc-bold-text',
         'acc-letter-spacing',
         'acc-line-spacing',
+        'acc-text-alignment',
         'acc-large-pointer',
         'acc-highlight-links',
         'acc-highlight-title',

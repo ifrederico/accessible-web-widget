@@ -37,3 +37,23 @@ test('no dictionary has empty translation values', () => {
     }
   }
 });
+
+test('Spanish accessibility tool labels are fully translated', () => {
+  const expected = {
+    'Annotations': 'Anotaciones',
+    'Text to Speech': 'Texto a voz',
+    'Simplify Layout': 'Simplificar diseño',
+    'Play': 'Reproducir',
+    'Pause': 'Pausar',
+    'Stop': 'Detener',
+    'Reading...': 'Leyendo...',
+    'Text Alignment': 'Alineación del texto',
+    'Start': 'Inicio',
+    'Center': 'Centro',
+    'End': 'Final'
+  };
+
+  Object.entries(expected).forEach(([key, value]) => {
+    assert.equal(TRANSLATIONS.es[key], value);
+  });
+});

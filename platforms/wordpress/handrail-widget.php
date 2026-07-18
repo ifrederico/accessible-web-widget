@@ -3,7 +3,7 @@
  * Plugin Name:       Handrail Accessibility Widget
  * Plugin URI:        https://github.com/ifrederico/accessible-web-widget
  * Description:       Adds the Handrail accessibility widget to your site — font sizing, contrast modes, dyslexia-friendly font, text-to-speech, and more.
- * Version:           1.5.3
+ * Version:           1.5.4
  * Requires at least: 5.0
  * Requires PHP:      7.2
  * Author:            ifrederico
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'ACCWEB_VERSION', '1.5.3' );
+define( 'ACCWEB_VERSION', '1.5.4' );
 define( 'ACCWEB_OPTION_NAME', 'accweb_settings' );
 
 /**

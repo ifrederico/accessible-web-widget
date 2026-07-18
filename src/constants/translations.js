@@ -514,11 +514,11 @@ export const TRANSLATIONS = {
         "Close Report": "Cerrar Informe",
         "Passed Tests": "Pruebas Superadas",
         "Items Need Review": "Elementos a Revisar",
-        "Annotations": "Annotations",
-        "Text to Speech": "Text to Speech",
+        "Annotations": "Anotaciones",
+        "Text to Speech": "Texto a voz",
         "Text to Speech On": "Texto a Voz Activado",
         "Text to Speech Off": "Texto a Voz Desactivado",
-        "Simplify Layout": "Simplify Layout",
+        "Simplify Layout": "Simplificar diseño",
         "Speech": "Voz",
         "Text": "Texto",
         "Color & Contrast": "Color y Contraste",
@@ -530,11 +530,11 @@ export const TRANSLATIONS = {
         "Dark": "Oscuro",
         "High": "Alta",
         "Low": "Baja",
-        "Play": "Play",
-        "Pause": "Pause",
-        "Stop": "Stop",
+        "Play": "Reproducir",
+        "Pause": "Pausar",
+        "Stop": "Detener",
         "Loading voice...": "Cargando voz...",
-        "Reading...": "Reading...",
+        "Reading...": "Leyendo...",
         "Profiles": "Perfiles",
         "Seizure Safe": "Seguro para Epilepsia",
         "Vision Impaired": "Discapacidad Visual",
@@ -4968,6 +4968,29 @@ export const TRANSLATIONS = {
         "Settings reset": "設定已重設",
       }
     };
+
+// Keep a deliberate English fallback for alignment labels in dictionaries
+// that have not been localized yet, while shipping the Spanish labels
+// requested in issue #21. This is scoped to these four labels so the existing
+// completeness test still exposes unrelated translation gaps.
+const TEXT_ALIGNMENT_TRANSLATIONS = {
+      en: {
+        "Text Alignment": "Text Alignment",
+        "Start": "Start",
+        "Center": "Center",
+        "End": "End",
+      },
+      es: {
+        "Text Alignment": "Alineación del texto",
+        "Start": "Inicio",
+        "Center": "Centro",
+        "End": "Final",
+      }
+    };
+
+Object.entries(TRANSLATIONS).forEach(([code, dictionary]) => {
+      Object.assign(dictionary, TEXT_ALIGNMENT_TRANSLATIONS[code] || TEXT_ALIGNMENT_TRANSLATIONS.en);
+    });
 
 export const SUPPORTED_LANGUAGES = [
       { code: "en", label: "English (English)" },

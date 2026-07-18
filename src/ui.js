@@ -235,6 +235,8 @@ export const uiMethods = {
       this.setColorFilterUI(menu, activeColorFilter);
       const readableChoice = this.resolveReadableFontChoice(states['readable-text']);
       this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
+      const textAlignment = this.resolveTextAlignment(states['text-alignment']);
+      this.setTextAlignmentUI(menu, textAlignment ? textAlignment.key : null);
       this.syncTextScaleControlUI(menu, states['text-scale'] || 1);
     },
 
@@ -566,7 +568,7 @@ export const uiMethods = {
 
         const config = this.loadConfig();
 
-        const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text']);
+        const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text', 'text-alignment']);
         const colorKeys = new Set(['contrast-toggle', 'invert-colors', 'saturation-toggle', 'high-contrast-mode']);
         const readingAidsKeys = new Set(['reading-aid', 'highlight-links', 'highlight-title', 'simple-layout', 'text-magnifier', 'page-structure']);
 
@@ -676,10 +678,11 @@ export const uiMethods = {
             const textScaleOption = sectionOptions.find(option => option.key === 'text-scale');
             sectionOptions = sectionOptions.filter(option => option.key !== 'text-scale');
             return renderThinRowSection(section, sectionOptions, {
-              order: ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'],
+              order: ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text', 'text-alignment'],
               rows: [
                 new Set(['line-spacing', 'letter-spacing']),
-                new Set(['bold-text', 'readable-text'])
+                new Set(['bold-text', 'readable-text']),
+                new Set(['text-alignment'])
               ],
               specialContent: textScaleOption
                 ? this.renderTextScaleControl(config.states?.['text-scale'] || 1)

@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.5.3
+ * AccessibleWeb Widget v1.5.4
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
@@ -62,6 +62,7 @@ var AccessibleWebWidget = (function () {
           boldText: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M272-200v-560h221q65 0 120 40t55 111q0 51-23 78.5T602-491q25 11 55.5 41t30.5 90q0 89-65 124.5T501-200H272Zm121-112h104q48 0 58.5-24.5T566-372q0-11-10.5-35.5T494-432H393v120Zm0-228h93q33 0 48-17t15-38q0-24-17-39t-44-15h-95v109Z"/></svg>',
           lineSpacing: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M240-160 80-320l56-56 64 62v-332l-64 62-56-56 160-160 160 160-56 56-64-62v332l64-62 56 56-160 160Zm240-40v-80h400v80H480Zm0-240v-80h400v80H480Zm0-240v-80h400v80H480Z"/></svg>',
           letterSpacing: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M320-80 160-240l160-160 57 56-64 64h334l-63-64 56-56 160 160L640-80l-57-56 64-64H313l63 64-56 56ZM200-480v-400h80v400h-80Zm240 0v-400h80v400h-80Zm240 0v-400h80v400h-80Z"/></svg>',
+          textAlignment: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M120-200v-80h480v80H120Zm0-160v-80h720v80H120Zm0-160v-80h480v80H120Zm0-160v-80h720v80H120Z"/></svg>',
           dyslexiaFont: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m131-252 165-440h79l165 440h-76l-39-112H247l-40 112h-76Zm139-176h131l-64-182h-4l-63 182Zm395 186q-51 0-81-27.5T554-342q0-44 34.5-72.5T677-443q23 0 45 4t38 11v-12q0-29-20.5-47T685-505q-23 0-42 9.5T610-468l-47-35q24-29 54.5-43t68.5-14q69 0 103 32.5t34 97.5v178h-63v-37h-4q-14 23-38 35t-53 12Zm12-54q35 0 59.5-24t24.5-56q-14-8-33.5-12.5T689-393q-32 0-50 14t-18 37q0 20 16 33t40 13Z"/></svg>',
           highlightLinks: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z"/></svg>',
           highlightTitle: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M320-280q17 0 28.5-11.5T360-320q0-17-11.5-28.5T320-360q-17 0-28.5 11.5T280-320q0 17 11.5 28.5T320-280Zm0-160q17 0 28.5-11.5T360-480q0-17-11.5-28.5T320-520q-17 0-28.5 11.5T280-480q0 17 11.5 28.5T320-440Zm0-160q17 0 28.5-11.5T360-640q0-17-11.5-28.5T320-680q-17 0-28.5 11.5T280-640q0 17 11.5 28.5T320-600Zm120 320h240v-80H440v80Zm0-160h240v-80H440v80Zm0-160h240v-80H440v80ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>',
@@ -611,11 +612,11 @@ var AccessibleWebWidget = (function () {
             "Close Report": "Cerrar Informe",
             "Passed Tests": "Pruebas Superadas",
             "Items Need Review": "Elementos a Revisar",
-            "Annotations": "Annotations",
-            "Text to Speech": "Text to Speech",
+            "Annotations": "Anotaciones",
+            "Text to Speech": "Texto a voz",
             "Text to Speech On": "Texto a Voz Activado",
             "Text to Speech Off": "Texto a Voz Desactivado",
-            "Simplify Layout": "Simplify Layout",
+            "Simplify Layout": "Simplificar diseño",
             "Speech": "Voz",
             "Text": "Texto",
             "Color & Contrast": "Color y Contraste",
@@ -627,11 +628,11 @@ var AccessibleWebWidget = (function () {
             "Dark": "Oscuro",
             "High": "Alta",
             "Low": "Baja",
-            "Play": "Play",
-            "Pause": "Pause",
-            "Stop": "Stop",
+            "Play": "Reproducir",
+            "Pause": "Pausar",
+            "Stop": "Detener",
             "Loading voice...": "Cargando voz...",
-            "Reading...": "Reading...",
+            "Reading...": "Leyendo...",
             "Profiles": "Perfiles",
             "Seizure Safe": "Seguro para Epilepsia",
             "Vision Impaired": "Discapacidad Visual",
@@ -5066,6 +5067,29 @@ var AccessibleWebWidget = (function () {
           }
         };
 
+    // Keep a deliberate English fallback for alignment labels in dictionaries
+    // that have not been localized yet, while shipping the Spanish labels
+    // requested in issue #21. This is scoped to these four labels so the existing
+    // completeness test still exposes unrelated translation gaps.
+    const TEXT_ALIGNMENT_TRANSLATIONS = {
+          en: {
+            "Text Alignment": "Text Alignment",
+            "Start": "Start",
+            "Center": "Center",
+            "End": "End",
+          },
+          es: {
+            "Text Alignment": "Alineación del texto",
+            "Start": "Inicio",
+            "Center": "Centro",
+            "End": "Final",
+          }
+        };
+
+    Object.entries(TRANSLATIONS).forEach(([code, dictionary]) => {
+          Object.assign(dictionary, TEXT_ALIGNMENT_TRANSLATIONS[code] || TEXT_ALIGNMENT_TRANSLATIONS.en);
+        });
+
     const SUPPORTED_LANGUAGES = [
           { code: "en", label: "English (English)" },
           { code: "pt", label: "Português (Portuguese)" },
@@ -6045,6 +6069,31 @@ var AccessibleWebWidget = (function () {
           this.applyToolStyle({ ...config, enable });
         },
 
+      resolveTextAlignment(value) {
+          const choices = this.textAlignmentChoices || [];
+          if (typeof value !== 'string') return null;
+          return choices.find(choice => choice.key === value) || null;
+        },
+
+      enableTextAlignment(value = false) {
+          const choice = this.resolveTextAlignment(value);
+          const feature = this.multiLevelFeatures?.['text-alignment'];
+          if (feature) {
+            feature.currentIndex = choice ? feature.values.indexOf(choice.key) : -1;
+          }
+          const config = {
+            id: 'text-alignment',
+            selector: 'body',
+            // Restrict the override to semantic text blocks. Navigation, form
+            // controls, code, media, and the widget UI keep their authored layout.
+            childrenSelector: [
+              ':where(h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,th,td)'
+            ],
+            styles: { 'text-align': choice?.key || '' }
+          };
+          this.applyToolStyle({ ...config, enable: !!choice });
+        },
+
       enableLargePointer(enable = false) {
           const config = {
             id: "large-pointer",
@@ -6885,6 +6934,7 @@ var AccessibleWebWidget = (function () {
           this.highlightLinks(states && states['highlight-links']);
           this.adjustLetterSpacing(states && states['letter-spacing']);
           this.adjustLineSpacing(states && states['line-spacing']);
+          this.enableTextAlignment(states && states['text-alignment']);
           this.enableBoldText(states && states['bold-text']);
           this.enableReadableText(states && states['readable-text']);
           this.enableReadingAid(states && states['reading-aid']);
@@ -6918,6 +6968,7 @@ var AccessibleWebWidget = (function () {
           if (menu) {
             this.setColorFilterUI(menu, null);
             this.setReadableFontUI(menu, null);
+            this.setTextAlignmentUI(menu, null);
             this.syncTextScaleControlUI(menu, 1);
           }
           
@@ -6930,6 +6981,7 @@ var AccessibleWebWidget = (function () {
             'acc-bold-text',
             'acc-letter-spacing',
             'acc-line-spacing',
+            'acc-text-alignment',
             'acc-large-pointer',
             'acc-highlight-links',
             'acc-highlight-title',
@@ -6947,6 +6999,7 @@ var AccessibleWebWidget = (function () {
             'acc-bold-text',
             'acc-letter-spacing',
             'acc-line-spacing',
+            'acc-text-alignment',
             'acc-large-pointer',
             'acc-highlight-links',
             'acc-highlight-title',
@@ -8255,6 +8308,7 @@ var AccessibleWebWidget = (function () {
           }
 
           const translatedLabel = this.translate(display.label);
+          button.setAttribute('data-acc-text', display.label);
           const labelNode = button.querySelector('.acc-label');
           if (labelNode) {
             labelNode.setAttribute('data-acc-text', display.label);
@@ -8306,6 +8360,36 @@ var AccessibleWebWidget = (function () {
           button.classList.toggle('acc-selected', isActive);
           button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
           const indicator = button.querySelector('.acc-progress-indicator[data-feature="readable-text"]');
+          if (indicator) {
+            indicator.querySelectorAll('.acc-progress-dot').forEach((dot, dotIndex) => {
+              dot.classList.toggle('active', dotIndex === index);
+            });
+          }
+        },
+
+      getTextAlignmentDisplay(index) {
+          const choices = this.textAlignmentChoices || [];
+          const choice = index >= 0 ? choices[index] : null;
+          return {
+            key: choice ? choice.key : null,
+            label: choice ? choice.label : 'Text Alignment',
+            icon: this.widgetIcons.textAlignment
+          };
+        },
+
+      setTextAlignmentUI(menu, activeKey = null) {
+          if (!menu || !menu.querySelector) return;
+          const feature = this.multiLevelFeatures?.['text-alignment'];
+          if (!feature) return;
+          const index = activeKey ? feature.values.indexOf(activeKey) : -1;
+          feature.currentIndex = index;
+          const button = menu.querySelector('.acc-btn[data-key="text-alignment"]');
+          if (!button) return;
+          this.applyModeToggleButtonDisplay(button, this.getTextAlignmentDisplay(index), 'data-text-alignment-mode');
+          const isActive = index >= 0;
+          button.classList.toggle('acc-selected', isActive);
+          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          const indicator = button.querySelector('.acc-progress-indicator[data-feature="text-alignment"]');
           if (indicator) {
             indicator.querySelectorAll('.acc-progress-dot').forEach((dot, dotIndex) => {
               dot.classList.toggle('active', dotIndex === index);
@@ -8496,6 +8580,16 @@ var AccessibleWebWidget = (function () {
             this.setReadableFontUI(button.closest('.acc-menu'), newFontKey);
             // setReadableFontUI re-labels the button with the active font.
             this.announceFeatureState(button.getAttribute('aria-label'), !!newFontKey);
+            return;
+          }
+
+          if (featureKey === 'text-alignment') {
+            const newIndex = feature.currentIndex + 1;
+            const newAlignment = newIndex >= feature.levels ? null : feature.values[newIndex];
+            this.updateState({ 'text-alignment': newAlignment || false });
+            this.enableTextAlignment(newAlignment || false);
+            this.setTextAlignmentUI(button.closest('.acc-menu'), newAlignment);
+            this.announceFeatureState(button.getAttribute('aria-label'), !!newAlignment);
             return;
           }
 
@@ -9116,6 +9210,8 @@ var AccessibleWebWidget = (function () {
           this.setColorFilterUI(menu, activeColorFilter);
           const readableChoice = this.resolveReadableFontChoice(states['readable-text']);
           this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
+          const textAlignment = this.resolveTextAlignment(states['text-alignment']);
+          this.setTextAlignmentUI(menu, textAlignment ? textAlignment.key : null);
           this.syncTextScaleControlUI(menu, states['text-scale'] || 1);
         },
 
@@ -9447,7 +9543,7 @@ var AccessibleWebWidget = (function () {
 
             const config = this.loadConfig();
 
-            const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text']);
+            const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text', 'text-alignment']);
             const colorKeys = new Set(['contrast-toggle', 'invert-colors', 'saturation-toggle', 'high-contrast-mode']);
             const readingAidsKeys = new Set(['reading-aid', 'highlight-links', 'highlight-title', 'simple-layout', 'text-magnifier', 'page-structure']);
 
@@ -9557,10 +9653,11 @@ var AccessibleWebWidget = (function () {
                 const textScaleOption = sectionOptions.find(option => option.key === 'text-scale');
                 sectionOptions = sectionOptions.filter(option => option.key !== 'text-scale');
                 return renderThinRowSection(section, sectionOptions, {
-                  order: ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'],
+                  order: ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text', 'text-alignment'],
                   rows: [
                     new Set(['line-spacing', 'letter-spacing']),
-                    new Set(['bold-text', 'readable-text'])
+                    new Set(['bold-text', 'readable-text']),
+                    new Set(['text-alignment'])
                   ],
                   specialContent: textScaleOption
                     ? this.renderTextScaleControl(config.states?.['text-scale'] || 1)
@@ -10231,6 +10328,11 @@ var AccessibleWebWidget = (function () {
         this.textScaleStepPercent = 5;
         this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
         this.saturationFilterValues = ['low-saturation', 'high-saturation'];
+        this.textAlignmentChoices = [
+          { key: 'start', label: 'Start' },
+          { key: 'center', label: 'Center' },
+          { key: 'end', label: 'End' }
+        ];
 
         // Readable Font levels; the persisted readable-text state holds the
         // active key ('dyslexic' | 'legible' | 'lexend'; legacy true maps to
@@ -10245,6 +10347,13 @@ var AccessibleWebWidget = (function () {
           { label: 'Font Weight', key: 'bold-text', icon: this.widgetIcons.boldText },
           { label: 'Line Height', key: 'line-spacing', icon: this.widgetIcons.lineSpacing },
           { label: 'Letter Spacing', key: 'letter-spacing', icon: this.widgetIcons.letterSpacing },
+          {
+            label: 'Text Alignment',
+            key: 'text-alignment',
+            icon: this.widgetIcons.textAlignment,
+            multiLevel: true,
+            levels: this.textAlignmentChoices.length
+          },
           { label: 'Hide Images', key: 'hide-images', icon: this.widgetIcons.hideImages },
           {
             label: 'Readable Font',
@@ -10273,6 +10382,11 @@ var AccessibleWebWidget = (function () {
             levels: this.readableFontChoices.length,
             currentIndex: -1,
             values: this.readableFontChoices.map((choice) => choice.key)
+          },
+          'text-alignment': {
+            levels: this.textAlignmentChoices.length,
+            currentIndex: -1,
+            values: this.textAlignmentChoices.map((choice) => choice.key)
           }
         };
 

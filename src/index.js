@@ -168,6 +168,11 @@ class AccessibleWebWidget {
     this.textScaleStepPercent = 5;
     this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation'];
+    this.textAlignmentChoices = [
+      { key: 'start', label: 'Start' },
+      { key: 'center', label: 'Center' },
+      { key: 'end', label: 'End' }
+    ];
 
     // Readable Font levels; the persisted readable-text state holds the
     // active key ('dyslexic' | 'legible' | 'lexend'; legacy true maps to
@@ -182,6 +187,13 @@ class AccessibleWebWidget {
       { label: 'Font Weight', key: 'bold-text', icon: this.widgetIcons.boldText },
       { label: 'Line Height', key: 'line-spacing', icon: this.widgetIcons.lineSpacing },
       { label: 'Letter Spacing', key: 'letter-spacing', icon: this.widgetIcons.letterSpacing },
+      {
+        label: 'Text Alignment',
+        key: 'text-alignment',
+        icon: this.widgetIcons.textAlignment,
+        multiLevel: true,
+        levels: this.textAlignmentChoices.length
+      },
       { label: 'Hide Images', key: 'hide-images', icon: this.widgetIcons.hideImages },
       {
         label: 'Readable Font',
@@ -210,6 +222,11 @@ class AccessibleWebWidget {
         levels: this.readableFontChoices.length,
         currentIndex: -1,
         values: this.readableFontChoices.map((choice) => choice.key)
+      },
+      'text-alignment': {
+        levels: this.textAlignmentChoices.length,
+        currentIndex: -1,
+        values: this.textAlignmentChoices.map((choice) => choice.key)
       }
     };
 
