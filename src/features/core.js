@@ -891,6 +891,7 @@ export const coreFeatureMethods = {
     Array.from(document.body.children).forEach((child) => {
       if (!(child instanceof Element)) return;
       if (child.classList.contains('acc-container')) return;
+      if (child.classList.contains('acc-rg-container')) return;
       if (child === root || child.contains(root)) return;
       child.classList.add('acc-simple-layout-hidden');
       hiddenElements.push(child);
