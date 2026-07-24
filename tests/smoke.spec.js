@@ -585,6 +585,27 @@ test('simplify layout isolates primary content root', async ({ page }) => {
   expect(parseFloat(rootStyles.maxWidth)).toBeGreaterThan(600);
 });
 
+// Regression for #22: simplify layout hid every direct body child, which
+// swept up the reading guide overlay and made it vanish. The two features
+// are independent and must work together.
+test('reading guide survives Simplify Layout', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="reading-aid"]').click();
+
+  const guide = page.locator('.acc-rg-container');
+  await expect(guide).toHaveCount(1);
+
+  await page.locator('.acc-btn[data-key="simple-layout"]').click();
+  await expect(page.locator('body')).toHaveClass(/acc-simple-layout-enabled/);
+
+  await expect(guide).toHaveCount(1);
+  await expect(guide).not.toHaveClass(/acc-simple-layout-hidden/);
+  await expect
+    .poll(() => guide.evaluate(element => getComputedStyle(element).display))
+    .not.toBe('none');
+});
+
 test('system preferences only auto-enable pause motion', async ({ page }) => {
   await page.addInitScript(() => {
     window.matchMedia = (query) => {

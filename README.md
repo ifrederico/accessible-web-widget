@@ -32,7 +32,7 @@ It initializes on page load. No config needed.
 For production, pin a specific version — `@latest` ships new releases to your site without review:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.5.4/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.6.0/dist/accessible-web-widget.min.js"></script>
 ```
 
 Also on npm for bundler setups:
