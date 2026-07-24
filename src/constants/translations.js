@@ -4969,29 +4969,6 @@ export const TRANSLATIONS = {
       }
     };
 
-// Keep a deliberate English fallback for alignment labels in dictionaries
-// that have not been localized yet, while shipping the Spanish labels
-// requested in issue #21. This is scoped to these four labels so the existing
-// completeness test still exposes unrelated translation gaps.
-const TEXT_ALIGNMENT_TRANSLATIONS = {
-      en: {
-        "Text Alignment": "Text Alignment",
-        "Start": "Start",
-        "Center": "Center",
-        "End": "End",
-      },
-      es: {
-        "Text Alignment": "Alineación del texto",
-        "Start": "Inicio",
-        "Center": "Centro",
-        "End": "Final",
-      }
-    };
-
-Object.entries(TRANSLATIONS).forEach(([code, dictionary]) => {
-      Object.assign(dictionary, TEXT_ALIGNMENT_TRANSLATIONS[code] || TEXT_ALIGNMENT_TRANSLATIONS.en);
-    });
-
 export const SUPPORTED_LANGUAGES = [
       { code: "en", label: "English (English)" },
       { code: "pt", label: "Português (Portuguese)" },

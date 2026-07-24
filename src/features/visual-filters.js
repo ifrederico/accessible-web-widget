@@ -82,36 +82,6 @@ export const visualFilterMethods = {
       }
     },
 
-  getTextAlignmentDisplay(index) {
-      const choices = this.textAlignmentChoices || [];
-      const choice = index >= 0 ? choices[index] : null;
-      return {
-        key: choice ? choice.key : null,
-        label: choice ? choice.label : 'Text Alignment',
-        icon: this.widgetIcons.textAlignment
-      };
-    },
-
-  setTextAlignmentUI(menu, activeKey = null) {
-      if (!menu || !menu.querySelector) return;
-      const feature = this.multiLevelFeatures?.['text-alignment'];
-      if (!feature) return;
-      const index = activeKey ? feature.values.indexOf(activeKey) : -1;
-      feature.currentIndex = index;
-      const button = menu.querySelector('.acc-btn[data-key="text-alignment"]');
-      if (!button) return;
-      this.applyModeToggleButtonDisplay(button, this.getTextAlignmentDisplay(index), 'data-text-alignment-mode');
-      const isActive = index >= 0;
-      button.classList.toggle('acc-selected', isActive);
-      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-      const indicator = button.querySelector('.acc-progress-indicator[data-feature="text-alignment"]');
-      if (indicator) {
-        indicator.querySelectorAll('.acc-progress-dot').forEach((dot, dotIndex) => {
-          dot.classList.toggle('active', dotIndex === index);
-        });
-      }
-    },
-
   isColorFilterKey(key) {
       return Array.isArray(this.colorFilterKeys) && this.colorFilterKeys.includes(key);
     },
@@ -295,16 +265,6 @@ export const visualFilterMethods = {
         this.setReadableFontUI(button.closest('.acc-menu'), newFontKey);
         // setReadableFontUI re-labels the button with the active font.
         this.announceFeatureState(button.getAttribute('aria-label'), !!newFontKey);
-        return;
-      }
-
-      if (featureKey === 'text-alignment') {
-        const newIndex = feature.currentIndex + 1;
-        const newAlignment = newIndex >= feature.levels ? null : feature.values[newIndex];
-        this.updateState({ 'text-alignment': newAlignment || false });
-        this.enableTextAlignment(newAlignment || false);
-        this.setTextAlignmentUI(button.closest('.acc-menu'), newAlignment);
-        this.announceFeatureState(button.getAttribute('aria-label'), !!newAlignment);
         return;
       }
 

@@ -46,11 +46,7 @@ test('Spanish accessibility tool labels are fully translated', () => {
     'Play': 'Reproducir',
     'Pause': 'Pausar',
     'Stop': 'Detener',
-    'Reading...': 'Leyendo...',
-    'Text Alignment': 'Alineación del texto',
-    'Start': 'Inicio',
-    'Center': 'Centro',
-    'End': 'Final'
+    'Reading...': 'Leyendo...'
   };
 
   Object.entries(expected).forEach(([key, value]) => {
