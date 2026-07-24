@@ -32,7 +32,7 @@ It initializes on page load. No config needed.
 For production, pin a specific version — `@latest` ships new releases to your site without review:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.5.4/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.6.0/dist/accessible-web-widget.min.js"></script>
 ```
 
 Also on npm for bundler setups:
@@ -50,7 +50,7 @@ Or self-host — just download `dist/accessible-web-widget.min.js` and serve it 
 ## What you get
 
 - **Profiles** — One-tap presets: Seizure Safe, Vision Impaired, ADHD Friendly, Dyslexia Friendly
-- **Text** — Font size, bold, line height, letter spacing, logical text alignment (start/center/end)
+- **Text** — Font size, bold, line height, letter spacing, readable font
 - **Color** — Contrast (light/dark), invert, saturation controls, high contrast
 - **Reading** — readable fonts (OpenDyslexic, Atkinson Hyperlegible, Lexend), reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, page structure navigator (headings/landmarks/links)
 - **Interaction** — Large cursor, pause animations (including videos and animated GIFs), hide images, mute sounds

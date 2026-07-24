@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.5.4
+Stable tag: 1.6.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -53,6 +53,10 @@ The bundled JavaScript is built from public, human-readable source code:
 1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
 
 == Changelog ==
+
+= 1.6.0 =
+* Removed the text alignment control introduced in 1.5.4. Overriding the alignment of every heading, paragraph, and list item fought with the way most sites are designed, and the result didn't read well in practice. Pages now keep their authored alignment.
+* Fixed the Reading Guide disappearing whenever Simplify Layout was switched on. The two can now be used together. Thanks to @njf0x for the fix.
 
 = 1.5.4 =
 * Adds a logical text alignment control that cycles through Start, Center, End, and the page's original alignment. Start and End follow the text direction for left-to-right and right-to-left content, and the preference persists until reset.

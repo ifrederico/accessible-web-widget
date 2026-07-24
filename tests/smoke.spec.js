@@ -260,7 +260,7 @@ test('speech section renders text-to-speech control', async ({ page }) => {
   await expect(speechButtons.first()).toHaveAttribute('data-key', 'text-to-speech');
 });
 
-test('Spanish menu translates speech, layout, and alignment controls', async ({ page }) => {
+test('Spanish menu translates speech and layout controls', async ({ page }) => {
   await page.addInitScript(() => {
     window.AccessibleWebWidgetOptions = { lang: 'es' };
   });
@@ -269,91 +269,20 @@ test('Spanish menu translates speech, layout, and alignment controls', async ({ 
 
   await expect(page.locator('.acc-btn[data-key="text-to-speech"] .acc-label')).toHaveText('Texto a voz');
   await expect(page.locator('.acc-btn[data-key="simple-layout"] .acc-label')).toHaveText('Simplificar diseño');
-  const alignmentButton = page.locator('.acc-btn[data-key="text-alignment"]');
-  await expect(alignmentButton.locator('.acc-label')).toHaveText('Alineación del texto');
-  await alignmentButton.click();
-  await expect(alignmentButton.locator('.acc-label')).toHaveText('Inicio');
-  await expect(alignmentButton).toHaveAttribute('aria-label', 'Inicio');
 });
 
-test('text alignment cycles through logical modes, persists, and restores authored styles', async ({ page }) => {
+test('reset clears text styling while Simplify Layout is active', async ({ page }) => {
   await page.goto('index.html');
-  const target = page.locator('.hero-subtitle');
-  const originalAlignment = await target.evaluate(element => getComputedStyle(element).textAlign);
-  expect(originalAlignment).toBe('center');
-
-  await page.locator('.acc-toggle-btn').click();
-  const alignmentButton = page.locator('.acc-btn[data-key="text-alignment"]');
-  await expect(alignmentButton.locator('.acc-progress-dot')).toHaveCount(3);
-  await expect(alignmentButton).toHaveAttribute('data-text-alignment-mode', 'off');
-
-  await alignmentButton.click();
-  await expect(alignmentButton).toHaveAttribute('data-text-alignment-mode', 'start');
-  await expect(alignmentButton).toHaveAttribute('title', 'Start');
-  await expect(alignmentButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
-  await expect.poll(() => target.evaluate(element => getComputedStyle(element).textAlign)).toBe('start');
-
-  await page.evaluate(() => {
-    const ltr = document.createElement('p');
-    ltr.id = 'alignment-ltr';
-    ltr.dir = 'ltr';
-    ltr.textContent = 'Left-to-right alignment sample';
-    const rtl = document.createElement('p');
-    rtl.id = 'alignment-rtl';
-    rtl.dir = 'rtl';
-    rtl.textContent = 'نموذج محاذاة من اليمين إلى اليسار';
-    document.body.append(ltr, rtl);
-  });
-  const logicalStyles = await page.locator('#alignment-ltr, #alignment-rtl').evaluateAll(elements => (
-    elements.map(element => ({
-      direction: getComputedStyle(element).direction,
-      textAlign: getComputedStyle(element).textAlign
-    }))
-  ));
-  expect(logicalStyles).toEqual([
-    { direction: 'ltr', textAlign: 'start' },
-    { direction: 'rtl', textAlign: 'start' }
-  ]);
-
-  await alignmentButton.click();
-  await expect(alignmentButton).toHaveAttribute('data-text-alignment-mode', 'center');
-  await expect.poll(() => target.evaluate(element => getComputedStyle(element).textAlign)).toBe('center');
-
-  await alignmentButton.click();
-  await expect(alignmentButton).toHaveAttribute('data-text-alignment-mode', 'end');
-  await expect(alignmentButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '2');
-  await expect.poll(() => target.evaluate(element => getComputedStyle(element).textAlign)).toBe('end');
-  let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
-  expect(states['text-alignment']).toBe('end');
-
-  await page.reload();
-  await expect.poll(() => target.evaluate(element => getComputedStyle(element).textAlign)).toBe('end');
-  await page.locator('.acc-toggle-btn').click();
-  await expect(alignmentButton).toHaveClass(/acc-selected/);
-  await expect(alignmentButton).toHaveAttribute('data-text-alignment-mode', 'end');
-
-  await alignmentButton.click();
-  await expect(alignmentButton).toHaveAttribute('data-text-alignment-mode', 'off');
-  await expect.poll(() => target.evaluate(element => getComputedStyle(element).textAlign)).toBe(originalAlignment);
-  states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
-  expect(states['text-alignment']).toBe(false);
-});
-
-test('reset clears text alignment while Simplify Layout is active', async ({ page }) => {
-  await page.goto('index.html');
-  const target = page.locator('.hero-subtitle');
   await page.locator('.acc-toggle-btn').click();
 
-  await page.locator('.acc-btn[data-key="text-alignment"]').click();
+  await page.locator('.acc-btn[data-key="line-spacing"]').click();
   await page.locator('.acc-btn[data-key="simple-layout"]').click();
-  await expect(page.locator('html')).toHaveClass(/acc-text-alignment/);
+  await expect(page.locator('html')).toHaveClass(/acc-line-spacing/);
   await expect(page.locator('body')).toHaveClass(/acc-simple-layout-enabled/);
-  await expect.poll(() => target.evaluate(element => getComputedStyle(element).textAlign)).toBe('start');
 
   await page.locator('.acc-footer-reset').click();
-  await expect(page.locator('html')).not.toHaveClass(/acc-text-alignment/);
+  await expect(page.locator('html')).not.toHaveClass(/acc-line-spacing/);
   await expect(page.locator('body')).not.toHaveClass(/acc-simple-layout-enabled/);
-  await expect.poll(() => target.evaluate(element => getComputedStyle(element).textAlign)).toBe('center');
 });
 
 test('saturation neutral icon differs from low saturation icon', async ({ page }) => {
@@ -654,6 +583,27 @@ test('simplify layout isolates primary content root', async ({ page }) => {
     };
   });
   expect(parseFloat(rootStyles.maxWidth)).toBeGreaterThan(600);
+});
+
+// Regression for #22: simplify layout hid every direct body child, which
+// swept up the reading guide overlay and made it vanish. The two features
+// are independent and must work together.
+test('reading guide survives Simplify Layout', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="reading-aid"]').click();
+
+  const guide = page.locator('.acc-rg-container');
+  await expect(guide).toHaveCount(1);
+
+  await page.locator('.acc-btn[data-key="simple-layout"]').click();
+  await expect(page.locator('body')).toHaveClass(/acc-simple-layout-enabled/);
+
+  await expect(guide).toHaveCount(1);
+  await expect(guide).not.toHaveClass(/acc-simple-layout-hidden/);
+  await expect
+    .poll(() => guide.evaluate(element => getComputedStyle(element).display))
+    .not.toBe('none');
 });
 
 test('system preferences only auto-enable pause motion', async ({ page }) => {
