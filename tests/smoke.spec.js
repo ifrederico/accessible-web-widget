@@ -112,6 +112,70 @@ test('text scale applies below 100% and persists exact percent', async ({ page }
   await expect(textScaleLabel).toHaveText('100%');
 });
 
+test('text scale keeps shared base size for nested a > span', async ({ page }) => {
+  await page.goto('index.html');
+
+  await page.evaluate(() => {
+    const wrapper = document.createElement('p');
+    wrapper.id = 'nested-scale-fixture';
+    wrapper.style.fontSize = '14px';
+    wrapper.innerHTML = '<a id="nested-scale-link" href="#">Link <span id="nested-scale-span">label</span></a>';
+    document.body.appendChild(wrapper);
+  });
+
+  await page.locator('.acc-toggle-btn').click();
+
+  const textScaleRange = page.locator('.acc-text-scale-range');
+  await textScaleRange.evaluate((input) => {
+    input.value = '140';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+
+  const sizes = await page.evaluate(() => {
+    const link = document.getElementById('nested-scale-link');
+    const span = document.getElementById('nested-scale-span');
+    return {
+      linkBase: link?.getAttribute('data-acc-baseSize'),
+      spanBase: span?.getAttribute('data-acc-baseSize'),
+      linkSize: parseFloat(window.getComputedStyle(link).fontSize),
+      spanSize: parseFloat(window.getComputedStyle(span).fontSize)
+    };
+  });
+
+  expect(sizes.linkBase).toBe('14');
+  expect(sizes.spanBase).toBe('14');
+  expect(Math.abs(sizes.linkSize - 19.6)).toBeLessThan(0.2);
+  expect(Math.abs(sizes.spanSize - 19.6)).toBeLessThan(0.2);
+
+  // Nested nodes added while scale is already active must still capture the
+  // unscaled base (not the ancestor's current scaled computed size).
+  const dynamic = await page.evaluate(() => {
+    const host = document.createElement('p');
+    host.id = 'nested-scale-dynamic-host';
+    host.style.fontSize = '14px';
+    host.innerHTML = '<a id="nested-scale-dynamic-link" href="#">Dyn <span id="nested-scale-dynamic-span">label</span></a>';
+    document.body.appendChild(host);
+    return new Promise((resolve) => {
+      requestAnimationFrame(() => {
+        const link = document.getElementById('nested-scale-dynamic-link');
+        const span = document.getElementById('nested-scale-dynamic-span');
+        resolve({
+          linkBase: link?.getAttribute('data-acc-baseSize'),
+          spanBase: span?.getAttribute('data-acc-baseSize'),
+          linkSize: parseFloat(window.getComputedStyle(link).fontSize),
+          spanSize: parseFloat(window.getComputedStyle(span).fontSize)
+        });
+      });
+    });
+  });
+
+  expect(dynamic.linkBase).toBe('14');
+  expect(dynamic.spanBase).toBe('14');
+  expect(Math.abs(dynamic.linkSize - 19.6)).toBeLessThan(0.2);
+  expect(Math.abs(dynamic.spanSize - 19.6)).toBeLessThan(0.2);
+});
+
 test('dev mode exposes accessibility report tool only when enabled', async ({ page }) => {
   await page.goto('index.html?acc-dev=true');
   await page.locator('.acc-toggle-btn').click();

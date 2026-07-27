@@ -105,7 +105,10 @@ export const coreFeatureMethods = {
       return directTextParents;
     },
 
-  applyScaleToElement(element, multiplier) {
+  // Store the element's unscaled font-size before any ancestor is given an
+  // inline scaled size. Nested tags that inherit (e.g. a > span) must keep the
+  // same base, otherwise children capture an already-scaled computed size.
+  captureBaseFontSize(element) {
       if (
         !element ||
         !(element instanceof Element) ||
@@ -113,21 +116,75 @@ export const coreFeatureMethods = {
         element.classList.contains('material-icons') ||
         element.classList.contains('fa')
       ) {
-        return;
+        return false;
       }
       const baseAttr = 'data-acc-baseSize';
-      if (!element.hasAttribute(baseAttr)) {
-        const computedSize = parseFloat(window.getComputedStyle(element).fontSize);
-        if (Number.isNaN(computedSize) || computedSize <= 0) {
-          return;
-        }
-        element.setAttribute(baseAttr, String(computedSize));
+      if (element.hasAttribute(baseAttr)) {
+        return true;
       }
-      const baseSize = parseFloat(element.getAttribute(baseAttr));
+
+      // If an ancestor is already scaled (inline size differs from its stored
+      // base), temporarily clear that inline font-size so inherited/em sizes
+      // resolve against the page's original typography. Do not clear when the
+      // inline size is the element's own unscaled base (e.g. author styles).
+      const clearedAncestors = [];
+      for (let ancestor = element.parentElement; ancestor; ancestor = ancestor.parentElement) {
+        if (!ancestor.hasAttribute(baseAttr) || !ancestor.style.fontSize) continue;
+        const ancestorBase = parseFloat(ancestor.getAttribute(baseAttr));
+        const ancestorInline = parseFloat(ancestor.style.fontSize);
+        if (
+          Number.isNaN(ancestorBase) ||
+          Number.isNaN(ancestorInline) ||
+          Math.abs(ancestorInline - ancestorBase) < 0.001
+        ) {
+          continue;
+        }
+        clearedAncestors.push([ancestor, ancestor.style.fontSize]);
+        ancestor.style.fontSize = '';
+      }
+
+      const computedSize = parseFloat(window.getComputedStyle(element).fontSize);
+
+      clearedAncestors.forEach(([ancestor, fontSize]) => {
+        ancestor.style.fontSize = fontSize;
+      });
+
+      if (Number.isNaN(computedSize) || computedSize <= 0) {
+        return false;
+      }
+      element.setAttribute(baseAttr, String(computedSize));
+      return true;
+    },
+
+  applyScaleToElement(element, multiplier) {
+      if (!this.captureBaseFontSize(element)) {
+        return;
+      }
+      const baseSize = parseFloat(element.getAttribute('data-acc-baseSize'));
       if (Number.isNaN(baseSize) || baseSize <= 0) {
         return;
       }
       element.style.fontSize = `${baseSize * multiplier}px`;
+    },
+
+  collectTextScaleElements(rootElement = document.body) {
+      const elements = new Set();
+      const root = rootElement instanceof Element ? rootElement : document.body;
+      if (!root) return elements;
+
+      if (root.matches?.(this.textScaleSelectors)) {
+        elements.add(root);
+      }
+      root.querySelectorAll?.(this.textScaleSelectors).forEach((el) => elements.add(el));
+      this.collectDirectTextParents(root).forEach((el) => elements.add(el));
+      return elements;
+    },
+
+  applyTextScaleToElements(elements, multiplier) {
+      // Capture every base size first, then apply scaling. Applying inline
+      // font-size during capture would inflate nested elements' computed sizes.
+      elements.forEach((el) => this.captureBaseFontSize(el));
+      elements.forEach((el) => this.applyScaleToElement(el, multiplier));
     },
 
   ensureTextScaleObserver() {
@@ -140,15 +197,11 @@ export const coreFeatureMethods = {
         mutations.forEach(mutation => {
           mutation.addedNodes.forEach(node => {
             if (!(node instanceof Element)) return;
-            if (node.matches && node.matches(this.textScaleSelectors)) {
-              pending.add(node);
-            }
-            node.querySelectorAll?.(this.textScaleSelectors).forEach(el => pending.add(el));
-            this.collectDirectTextParents(node).forEach(el => pending.add(el));
+            this.collectTextScaleElements(node).forEach(el => pending.add(el));
           });
         });
         if (!pending.size) return;
-        pending.forEach(el => this.applyScaleToElement(el, this.currentTextScaleMultiplier));
+        this.applyTextScaleToElements(pending, this.currentTextScaleMultiplier);
       });
       this.textScaleObserver.observe(document.body, { childList: true, subtree: true });
     },
@@ -167,9 +220,10 @@ export const coreFeatureMethods = {
         this.currentTextScaleMultiplier = resolvedMultiply;
         if (!isDefaultScale) {
           this.ensureTextScaleObserver();
-          const elements = document.querySelectorAll(this.textScaleSelectors);
-          elements.forEach(el => this.applyScaleToElement(el, resolvedMultiply));
-          this.collectDirectTextParents(document.body).forEach(el => this.applyScaleToElement(el, resolvedMultiply));
+          this.applyTextScaleToElements(
+            this.collectTextScaleElements(document.body),
+            resolvedMultiply
+          );
         } else {
           this.disconnectTextScaleObserver();
           const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
