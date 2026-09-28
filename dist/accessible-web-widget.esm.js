@@ -5849,7 +5849,7 @@ const coreFeatureMethods = {
       return directTextParents;
     },
 
-  applyScaleToElement(element, multiplier) {
+  recordBaseSize(element) {
       if (
         !element ||
         !(element instanceof Element) ||
@@ -5866,6 +5866,22 @@ const coreFeatureMethods = {
           return;
         }
         element.setAttribute(baseAttr, String(computedSize));
+      }
+    },
+
+  applyScaleToElement(element, multiplier) {
+      if (
+        !element ||
+        !(element instanceof Element) ||
+        this.shouldSkipScaling(element) ||
+        element.classList.contains('material-icons') ||
+        element.classList.contains('fa')
+      ) {
+        return;
+      }
+      const baseAttr = 'data-acc-baseSize';
+      if (!element.hasAttribute(baseAttr)) {
+        this.recordBaseSize(element);
       }
       const baseSize = parseFloat(element.getAttribute(baseAttr));
       if (Number.isNaN(baseSize) || baseSize <= 0) {
@@ -5892,6 +5908,7 @@ const coreFeatureMethods = {
           });
         });
         if (!pending.size) return;
+        pending.forEach(el => this.recordBaseSize(el));
         pending.forEach(el => this.applyScaleToElement(el, this.currentTextScaleMultiplier));
       });
       this.textScaleObserver.observe(document.body, { childList: true, subtree: true });
@@ -5912,8 +5929,10 @@ const coreFeatureMethods = {
         if (!isDefaultScale) {
           this.ensureTextScaleObserver();
           const elements = document.querySelectorAll(this.textScaleSelectors);
-          elements.forEach(el => this.applyScaleToElement(el, resolvedMultiply));
-          this.collectDirectTextParents(document.body).forEach(el => this.applyScaleToElement(el, resolvedMultiply));
+          const directParents = this.collectDirectTextParents(document.body);
+          const allTargets = new Set([...elements, ...directParents]);
+          allTargets.forEach(el => this.recordBaseSize(el));
+          allTargets.forEach(el => this.applyScaleToElement(el, resolvedMultiply));
         } else {
           this.disconnectTextScaleObserver();
           const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
