@@ -112,6 +112,33 @@ test('text scale applies below 100% and persists exact percent', async ({ page }
   await expect(textScaleLabel).toHaveText('100%');
 });
 
+test('text scale computes consistent base size for nested DOM elements', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const textScaleRange = page.locator('.acc-text-scale-range');
+  await textScaleRange.evaluate((input) => {
+    input.value = '140';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+
+  const footerLinkData = await page.locator('.footer-links a[href*="github.com/ifrederico"]').first().evaluate((link) => {
+    const span = link.querySelector('span');
+    return {
+      linkBase: link.getAttribute('data-acc-baseSize'),
+      spanBase: span ? span.getAttribute('data-acc-baseSize') : null,
+      linkFontSize: parseFloat(window.getComputedStyle(link).fontSize),
+      spanFontSize: span ? parseFloat(window.getComputedStyle(span).fontSize) : null,
+    };
+  });
+
+  expect(footerLinkData.linkBase).toBeTruthy();
+  expect(footerLinkData.spanBase).toBeTruthy();
+  expect(footerLinkData.linkBase).toBe(footerLinkData.spanBase);
+  expect(footerLinkData.linkFontSize).toBe(footerLinkData.spanFontSize);
+});
+
 test('dev mode exposes accessibility report tool only when enabled', async ({ page }) => {
   await page.goto('index.html?acc-dev=true');
   await page.locator('.acc-toggle-btn').click();
