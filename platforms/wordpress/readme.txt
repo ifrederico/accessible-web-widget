@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -53,6 +53,9 @@ The bundled JavaScript is built from public, human-readable source code:
 1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
 
 == Changelog ==
+
+= 1.6.1 =
+* Fixed text sizing on nested elements, such as a link with a span inside it. The inner element was scaled twice, so it came out larger than the text around it. Thanks to @AdamMagued for the fix.
 
 = 1.6.0 =
 * Removed the text alignment control introduced in 1.5.4. Overriding the alignment of every heading, paragraph, and list item fought with the way most sites are designed, and the result didn't read well in practice. Pages now keep their authored alignment.
