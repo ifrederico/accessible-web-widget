@@ -5849,41 +5849,33 @@ const coreFeatureMethods = {
       return directTextParents;
     },
 
+  isScalableElement(element) {
+      return (
+        element instanceof Element &&
+        !this.shouldSkipScaling(element) &&
+        !element.classList.contains('material-icons') &&
+        !element.classList.contains('fa')
+      );
+    },
+
   recordBaseSize(element) {
-      if (
-        !element ||
-        !(element instanceof Element) ||
-        this.shouldSkipScaling(element) ||
-        element.classList.contains('material-icons') ||
-        element.classList.contains('fa')
-      ) {
+      const baseAttr = 'data-acc-baseSize';
+      if (!this.isScalableElement(element) || element.hasAttribute(baseAttr)) {
         return;
       }
-      const baseAttr = 'data-acc-baseSize';
-      if (!element.hasAttribute(baseAttr)) {
-        const computedSize = parseFloat(window.getComputedStyle(element).fontSize);
-        if (Number.isNaN(computedSize) || computedSize <= 0) {
-          return;
-        }
-        element.setAttribute(baseAttr, String(computedSize));
+      const computedSize = parseFloat(window.getComputedStyle(element).fontSize);
+      if (Number.isNaN(computedSize) || computedSize <= 0) {
+        return;
       }
+      element.setAttribute(baseAttr, String(computedSize));
     },
 
   applyScaleToElement(element, multiplier) {
-      if (
-        !element ||
-        !(element instanceof Element) ||
-        this.shouldSkipScaling(element) ||
-        element.classList.contains('material-icons') ||
-        element.classList.contains('fa')
-      ) {
+      if (!this.isScalableElement(element)) {
         return;
       }
-      const baseAttr = 'data-acc-baseSize';
-      if (!element.hasAttribute(baseAttr)) {
-        this.recordBaseSize(element);
-      }
-      const baseSize = parseFloat(element.getAttribute(baseAttr));
+      this.recordBaseSize(element);
+      const baseSize = parseFloat(element.getAttribute('data-acc-baseSize'));
       if (Number.isNaN(baseSize) || baseSize <= 0) {
         return;
       }
