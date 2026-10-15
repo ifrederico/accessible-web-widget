@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -53,6 +53,13 @@ The bundled JavaScript is built from public, human-readable source code:
 1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
 
 == Changelog ==
+
+= 1.6.2 =
+* Works much better on phones. The menu keeps compact two-column rows instead of switching to tall tiles, so it needs about half the scrolling; scrolling inside it no longer moves the page behind it; and on phones held sideways the header and footer take less room.
+* Reading Guide now appears as soon as it is turned on, and a tap moves it. Text Magnifier opens with a tap and stays a readable size on small screens. Big Cursor is hidden on touch-only devices, where there is no cursor to enlarge.
+* Focus rings now appear only for keyboard users and no longer stay stuck after a click or tap; the Font Size slider shows one too. Hover effects no longer stick on touch screens, and Escape closes the language list before the menu.
+* Screen readers now hear "Contrast: Light", "Saturation: Low", or "Readable Font: Lexend" instead of only the level name.
+* Fixed text added to the page after the text size was changed (for example, content loaded later inside a link) being enlarged twice.
 
 = 1.6.1 =
 * Fixed text sizing on nested elements, such as a link with a span inside it. The inner element was scaled twice, so it came out larger than the text around it. Thanks to @AdamMagued for the fix.
