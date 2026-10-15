@@ -15,15 +15,20 @@ const readScroll = (page) => page.evaluate(() => ({
   page: window.scrollY
 }));
 
+// Drags one finger by yDistance with raw touch events (negative drags upward,
+// scrolling content down). Input.synthesizeScrollGesture's touch source does
+// nothing in headless Chromium on Linux, so CI never scrolled with it.
 const touchScroll = async (page, x, y, yDistance) => {
   const cdp = await page.context().newCDPSession(page);
-  await cdp.send('Input.synthesizeScrollGesture', {
-    x: Math.round(x),
-    y: Math.round(y),
-    yDistance,
-    gestureSourceType: 'touch',
-    speed: 3000
-  });
+  const steps = 10;
+  const point = (i) => [{ x: Math.round(x), y: Math.round(y + (yDistance * i) / steps) }];
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: point(0) });
+  for (let i = 1; i <= steps; i++) {
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: point(i) });
+  }
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  // Let any fling or scroll chaining settle before reading positions.
+  await page.waitForTimeout(300);
 };
 
 test('phone menu keeps compact two-column rows', async ({ page }) => {
@@ -55,9 +60,9 @@ test('touch scrolling the menu never scrolls the page behind it', async ({ page 
   await page.locator('.acc-toggle-btn').tap();
   const content = await page.locator('.acc-menu-content').boundingBox();
 
-  // Well past the end of the options.
+  // Well past the end of the options: each drag spans most of the list.
   for (let i = 0; i < 4; i++) {
-    await touchScroll(page, content.x + content.width / 2, content.y + content.height / 2, -800);
+    await touchScroll(page, content.x + content.width / 2, content.y + content.height - 20, -(content.height - 40));
   }
   let scroll = await readScroll(page);
   expect(scroll.menu).toBeGreaterThan(0);
