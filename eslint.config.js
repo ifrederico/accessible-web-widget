@@ -9,7 +9,9 @@ export default [
       'platforms/wordpress/js/**',
       'test-results/**',
       'playwright-report/**',
-      'repomix-*.xml'
+      'repomix-*.xml',
+      // Local tool state, including git worktrees with their own dist/.
+      '.claude/**'
     ]
   },
   js.configs.recommended,
