@@ -139,6 +139,56 @@ test('text scale computes consistent base size for nested DOM elements', async (
   expect(footerLinkData.linkFontSize).toBe(footerLinkData.spanFontSize);
 });
 
+// Regression for #28: content inserted later inside an already-scaled
+// element inherited the scaled size, recorded it as its base, and ended up
+// scaled twice.
+test('text added inside an already-scaled element is scaled only once', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const textScaleRange = page.locator('.acc-text-scale-range');
+  const setScale = (percent) => textScaleRange.evaluate((input, value) => {
+    input.value = String(value);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }, percent);
+  await setScale(140);
+
+  const link = page.locator('.footer-links a[href*="github.com/ifrederico"]').first();
+  const readSizes = () => link.evaluate((element) => {
+    const sibling = element.querySelector('span');
+    const late = element.querySelector('.late-span');
+    return {
+      siblingBase: sibling.getAttribute('data-acc-baseSize'),
+      lateBase: late.getAttribute('data-acc-baseSize'),
+      siblingFontSize: parseFloat(getComputedStyle(sibling).fontSize),
+      lateFontSize: parseFloat(getComputedStyle(late).fontSize)
+    };
+  });
+
+  await link.evaluate(async (element) => {
+    // Nested two deep, so every level sits under a scaled ancestor.
+    const wrapper = document.createElement('em');
+    const late = document.createElement('span');
+    late.className = 'late-span';
+    late.textContent = 'Late';
+    wrapper.append(late);
+    element.append(wrapper);
+    // The scaling MutationObserver runs right after this task.
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  let sizes = await readSizes();
+  expect(sizes.lateBase).toBe(sizes.siblingBase);
+  expect(sizes.lateFontSize).toBe(sizes.siblingFontSize);
+
+  // And it keeps tracking the slider afterwards.
+  await setScale(120);
+  sizes = await readSizes();
+  expect(sizes.lateBase).toBe(sizes.siblingBase);
+  expect(sizes.lateFontSize).toBe(sizes.siblingFontSize);
+});
+
 test('dev mode exposes accessibility report tool only when enabled', async ({ page }) => {
   await page.goto('index.html?acc-dev=true');
   await page.locator('.acc-toggle-btn').click();

@@ -126,6 +126,40 @@ export const coreFeatureMethods = {
       element.setAttribute(baseAttr, String(computedSize));
     },
 
+  // Records bases for elements that have none yet. One inserted under an
+  // already-scaled element would inherit that scaled size and record it as
+  // its base, scaling twice (#28), so the scaled ancestors are pinned back
+  // to their recorded bases while measuring and restored afterwards. It
+  // all runs in one task, so nothing paints in between.
+  recordBaseSizes(elements) {
+      const unrecorded = [];
+      elements.forEach((element) => {
+        if (this.isScalableElement(element) && !element.hasAttribute('data-acc-baseSize')) {
+          unrecorded.push(element);
+        }
+      });
+      if (!unrecorded.length) return;
+
+      const visited = new Set();
+      const scaledAncestors = [];
+      unrecorded.forEach((element) => {
+        for (let node = element.parentElement; node && !visited.has(node); node = node.parentElement) {
+          visited.add(node);
+          if (node.hasAttribute('data-acc-baseSize') && node.style.fontSize) {
+            scaledAncestors.push({ node, scaledSize: node.style.fontSize });
+          }
+        }
+      });
+
+      scaledAncestors.forEach(({ node }) => {
+        node.style.fontSize = `${node.getAttribute('data-acc-baseSize')}px`;
+      });
+      unrecorded.forEach((element) => this.recordBaseSize(element));
+      scaledAncestors.forEach(({ node, scaledSize }) => {
+        node.style.fontSize = scaledSize;
+      });
+    },
+
   applyScaleToElement(element, multiplier) {
       if (!this.isScalableElement(element)) {
         return;
@@ -156,7 +190,7 @@ export const coreFeatureMethods = {
           });
         });
         if (!pending.size) return;
-        pending.forEach(el => this.recordBaseSize(el));
+        this.recordBaseSizes(pending);
         pending.forEach(el => this.applyScaleToElement(el, this.currentTextScaleMultiplier));
       });
       this.textScaleObserver.observe(document.body, { childList: true, subtree: true });
@@ -179,7 +213,7 @@ export const coreFeatureMethods = {
           const elements = document.querySelectorAll(this.textScaleSelectors);
           const directParents = this.collectDirectTextParents(document.body);
           const allTargets = new Set([...elements, ...directParents]);
-          allTargets.forEach(el => this.recordBaseSize(el));
+          this.recordBaseSizes(allTargets);
           allTargets.forEach(el => this.applyScaleToElement(el, resolvedMultiply));
         } else {
           this.disconnectTextScaleObserver();
