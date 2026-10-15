@@ -287,11 +287,7 @@ export const axeReportMethods = {
   
     requestAnimationFrame(() => {
       const focusables = this.getReportFocusableElements(panel);
-      if (focusables.length) {
-        focusables[0].focus();
-        return;
-      }
-      focusTarget.focus();
+      this.focusQuietlyAfterPointer(focusables.length ? focusables[0] : focusTarget);
     });
   },
 
@@ -479,9 +475,7 @@ export const axeReportMethods = {
   
     const focusTarget = this.reportPreviousFocus;
     this.reportPreviousFocus = null;
-    if (focusTarget && typeof focusTarget.focus === 'function') {
-      focusTarget.focus();
-    }
+    this.focusQuietlyAfterPointer(focusTarget);
   },
 
 };

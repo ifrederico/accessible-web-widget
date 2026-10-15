@@ -660,60 +660,63 @@ export const coreFeatureMethods = {
     try {
       let container = this.findElement('.acc-rg-container');
       const guideHeight = 100; // Height of the clear reading window
-  
+
+      // Always clean up existing listeners first to prevent duplicates
+      this.detachReadingGuideListeners();
+
       if (enable) {
-        // Always clean up existing listener first to prevent duplicates
-        if (window.__accweb__scrollGuide) {
-          document.removeEventListener('mousemove', window.__accweb__scrollGuide);
-          delete window.__accweb__scrollGuide;
-        }
-  
         if (!container) {
-          // Create container but don't make it visible yet
           container = document.createElement('div');
           container.setAttribute('class', 'acc-rg-container');
           container.setAttribute('aria-hidden', 'true');
           container.innerHTML = this.readingAidTemplate;
           document.body.prepend(container);
         }
-  
+
         const rgTop = container.querySelector('.acc-rg-top');
         const rgBottom = container.querySelector('.acc-rg-bottom');
-        
-        // Initially hide the guide completely
-        rgTop.style.display = 'none';
-        rgBottom.style.display = 'none';
-        this.readingAidVisible = false;
-  
-        const updateGuidePosition = this.throttle((event) => {
-          // If first mouse movement after enabling, make the guide visible
-          if (!this.readingAidVisible) {
-            rgTop.style.display = 'block';
-            rgBottom.style.display = 'block';
-            this.readingAidVisible = true;
-          }
-          
-          // Position the guide at the mouse Y coordinate
-          const mouseY = event.clientY;
-          const topHeight = Math.max(0, mouseY - guideHeight / 2);
-          const bottomHeight = Math.max(0, window.innerHeight - (mouseY + guideHeight / 2));
-          rgTop.style.height = `${topHeight}px`;
-          rgBottom.style.height = `${bottomHeight}px`;
+
+        const placeGuide = (clientY) => {
+          // Clamped: a remembered position can fall outside a viewport
+          // that shrank since (rotating a phone).
+          const y = Math.min(Math.max(0, clientY), window.innerHeight);
+          rgTop.style.height = `${Math.max(0, y - guideHeight / 2)}px`;
+          // The bottom shade runs from the window's lower edge to the
+          // viewport bottom, so it stays correct when mobile toolbars
+          // resize the viewport.
+          rgBottom.style.top = `${y + guideHeight / 2}px`;
+          rgBottom.style.height = '';
+          this.readingGuideY = y;
+        };
+
+        // Show the guide right away (mid-screen until the pointer moves):
+        // touch screens have no hover that would ever reveal it.
+        placeGuide(this.readingGuideY ?? window.innerHeight / 2);
+        rgTop.style.display = 'block';
+        rgBottom.style.display = 'block';
+        this.readingAidVisible = true;
+
+        // Taps and moves inside the widget's own UI leave the guide where
+        // the visitor put it on the page.
+        const isWidgetEvent = (event) => (
+          event.target instanceof Element && !!event.target.closest('.acc-container')
+        );
+        // Mouse and pen drag the window continuously. A touch places it
+        // where the finger lands, then the page scrolls beneath it.
+        const onPointerMove = this.throttle((event) => {
+          if (event.pointerType === 'touch' || isWidgetEvent(event)) return;
+          placeGuide(event.clientY);
         }, 16);
-  
-        window.__accweb__scrollGuide = updateGuidePosition;
-        document.addEventListener('mousemove', updateGuidePosition, { passive: true });
+        const onPointerDown = (event) => {
+          if (isWidgetEvent(event)) return;
+          placeGuide(event.clientY);
+        };
+
+        document.addEventListener('pointermove', onPointerMove, { passive: true });
+        document.addEventListener('pointerdown', onPointerDown, { passive: true });
+        this.readingGuideListeners = { onPointerMove, onPointerDown };
       } else {
-        // Reset visibility flag when disabled
         this.readingAidVisible = false;
-        
-        // Clean up event listener
-        if (window.__accweb__scrollGuide) {
-          document.removeEventListener('mousemove', window.__accweb__scrollGuide);
-          delete window.__accweb__scrollGuide;
-        }
-        
-        // Remove container
         if (container) {
           container.remove();
         }
@@ -721,6 +724,14 @@ export const coreFeatureMethods = {
     } catch (e) {
       console.warn('Error with reading aid:', e);
     }
+  },
+
+  detachReadingGuideListeners() {
+    const listeners = this.readingGuideListeners;
+    if (!listeners) return;
+    document.removeEventListener('pointermove', listeners.onPointerMove);
+    document.removeEventListener('pointerdown', listeners.onPointerDown);
+    this.readingGuideListeners = null;
   },
 
   ensureMediaQuery(query) {
@@ -1231,14 +1242,7 @@ export const coreFeatureMethods = {
         el.style.fontSize = '';
         el.removeAttribute('data-acc-baseSize');
       });
-      let guide = this.findElement('.acc-rg-container');
-      if (guide) {
-        guide.remove();
-        if (window.__accweb__scrollGuide) {
-          document.removeEventListener('mousemove', window.__accweb__scrollGuide);
-          delete window.__accweb__scrollGuide;
-        }
-      }
+      this.enableReadingAid(false);
       this.disableAnnotations();
       this.stopSpeech();
       this.stopTtsClickMode();

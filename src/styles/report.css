@@ -28,6 +28,8 @@
   width: 90%;
   max-width: 800px;
   max-height: 85vh;
+  /* dvh tracks the visible area while mobile browser toolbars show. */
+  max-height: 85dvh;
   display: flex;
   flex-direction: column;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -55,8 +57,10 @@
   align-items: center;
   justify-content: center;
 }
-.acc-report-close:hover {
-  background: #f0f0f0;
+@media (hover: hover) {
+  .acc-report-close:hover {
+    background: #f0f0f0;
+  }
 }
 .acc-report-close svg {
   width: 20px;
@@ -72,6 +76,7 @@
 .acc-report-content {
   flex: 1;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 16px 20px;
 }
 .acc-report-loading {
@@ -138,8 +143,10 @@
   align-items: center;
   gap: 12px;
 }
-.acc-report-violation-header:hover {
-  background: #f0f0f0;
+@media (hover: hover) {
+  .acc-report-violation-header:hover {
+    background: #f0f0f0;
+  }
 }
 .acc-report-violation-impact {
   font-size: 11px;
@@ -241,8 +248,15 @@
   .acc-report-dialog {
     width: 95%;
     max-height: 90vh;
+    max-height: 90dvh;
   }
   .acc-report-summary {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (pointer: coarse) {
+  .acc-report-close {
+    min-width: 44px;
+    min-height: 44px;
   }
 }

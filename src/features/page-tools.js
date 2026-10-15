@@ -143,13 +143,31 @@ export const pageToolMethods = {
         this.magnifierElement = element;
       }
       if (!this.magnifierMoveHandler) {
-        this.magnifierMoveHandler = this.throttle((event) => this.updateTextMagnifier(event), 50);
+        // Mouse and pen magnify on hover. Touch has no hover, so a tap
+        // magnifies instead, and that banner clears once the page scrolls
+        // rather than lingering over the text.
+        this.magnifierMoveHandler = this.throttle((event) => {
+          if (event.pointerType === 'touch') return;
+          this.updateTextMagnifier(event);
+        }, 50);
+        this.magnifierDownHandler = (event) => {
+          if (event.pointerType === 'touch') this.updateTextMagnifier(event);
+        };
+        this.magnifierScrollHandler = () => {
+          if (this.magnifierLastPointerType === 'touch') this.hideTextMagnifier();
+        };
       }
-      document.addEventListener('mousemove', this.magnifierMoveHandler, { passive: true });
+      document.addEventListener('pointermove', this.magnifierMoveHandler, { passive: true });
+      document.addEventListener('pointerdown', this.magnifierDownHandler, { passive: true });
+      window.addEventListener('scroll', this.magnifierScrollHandler, { passive: true });
     } else {
       if (this.magnifierMoveHandler) {
-        document.removeEventListener('mousemove', this.magnifierMoveHandler);
+        document.removeEventListener('pointermove', this.magnifierMoveHandler);
+        document.removeEventListener('pointerdown', this.magnifierDownHandler);
+        window.removeEventListener('scroll', this.magnifierScrollHandler);
         this.magnifierMoveHandler = null;
+        this.magnifierDownHandler = null;
+        this.magnifierScrollHandler = null;
       }
       if (this.magnifierElement) {
         this.magnifierElement.remove();
@@ -162,6 +180,7 @@ export const pageToolMethods = {
   updateTextMagnifier(event) {
     const magnifier = this.magnifierElement;
     if (!magnifier) return;
+    this.magnifierLastPointerType = event.pointerType || 'mouse';
     const target = event.target instanceof Element ? event.target : null;
     let block = null;
     if (target && !target.closest('.acc-container') && !target.closest('.acc-rg-container')) {
@@ -176,11 +195,22 @@ export const pageToolMethods = {
       : '';
     if (text) {
       magnifier.textContent = text;
+      // Dock the banner on the other half of the screen from the pointer
+      // so it never covers the text being magnified.
+      magnifier.classList.toggle('acc-text-magnifier-top', event.clientY > window.innerHeight * 0.55);
       magnifier.classList.add('acc-visible');
     } else {
       magnifier.classList.remove('acc-visible');
       magnifier.textContent = '';
     }
+  },
+
+  hideTextMagnifier() {
+    if (!this.magnifierElement) return;
+    this.magnifierElement.classList.remove('acc-visible');
+    this.magnifierElement.textContent = '';
+    // Forget the block so tapping it again shows the banner again.
+    this.magnifierLastBlock = null;
   },
 
   // ── Page structure navigator ───────────────────────────────────────

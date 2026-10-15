@@ -312,3 +312,116 @@ test('switching to Arabic flips the menu to RTL and back', async ({ page }) => {
   await page.locator('.acc-lang-item[data-lang="en"]').click();
   await expect(page.locator('.acc-menu')).toHaveAttribute('dir', 'ltr');
 });
+
+test('interaction options render as compact rows like the other sections', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const rows = page.locator('.acc-option-category-interaction .acc-btn.acc-text-inline');
+  await expect(rows).toHaveCount(4);
+  await expect(page.locator('.acc-btn[data-key="large-pointer"]')).toBeVisible();
+  const height = await page.locator('.acc-btn[data-key="mute-sounds"]').evaluate((el) => el.getBoundingClientRect().height);
+  expect(height).toBeLessThan(70);
+});
+
+test('wheel scrolling past the end of the menu leaves the page in place', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const box = await page.locator('.acc-menu-content').boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  for (let i = 0; i < 10; i++) {
+    await page.mouse.wheel(0, 400);
+  }
+
+  await expect
+    .poll(() => page.evaluate(() => document.getElementById('acc-widget-host').shadowRoot.querySelector('.acc-menu-content').scrollTop))
+    .toBeGreaterThan(0);
+  await page.waitForTimeout(200);
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+});
+
+test('mouse clicks leave no focus ring while keyboard focus shows one', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const option = page.locator('.acc-btn[data-key="line-spacing"]');
+  await option.click();
+  expect(await option.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe('none');
+
+  await page.keyboard.press('Tab');
+  const focusedOutline = await page.evaluate(() => {
+    const active = document.getElementById('acc-widget-host').shadowRoot.activeElement;
+    return active ? getComputedStyle(active).outlineStyle : '';
+  });
+  expect(focusedOutline).toBe('solid');
+});
+
+test('Escape closes the language list before the menu and keeps focus in the dialog', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const languageToggle = page.locator('.acc-header-lang-toggle');
+  const languageModal = page.locator('#acc-lang-modal');
+
+  await languageToggle.click();
+  await expect(languageModal).not.toHaveAttribute('hidden', '');
+  await page.keyboard.press('Escape');
+  await expect(languageModal).toHaveAttribute('hidden', '');
+  await expect(page.locator('.acc-menu')).toBeVisible();
+  await expect(languageToggle).toBeFocused();
+
+  // Picking a language also hands focus back to the language button, and
+  // the widget declares its UI language for screen readers.
+  await languageToggle.click();
+  await page.locator('.acc-lang-item[data-lang="es"]').click();
+  await expect(languageToggle).toBeFocused();
+  expect(await page.evaluate(() => document.getElementById('acc-widget-host').shadowRoot.querySelector('.acc-container').getAttribute('lang'))).toBe('es');
+
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.acc-menu')).toBeHidden();
+});
+
+test('text magnifier banner is not capped at half the viewport', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="text-magnifier"]').click();
+  await page.keyboard.press('Escape');
+
+  await page.locator('.hero-subtitle').hover();
+  const magnifier = page.locator('.acc-text-magnifier');
+  await expect(magnifier).toHaveClass(/acc-visible/);
+  const box = await magnifier.boundingBox();
+  const viewport = page.viewportSize();
+  expect(box.width).toBeGreaterThan(viewport.width / 2);
+});
+
+test('landscape phones get a compact header and a one-row footer', async ({ page }) => {
+  await page.setViewportSize({ width: 750, height: 342 });
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const header = await page.locator('.acc-menu-header').boundingBox();
+  const reset = await page.locator('.acc-footer-reset').boundingBox();
+  const brand = await page.locator('.acc-footer-brand').boundingBox();
+  const content = await page.locator('.acc-menu-content').boundingBox();
+  expect(header.height).toBeLessThanOrEqual(48);
+  expect(Math.abs((reset.y + reset.height / 2) - (brand.y + brand.height / 2))).toBeLessThan(2);
+  expect(content.height).toBeGreaterThan(200);
+});
+
+test('closing by click leaves the toggle unringed; closing by keyboard keeps the ring', async ({ page }) => {
+  await page.goto('index.html');
+  const toggle = page.locator('.acc-toggle-btn');
+  const ringState = () => toggle.evaluate((el) => ({
+    focused: el.matches(':focus'),
+    outline: getComputedStyle(el).outlineStyle
+  }));
+
+  await toggle.click();
+  await page.locator('.acc-menu-close').click();
+  expect(await ringState()).toEqual({ focused: true, outline: 'none' });
+
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.acc-menu')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.acc-menu')).toBeHidden();
+  expect(await ringState()).toEqual({ focused: true, outline: 'solid' });
+});

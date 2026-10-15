@@ -162,6 +162,27 @@ export const uiMethods = {
       return variants[normalized] || variants.default || this.widgetIcons.accessibility;
     },
 
+  // Focus moved by the widget after a tap or click (restoring the toggle,
+  // entering a popover) should not draw the keyboard ring WebKit shows for
+  // programmatic focus; keyboard users keep it. Browsers without the
+  // focusVisible option ignore it.
+  focusQuietlyAfterPointer(element) {
+      if (!element || typeof element.focus !== 'function') return;
+      element.focus(this.lastInputWasPointer ? { focusVisible: false } : undefined);
+    },
+
+  // Phones and tablets without a trackpad or mouse. Unknown or mixed input
+  // counts as not touch-only, so desktops never lose an option.
+  isTouchOnlyDevice() {
+      if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
+      try {
+        return window.matchMedia('(pointer: coarse)').matches &&
+          !window.matchMedia('(any-pointer: fine)').matches;
+      } catch {
+        return false;
+      }
+    },
+
   throttle(func, limit) {
       let inThrottle;
       return function (...args) {
@@ -303,6 +324,14 @@ export const uiMethods = {
         if (!this.activeMenuContainer) return;
         if (event.key === 'Escape' || event.key === 'Esc') {
           event.preventDefault();
+          // Escape peels back one layer: an open language popover closes
+          // first (its toggle restores focus), then the menu itself.
+          const langModal = this.findElement('#acc-lang-modal', this.activeMenuContainer);
+          const langToggle = this.findElement('.acc-header-lang-toggle', this.activeMenuContainer);
+          if (langModal && !langModal.hasAttribute('hidden') && langToggle) {
+            langToggle.click();
+            return;
+          }
           this.closeMenu(this.activeMenuContainer);
           return;
         }
@@ -373,10 +402,7 @@ export const uiMethods = {
         toggle.setAttribute('aria-expanded', 'false');
       }
   
-      const focusTarget = toggle || this.previousFocus;
-      if (focusTarget && typeof focusTarget.focus === 'function') {
-        focusTarget.focus();
-      }
+      this.focusQuietlyAfterPointer(toggle || this.previousFocus);
 
       this.stopSpeech();
   
@@ -390,6 +416,9 @@ export const uiMethods = {
       for (let i = 0; i < options.length; i++) {
         const opt = options[i];
         if (opt.requiresSpeechSynthesis && !this.supportsTextToSpeech()) {
+          continue;
+        }
+        if (opt.requiresFinePointer && this.isTouchOnlyDevice()) {
           continue;
         }
         const isMultiLevel = opt.multiLevel === true;
@@ -467,6 +496,11 @@ export const uiMethods = {
         : menu.querySelector && menu.querySelector('.acc-menu');
       if (menuElement) {
         menuElement.setAttribute('dir', direction);
+      }
+      // The widget speaks its own UI language, which can differ from the
+      // page's <html lang>; screen readers pick pronunciation from this.
+      if (this.widgetContainerEl) {
+        this.widgetContainerEl.setAttribute('lang', this.loadConfig().lang || 'en');
       }
       menu.querySelectorAll(".acc-section-title, .acc-label").forEach(el => {
         el.innerText = this.getTranslatedText(el, el.innerText.trim());
@@ -708,6 +742,17 @@ export const uiMethods = {
             });
           }
 
+          // Same compact rows as the sections above, as one auto-flowing
+          // grid so the pairs close up when an option is skipped (Big
+          // Cursor on touch-only devices).
+          if (section.key === 'interaction') {
+            const interactionOrder = ['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds', 'annotations', 'accessibility-report'];
+            return renderThinRowSection(section, sectionOptions, {
+              order: interactionOrder,
+              rows: [new Set(interactionOrder)]
+            });
+          }
+
           const sectionOptionsHtml = sectionOptions.length
             ? this.renderOptions(sectionOptions, section.optionClass || '')
             : '';
@@ -734,8 +779,13 @@ export const uiMethods = {
         const langItems = menu.querySelectorAll(".acc-lang-item");
 
         const closeLanguageModal = () => {
+          // Hiding the popover would otherwise drop focus out of the dialog.
+          const focusWasInside = Boolean(langModal && langModal.contains(this.getActiveElement()));
           if (langModal) {
             langModal.setAttribute('hidden', '');
+          }
+          if (focusWasInside && langToggle) {
+            this.focusQuietlyAfterPointer(langToggle);
           }
           if (langToggle) {
             langToggle.setAttribute('aria-expanded', 'false');
@@ -755,7 +805,13 @@ export const uiMethods = {
           if (langToggle) {
             langToggle.setAttribute('aria-expanded', 'true');
           }
-          if (langSearch) {
+          // On touch-only devices focusing the search field pops the
+          // on-screen keyboard over the list, so land on the current
+          // language; with a keyboard, typing filters right away.
+          const selectedItem = this.findElement('.acc-lang-item.selected', langModal) || langItems[0];
+          if (this.isTouchOnlyDevice() && selectedItem) {
+            this.focusQuietlyAfterPointer(selectedItem);
+          } else if (langSearch) {
             langSearch.focus();
           }
         };
@@ -1065,6 +1121,13 @@ export const uiMethods = {
           }
         }
         
+        // Track the last input modality for focusQuietlyAfterPointer().
+        const trackInputModality = (event) => {
+          this.lastInputWasPointer = event.type === 'pointerdown';
+        };
+        document.addEventListener('pointerdown', trackInputModality, { capture: true, passive: true });
+        document.addEventListener('keydown', trackInputModality, { capture: true, passive: true });
+
         // Add a click handler to the document to blur the toggle button when clicking outside.
         // e.target is retargeted to the shadow host for clicks inside the shadow
         // root, so resolve the real click path via composedPath().

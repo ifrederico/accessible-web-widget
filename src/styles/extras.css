@@ -14,24 +14,53 @@ body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, f
 .acc-text-magnifier {
   position: fixed;
   left: 50%;
-  bottom: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%);
+  /* max-content first: a left: 50% box otherwise shrink-wraps to half the
+     viewport, which turned the banner into a tall, narrow column. */
+  width: max-content;
   max-width: min(90vw, 880px);
   background: #111827;
   color: #ffffff;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-size: 28px;
+  font-size: clamp(18px, 5.5vw, 28px);
   line-height: 1.45;
-  padding: 14px 22px;
+  /* Vertical spacing comes from transparent borders, not padding:
+     overflow clips at the padding box, so the first clamped-away line
+     would otherwise peek through the bottom padding. */
+  padding: 0 22px;
+  border-block: 14px solid transparent;
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   z-index: 2147483646;
   pointer-events: none;
   display: none;
+  overflow: hidden;
 }
 
+/* Clamped so a long block can never cover a phone screen. */
 .acc-text-magnifier.acc-visible {
-  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+}
+
+/* Docked at the top while the magnified text sits in the lower part of
+   the screen, so the banner never covers what is being read. */
+.acc-text-magnifier.acc-text-magnifier-top {
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  bottom: auto;
+}
+
+/* Landscape phones: six large lines would cover most of the screen. */
+@media (max-height: 500px) {
+  .acc-text-magnifier {
+    font-size: 22px;
+  }
+
+  .acc-text-magnifier.acc-visible {
+    -webkit-line-clamp: 3;
+  }
 }
 
 /* Page structure navigator — list styling inside the shared report dialog */
@@ -60,8 +89,16 @@ body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, f
   cursor: pointer;
 }
 
-.acc-structure-item:hover {
-  background: var(--acc-hover-color, #f3f4f6);
+@media (hover: hover) {
+  .acc-structure-item:hover {
+    background: var(--acc-hover-color, #f3f4f6);
+  }
+}
+
+@media (pointer: coarse) {
+  .acc-structure-item {
+    padding: 12px;
+  }
 }
 
 .acc-structure-item:focus-visible {

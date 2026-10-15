@@ -56,7 +56,8 @@ class AccessibleWebWidget {
     this.supportedLanguages = SUPPORTED_LANGUAGES.map((language) => ({ ...language }));
 
     this.accessTools = [
-      { label: 'Big Cursor', key: 'large-pointer', icon: this.widgetIcons.largePointer },
+      // Hidden on touch-only devices, where there is no cursor to enlarge.
+      { label: 'Big Cursor', key: 'large-pointer', icon: this.widgetIcons.largePointer, requiresFinePointer: true },
       { label: 'Stop Animations', key: 'pause-motion', icon: this.widgetIcons.pauseMotion },
       { label: 'Reading Guide', key: 'reading-aid', icon: this.widgetIcons.readingAid },
       {
@@ -246,6 +247,8 @@ class AccessibleWebWidget {
     this.widgetConfig = {};
     this.cookieKey = 'accweb';
     this.readingAidVisible = false;
+    this.readingGuideY = null;
+    this.readingGuideListeners = null;
     this.readableFontsLoaded = new Set();
 
     // Shadow DOM host for the widget UI
@@ -266,6 +269,9 @@ class AccessibleWebWidget {
     // Text magnifier state
     this.magnifierElement = null;
     this.magnifierMoveHandler = null;
+    this.magnifierDownHandler = null;
+    this.magnifierScrollHandler = null;
+    this.magnifierLastPointerType = null;
 
     // Page structure panel state
     this.structurePanel = null;
@@ -275,6 +281,8 @@ class AccessibleWebWidget {
     this.activeMenuToggle = null;
     this.menuKeyListener = null;
     this.previousFocus = null;
+    // Last input was a pointer (tap/click) rather than the keyboard.
+    this.lastInputWasPointer = false;
     this.widgetToggleButton = null;
     this.skipLinkElement = null;
     this.menuContainer = null;

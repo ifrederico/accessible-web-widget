@@ -5,7 +5,9 @@
   width: 100%;
   pointer-events: none;
   background-color: rgba(0, 0, 0, 0.4);
-  z-index: calc(var(--acc-widget-z-index, 100000) + 1);
+  /* Below the widget's overlay (z - 1) and panel, so the guide dims the
+     page but never the open menu or the toggle button. */
+  z-index: calc(var(--acc-widget-z-index, 100000) - 2);
 }
 .acc-rg-top {
   top: 0;

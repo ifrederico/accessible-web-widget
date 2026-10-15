@@ -21,10 +21,25 @@
   letter-spacing: 0.015em;
   color: var(--acc-text-color);
   --acc-content-inline-padding: 14px;
+  /* Theme headerHeight, capped on small screens by the media queries. */
+  --acc-menu-header-height: var(--acc-header-height);
   --acc-menu-inline-gap: clamp(16px, 2.5vw, 28px);
   --acc-menu-block-gap: var(--acc-menu-inline-gap);
   border-radius: 16px;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
+  /* Clear notches and the home indicator when the host page opts into
+     edge-to-edge layout (viewport-fit=cover); env() is 0 everywhere else. */
+  margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+}
+
+/* Dragging the panel's fixed chrome must not scroll the page behind it.
+   Scrolling areas (options, language list) are deliberately left out so
+   they keep panning; pinch-zoom stays available everywhere. */
+.acc-menu-header,
+.acc-footer,
+.acc-lang-modal-header,
+.acc-lang-search-wrapper {
+  touch-action: pinch-zoom;
 }
 
 /* The dialog receives programmatic focus on open (tabindex="-1", never
@@ -50,7 +65,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--acc-content-inline-padding);
-  height: var(--acc-header-height);
+  height: var(--acc-menu-header-height);
   font-weight: 700 !important;
   background-color: var(--acc-primary-color) !important;
 }
@@ -85,11 +100,13 @@
   transition: background-color 0.2s ease;
 }
 
-.acc-menu-close:hover {
-  background-color: rgba(255, 255, 255, 0.18);
+@media (hover: hover) {
+  .acc-menu-close:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+  }
 }
 
-.acc-menu-close:focus {
+.acc-menu-close:focus-visible {
   outline: 2px solid var(--acc-text-color-inverted);
   outline-offset: 1px;
 }
@@ -303,6 +320,7 @@
   padding: 6px 8px 12px;
   max-height: 280px;
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .acc-lang-item {
@@ -323,11 +341,13 @@
   transition: background-color 0.12s ease;
 }
 
-.acc-lang-item:hover {
-  background-color: rgba(25, 118, 210, 0.06);
+@media (hover: hover) {
+  .acc-lang-item:hover {
+    background-color: rgba(25, 118, 210, 0.06);
+  }
 }
 
-.acc-lang-item:focus {
+.acc-lang-item:focus-visible {
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
 }
@@ -464,31 +484,41 @@
   min-width: 24px;
 }
 
-@media only screen and (max-width: 430px) {
-  .acc-options-text-inline {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
+/* Phones keep the compact icon + label rows: switching to tall tiles here
+   doubled the panel height. Multi-level buttons stack their dots under
+   the label instead, so the label keeps the full width beside the icon. */
+@media only screen and (max-width: 480px) {
   .acc-btn.acc-text-inline {
-    min-height: auto;
-    aspect-ratio: 11 / 8;
-    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .acc-btn.acc-text-inline[data-multi-level="true"] {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "icon label"
+      "icon dots";
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 6px;
-    padding: 10px;
+    justify-items: start;
+    column-gap: 8px;
+    row-gap: 4px;
   }
 
-  .acc-btn.acc-text-inline .acc-label {
-    font-size: 13px !important;
-    flex: 0 1 auto;
+  .acc-btn.acc-text-inline[data-multi-level="true"] > svg {
+    grid-area: icon;
   }
 
-  .acc-btn.acc-text-inline .acc-progress-indicator {
-    margin-top: 8px;
-    margin-left: 0;
-    justify-content: center;
+  .acc-btn.acc-text-inline[data-multi-level="true"] .acc-label {
+    grid-area: label;
+  }
+
+  .acc-btn.acc-text-inline[data-multi-level="true"] .acc-progress-indicator {
+    grid-area: dots;
+    margin: 0;
+    min-width: 0;
+    height: 6px;
+    justify-content: flex-start;
   }
 }
 
@@ -557,6 +587,12 @@
 
 .acc-text-scale-range:focus {
   outline: none;
+}
+
+.acc-text-scale-range:focus-visible {
+  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 .acc-text-scale-range::-webkit-slider-runnable-track {
@@ -686,13 +722,19 @@
   position: relative;
 }
 
-.acc-btn:hover {
-  border-color: var(--acc-hover-color) !important;
-  border-width: 1px !important;
-  box-shadow: inset 0 0 0 1px var(--acc-hover-color);
+/* Touch screens emulate :hover on tap and keep it until the next tap
+   elsewhere, which left the last-tapped option looking highlighted. */
+@media (hover: hover) {
+  .acc-btn:hover {
+    border-color: var(--acc-hover-color) !important;
+    border-width: 1px !important;
+    box-shadow: inset 0 0 0 1px var(--acc-hover-color);
+  }
 }
 
-.acc-btn:focus {
+/* :focus-visible keeps the ring for keyboard users without leaving it
+   stuck on whatever a mouse click or tap last pressed. */
+.acc-btn:focus-visible {
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
   border-color: var(--acc-primary-color) !important;
@@ -701,6 +743,16 @@
 .acc-btn .acc-label, .acc-text-adjust .acc-label div {
   font-size: 13px !important;
   font-weight: 600 !important;
+}
+
+/* Rapid taps (cycling Contrast or Readable Font) must not trigger
+   double-tap-to-zoom on pages without a mobile viewport. */
+.acc-btn,
+.acc-menu-close,
+.acc-header-lang-toggle,
+.acc-footer-reset,
+.acc-lang-item {
+  touch-action: manipulation;
 }
 
 /* SVG icons */
@@ -797,11 +849,13 @@
   line-height: 1.2 !important;
 }
 
-.acc-footer-reset:hover {
-  background-color: var(--acc-primary-color-dark) !important;
+@media (hover: hover) {
+  .acc-footer-reset:hover {
+    background-color: var(--acc-primary-color-dark) !important;
+  }
 }
 
-.acc-footer-reset:focus {
+.acc-footer-reset:focus-visible {
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
 }
@@ -818,12 +872,14 @@
   padding: 2px 0;
 }
 
-.acc-footer-brand:hover {
-  opacity: 1;
-  text-decoration: underline;
+@media (hover: hover) {
+  .acc-footer-brand:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
 }
 
-.acc-footer-brand:focus {
+.acc-footer-brand:focus-visible {
   opacity: 1;
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
@@ -842,11 +898,13 @@
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.acc-header-lang-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.18);
+@media (hover: hover) {
+  .acc-header-lang-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+  }
 }
 
-.acc-header-lang-toggle:focus {
+.acc-header-lang-toggle:focus-visible {
   outline: 2px solid var(--acc-text-color-inverted);
   outline-offset: 1px;
 }
@@ -877,7 +935,7 @@
 .acc-lang-modal {
   position: absolute;
   inset-inline-end: 12px;
-  top: calc(var(--acc-header-height) + 8px);
+  top: calc(var(--acc-menu-header-height) + 8px);
   width: min(320px, calc(100% - 32px));
   border: 1px solid var(--acc-border-color);
   border-radius: 14px;
@@ -885,6 +943,11 @@
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
   z-index: 120;
   padding: 10px 0 8px;
+  /* Never taller than the panel below the header (landscape phones); the
+     list shrinks and scrolls instead of being clipped. */
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100% - var(--acc-menu-header-height) - 16px);
 }
 
 .acc-lang-modal[hidden] {
@@ -908,6 +971,8 @@
 .acc-lang-modal .acc-lang-list {
   padding: 6px 8px 8px;
   max-height: 240px;
+  min-height: 0;
+  flex: 1 1 auto;
 }
 
 /* Content area */
@@ -915,6 +980,9 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
+  /* Reaching the end of the options must not hand the scroll (wheel or
+     touch) to the page behind the panel. */
+  overscroll-behavior: contain;
   padding: 28px 0 36px;
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
@@ -1008,15 +1076,131 @@
 
 /* Responsive adjustments */
 @media only screen and (max-width: 560px) {
+  /* Span the viewport between equal gaps. Anchoring both edges (rather
+     than 100vw math) stays centered beside a classic scrollbar and lets
+     the safe-area margins shrink the panel. !important beats the inline
+     dock side set from JS. */
   .acc-menu {
-    width: calc(100vw - (var(--acc-menu-inline-gap, 8px) * 2));
+    left: var(--acc-menu-inline-gap) !important;
+    right: var(--acc-menu-inline-gap) !important;
+    width: auto;
+  }
+}
+
+/* Phones: trade the floating-card spacing for room to show options. */
+@media only screen and (max-width: 480px) {
+  .acc-menu {
+    --acc-menu-inline-gap: 8px;
+    --acc-content-inline-padding: 12px;
+    --acc-menu-header-height: min(var(--acc-header-height), 56px);
+  }
+
+  .acc-menu-content {
+    padding: 16px 0 20px;
+  }
+
+  .acc-options-all {
+    gap: 14px;
+    padding-bottom: 0;
+  }
+
+  .acc-option-category {
+    gap: 8px;
+  }
+
+  .acc-option-category-interaction {
+    padding-bottom: 0;
+  }
+
+  .acc-options {
+    gap: 8px;
+  }
+
+  .acc-footer {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+
+  .acc-footer-reset {
+    padding: 10px 16px;
+  }
+}
+
+/* The title wraps to two lines (longer translations too) rather than
+   truncating beside the header controls. */
+@media only screen and (max-width: 380px) {
+  .acc-menu-title {
+    font-size: 16px !important;
+  }
+
+  .acc-menu .acc-menu-title .acc-label {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: normal;
+    line-height: 1.2 !important;
+  }
+}
+
+/* Landscape phones: the header and footer took over half of a ~340px
+   tall panel, leaving a sliver for the options. */
+@media only screen and (max-height: 500px) {
+  .acc-menu {
+    --acc-menu-block-gap: 8px;
+    --acc-menu-header-height: min(var(--acc-header-height), 48px);
+  }
+
+  .acc-menu-content {
+    padding: 12px 0 16px;
+  }
+
+  .acc-footer {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+  }
+
+  .acc-footer-reset {
+    width: auto;
+    padding: 8px 16px;
+  }
+}
+
+/* Touch input: grow the small controls toward a 44px target. */
+@media (pointer: coarse) {
+  .acc-menu-close {
+    width: 44px;
+    height: 44px;
+  }
+
+  .acc-header-lang-toggle {
+    min-height: 44px;
+  }
+
+  .acc-text-scale-range {
+    height: 36px;
+  }
+
+  .acc-text-scale-range::-webkit-slider-thumb {
+    width: 26px;
+    height: 26px;
+    margin-top: -11px;
+  }
+
+  .acc-text-scale-range::-moz-range-thumb {
+    width: 26px;
+    height: 26px;
+  }
+
+  .acc-footer-brand {
+    padding: 4px 0;
   }
 }
 
 @media only screen and (max-width: 420px) {
   .acc-options {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
   }
   .acc-btn {
     padding: 8px;

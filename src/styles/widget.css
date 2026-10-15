@@ -31,6 +31,11 @@
     background: var(--acc-primary-color, #1976d2) !important;
     transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     overflow: visible;
+    /* Margins on a fixed box add to the edges it is anchored to, so the
+       configured offset stays clear of notches and the home indicator on
+       edge-to-edge pages (viewport-fit=cover); env() is 0 elsewhere. */
+    margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+    touch-action: manipulation;
   }
   
   .acc-toggle-btn .acc-toggle-icon {
@@ -48,8 +53,11 @@
     transition: none;
   }
   
-  .acc-toggle-btn:hover {
-    transform: scale(1.12);
+  /* Touch screens keep :hover after a tap, which left the button zoomed. */
+  @media (hover: hover) {
+    .acc-toggle-btn:hover {
+      transform: scale(1.12);
+    }
   }
 
   /* The menu panel replaces the button while open; closeMenu() restores
