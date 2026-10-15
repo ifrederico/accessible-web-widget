@@ -239,7 +239,7 @@ test('contrast is a single cycling tile and monochrome is removed', async ({ pag
   await contrastButton.click();
   await expect(contrastButton).toHaveClass(/acc-selected/);
   await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
-  await expect(contrastButton).toHaveAttribute('title', 'Light');
+  await expect(contrastButton).toHaveAttribute('title', 'Contrast: Light');
   await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'light-contrast');
   let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['light-contrast']).toBe(true);
@@ -247,7 +247,7 @@ test('contrast is a single cycling tile and monochrome is removed', async ({ pag
 
   await contrastButton.click();
   await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
-  await expect(contrastButton).toHaveAttribute('title', 'Dark');
+  await expect(contrastButton).toHaveAttribute('title', 'Contrast: Dark');
   await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'dark-contrast');
   states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['dark-contrast']).toBe(true);
@@ -279,7 +279,7 @@ test('saturation is a single cycling tile', async ({ page }) => {
   await saturationButton.click();
   await expect(saturationButton).toHaveClass(/acc-selected/);
   await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
-  await expect(saturationButton).toHaveAttribute('title', 'Low');
+  await expect(saturationButton).toHaveAttribute('title', 'Saturation: Low');
   await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'low-saturation');
   let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['low-saturation']).toBe(true);
@@ -287,7 +287,7 @@ test('saturation is a single cycling tile', async ({ page }) => {
 
   await saturationButton.click();
   await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
-  await expect(saturationButton).toHaveAttribute('title', 'High');
+  await expect(saturationButton).toHaveAttribute('title', 'Saturation: High');
   await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'high-saturation');
   states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['high-saturation']).toBe(true);

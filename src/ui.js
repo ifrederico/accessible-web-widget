@@ -486,6 +486,12 @@ export const uiMethods = {
         text = defaultValue;
         el.setAttribute("data-acc-text", text);
       }
+      // Cycling buttons keep their active level in a separate key so both
+      // parts of the name ("Contrast: Light") are translated.
+      const levelText = el.getAttribute("data-acc-level-text");
+      if (levelText) {
+        return `${this.translate(text)}: ${this.translate(levelText)}`;
+      }
       return this.translate(text);
     },
 

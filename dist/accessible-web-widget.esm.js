@@ -8277,13 +8277,14 @@ const annotationMethods = {
 const visualFilterMethods = {
 
   getContrastToggleDisplay(index) {
+      const control = 'Contrast';
       if (index === 0) {
-        return { key: 'light-contrast', label: 'Light', icon: this.widgetIcons.lightContrast };
+        return { key: 'light-contrast', control, label: 'Light', icon: this.widgetIcons.lightContrast };
       }
       if (index === 1) {
-        return { key: 'dark-contrast', label: 'Dark', icon: this.widgetIcons.darkContrast };
+        return { key: 'dark-contrast', control, label: 'Dark', icon: this.widgetIcons.darkContrast };
       }
-      return { key: null, label: 'Contrast', icon: this.widgetIcons.contrast };
+      return { key: null, control, label: control, icon: this.widgetIcons.contrast };
     },
 
   applyModeToggleButtonDisplay(button, display, modeAttribute) {
@@ -8295,15 +8296,23 @@ const visualFilterMethods = {
         button.insertAdjacentHTML('afterbegin', display.icon);
       }
 
-      const translatedLabel = this.translate(display.label);
-      button.setAttribute('data-acc-text', display.label);
       const labelNode = button.querySelector('.acc-label');
       if (labelNode) {
         labelNode.setAttribute('data-acc-text', display.label);
-        labelNode.innerText = translatedLabel;
+        labelNode.innerText = this.translate(display.label);
       }
-      button.setAttribute('title', translatedLabel);
-      button.setAttribute('aria-label', translatedLabel);
+      // The visible label shows only the active level ("Light"); the
+      // accessible name also names the control ("Contrast: Light") and is
+      // rebuilt from these attributes by translateMenuUI() on a language switch.
+      button.setAttribute('data-acc-text', display.control);
+      if (display.key) {
+        button.setAttribute('data-acc-level-text', display.label);
+      } else {
+        button.removeAttribute('data-acc-level-text');
+      }
+      const accessibleName = this.getTranslatedText(button);
+      button.setAttribute('title', accessibleName);
+      button.setAttribute('aria-label', accessibleName);
       button.setAttribute(modeAttribute, display.key || 'off');
     },
 
@@ -8312,13 +8321,14 @@ const visualFilterMethods = {
     },
 
   getSaturationToggleDisplay(index) {
+      const control = 'Saturation';
       if (index === 0) {
-        return { key: 'low-saturation', label: 'Low', icon: this.widgetIcons.lowSaturation };
+        return { key: 'low-saturation', control, label: 'Low', icon: this.widgetIcons.lowSaturation };
       }
       if (index === 1) {
-        return { key: 'high-saturation', label: 'High', icon: this.widgetIcons.highSaturation };
+        return { key: 'high-saturation', control, label: 'High', icon: this.widgetIcons.highSaturation };
       }
-      return { key: null, label: 'Saturation', icon: this.widgetIcons.saturation };
+      return { key: null, control, label: control, icon: this.widgetIcons.saturation };
     },
 
   updateSaturationToggleButton(button, index) {
@@ -8328,9 +8338,11 @@ const visualFilterMethods = {
   getReadableFontDisplay(index) {
       const choices = this.readableFontChoices || [];
       const choice = index >= 0 ? choices[index] : null;
+      const control = 'Readable Font';
       return {
         key: choice ? choice.key : null,
-        label: choice ? choice.label : 'Readable Font',
+        control,
+        label: choice ? choice.label : control,
         icon: this.widgetIcons.dyslexiaFont
       };
     },
@@ -8536,7 +8548,9 @@ const visualFilterMethods = {
         this.updateState({ 'readable-text': newFontKey || false });
         this.enableReadableText(newFontKey || false);
         this.setReadableFontUI(button.closest('.acc-menu'), newFontKey);
-        // setReadableFontUI re-labels the button with the active font.
+        // setReadableFontUI re-labels the button with the control and the
+        // active font ("Readable Font: Lexend"), so the announcement reads
+        // "Readable Font: Lexend On" / "Readable Font Off".
         this.announceFeatureState(button.getAttribute('aria-label'), !!newFontKey);
         return;
       }
@@ -8550,7 +8564,9 @@ const visualFilterMethods = {
       this.updateColorFilterState(newActiveKey);
       this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
       this.applyVisualFilters();
-      // setColorFilterUI re-labels the button with the active mode.
+      // setColorFilterUI re-labels the button with the control and the
+      // active mode ("Contrast: Light"), so the announcement reads
+      // "Contrast: Light On" / "Contrast Off".
       this.announceFeatureState(button.getAttribute('aria-label'), !!newActiveKey);
     },
 
@@ -9438,6 +9454,12 @@ const uiMethods = {
       if (!text && defaultValue) {
         text = defaultValue;
         el.setAttribute("data-acc-text", text);
+      }
+      // Cycling buttons keep their active level in a separate key so both
+      // parts of the name ("Contrast: Light") are translated.
+      const levelText = el.getAttribute("data-acc-level-text");
+      if (levelText) {
+        return `${this.translate(text)}: ${this.translate(levelText)}`;
       }
       return this.translate(text);
     },

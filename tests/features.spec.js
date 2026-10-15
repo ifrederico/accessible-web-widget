@@ -2,6 +2,12 @@ import { test, expect } from '@playwright/test';
 
 const readStates = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
 
+// The accessible name and the tooltip of a cycling button always match.
+const expectButtonName = async (button, name) => {
+  await expect(button).toHaveAccessibleName(name);
+  await expect(button).toHaveAttribute('title', name);
+};
+
 test('widget UI is encapsulated in a shadow root and survives hostile page CSS', async ({ page }) => {
   await page.goto('index.html');
   await page.evaluate(() => {
@@ -424,4 +430,88 @@ test('closing by click leaves the toggle unringed; closing by keyboard keeps the
   await page.keyboard.press('Escape');
   await expect(page.locator('.acc-menu')).toBeHidden();
   expect(await ringState()).toEqual({ focused: true, outline: 'solid' });
+});
+
+test('cycling buttons name both the control and the active level', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const region = page.locator('#acc-live-region');
+
+  const controls = [
+    { key: 'contrast-toggle', name: 'Contrast', levels: ['Light', 'Dark'] },
+    { key: 'saturation-toggle', name: 'Saturation', levels: ['Low', 'High'] },
+    { key: 'readable-text', name: 'Readable Font', levels: ['Dyslexia Font', 'Legible Font', 'Lexend'] }
+  ];
+  for (const { key, name, levels } of controls) {
+    const button = page.locator(`.acc-btn[data-key="${key}"]`);
+    await expectButtonName(button, name);
+    for (const level of levels) {
+      await button.click();
+      await expectButtonName(button, `${name}: ${level}`);
+      // The visible label still shows only the level.
+      await expect(button.locator('.acc-label')).toHaveText(level);
+      await expect(region).toHaveText(`${name}: ${level} On`);
+    }
+    await button.click();
+    await expectButtonName(button, name);
+    await expect(button.locator('.acc-label')).toHaveText(name);
+    await expect(region).toHaveText(`${name} Off`);
+  }
+});
+
+test('switching language re-translates both parts of a cycling button name', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const contrast = page.locator('.acc-btn[data-key="contrast-toggle"]');
+  const saturation = page.locator('.acc-btn[data-key="saturation-toggle"]');
+  const readableFont = page.locator('.acc-btn[data-key="readable-text"]');
+  const switchLanguage = async (code) => {
+    await page.locator('.acc-header-lang-toggle').click();
+    await page.locator(`.acc-lang-item[data-lang="${code}"]`).click();
+  };
+
+  await contrast.click();
+  // Dyslexia Font → Legible Font → Lexend.
+  for (let i = 0; i < 3; i++) {
+    await readableFont.click();
+  }
+  await expectButtonName(contrast, 'Contrast: Light');
+  await expectButtonName(readableFont, 'Readable Font: Lexend');
+
+  await switchLanguage('es');
+  await expectButtonName(contrast, 'Contraste: Claro');
+  await expect(contrast.locator('.acc-label')).toHaveText('Claro');
+  // Lexend is a font name and stays untranslated.
+  await expectButtonName(readableFont, 'Fuente Legible: Lexend');
+  await expectButtonName(saturation, 'Saturación');
+
+  await contrast.click();
+  await expectButtonName(contrast, 'Contraste: Oscuro');
+  await expect(page.locator('#acc-live-region')).toHaveText('Contraste: Oscuro Activado');
+
+  // A saturation level replaces the active contrast filter.
+  await saturation.click();
+  await expectButtonName(saturation, 'Saturación: Baja');
+  await expectButtonName(contrast, 'Contraste');
+
+  await switchLanguage('en');
+  await expectButtonName(saturation, 'Saturation: Low');
+  await expectButtonName(readableFont, 'Readable Font: Lexend');
+  await expectButtonName(contrast, 'Contrast');
+});
+
+test('saved cycling levels are named in the configured language on load', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.AccessibleWebWidgetOptions = { lang: 'es' };
+    localStorage.setItem('accweb', JSON.stringify({
+      states: { 'dark-contrast': true, 'readable-text': 'dyslexic' }
+    }));
+  });
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  await expectButtonName(page.locator('.acc-btn[data-key="contrast-toggle"]'), 'Contraste: Oscuro');
+  await expectButtonName(page.locator('.acc-btn[data-key="readable-text"]'), 'Fuente Legible: Fuente para Dislexia');
+  await expectButtonName(page.locator('.acc-btn[data-key="saturation-toggle"]'), 'Saturación');
 });
