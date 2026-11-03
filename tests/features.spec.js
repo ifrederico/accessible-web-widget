@@ -439,7 +439,7 @@ test('cycling buttons name both the control and the active level', async ({ page
 
   const controls = [
     { key: 'contrast-toggle', name: 'Contrast', levels: ['Light', 'Dark'] },
-    { key: 'saturation-toggle', name: 'Saturation', levels: ['Low', 'High'] },
+    { key: 'saturation-toggle', name: 'Saturation', levels: ['Low', 'High', 'Monochrome'] },
     { key: 'readable-text', name: 'Readable Font', levels: ['Dyslexia Font', 'Legible Font', 'Lexend'] }
   ];
   for (const { key, name, levels } of controls) {

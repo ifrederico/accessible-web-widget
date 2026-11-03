@@ -225,7 +225,7 @@ test('data attributes for position, offset, and size are applied', async ({ page
   expect(computed.height).toBe('58px');
 });
 
-test('contrast is a single cycling tile and monochrome is removed', async ({ page }) => {
+test('contrast is a single cycling tile and monochrome has no tile of its own', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
@@ -272,7 +272,7 @@ test('saturation is a single cycling tile', async ({ page }) => {
 
   const saturationButton = page.locator('.acc-btn[data-key="saturation-toggle"]');
   await expect(saturationButton).toHaveCount(1);
-  await expect(saturationButton.locator('.acc-progress-dot')).toHaveCount(2);
+  await expect(saturationButton.locator('.acc-progress-dot')).toHaveCount(3);
   await expect(saturationButton).toHaveAttribute('title', 'Saturation');
   await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'off');
 
@@ -294,6 +294,14 @@ test('saturation is a single cycling tile', async ({ page }) => {
   expect(states['low-saturation']).toBeFalsy();
 
   await saturationButton.click();
+  await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '2');
+  await expect(saturationButton).toHaveAttribute('title', 'Saturation: Monochrome');
+  await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'monochrome');
+  states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
+  expect(states['monochrome']).toBe(true);
+  expect(states['high-saturation']).toBeFalsy();
+
+  await saturationButton.click();
   await expect(saturationButton).not.toHaveClass(/acc-selected/);
   await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveCount(0);
   await expect(saturationButton).toHaveAttribute('title', 'Saturation');
@@ -301,6 +309,37 @@ test('saturation is a single cycling tile', async ({ page }) => {
   states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['low-saturation']).toBeFalsy();
   expect(states['high-saturation']).toBeFalsy();
+  expect(states['monochrome']).toBeFalsy();
+});
+
+test('monochrome grays out page content, persists, and clears on reset', async ({ page }) => {
+  const contentFilter = () => page.locator('main').evaluate((el) => window.getComputedStyle(el).filter);
+
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const saturationButton = page.locator('.acc-btn[data-key="saturation-toggle"]');
+  // Low → High → Monochrome.
+  for (let i = 0; i < 3; i++) {
+    await saturationButton.click();
+  }
+  await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'monochrome');
+  await expect(page.locator('#acc-live-region')).toHaveText('Saturation: Monochrome On');
+  await expect.poll(contentFilter).toBe('grayscale(1)');
+  // The widget itself keeps its colors.
+  const hostFilter = await page.locator('#acc-widget-host').evaluate((el) => window.getComputedStyle(el).filter);
+  expect(hostFilter).toBe('none');
+
+  await page.reload();
+  await expect.poll(contentFilter).toBe('grayscale(1)');
+  await page.locator('.acc-toggle-btn').click();
+  await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'monochrome');
+  await expect(saturationButton).toHaveAttribute('aria-pressed', 'true');
+
+  await page.locator('.acc-footer-reset').click();
+  await expect.poll(contentFilter).toBe('none');
+  await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'off');
+  const states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
+  expect(states['monochrome']).toBeFalsy();
 });
 
 test('menu renders grouped categories with their section headings', async ({ page }) => {
