@@ -49,6 +49,10 @@ class AccessibleWebWidget {
       'high-saturation': {
         styles: { 'filter': 'saturate(200%)' },
         selector: PAGE_CONTENT_SELECTOR
+      },
+      'monochrome': {
+        styles: { 'filter': 'grayscale(100%)' },
+        selector: PAGE_CONTENT_SELECTOR
       }
     };
 
@@ -168,7 +172,7 @@ class AccessibleWebWidget {
     this.textScaleMaxPercent = 150;
     this.textScaleStepPercent = 5;
     this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
-    this.saturationFilterValues = ['low-saturation', 'high-saturation'];
+    this.saturationFilterValues = ['low-saturation', 'high-saturation', 'monochrome'];
 
     // Readable Font levels; the persisted readable-text state holds the
     // active key ('dyslexic' | 'legible' | 'lexend'; legacy true maps to

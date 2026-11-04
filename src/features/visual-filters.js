@@ -55,6 +55,9 @@ export const visualFilterMethods = {
       if (index === 1) {
         return { key: 'high-saturation', control, label: 'High', icon: this.widgetIcons.highSaturation };
       }
+      if (index === 2) {
+        return { key: 'monochrome', control, label: 'Monochrome', icon: this.widgetIcons.monochrome };
+      }
       return { key: null, control, label: control, icon: this.widgetIcons.saturation };
     },
 
@@ -224,6 +227,12 @@ export const visualFilterMethods = {
           const hg = (0.213 - 0.213 * s2) * r + (0.715 + 0.285 * s2) * g + (0.072 - 0.072 * s2) * b;
           const hb = (0.213 - 0.213 * s2) * r + (0.715 - 0.715 * s2) * g + (0.072 + 0.928 * s2) * b;
           r = hr; g = hg; b = hb;
+          break;
+        }
+        case 'monochrome': {
+          // filter: grayscale(100%) — luminance-weighted
+          const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          r = lum; g = lum; b = lum;
           break;
         }
         default:
