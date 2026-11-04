@@ -5327,7 +5327,7 @@ const stateMethods = {
 
   normalizeOffset(value) {
       if (!value && value !== 0) return undefined;
-      let parts = [];
+      let parts;
       if (Array.isArray(value)) {
         parts = value;
       } else if (typeof value === 'string') {
