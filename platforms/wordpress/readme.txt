@@ -2,9 +2,9 @@
 Contributors: ifrederico
 Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -53,6 +53,9 @@ The bundled JavaScript is built from public, human-readable source code:
 1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
 
 == Changelog ==
+
+= 1.6.3 =
+* Saturation has a third level, Monochrome, which shows the page in grayscale. Tap the Saturation tile to cycle Low, High, Monochrome, off. It is remembered between visits and cleared by Reset like the other levels. Thanks to @eliran-positive for the contribution.
 
 = 1.6.2 =
 * Works much better on phones. The menu keeps compact two-column rows instead of switching to tall tiles, so it needs about half the scrolling; scrolling inside it no longer moves the page behind it; and on phones held sideways the header and footer take less room.
