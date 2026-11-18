@@ -85,6 +85,8 @@ function accweb_enqueue_script() {
 		),
 		'dyslexiaFontUrl'   => plugins_url( 'fonts/OpenDyslexic3-Regular.woff', __FILE__ ),
 		'axeCoreUrl'        => plugins_url( 'js/axe.min.js', __FILE__ ),
+		// Dev tools (?acc-dev) are allowed only for logged-in administrators.
+		'devTools'          => current_user_can( 'manage_options' ),
 		// wordpress.org guideline 10: no front-end credit links without opt-in.
 		'hideAttribution'   => true,
 	);

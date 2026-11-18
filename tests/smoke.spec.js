@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
 
+// Developer mode needs the site owner's key (devTools: true) plus ?acc-dev.
+const allowDevTools = (page) => page.addInitScript(() => {
+  window.AccessibleWebWidgetOptions = { devTools: true };
+});
+
 test('auto-init renders exactly one toggle button', async ({ page }) => {
   await page.goto('index.html');
   await expect(page.locator('.acc-toggle-btn')).toHaveCount(1);
@@ -190,6 +195,7 @@ test('text added inside an already-scaled element is scaled only once', async ({
 });
 
 test('dev mode exposes accessibility report tool only when enabled', async ({ page }) => {
+  await allowDevTools(page);
   await page.goto('index.html?acc-dev=true');
   await page.locator('.acc-toggle-btn').click();
   await expect(page.locator('.acc-btn[data-key="accessibility-report"]')).toHaveCount(1);
@@ -417,6 +423,7 @@ test('saturation neutral icon differs from low saturation icon', async ({ page }
 });
 
 test('violation bubble appears for serious and critical issues', async ({ page }) => {
+  await allowDevTools(page);
   await page.goto('index.html?acc-dev=true');
   await page.evaluate(() => {
     window.AccessibleWebWidget.prototype.runBackgroundAxeScan = async function () {
@@ -459,7 +466,85 @@ test('persisted annotations state does not load axe-core outside dev mode', asyn
   await expect(page.locator('.acc-annotation-layer')).toHaveCount(0);
 });
 
+const AUDIT_ENGINE_REQUEST = /cdn\.jsdelivr\.net|axe(\.min)?\.js/;
+const DEV_TOOLS_HINT = "AccessibleWeb Widget: developer tools are off on this site. Add data-acc-dev-tools to the widget's script tag (or devTools: true to its options) to use ?acc-dev.";
+
+// Records audit-engine requests and the dev tools hint; call before goto.
+const watchDevMode = (page) => {
+  const watched = { engineRequests: [], hints: 0 };
+  page.on('request', (request) => {
+    if (AUDIT_ENGINE_REQUEST.test(request.url())) watched.engineRequests.push(request.url());
+  });
+  page.on('console', (message) => {
+    if (message.type() === 'info' && message.text() === DEV_TOOLS_HINT) watched.hints += 1;
+  });
+  return watched;
+};
+
+// Opens the menu and waits past the start-up scan and its post-load rerun.
+const openMenuAndSettle = async (page) => {
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-menu')).toBeVisible();
+  await page.waitForTimeout(800);
+};
+
+const expectDevToolsOff = async (page, watched) => {
+  await expect(page.locator('.acc-btn[data-key="annotations"]')).toHaveCount(0);
+  await expect(page.locator('.acc-btn[data-key="accessibility-report"]')).toHaveCount(0);
+  await expect(page.locator('.acc-violation-bubble')).toBeHidden();
+  await expect(page.locator('script[data-acc-axe-core]')).toHaveCount(0);
+  expect(watched.engineRequests).toEqual([]);
+};
+
+test('?acc-dev=true alone does not turn on dev tools and logs one hint', async ({ page }) => {
+  const watched = watchDevMode(page);
+  await page.goto('index.html?acc-dev=true');
+  await openMenuAndSettle(page);
+  await expectDevToolsOff(page, watched);
+  expect(watched.hints).toBe(1);
+});
+
+test('bare data-acc-dev-tools plus ?acc-dev turns on dev tools', async ({ page }) => {
+  await page.goto('fixtures/dev-tools.html?acc-dev');
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-btn[data-key="annotations"]')).toHaveCount(1);
+  await expect(page.locator('.acc-btn[data-key="accessibility-report"]')).toHaveCount(1);
+});
+
+test('devTools option plus ?acc-dev=true turns on dev tools', async ({ page }) => {
+  await allowDevTools(page);
+  await page.goto('index.html?acc-dev=true');
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-btn[data-key="annotations"]')).toHaveCount(1);
+  await expect(page.locator('.acc-btn[data-key="accessibility-report"]')).toHaveCount(1);
+});
+
+test('owner key without ?acc-dev keeps dev tools off and logs no hint', async ({ page }) => {
+  const watched = watchDevMode(page);
+  await page.goto('fixtures/dev-tools.html');
+  await openMenuAndSettle(page);
+  await expectDevToolsOff(page, watched);
+  expect(watched.hints).toBe(0);
+});
+
+test('data-acc-dev-tools="false" keeps dev tools off with ?acc-dev=true', async ({ page }) => {
+  const watched = watchDevMode(page);
+  await page.goto('fixtures/dev-tools-false.html?acc-dev=true');
+  await openMenuAndSettle(page);
+  await expectDevToolsOff(page, watched);
+  expect(watched.hints).toBe(1);
+});
+
+test('owner key with ?acc-dev=false keeps dev tools off', async ({ page }) => {
+  const watched = watchDevMode(page);
+  await page.goto('fixtures/dev-tools.html?acc-dev=false');
+  await openMenuAndSettle(page);
+  await expectDevToolsOff(page, watched);
+  expect(watched.hints).toBe(0);
+});
+
 test('violation bubble stays hidden when no violations exist', async ({ page }) => {
+  await allowDevTools(page);
   await page.goto('index.html?acc-dev=true');
   await page.evaluate(() => {
     window.AccessibleWebWidget.prototype.runBackgroundAxeScan = async function () {
@@ -476,6 +561,7 @@ test('violation bubble stays hidden when no violations exist', async ({ page }) 
 });
 
 test('annotation markers render when page annotations is enabled', async ({ page }) => {
+  await allowDevTools(page);
   await page.goto('index.html?acc-dev=true');
   await page.evaluate(() => {
     window.AccessibleWebWidget.prototype.runBackgroundAxeScan = async function () {

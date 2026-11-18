@@ -106,3 +106,43 @@ test('getCustomReadableFontUrl prefers per-font overrides and validates URLs', (
   const hostile = { ...coreFeatureMethods, options: { readableFontUrls: { legible: 'x") } body { display:none' } } };
   assert.equal(hostile.getCustomReadableFontUrl('legible'), '');
 });
+
+const withSearch = (search, fn) => {
+  const previous = globalThis.window;
+  globalThis.window = { location: { search } };
+  try {
+    return fn();
+  } finally {
+    if (previous === undefined) delete globalThis.window;
+    else globalThis.window = previous;
+  }
+};
+
+const devCtx = (options) => ({ ...stateMethods, options });
+
+test('isDevToolsAllowed accepts only true or the string true', () => {
+  assert.equal(devCtx({ devTools: true }).isDevToolsAllowed(), true);
+  assert.equal(devCtx({ devTools: ' TRUE ' }).isDevToolsAllowed(), true);
+  assert.equal(devCtx({ devTools: false }).isDevToolsAllowed(), false);
+  assert.equal(devCtx({ devTools: 'false' }).isDevToolsAllowed(), false);
+  assert.equal(devCtx({ devTools: 1 }).isDevToolsAllowed(), false);
+  assert.equal(devCtx({}).isDevToolsAllowed(), false);
+  assert.equal(devCtx(undefined).isDevToolsAllowed(), false);
+});
+
+test('isDevToolsRequested reads ?acc-dev unless it is false', () => {
+  const ctx = devCtx({});
+  assert.equal(withSearch('?acc-dev', () => ctx.isDevToolsRequested()), true);
+  assert.equal(withSearch('?acc-dev=true', () => ctx.isDevToolsRequested()), true);
+  assert.equal(withSearch('?acc-dev=1', () => ctx.isDevToolsRequested()), true);
+  assert.equal(withSearch('?a=1&acc-dev', () => ctx.isDevToolsRequested()), true);
+  assert.equal(withSearch('?acc-dev=false', () => ctx.isDevToolsRequested()), false);
+  assert.equal(withSearch('', () => ctx.isDevToolsRequested()), false);
+});
+
+test('isDevMode needs both the owner key and the URL key', () => {
+  assert.equal(withSearch('?acc-dev=true', () => devCtx({ devTools: true }).isDevMode()), true);
+  assert.equal(withSearch('?acc-dev=true', () => devCtx({}).isDevMode()), false);
+  assert.equal(withSearch('', () => devCtx({ devTools: true }).isDevMode()), false);
+  assert.equal(withSearch('?acc-dev=false', () => devCtx({ devTools: true }).isDevMode()), false);
+});

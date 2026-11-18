@@ -54,9 +54,9 @@
                     <article class="get-step-card">
                         <p class="get-step-number">Step 1</p>
                         <h2>Add the widget script</h2>
-                        <p>Paste this before the closing <code>&lt;/body&gt;</code> tag.</p>
+                        <p>Paste this before the closing <code>&lt;/body&gt;</code> tag. The <code>data-acc-dev-tools</code> attribute allows dev mode on your site.</p>
                         <div class="implementation-code">
-                            <code tabindex="0">&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.6.3/dist/accessible-web-widget.min.js"&gt;&lt;/script&gt;</code>
+                            <code tabindex="0">&lt;script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.6.3/dist/accessible-web-widget.min.js" data-acc-dev-tools&gt;&lt;/script&gt;</code>
                             <button aria-label="Copy script tag" class="copy-btn">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round">
@@ -225,7 +225,7 @@
         })();
     </script>
     <div data-acc-position="bottom-right"></div>
-    <script src="../dist/accessible-web-widget.js"></script>
+    <script src="../dist/accessible-web-widget.js" data-acc-dev-tools></script>
 </body>
 
 </html>

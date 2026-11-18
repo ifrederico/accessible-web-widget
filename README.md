@@ -96,7 +96,7 @@ In modern browsers the widget works under a strict CSP with no configuration —
 <!-- or: data-acc-nonce="YOUR_NONCE" / window.AccessibleWebWidgetOptions = { nonce: "YOUR_NONCE" } -->
 ```
 
-If your policy locks down remote requests, also allow `font-src https://accessibleweb.pages.dev` for the dyslexia font (or self-host it via `dyslexiaFontUrl`), and — dev mode only — `script-src https://cdn.jsdelivr.net` for axe-core.
+If your policy locks down remote requests, also allow `font-src https://accessibleweb.pages.dev` for the dyslexia font (or self-host it via `dyslexiaFontUrl`), and — only if you allow dev tools — `script-src https://cdn.jsdelivr.net` for axe-core.
 
 ### Text-to-speech voices
 
@@ -132,7 +132,23 @@ The "Readable Font" control cycles through three fonts — OpenDyslexic, Atkinso
 
 ### Dev tools
 
-Add `?acc-dev=true` to any page URL to get inline annotation markers and a full accessibility report powered by axe-core. Useful for development, not meant for production.
+Developer mode adds inline annotation markers and a full accessibility report powered by axe-core. Useful for development, not meant for production. It is off by default and needs two keys, so a visitor cannot turn it on for your site.
+
+First, allow it on your site with `data-acc-dev-tools` on the widget's script tag:
+
+```html
+<script src="…/accessible-web-widget.min.js" data-acc-dev-tools defer></script>
+```
+
+Or with the `devTools` option:
+
+```html
+<script>
+  window.AccessibleWebWidgetOptions = { devTools: true };
+</script>
+```
+
+Then add `?acc-dev` to the page URL (or `&acc-dev` if it already has a query string) when you want the tools on that visit. `?acc-dev=true` works too. Without both keys the widget shows no dev tools and never downloads axe-core. Before this version, `?acc-dev=true` turned developer mode on by itself on any site.
 
 The audit engine (axe-core) loads from the jsDelivr CDN by default, pinned to a specific version with subresource integrity. To self-host it instead:
 

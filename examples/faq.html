@@ -164,7 +164,8 @@
                 <details class="faq-item">
                     <summary class="faq-question">Does the widget help me find actual accessibility issues in my code?</summary>
                     <div class="faq-answer">
-                        <p>Yes. Add <code>?acc-dev=true</code> to any page URL to activate dev mode, which runs an inline
+                        <p>Yes. Add <code>data-acc-dev-tools</code> to the widget's script tag, then add <code>?acc-dev</code> to the
+                            page URL to activate dev mode, which runs an inline
                             accessibility audit powered by axe-core. It'll flag real issues in your markup &mdash; missing
                             alt text, poor contrast ratios, ARIA problems, and more.</p>
                         <p>This is meant for development, not production, but it's a good starting point for the work that

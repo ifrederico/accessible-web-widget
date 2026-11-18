@@ -115,24 +115,41 @@ export const stateMethods = {
       return this.getDefaultLanguage();
     },
 
-  isDevMode() {
+  // Developer mode needs two keys. The site owner allows it (devTools: true
+  // or data-acc-dev-tools on the script tag), and the developer asks for it
+  // on this visit (?acc-dev). The URL alone is visitor-controlled, so it
+  // must never be enough to load the audit engine on someone's site.
+  isDevToolsAllowed() {
+      const value = this.options?.devTools;
+      if (value === true) return true;
+      return typeof value === 'string' && value.trim().toLowerCase() === 'true';
+    },
+
+  isDevToolsRequested() {
       if (typeof window === 'undefined') return false;
       try {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('acc-dev') === 'true';
+        if (!urlParams.has('acc-dev')) return false;
+        return urlParams.get('acc-dev').trim().toLowerCase() !== 'false';
       } catch {
         return false;
       }
+    },
+
+  isDevMode() {
+      return this.isDevToolsAllowed() && this.isDevToolsRequested();
     },
 
   getDataAttributeOptions() {
       const options = {};
       if (typeof document === 'undefined') return options;
   
-      const attributes = ['lang', 'position', 'offset', 'size', 'icon', 'nonce', 'hide-button'];
+      const attributes = ['lang', 'position', 'offset', 'size', 'icon', 'nonce', 'hide-button', 'dev-tools'];
   
       const assignValue = (key, value) => {
-        if (value === null || typeof value === 'undefined' || value === '') return;
+        if (value === null || typeof value === 'undefined') return;
+        // data-acc-dev-tools works as a bare attribute, so '' means on.
+        if (value === '' && key !== 'dev-tools') return;
         switch (key) {
           case 'lang': {
             const lang = String(value).trim();
@@ -168,6 +185,10 @@ export const stateMethods = {
             options.hideButton = String(value).trim().toLowerCase() !== 'false';
             break;
           }
+          case 'dev-tools': {
+            options.devTools = String(value).trim().toLowerCase() !== 'false';
+            break;
+          }
           default:
             break;
         }
@@ -186,7 +207,7 @@ export const stateMethods = {
       if (document.currentScript) {
         scriptCandidates.push(document.currentScript);
       }
-      document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon],script[data-acc-nonce],script[data-acc-hide-button]').forEach(script => {
+      document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon],script[data-acc-nonce],script[data-acc-hide-button],script[data-acc-dev-tools]').forEach(script => {
         if (!scriptCandidates.includes(script)) {
           scriptCandidates.push(script);
         }
@@ -194,6 +215,8 @@ export const stateMethods = {
       scriptCandidates.forEach(inspectElement);
   
       attributes.forEach(key => {
+        // The dev tools key only counts on a script tag, never on page markup.
+        if (key === 'dev-tools') return;
         if (options[key] !== undefined) return;
         const el = document.querySelector(`[data-acc-${key}]`);
         if (el) {

@@ -12,7 +12,8 @@ Playwright smoke coverage for critical behavior.
 - global constructor availability
 - menu open/close
 - persistence across reload
-- dev mode report visibility
+- dev mode report visibility, and the two keys it needs (`devTools` /
+  `data-acc-dev-tools` plus `?acc-dev`)
 - data-attribute position/offset/size behavior
 - phone behavior under touch emulation (`mobile.spec.js`, Pixel 7): compact
   layout, no page scroll behind the menu, touch-only options, tap-driven

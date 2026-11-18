@@ -613,7 +613,9 @@ export const uiMethods = {
         const sourceOptions = [
           ...this.contentOptions.map(option => ({ ...option })),
           ...this.colorOptions.map(option => ({ ...option, optionClass: 'acc-filter' })),
-          ...this.accessTools.map(option => ({ ...option, optionClass: 'acc-tools' }))
+          ...this.accessTools
+            .filter(option => !option.devOnly || this.isDevMode())
+            .map(option => ({ ...option, optionClass: 'acc-tools' }))
         ];
 
         const groupedOptions = {
@@ -1107,8 +1109,8 @@ export const uiMethods = {
         this.translateMenuUI(widget);
         this.ensureSkipLink();
         // axe-core and the violation bubble are dev tooling: only fetch the
-        // engine and scan the page in dev mode (?acc-dev=true), so regular
-        // visitors never download or run the audit.
+        // engine and scan the page in dev mode (owner allows it and the URL
+        // asks for it), so regular visitors never download or run the audit.
         if (this.isDevMode()) {
           this.runBackgroundAxeScan().catch(() => {
             this.updateViolationBubble({ violations: [] });
@@ -1125,6 +1127,8 @@ export const uiMethods = {
               setTimeout(rerunDevScan, 150);
             }, { once: true });
           }
+        } else if (this.isDevToolsRequested()) {
+          console.info("AccessibleWeb Widget: developer tools are off on this site. Add data-acc-dev-tools to the widget's script tag (or devTools: true to its options) to use ?acc-dev.");
         }
         
         // Track the last input modality for focusQuietlyAfterPointer().
