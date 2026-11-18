@@ -67,7 +67,7 @@ npx http-server . -p 4173 -c-1
 
 Then open:
 - `http://127.0.0.1:4173/examples/index.html`
-- `http://127.0.0.1:4173/examples/index.html?acc-dev=true`
+- `http://127.0.0.1:4173/examples/fixtures/dev-tools.html?acc-dev` (developer mode; the fixture allows it with `data-acc-dev-tools`)
 
 ## Submitting changes
 

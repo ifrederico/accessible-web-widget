@@ -79,6 +79,15 @@ class AccessibleWebWidget {
         key: 'page-structure',
         icon: this.widgetIcons.pageStructure,
         isAction: true
+      },
+      // Dev tools: shown only when isDevMode() is true (see displayMenu).
+      { label: 'Annotations', key: 'annotations', icon: this.widgetIcons.annotations, devOnly: true },
+      {
+        label: 'Accessibility Report',
+        key: 'accessibility-report',
+        icon: this.widgetIcons.accessibilityReport,
+        isAction: true,
+        devOnly: true
       }
     ];
 
@@ -110,19 +119,6 @@ class AccessibleWebWidget {
         states: { 'readable-text': 'dyslexic', 'line-spacing': true, 'letter-spacing': true }
       }
     ];
-
-    // Add dev-only tools (?acc-dev=true)
-    if (this.isDevMode()) {
-      this.accessTools.push(
-        { label: 'Annotations', key: 'annotations', icon: this.widgetIcons.annotations },
-        {
-          label: 'Accessibility Report',
-          key: 'accessibility-report',
-          icon: this.widgetIcons.accessibilityReport,
-          isAction: true
-        }
-      );
-    }
 
     // axe-core state
     this.axeCoreLoaded = false;
