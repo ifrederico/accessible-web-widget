@@ -141,12 +141,18 @@ test('Profiles row expands to the profile tiles and names the active profile', a
   await expect(profilesRow).toHaveAttribute('aria-expanded', 'true');
   const tiles = profilesPanel.locator('.acc-btn');
   await expect(tiles).toHaveCount(4);
-  // The same tiles as the grid: three per row, square.
-  const [first, second, third, fourth] = await Promise.all([0, 1, 2, 3].map((i) => tiles.nth(i).boundingBox()));
-  expect(Math.abs(first.y - third.y)).toBeLessThan(1);
-  expect(second.x).toBeGreaterThan(first.x);
-  expect(fourth.y).toBeGreaterThan(first.y + first.height - 1);
-  expect(Math.abs(first.width - first.height)).toBeLessThan(1);
+  // Two by two, each a short row with the icon before the name, and no
+  // name broken onto a second line.
+  const [first, second, third] = await Promise.all([0, 1, 2].map((i) => tiles.nth(i).boundingBox()));
+  expect(Math.abs(first.y - second.y)).toBeLessThan(1);
+  expect(third.y).toBeGreaterThan(first.y + first.height - 1);
+  expect(first.height).toBeLessThan(first.width / 2);
+  const icon = await tiles.nth(0).locator('svg').boundingBox();
+  const label = await tiles.nth(0).locator('.acc-label').boundingBox();
+  expect(icon.x + icon.width).toBeLessThanOrEqual(label.x);
+  for (let i = 0; i < 4; i += 1) {
+    expect((await tiles.nth(i).locator('.acc-label').boundingBox()).height).toBeLessThan(22);
+  }
 
   await page.locator('.acc-btn[data-key="profile-vision"]').click();
   await expect(summary).toHaveText('Vision Impaired');

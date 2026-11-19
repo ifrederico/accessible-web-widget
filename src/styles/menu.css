@@ -313,9 +313,18 @@
   background-position: right 14px center;
 }
 
+/* The field is focused as soon as the panel opens, so its focus look is
+   a clear line with a soft halo rather than the heavy ring used elsewhere. */
 .acc-lang-search:focus {
-  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
-  outline-offset: 1px;
+  outline: 2px solid var(--acc-focus-ring-color);
+  outline-offset: -2px;
+  background-color: var(--acc-card-bg);
+}
+
+@supports (color: color-mix(in srgb, red 50%, transparent)) {
+  .acc-lang-search:focus {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc-focus-ring-color) 16%, transparent);
+  }
 }
 
 .acc-lang-list {
@@ -370,6 +379,14 @@
 .acc-lang-item-label {
   font-size: 16px !important;
   line-height: 1.4 !important;
+}
+
+/* The country reads as a quiet note after the language's name. */
+.acc-lang-item-region {
+  margin-inline-start: 4px;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #5b6472 !important;
 }
 
 .acc-icon-check {
@@ -534,14 +551,25 @@
   padding-bottom: 8px;
 }
 
+/* Five and a half rows show, fading out at the bottom, so it is plain
+   that the list scrolls. The bottom padding lets the last row clear the
+   fade. */
 .acc-lang-panel .acc-lang-list {
-  max-height: 258px;
-  padding: 0 12px 4px;
+  max-height: 276px;
+  padding: 2px 6px 20px 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #c5cbd3 transparent;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+}
+
+.acc-menu[dir="rtl"] .acc-lang-panel .acc-lang-list {
+  padding: 2px 12px 20px 6px;
 }
 
 .acc-profiles-panel {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   padding: 4px 8px 8px;
 }
@@ -591,10 +619,43 @@
   hyphens: auto;
 }
 
-/* Profile tiles are the grid's tiles, grey so they show on the white card. */
+/* Profile tiles are short rows, icon then name, two by two. Grey so they
+   show on the white card. */
 .acc-btn.acc-profile-tile {
+  aspect-ratio: auto;
+  min-height: 56px;
+  padding: 8px 12px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 8px;
+  text-align: start;
+  border-radius: 16px;
   background: var(--acc-bg-color) !important;
   box-shadow: none;
+}
+
+.acc-btn.acc-profile-tile svg {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  max-width: 24px !important;
+  max-height: 24px !important;
+}
+
+/* The check sits at the end of the row, level with the name. */
+.acc-btn.acc-profile-tile.acc-selected {
+  padding-inline-end: 36px;
+}
+
+.acc-btn.acc-profile-tile.acc-selected::before {
+  top: calc(50% - 9px);
+  inset-inline-end: 10px;
+}
+
+.acc-btn.acc-profile-tile.acc-selected::after {
+  top: calc(50% - 6px);
+  inset-inline-end: 16px;
 }
 
 /* Inside the white card an on tile would vanish, so it lifts off the card
@@ -984,9 +1045,13 @@
    squares per row would be very tall, so the tiles go back to a fixed
    height. */
 @media only screen and (max-width: 449px) {
-  .acc-options,
-  .acc-profiles-panel {
+  .acc-options {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* One profile per row, so the names stay on one line. */
+  .acc-profiles-panel {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .acc-btn {

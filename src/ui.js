@@ -594,10 +594,11 @@ export const uiMethods = {
                     ${this.supportedLanguages.map(language => {
                       const languageLabel = this.formatLanguageLabel(language);
                       const languageFlag = this.getLanguageFlag(language.code);
+                      const languageRegion = this.getLanguageCountryLabel(language.code);
                       return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
                         <span class="acc-lang-item-main">
                           <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
-                          <span class="acc-lang-item-label">${languageLabel}</span>
+                          <span class="acc-lang-item-label">${this.getLanguageName(language)} <span class="acc-lang-item-region">${languageRegion}</span></span>
                         </span>
                         <span class="acc-icon-check" aria-hidden="true"> </span>
                       </button>`;
