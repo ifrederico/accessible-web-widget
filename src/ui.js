@@ -1,3 +1,5 @@
+import { MENU_FONT_FAMILY, MENU_FONT_SUBSETS, resolveMenuFontBase } from './constants/menu-font.js';
+
 /** @typedef {import('./index.js').default} AccessibleWebWidget */
 
 /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
@@ -331,6 +333,32 @@ export const uiMethods = {
       }
     },
 
+  // The menu's font (Inter) is registered the first time the menu opens.
+  // Registering costs nothing: the browser fetches a part of the font only
+  // when text on screen needs it. If the files cannot be found or loaded,
+  // the menu keeps the device's own font.
+  ensureMenuFontLoaded(menu) {
+      if (!menu || this.menuFontRequested) return;
+      this.menuFontRequested = true;
+      if (this.options?.menuFont === 'system') return;
+      if (typeof FontFace !== 'function' || !document.fonts || typeof document.fonts.add !== 'function') return;
+      const base = resolveMenuFontBase(this.options?.menuFontUrl);
+      if (!base) return;
+      try {
+        MENU_FONT_SUBSETS.forEach(({ file, range }) => {
+          document.fonts.add(new FontFace(MENU_FONT_FAMILY, `url("${base}${file}") format("woff2")`, {
+            weight: '100 900',
+            style: 'normal',
+            display: 'swap',
+            unicodeRange: range
+          }));
+        });
+        menu.classList.add('acc-menu-inter');
+      } catch {
+        // An older browser that rejects a descriptor: keep the device font.
+      }
+    },
+
   openMenu(menuContainer, toggleBtn) {
       if (!menuContainer) return;
       const menu = this.findElement('.acc-menu', menuContainer);
@@ -343,6 +371,7 @@ export const uiMethods = {
   
       menuContainer.style.display = 'block';
       if (menu) {
+        this.ensureMenuFontLoaded(menu);
         this.syncScrollbarGutter(menu);
         menu.setAttribute('aria-hidden', 'false');
         menu.setAttribute('aria-modal', 'true');

@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { cpSync, readFileSync } from 'node:fs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import { string } from 'rollup-plugin-string';
@@ -32,6 +32,15 @@ const stripRemoteDefaults = {
   }
 };
 
+// The menu's font files ship beside the script, in dist/fonts/, so the
+// widget loads them from wherever it was loaded from itself.
+const copyMenuFonts = {
+  name: 'copy-menu-fonts',
+  buildStart() {
+    cpSync(new URL('./src/fonts/', import.meta.url), new URL('./dist/fonts/', import.meta.url), { recursive: true });
+  }
+};
+
 export default [
   {
     input: 'src/index.js',
@@ -60,7 +69,8 @@ export default [
     ],
     plugins: [
       string({ include: '**/*.css' }),
-      nodeResolve()
+      nodeResolve(),
+      copyMenuFonts
     ]
   },
   {

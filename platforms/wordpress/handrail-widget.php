@@ -84,6 +84,8 @@ function accweb_enqueue_script() {
 			'lexend'   => plugins_url( 'fonts/Lexend-Regular.woff2', __FILE__ ),
 		),
 		'dyslexiaFontUrl'   => plugins_url( 'fonts/OpenDyslexic3-Regular.woff', __FILE__ ),
+		// The menu's own font (Inter), also bundled and served from this site.
+		'menuFontUrl'       => plugins_url( 'fonts/', __FILE__ ),
 		'axeCoreUrl'        => plugins_url( 'js/axe.min.js', __FILE__ ),
 		// Dev tools (?acc-dev) are allowed only for logged-in administrators.
 		'devTools'          => current_user_can( 'manage_options' ),

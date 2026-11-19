@@ -47,6 +47,7 @@ The bundled JavaScript is built from public, human-readable source code:
 * `js/accessible-web-widget.wp.min.js` — the widget itself. Source repository: https://github.com/ifrederico/accessible-web-widget (MIT). Build with `npm install && npm run build` (Rollup); this file is the `dist/accessible-web-widget.wp.min.js` output, a WordPress-specific build with no remote fallback URLs.
 * `js/axe.min.js` — axe-core 4.11.1 by Deque Systems, unmodified. Source repository: https://github.com/dequelabs/axe-core (MPL-2.0). Loaded only in developer mode, which is available to logged-in administrators who add `?acc-dev` to the page address.
 * `fonts/OpenDyslexic3-Regular.*` — OpenDyslexic by Abbie Gonzalez, https://opendyslexic.org/ (SIL OFL 1.1; see `fonts/LICENSE.txt`).
+* `fonts/inter-*.woff2` — Inter by The Inter Project Authors, https://github.com/rsms/inter (SIL OFL 1.1; see `fonts/LICENSE.txt`). The menu's own font, split by script.
 
 == Screenshots ==
 

@@ -107,7 +107,7 @@ In modern browsers the widget works under a strict CSP with no configuration —
 <!-- or: data-acc-nonce="YOUR_NONCE" / window.AccessibleWebWidgetOptions = { nonce: "YOUR_NONCE" } -->
 ```
 
-If your policy locks down remote requests, also allow `font-src https://accessibleweb.pages.dev` for the dyslexia font (or self-host it via `dyslexiaFontUrl`), and — only if you allow dev tools — `script-src https://cdn.jsdelivr.net` for axe-core.
+If your policy locks down remote requests, also allow the host you load the widget script from in `font-src` for the menu's font (or self-host it via `menuFontUrl`, or turn it off with `menuFont: "system"`), allow `font-src https://accessibleweb.pages.dev` for the dyslexia font (or self-host it via `dyslexiaFontUrl`), and — only if you allow dev tools — `script-src https://cdn.jsdelivr.net` for axe-core.
 
 ### Text-to-speech voices
 
@@ -127,6 +127,21 @@ TTS uses native browser voices. When enabled, visitors click any text block to h
 ### Font size
 
 The Font Size tile has three steps, 110%, 125% and 150%; a fourth tap returns to 100%. Earlier versions used a slider: a size saved by it snaps to the nearest step, and the slider's `textScaleMinPercent`, `textScaleMaxPercent` and `textScaleStepPercent` settings are now ignored.
+
+### The menu's font
+
+The panel's text is set in [Inter](https://rsms.me/inter/). The font files sit in a `fonts/` folder beside the widget script (`dist/fonts/`), so they come from wherever you load the script from and no other server is contacted. Nothing is fetched until a visitor opens the panel, and then only the part of the font their language needs (about 48 KB for English). Languages Inter does not cover, such as Arabic, Hebrew, Chinese and Japanese, use the device's own font.
+
+If you copy the script to your own server, copy the `fonts/` folder with it, or point the widget at the folder. If the files cannot be found, the panel uses the device's own font. To skip Inter altogether, set `menuFont` to `"system"`:
+
+```html
+<script>
+  window.AccessibleWebWidgetOptions = {
+    menuFontUrl: "/assets/fonts/", // the folder holding the inter-*.woff2 files
+    // menuFont: "system"          // or: always use the device's own font
+  };
+</script>
+```
 
 ### Readable font sources
 
@@ -195,4 +210,4 @@ MIT — see [LICENSE](LICENSE).
 ## Acknowledgments
 
 - Icons: [Phosphor Icons](https://phosphoricons.com/) (MIT) in the menu, [Google Material Icons](https://fonts.google.com/icons) (Apache 2.0) on the floating button
-- Fonts: [OpenDyslexic](https://opendyslexic.org/) by Abbie Gonzalez, [Atkinson Hyperlegible](https://brailleinstitute.org/freefont) by the Braille Institute, [Lexend](https://www.lexend.com/) by the Lexend Project
+- Fonts: [Inter](https://rsms.me/inter/) by The Inter Project Authors, [OpenDyslexic](https://opendyslexic.org/) by Abbie Gonzalez, [Atkinson Hyperlegible](https://brailleinstitute.org/freefont) by the Braille Institute, [Lexend](https://www.lexend.com/) by the Lexend Project

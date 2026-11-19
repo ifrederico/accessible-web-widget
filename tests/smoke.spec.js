@@ -796,6 +796,42 @@ test('hideAttribution removes the footer link but keeps reset', async ({ page })
   await expect(page.locator('.acc-footer-statement')).toHaveCount(0);
 });
 
+test('the menu uses its own font, fetched from beside the script only once it opens', async ({ page }) => {
+  const fontRequests = [];
+  page.on('request', (request) => {
+    if (/\/fonts\/inter-[a-z-]+\.woff2$/.test(request.url())) fontRequests.push(new URL(request.url()).pathname);
+  });
+  await page.goto('index.html');
+  await page.waitForLoadState('networkidle');
+  expect(fontRequests).toEqual([]);
+
+  const loaded = page.waitForResponse((response) => response.url().endsWith('/dist/fonts/inter-latin.woff2') && response.ok());
+  await page.locator('.acc-toggle-btn').click();
+  await loaded;
+  await expect(page.locator('.acc-menu')).toHaveClass(/acc-menu-inter/);
+  const family = await page.locator('.acc-btn .acc-label').first().evaluate((el) => getComputedStyle(el).fontFamily);
+  expect(family.startsWith('"AccessibleWeb Inter"')).toBe(true);
+  // English needs only the Latin part of the font.
+  expect(fontRequests).toEqual(['/dist/fonts/inter-latin.woff2']);
+});
+
+test('menuFont "system" keeps the device font and fetches nothing', async ({ page }) => {
+  const fontRequests = [];
+  page.on('request', (request) => {
+    if (/\/fonts\/inter-/.test(request.url())) fontRequests.push(request.url());
+  });
+  await page.addInitScript(() => {
+    window.AccessibleWebWidgetOptions = { menuFont: 'system' };
+  });
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-menu')).not.toHaveClass(/acc-menu-inter/);
+  const family = await page.locator('.acc-btn .acc-label').first().evaluate((el) => getComputedStyle(el).fontFamily);
+  expect(family).not.toContain('AccessibleWeb Inter');
+  await page.waitForLoadState('networkidle');
+  expect(fontRequests).toEqual([]);
+});
+
 test('Text to Speech is the first tile', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();

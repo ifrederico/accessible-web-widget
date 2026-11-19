@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { stateMethods } from '../../src/state.js';
 import { coreFeatureMethods } from '../../src/features/core.js';
 import { SUPPORTED_LANGUAGES } from '../../src/constants/translations.js';
+import { resolveMenuFontBase } from '../../src/constants/menu-font.js';
 
 const stateCtx = { ...stateMethods, widgetTheme: { buttonSize: '48px' } };
 
@@ -155,4 +156,18 @@ test('isDevMode needs both the owner key and the URL key', () => {
   assert.equal(withSearch('?acc-dev=true', () => devCtx({}).isDevMode()), false);
   assert.equal(withSearch('', () => devCtx({ devTools: true }).isDevMode()), false);
   assert.equal(withSearch('?acc-dev=false', () => devCtx({ devTools: true }).isDevMode()), false);
+});
+
+test('resolveMenuFontBase finds fonts beside the script, or uses a folder the owner names', () => {
+  const page = 'https://site.example/shop/page.html';
+  // Beside the script, wherever that was loaded from.
+  assert.equal(resolveMenuFontBase('', 'https://cdn.example/pkg@1.0.0/dist/widget.min.js', page), 'https://cdn.example/pkg@1.0.0/dist/fonts/');
+  // An owner's folder wins, with or without the closing slash, and may be relative to the page.
+  assert.equal(resolveMenuFontBase('/assets/fonts', 'https://cdn.example/dist/widget.js', page), 'https://site.example/assets/fonts/');
+  assert.equal(resolveMenuFontBase(' https://static.example/f/ ', '', page), 'https://static.example/f/');
+  // No usable script address (a bundler's file: URL, or none): no font, so the device font stays.
+  assert.equal(resolveMenuFontBase('', 'file:///app/node_modules/pkg/dist/widget.esm.js', page), '');
+  assert.equal(resolveMenuFontBase('', '', page), '');
+  // Values that could break out of the url("...") wrapper are rejected.
+  assert.equal(resolveMenuFontBase('x") } body { display:none', 'https://cdn.example/dist/widget.js', page), '');
 });
