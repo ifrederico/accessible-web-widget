@@ -31,26 +31,28 @@ const touchScroll = async (page, x, y, yDistance) => {
   await page.waitForTimeout(300);
 };
 
-test('phone menu spans the screen with tiles three to a row', async ({ page }) => {
+test('phone menu spans the screen with tiles two to a row', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').tap();
   const menu = page.locator('.acc-menu');
   await expect(menu).toBeVisible();
 
-  // A ~396px panel still fits three tiles side by side.
+  // Three square tiles would be too narrow here for the longer labels to
+  // stay on one line, so a phone gets two per row at a fixed height.
   const tiles = page.locator('.acc-options .acc-btn');
-  const [first, second, third, fourth] = await Promise.all([0, 1, 2, 3].map((i) => tiles.nth(i).boundingBox()));
-  expect(Math.abs(first.y - third.y)).toBeLessThan(1);
+  const [first, second, third] = await Promise.all([0, 1, 2].map((i) => tiles.nth(i).boundingBox()));
+  expect(Math.abs(first.y - second.y)).toBeLessThan(1);
   expect(second.x).toBeGreaterThan(first.x);
-  expect(fourth.y).toBeGreaterThan(first.y + first.height);
+  expect(third.y).toBeGreaterThan(first.y + first.height);
   expect(first.height).toBeGreaterThanOrEqual(112);
+  expect(first.height).toBeLessThan(first.width);
 
   // The panel spans the screen between small gaps.
   const box = await menu.boundingBox();
   expect(box.width).toBeGreaterThan(phone.viewport.width - 24);
 });
 
-test('narrow phones fall back to two tiles per row', async ({ page }) => {
+test('narrow phones also show two tiles per row', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 780 });
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').tap();

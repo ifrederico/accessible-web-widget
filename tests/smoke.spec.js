@@ -141,10 +141,12 @@ test('Profiles row expands to the profile tiles and names the active profile', a
   await expect(profilesRow).toHaveAttribute('aria-expanded', 'true');
   const tiles = profilesPanel.locator('.acc-btn');
   await expect(tiles).toHaveCount(4);
-  // Two per row.
-  const [first, second, third] = await Promise.all([0, 1, 2].map((i) => tiles.nth(i).boundingBox()));
-  expect(Math.abs(first.y - second.y)).toBeLessThan(1);
-  expect(third.y).toBeGreaterThan(first.y + first.height);
+  // The same tiles as the grid: three per row, square.
+  const [first, second, third, fourth] = await Promise.all([0, 1, 2, 3].map((i) => tiles.nth(i).boundingBox()));
+  expect(Math.abs(first.y - third.y)).toBeLessThan(1);
+  expect(second.x).toBeGreaterThan(first.x);
+  expect(fourth.y).toBeGreaterThan(first.y + first.height - 1);
+  expect(Math.abs(first.width - first.height)).toBeLessThan(1);
 
   await page.locator('.acc-btn[data-key="profile-vision"]').click();
   await expect(summary).toHaveText('Vision Impaired');
@@ -509,8 +511,16 @@ test('tiles sit three to a row at desktop width', async ({ page }) => {
   expect(Math.abs(boxes[0].y - boxes[2].y)).toBeLessThan(1);
   expect(boxes[1].x).toBeGreaterThan(boxes[0].x);
   expect(boxes[2].x).toBeGreaterThan(boxes[1].x);
-  expect(boxes[3].y).toBeGreaterThan(boxes[0].y + boxes[0].height);
+  expect(boxes[3].y).toBeGreaterThan(boxes[0].y + boxes[0].height - 1);
   expect(boxes[0].height).toBeGreaterThanOrEqual(112);
+  // Tiles are square, and the panel is wide enough that no English label
+  // breaks onto a second line.
+  expect(Math.abs(boxes[0].width - boxes[0].height)).toBeLessThan(1);
+  const wrapped = await page.locator('.acc-options .acc-btn .acc-label').evaluateAll((labels) => (
+    labels.filter((label) => label.getClientRects().length > 1 || label.getBoundingClientRect().height > 22)
+      .map((label) => label.textContent.trim())
+  ));
+  expect(wrapped).toEqual([]);
 });
 
 test('an option that is on shows a check badge and a primary label', async ({ page }) => {

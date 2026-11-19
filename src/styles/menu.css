@@ -12,7 +12,9 @@
   /* The primary color shows through the content margins, framing the body
      like a gate: header across the top, posts down both sides. */
   background: var(--acc-primary-color);
-  width: min(516px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));
+  /* Wide enough for three square tiles whose longest English labels stay
+     on one line. */
+  width: min(456px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));
   display: flex;
   flex-direction: column;
   line-height: 1.5;
@@ -288,24 +290,32 @@
 }
 
 .acc-lang-search-wrapper {
-  padding: 4px 16px 8px;
+  padding: 4px 12px 8px;
 }
 
+/* A soft field with a magnifier, shaped like the Reset button. */
 .acc-lang-search {
   width: 100%;
-  padding: 10px 16px;
-  border: 1.5px solid var(--acc-border-color);
-  border-radius: var(--acc-button-border-radius);
+  height: 48px;
+  padding-block: 0;
+  padding-inline: 44px 16px;
+  border: 0;
+  border-radius: 16px;
   font-size: 16px;
-  background-color: var(--acc-card-bg);
-  transition: border-color 0.2s ease;
+  background-color: var(--acc-bg-color);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6472' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 14px center;
+  background-size: 18px;
 }
 
-/* The border turns into the ring: one line, not a ring around a border. */
+.acc-menu[dir="rtl"] .acc-lang-search {
+  background-position: right 14px center;
+}
+
 .acc-lang-search:focus {
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
-  outline-offset: -1.5px;
-  border-color: transparent !important;
+  outline-offset: 1px;
 }
 
 .acc-lang-list {
@@ -322,11 +332,12 @@
   gap: 8px;
   width: 100%;
   text-align: left;
-  padding: 11px 10px;
-  margin-bottom: 4px;
+  min-height: 48px;
+  padding: 10px 12px;
+  margin-bottom: 2px;
   background-color: transparent;
   border: none;
-  border-radius: var(--acc-button-border-radius);
+  border-radius: 14px;
   cursor: pointer;
   font-size: 16px;
   color: var(--acc-text-color);
@@ -524,15 +535,15 @@
 }
 
 .acc-lang-panel .acc-lang-list {
-  max-height: 280px;
-  padding: 0 8px 4px;
+  max-height: 258px;
+  padding: 0 12px 4px;
 }
 
 .acc-profiles-panel {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
-  padding: 4px 12px 12px;
+  padding: 4px 8px 8px;
 }
 
 /* Hidden group headings sit in the grid without taking a cell. */
@@ -560,6 +571,8 @@
    forced-colors mode, where shadows disappear. */
 .acc-btn {
   position: relative;
+  /* Square; a tile still grows if a long label wraps. */
+  aspect-ratio: 1 / 1;
   min-height: 112px;
   padding: 16px 8px 12px;
   display: flex;
@@ -578,10 +591,8 @@
   hyphens: auto;
 }
 
+/* Profile tiles are the grid's tiles, grey so they show on the white card. */
 .acc-btn.acc-profile-tile {
-  min-height: 96px;
-  padding: 14px 8px 12px;
-  border-radius: 18px;
   background: var(--acc-bg-color) !important;
   box-shadow: none;
 }
@@ -968,9 +979,18 @@
 
 /* Three tiles no longer fit below a ~380px panel (the viewport minus the
    8px gaps); long labels in some languages need the width. */
-@media only screen and (max-width: 395px) {
-  .acc-options {
+/* Below this width three square tiles would be too narrow for the longer
+   labels to stay on one line, so the grid drops to two per row. Two
+   squares per row would be very tall, so the tiles go back to a fixed
+   height. */
+@media only screen and (max-width: 449px) {
+  .acc-options,
+  .acc-profiles-panel {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .acc-btn {
+    aspect-ratio: auto;
   }
 }
 
