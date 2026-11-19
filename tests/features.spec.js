@@ -520,3 +520,42 @@ test('saved cycling levels are named in the configured language on load', async 
   await expectButtonName(page.locator('.acc-btn[data-key="readable-text"]'), 'Fuente Legible: Fuente para Dislexia');
   await expectButtonName(page.locator('.acc-btn[data-key="saturation-toggle"]'), 'Saturación');
 });
+
+test('the report lists each result as a card that opens on its own, with code to copy', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  // The audit engine from the repo, so the test needs no network.
+  await page.addInitScript(() => {
+    window.AccessibleWebWidgetOptions = { axeCoreUrl: '../platforms/wordpress/js/axe.min.js' };
+  });
+  await page.goto('audit.html?acc-dev=true');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="accessibility-report"]').click();
+
+  const report = page.locator('.acc-report-panel.acc-report-visible');
+  await expect(report.locator('.acc-report-stat')).toHaveCount(4);
+  // What passed is a line under the title, not a tile.
+  await expect(report.locator('.acc-report-status')).toContainText('Passed Tests');
+
+  // The page plants one image with no description for this demo.
+  const cards = report.locator('.acc-report-section').first().locator('.acc-report-violation');
+  await expect(cards).toHaveCount(2);
+  const first = cards.nth(0).locator('.acc-report-violation-header');
+  const second = cards.nth(1).locator('.acc-report-violation-header');
+  await expect(first).toHaveAttribute('aria-expanded', 'false');
+
+  // Opening with the keyboard, and one card does not close another.
+  await first.focus();
+  await page.keyboard.press('Enter');
+  await second.click();
+  await expect(first).toHaveAttribute('aria-expanded', 'true');
+  await expect(second).toHaveAttribute('aria-expanded', 'true');
+
+  const code = cards.nth(0).locator('.acc-report-node-html');
+  await expect(code).toContainText('acc-dev-demo-issue');
+  await expect(code.locator('.acc-code-tag').first()).toHaveText('img');
+
+  const copy = cards.nth(0).locator('.acc-report-copy');
+  await copy.click();
+  await expect(copy).toHaveAttribute('aria-label', 'Copied');
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain('acc-dev-demo-issue');
+});

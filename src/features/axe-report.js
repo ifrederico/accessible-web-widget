@@ -203,7 +203,7 @@ export const axeReportMethods = {
     const statusArea = this.findElement('.acc-report-status', panel);
   
     // Show loading state
-    statusArea.textContent = this.translate('Loading...');
+    statusArea.textContent = '';
     contentArea.innerHTML = `<div class="acc-report-loading">${this.translate('Analyzing page...')}</div>`;
   
     try {
@@ -303,10 +303,12 @@ export const axeReportMethods = {
       <div class="acc-report-overlay"></div>
       <div class="acc-report-dialog">
         <div class="acc-report-header">
-          <h2 id="acc-report-title" class="acc-report-title">${this.translate('Accessibility Report')}</h2>
+          <div class="acc-report-heading">
+            <h2 id="acc-report-title" class="acc-report-title">${this.translate('Accessibility Report')}</h2>
+            <div class="acc-report-status"></div>
+          </div>
           <button type="button" class="acc-report-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
         </div>
-        <div class="acc-report-status"></div>
         <div class="acc-report-content"></div>
         <div class="acc-report-footer">
           <span class="acc-report-powered">Powered by axe-core</span>
@@ -322,6 +324,116 @@ export const axeReportMethods = {
     overlay.addEventListener('click', () => this.closeReportPanel(panel));
   
     return panel;
+  },
+
+  // Colours an HTML snippet the way a code editor would: tags, attribute
+  // names and values each get a class. Every piece is escaped on the way.
+  highlightHtml(source) {
+    const text = String(source || '');
+    const wrap = (kind, value) => `<span class="acc-code-${kind}">${this.escapeHtml(value)}</span>`;
+    const pattern = /(<\/?)([A-Za-z][\w:-]*)|([^\s"'<>=/]+)(=)("[^"]*"?|'[^']*'?)|(\/?>)/g;
+    let html = '';
+    let last = 0;
+    let match;
+    while ((match = pattern.exec(text))) {
+      html += this.escapeHtml(text.slice(last, match.index));
+      if (match[1]) {
+        html += wrap('punct', match[1]) + wrap('tag', match[2]);
+      } else if (match[3]) {
+        html += wrap('attr', match[3]) + wrap('punct', match[4]) + wrap('value', match[5]);
+      } else {
+        html += wrap('punct', match[6]);
+      }
+      last = pattern.lastIndex;
+    }
+    return html + this.escapeHtml(text.slice(last));
+  },
+
+  // What the check says about one element. Violations carry a summary;
+  // items that need review only carry each check's own message.
+  getReportNodeMessage(node) {
+    const summary = node && node.failureSummary;
+    if (summary) {
+      // Drop the lead-in line ("Fix any of the following:") when one
+      // reason follows it, so the reason reads on its own.
+      const lines = String(summary).split('\n').map(line => line.trim()).filter(Boolean);
+      return lines.length === 2 && /:$/.test(lines[0]) ? lines[1] : lines.join('\n');
+    }
+    const checks = [].concat(node?.any || [], node?.all || [], node?.none || []);
+    const withMessage = checks.find(check => check && check.message);
+    return withMessage ? String(withMessage.message) : '';
+  },
+
+  // One result as a card: a row that opens to show what is wrong, where
+  // to read more, and the elements it was found on.
+  renderReportItem(item, id, { showImpact = true } = {}) {
+    const safeHelpUrl = this.sanitizeUrl(item.helpUrl);
+    const nodes = item.nodes || [];
+    return `
+      <div class="acc-report-violation">
+        <button type="button" class="acc-report-violation-header" aria-expanded="false" aria-controls="${id}">
+          ${showImpact && item.impact ? `<span class="acc-report-violation-impact ${this.escapeHtml(item.impact)}">${this.translate(this.capitalizeFirst(item.impact))}</span>` : ''}
+          <span class="acc-report-violation-title">${this.escapeHtml(item.help)}</span>
+          <span class="acc-report-violation-count">${nodes.length} ${this.translate('Element')}${nodes.length > 1 ? 's' : ''}</span>
+        </button>
+        <div class="acc-report-violation-details" id="${id}">
+          <p class="acc-report-violation-desc">${this.escapeHtml(item.description)}</p>
+          ${safeHelpUrl ? `<a class="acc-report-violation-help" href="${safeHelpUrl}" target="_blank" rel="noopener"><span>${this.translate('How to Fix')}</span>${this.widgetIcons.externalLink}</a>` : ''}
+          ${nodes.slice(0, 5).map(node => {
+            const message = this.getReportNodeMessage(node);
+            return `
+            <div class="acc-report-node">
+              <div class="acc-report-code">
+                <div class="acc-report-code-bar">
+                  <span class="acc-report-code-lang">HTML</span>
+                  <button type="button" class="acc-report-copy" aria-label="${this.translate('Copy')}">${this.widgetIcons.copy}</button>
+                </div>
+                <pre class="acc-report-node-html">${this.highlightHtml(node.html)}</pre>
+              </div>
+              ${message ? `<p class="acc-report-node-fix"><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(message)}</p>` : ''}
+            </div>`;
+          }).join('')}
+          ${nodes.length > 5 ? `<p class="acc-report-note">... and ${nodes.length - 5} more elements</p>` : ''}
+        </div>
+      </div>
+    `;
+  },
+
+  // Copies an element's HTML and shows a check for a moment.
+  copyReportCode(button) {
+    const code = button.closest('.acc-report-code')?.querySelector('.acc-report-node-html');
+    const text = code ? code.textContent : '';
+    const done = () => {
+      button.innerHTML = this.widgetIcons.check;
+      button.setAttribute('aria-label', this.translate('Copied'));
+      button.classList.add('acc-report-copied');
+      clearTimeout(button.accCopyTimer);
+      button.accCopyTimer = setTimeout(() => {
+        button.innerHTML = this.widgetIcons.copy;
+        button.setAttribute('aria-label', this.translate('Copy'));
+        button.classList.remove('acc-report-copied');
+      }, 2000);
+    };
+    const fallback = () => {
+      // Without clipboard access (an insecure page, or permission denied),
+      // select the code so the usual copy shortcut works on it.
+      const selection = window.getSelection && window.getSelection();
+      if (!selection || !code) return;
+      const range = document.createRange();
+      range.selectNodeContents(code);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      try {
+        if (document.execCommand && document.execCommand('copy')) done();
+      } catch {
+        // The code stays selected for the visitor to copy by hand.
+      }
+    };
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else {
+      fallback();
+    }
   },
 
   displayReportResults(panel, results) {
@@ -340,11 +452,9 @@ export const axeReportMethods = {
       }
     });
   
-    const totalViolations = Object.values(counts).reduce((a, b) => a + b, 0);
-  
-    statusArea.textContent = totalViolations > 0
-      ? `${totalViolations} ${this.translate('Violations Found')}`
-      : this.translate('No Issues Found');
+    // Under the title: how much passed. It is context, not a problem to
+    // open, so it is a quiet line and not one of the tiles.
+    statusArea.innerHTML = `<span class="acc-report-passed">${this.widgetIcons.check}<span>${passes.length} ${this.translate('Passed Tests')}</span></span>`;
   
     let html = `
       <div class="acc-report-summary">
@@ -364,77 +474,48 @@ export const axeReportMethods = {
           <span class="acc-report-stat-value">${counts.minor}</span>
           <span class="acc-report-stat-label">${this.translate('Minor')}</span>
         </div>
-        <div class="acc-report-stat passed">
-          <span class="acc-report-stat-value">${passes.length}</span>
-          <span class="acc-report-stat-label">${this.translate('Passed Tests')}</span>
-        </div>
       </div>
     `;
   
     if (violations.length === 0) {
       html += `
         <div class="acc-report-success">
-          <div class="acc-report-success-icon">
-            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-          </div>
+          <div class="acc-report-success-icon">${this.widgetIcons.check}</div>
           <h3>${this.translate('No Issues Found')}</h3>
         </div>
       `;
     } else {
-      html += `<div class="acc-report-section">
-        <div class="acc-report-section-title">${this.translate('Violations Found')} (${violations.length})</div>
-      `;
-  
       // Sort by severity
       const severityOrder = { critical: 0, serious: 1, moderate: 2, minor: 3 };
-      violations.sort((a, b) => (severityOrder[a.impact] || 4) - (severityOrder[b.impact] || 4));
+      violations.sort((a, b) => (severityOrder[a.impact] ?? 4) - (severityOrder[b.impact] ?? 4));
   
-      violations.forEach((violation, index) => {
-        const safeHelpUrl = this.sanitizeUrl(violation.helpUrl);
-        html += `
-          <div class="acc-report-violation" data-index="${index}">
-            <button type="button" class="acc-report-violation-header" aria-expanded="false" aria-controls="acc-report-violation-${index}">
-              <span class="acc-report-violation-impact ${violation.impact}">${this.translate(this.capitalizeFirst(violation.impact))}</span>
-              <span class="acc-report-violation-title">${this.escapeHtml(violation.help)}</span>
-              <span class="acc-report-violation-count">${violation.nodes.length} ${this.translate('Element')}${violation.nodes.length > 1 ? 's' : ''}</span>
-            </button>
-            <div class="acc-report-violation-details" id="acc-report-violation-${index}">
-              <p class="acc-report-violation-desc">${this.escapeHtml(violation.description)}</p>
-              ${safeHelpUrl ? `<p class="acc-report-violation-help">
-                <a href="${safeHelpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
-              </p>` : ''}
-              ${violation.nodes.slice(0, 5).map(node => `
-                <div class="acc-report-node">
-                  <div class="acc-report-node-html">${this.escapeHtml(node.html)}</div>
-                  ${node.failureSummary ? `<div class="acc-report-node-fix"><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(node.failureSummary)}</div>` : ''}
-                </div>
-              `).join('')}
-              ${violation.nodes.length > 5 ? `<p style="color:#666;font-size:13px;margin-top:12px;">... and ${violation.nodes.length - 5} more elements</p>` : ''}
-            </div>
-          </div>
-        `;
-      });
-  
-      html += `</div>`;
+      html += `<div class="acc-report-section">
+        <div class="acc-report-section-title">${this.translate('Violations Found')} (${violations.length})</div>
+        ${violations.map((violation, index) => this.renderReportItem(violation, `acc-report-violation-${index}`)).join('')}
+      </div>`;
     }
   
     if (incomplete.length > 0) {
       html += `
         <div class="acc-report-section">
           <div class="acc-report-section-title">${this.translate('Items Need Review')} (${incomplete.length})</div>
-          <p style="color:#666;font-size:14px;">These items require manual verification.</p>
+          <p class="acc-report-note">A person needs to check these.</p>
+          ${incomplete.map((item, index) => this.renderReportItem(item, `acc-report-review-${index}`, { showImpact: false })).join('')}
         </div>
       `;
     }
   
     contentArea.innerHTML = html;
   
-    // Add click handlers for expandable violations
+    // Each card opens and closes on its own.
     contentArea.querySelectorAll('.acc-report-violation-header').forEach(header => {
       header.addEventListener('click', () => {
         const expanded = header.parentElement.classList.toggle('expanded');
         header.setAttribute('aria-expanded', expanded ? 'true' : 'false');
       });
+    });
+    contentArea.querySelectorAll('.acc-report-copy').forEach(button => {
+      button.addEventListener('click', () => this.copyReportCode(button));
     });
   },
 

@@ -1,3 +1,8 @@
+/* The report and Page Structure dialogs, built from the menu's pieces: a
+   light grey sheet, white cards, soft pills and the same type sizes. No
+   primary colour here; these are for reading. They live in the page's
+   own document, not the widget's shadow root, so the theme variables are
+   read with fallbacks. */
 .acc-report-panel {
   display: none;
   position: fixed;
@@ -7,7 +12,25 @@
   bottom: 0;
   z-index: calc(var(--acc-widget-z-index, 100000) + 10);
   /* The menu's font, when it has been registered; otherwise the device's. */
-  font-family: "AccessibleWeb Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "AccessibleWeb Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: var(--acc-text-color, #222222);
+  --acc-report-muted: #5b6472;
+  --acc-report-sheet: var(--acc-bg-color, #f3f5f8);
+  --acc-report-card: var(--acc-card-bg, #ffffff);
+  --acc-hover-tint: #f7f8fa;
+}
+@supports (color: color-mix(in srgb, red 50%, transparent)) {
+  .acc-report-panel {
+    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color, #c4cad3) 14%, var(--acc-card-bg, #ffffff));
+  }
+}
+.acc-report-panel *,
+.acc-report-panel *::before,
+.acc-report-panel *::after {
+  box-sizing: border-box;
 }
 .acc-report-panel.acc-report-visible {
   display: flex;
@@ -24,250 +47,445 @@
 }
 .acc-report-dialog {
   position: relative;
-  background: #fff;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 92%;
+  max-width: 760px;
   max-height: 85vh;
   /* dvh tracks the visible area while mobile browser toolbars show. */
   max-height: 85dvh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  border-radius: 28px;
+  background: var(--acc-report-sheet);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
 }
 .acc-report-header {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid #e0e0e0;
+  gap: 12px;
+  padding: 24px 24px 0 28px;
+  padding-inline: 28px 24px;
+}
+.acc-report-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
 }
 .acc-report-title {
   margin: 0;
-  font-size: 18px;
+  font-family: inherit;
+  font-size: 17px;
   font-weight: 600;
-  color: #1a1a1a;
+  line-height: 1.3;
+  letter-spacing: normal;
+  color: var(--acc-text-color, #222222);
+}
+.acc-report-status {
+  font-size: 15px;
+  color: var(--acc-report-muted);
+}
+.acc-report-status:empty {
+  display: none;
+}
+.acc-report-passed {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.acc-report-passed svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  fill: #2e7d32;
 }
 .acc-report-close {
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  border-radius: 6px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--acc-report-card);
+  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 @media (hover: hover) {
   .acc-report-close:hover {
-    background: #f0f0f0;
+    background: var(--acc-hover-tint);
   }
 }
-.acc-report-close svg {
-  width: 20px;
-  height: 20px;
-  fill: #666;
+.acc-report-close:focus-visible {
+  outline: 2px solid var(--acc-focus-ring-color, #0072e4);
+  outline-offset: 2px;
 }
-.acc-report-status {
-  padding: 8px 20px;
-  font-size: 14px;
-  color: #666;
-  background: #f8f9fa;
+.acc-report-close svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--acc-text-color, #222222);
 }
 .acc-report-content {
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 16px 20px;
+  padding: 24px;
+  scrollbar-width: thin;
+  scrollbar-color: #7c8594 transparent;
 }
 .acc-report-loading {
+  padding: 40px 16px;
   text-align: center;
-  padding: 40px;
-  color: #666;
+  color: var(--acc-report-muted);
 }
 .acc-report-error {
-  color: #d32f2f;
-  padding: 20px;
+  padding: 24px 16px;
   text-align: center;
+  color: #c62828;
 }
 .acc-report-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 24px;
 }
 .acc-report-stat {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 8px 16px;
+  border-radius: 22px;
+  background: var(--acc-report-card);
+  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
   text-align: center;
 }
 .acc-report-stat-value {
   font-size: 28px;
-  font-weight: 700;
-  display: block;
+  font-weight: 600;
+  line-height: 1.1;
 }
 .acc-report-stat-label {
-  font-size: 12px;
-  color: #666;
-  text-transform: uppercase;
-  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--acc-report-muted);
+  overflow-wrap: anywhere;
 }
-.acc-report-stat.critical .acc-report-stat-value { color: #d32f2f; }
-.acc-report-stat.serious .acc-report-stat-value { color: #f57c00; }
-.acc-report-stat.moderate .acc-report-stat-value { color: #fbc02d; }
-.acc-report-stat.minor .acc-report-stat-value { color: #7cb342; }
-.acc-report-stat.passed .acc-report-stat-value { color: #43a047; }
+/* Each of these is at least 4.5 to 1 against white. */
+.acc-report-stat.critical .acc-report-stat-value { color: #c62828; }
+.acc-report-stat.serious .acc-report-stat-value { color: #b45309; }
+.acc-report-stat.moderate .acc-report-stat-value { color: #8a6100; }
+.acc-report-stat.minor .acc-report-stat-value { color: #4d7c0f; }
 .acc-report-section {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+}
+.acc-report-section:last-child {
+  margin-bottom: 0;
 }
 .acc-report-section-title {
-  font-size: 14px;
+  margin: 0 0 10px;
+  padding: 0 4px;
+  font-size: 15px;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #e0e0e0;
+  color: var(--acc-text-color, #222222);
+}
+.acc-report-note {
+  margin: 0;
+  padding: 0 4px;
+  font-size: 13px;
+  color: var(--acc-report-muted);
+}
+/* The note under a section's title sits close to it, above the cards. */
+.acc-report-section-title + .acc-report-note {
+  margin: -8px 0 10px;
 }
 .acc-report-violation {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   overflow: hidden;
+  border-radius: 22px;
+  background: var(--acc-report-card);
+  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
 }
-/* A real button, so a row opens with the keyboard; it looks as before. */
+.acc-report-violation:last-child {
+  margin-bottom: 0;
+}
+/* A real button, so a card opens with the keyboard. */
 .acc-report-violation-header {
-  width: 100%;
-  margin: 0;
-  padding: 12px 16px;
-  border: none;
-  background: #f8f9fa;
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  margin: 0;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 22px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+@media (hover: hover) {
+  .acc-report-violation-header:hover {
+    background: var(--acc-hover-tint);
+  }
 }
 .acc-report-violation-header:focus-visible {
   outline: 2px solid var(--acc-focus-ring-color, #0072e4);
   outline-offset: -2px;
 }
-@media (hover: hover) {
-  .acc-report-violation-header:hover {
-    background: #f0f0f0;
-  }
+/* Arrow at the end of the row; it turns over when the card is open. */
+.acc-report-violation-header::after {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px 3px;
+  border-right: 1.5px solid var(--acc-report-muted);
+  border-bottom: 1.5px solid var(--acc-report-muted);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
 }
+.acc-report-violation.expanded .acc-report-violation-header::after {
+  margin: 3px 4px 0;
+  transform: rotate(-135deg);
+}
+/* Soft pills: a light tint with dark text of the same colour. */
 .acc-report-violation-impact {
-  font-size: 11px;
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
   font-weight: 600;
-  text-transform: uppercase;
-  padding: 4px 8px;
-  border-radius: 4px;
-  color: #fff;
+  line-height: 1.3;
 }
-.acc-report-violation-impact.critical { background: #d32f2f; }
-.acc-report-violation-impact.serious { background: #f57c00; }
-.acc-report-violation-impact.moderate { background: #fbc02d; color: #333; }
-.acc-report-violation-impact.minor { background: #7cb342; }
+.acc-report-violation-impact.critical { background: #fdecea; color: #a61b1b; }
+.acc-report-violation-impact.serious { background: #fff0e0; color: #8f3f00; }
+.acc-report-violation-impact.moderate { background: #fff4cf; color: #6f4e00; }
+.acc-report-violation-impact.minor { background: #edf5df; color: #3d6210; }
 .acc-report-violation-title {
-  flex: 1;
-  font-weight: 500;
-  color: #333;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--acc-text-color, #222222);
 }
 .acc-report-violation-count {
-  font-size: 12px;
-  color: #666;
-  background: #e0e0e0;
-  padding: 2px 8px;
-  border-radius: 12px;
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--acc-report-sheet);
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--acc-report-muted);
+  white-space: nowrap;
 }
 .acc-report-violation-details {
   display: none;
-  padding: 16px;
-  border-top: 1px solid #e0e0e0;
+  padding: 4px 16px 16px;
 }
 .acc-report-violation.expanded .acc-report-violation-details {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
 }
 .acc-report-violation-desc {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 12px;
+  margin: 0;
+  font-size: 15px;
+  color: var(--acc-report-muted);
 }
+/* "How to Fix" opens the rule's page on another site. */
 .acc-report-violation-help {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 18px;
+  background: var(--acc-report-sheet);
   font-size: 13px;
-  margin-bottom: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--acc-text-color, #222222);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
 }
-.acc-report-violation-help a {
-  color: #0072e4;
+.acc-report-violation-help svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+@media (hover: hover) {
+  .acc-report-violation-help:hover {
+    background: #e6e9ee;
+  }
+}
+.acc-report-violation-help:focus-visible {
+  outline: 2px solid var(--acc-focus-ring-color, #0072e4);
+  outline-offset: 2px;
 }
 .acc-report-node {
-  background: #f8f9fa;
-  border-radius: 6px;
-  padding: 12px;
-  margin-top: 8px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-.acc-report-node-html {
-  font-family: monospace;
+/* The element's HTML, set like a code editor: a dark box with a label,
+   a copy button, and soft colours for tags, names and values. */
+.acc-report-code {
+  overflow: hidden;
+  border-radius: 16px;
+  background: #1b2028;
+}
+.acc-report-code-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 40px;
+  padding: 0 6px 0 16px;
+  padding-inline: 16px 6px;
+  border-bottom: 1px solid #2c333d;
+}
+.acc-report-code-lang {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 12px;
-  background: #263238;
-  color: #80cbc4;
-  padding: 8px 12px;
-  border-radius: 4px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  word-break: break-all;
+  line-height: 1;
+  color: #aab3c0;
 }
-.acc-report-node-fix {
-  margin-top: 8px;
-  font-size: 13px;
-  color: #333;
-}
-.acc-report-node-fix strong {
-  color: #0072e4;
-}
-.acc-report-success {
-  text-align: center;
-  padding: 40px;
-}
-.acc-report-success-icon {
-  width: 64px;
-  height: 64px;
-  background: #43a047;
-  border-radius: 50%;
+.acc-report-copy {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 16px;
-}
-.acc-report-success-icon svg {
   width: 32px;
   height: 32px;
-  fill: #fff;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+}
+.acc-report-copy svg {
+  width: 18px;
+  height: 18px;
+  fill: #d5dbe3;
+}
+.acc-report-copy.acc-report-copied svg {
+  fill: #b7e3a8;
+}
+@media (hover: hover) {
+  .acc-report-copy:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+.acc-report-copy:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: -2px;
+}
+.acc-report-node-html {
+  margin: 0;
+  padding: 14px 16px 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e6edf3;
+  white-space: pre-wrap;
+  word-break: break-all;
+  direction: ltr;
+  text-align: left;
+}
+.acc-code-punct { color: #8b95a3; }
+.acc-code-tag { color: #f0b37e; }
+.acc-code-attr { color: #c5d1de; }
+.acc-code-value { color: #b7e3a8; }
+.acc-report-node-fix {
+  margin: 0;
+  font-size: 13px;
+  color: var(--acc-text-color, #222222);
+  /* The check's own advice can come as several short lines. */
+  white-space: pre-line;
+}
+.acc-report-node-fix strong {
+  font-weight: 600;
+}
+.acc-report-success {
+  padding: 32px 16px;
+  text-align: center;
+}
+.acc-report-success h3 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--acc-text-color, #222222);
+}
+.acc-report-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: #2e7d32;
+}
+.acc-report-success-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: #ffffff;
 }
 .acc-report-footer {
-  padding: 12px 20px;
-  border-top: 1px solid #e0e0e0;
+  flex-shrink: 0;
+  padding: 12px 24px 20px;
   text-align: center;
 }
 .acc-report-powered {
-  font-size: 12px;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--acc-report-muted);
 }
 @media (max-width: 600px) {
   .acc-report-dialog {
-    width: 95%;
+    width: calc(100% - 16px);
     max-height: 90vh;
     max-height: 90dvh;
   }
-  .acc-report-summary {
-    grid-template-columns: repeat(2, 1fr);
+  .acc-report-header {
+    padding: 20px 16px 0 20px;
+    padding-inline: 20px 16px;
   }
-}
-@media (pointer: coarse) {
-  .acc-report-close {
-    min-width: 44px;
-    min-height: 44px;
+  .acc-report-content {
+    padding: 20px 16px;
+  }
+  .acc-report-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* The pill and the count share the first line; the title gets its own. */
+  .acc-report-violation-header {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    padding: 12px 14px;
+  }
+  .acc-report-violation-title {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .acc-report-violation-count {
+    margin-inline-start: auto;
+  }
+  .acc-report-footer {
+    padding: 12px 16px 16px;
   }
 }

@@ -81,6 +81,9 @@ var AccessibleWebWidget = (function () {
           moveWidget: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M212.24,171.76a6,6,0,0,1,0,8.48l-32,32a6,6,0,0,1-8.48-8.48L193.51,182H48a6,6,0,0,1,0-12H193.51l-21.75-21.76a6,6,0,0,1,8.48-8.48ZM75.76,116.24a6,6,0,0,0,8.48-8.48L62.49,86H208a6,6,0,0,0,0-12H62.49L84.24,52.24a6,6,0,0,0-8.48-8.48l-32,32a6,6,0,0,0,0,8.48Z"/></svg>',
           hideWidget: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M52.44,36A6,6,0,0,0,43.56,44L64.44,67c-37.28,21.9-53.23,57-53.92,58.57a6,6,0,0,0,0,4.88c.34.77,8.66,19.22,27.24,37.8C55,185.47,84.62,206,128,206a124.91,124.91,0,0,0,52.57-11.25l23,25.29a6,6,0,0,0,8.88-8.08Zm48.62,71.32,45,49.52a34,34,0,0,1-45-49.52ZM128,194c-31.38,0-58.78-11.42-81.45-33.93A134.57,134.57,0,0,1,22.69,128c4.29-8.2,20.1-35.18,50-51.91L92.89,98.3a46,46,0,0,0,61.35,67.48l17.81,19.6A113.47,113.47,0,0,1,128,194Zm6.4-99.4a6,6,0,0,1,2.25-11.79,46.17,46.17,0,0,1,37.15,40.87,6,6,0,0,1-5.42,6.53l-.56,0a6,6,0,0,1-6-5.45A34.1,34.1,0,0,0,134.4,94.6Zm111.08,35.85c-.41.92-10.37,23-32.86,43.12a6,6,0,1,1-8-8.94A134.07,134.07,0,0,0,233.31,128a134.67,134.67,0,0,0-23.86-32.07C186.78,73.42,159.38,62,128,62a120.19,120.19,0,0,0-19.69,1.6,6,6,0,1,1-2-11.83A131.12,131.12,0,0,1,128,50c43.38,0,73,20.54,90.24,37.76,18.58,18.58,26.9,37,27.24,37.81A6,6,0,0,1,245.48,130.45Z"/></svg>',
           reset: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M222,128a94,94,0,0,1-92.74,94H128a93.43,93.43,0,0,1-64.5-25.65,6,6,0,1,1,8.24-8.72A82,82,0,1,0,70,70l-.19.19L39.44,98H72a6,6,0,0,1,0,12H24a6,6,0,0,1-6-6V56a6,6,0,0,1,12,0V90.34L61.63,61.4A94,94,0,0,1,222,128Z"/></svg>',
+          copy: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M216,34H88a6,6,0,0,0-6,6V82H40a6,6,0,0,0-6,6V216a6,6,0,0,0,6,6H168a6,6,0,0,0,6-6V174h42a6,6,0,0,0,6-6V40A6,6,0,0,0,216,34ZM162,210H46V94H162Zm48-48H174V88a6,6,0,0,0-6-6H94V46H210Z"/></svg>',
+          check: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M228.24,76.24l-128,128a6,6,0,0,1-8.48,0l-56-56a6,6,0,0,1,8.48-8.48L96,191.51,219.76,67.76a6,6,0,0,1,8.48,8.48Z"/></svg>',
+          externalLink: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M222,104a6,6,0,0,1-12,0V54.49l-69.75,69.75a6,6,0,0,1-8.48-8.48L201.51,46H152a6,6,0,0,1,0-12h64a6,6,0,0,1,6,6Zm-38,26a6,6,0,0,0-6,6v72a2,2,0,0,1-2,2H48a2,2,0,0,1-2-2V80a2,2,0,0,1,2-2h72a6,6,0,0,0,0-12H48A14,14,0,0,0,34,80V208a14,14,0,0,0,14,14H176a14,14,0,0,0,14-14V136A6,6,0,0,0,184,130Z"/></svg>',
           close: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M204.24,195.76a6,6,0,1,1-8.48,8.48L128,136.49,60.24,204.24a6,6,0,0,1-8.48-8.48L119.51,128,51.76,60.24a6,6,0,0,1,8.48-8.48L128,119.51l67.76-67.75a6,6,0,0,1,8.48,8.48L136.49,128Z"/></svg>',
           language: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm81.57,64H169.19a132.58,132.58,0,0,0-25.73-50.67A90.29,90.29,0,0,1,209.57,90ZM218,128a89.7,89.7,0,0,1-3.83,26H171.81a155.43,155.43,0,0,0,0-52h42.36A89.7,89.7,0,0,1,218,128Zm-90,87.83a110,110,0,0,1-15.19-19.45A124.24,124.24,0,0,1,99.35,166h57.3a124.24,124.24,0,0,1-13.46,30.38A110,110,0,0,1,128,215.83ZM96.45,154a139.18,139.18,0,0,1,0-52h63.1a139.18,139.18,0,0,1,0,52ZM38,128a89.7,89.7,0,0,1,3.83-26H84.19a155.43,155.43,0,0,0,0,52H41.83A89.7,89.7,0,0,1,38,128Zm90-87.83a110,110,0,0,1,15.19,19.45A124.24,124.24,0,0,1,156.65,90H99.35a124.24,124.24,0,0,1,13.46-30.38A110,110,0,0,1,128,40.17Zm-15.46-.84A132.58,132.58,0,0,0,86.81,90H46.43A90.29,90.29,0,0,1,112.54,39.33ZM46.43,166H86.81a132.58,132.58,0,0,0,25.73,50.67A90.29,90.29,0,0,1,46.43,166Zm97,50.67A132.58,132.58,0,0,0,169.19,166h40.38A90.29,90.29,0,0,1,143.46,216.67Z"/></svg>',
           profiles: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M229.19,213c-15.81-27.32-40.63-46.49-69.47-54.62a70,70,0,1,0-63.44,0C67.44,166.5,42.62,185.67,26.81,213a6,6,0,1,0,10.38,6C56.4,185.81,90.34,166,128,166s71.6,19.81,90.81,53a6,6,0,1,0,10.38-6ZM70,96a58,58,0,1,1,58,58A58.07,58.07,0,0,1,70,96Z"/></svg>',
@@ -5994,7 +5997,7 @@ var AccessibleWebWidget = (function () {
 
     var widgetCSS = "  /* Base styles for the widget */\n  .acc-widget, .acc-menu {\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n  }\n  \n  .acc-widget *, .acc-menu * { \n    box-sizing: border-box !important; \n  }\n  \n  /* Accessibility toggle button */\n  /* Hidden by the visitor for this visit. */\n  .acc-toggle-btn[hidden] {\n    display: none !important;\n  }\n\n  .acc-toggle-btn {\n    position: fixed;\n    z-index: var(--acc-widget-z-index, 100000);\n    left: 30px;\n    bottom: 30px;\n    border-radius: 50%;\n    align-items: center;\n    justify-content: center;\n    width: var(--acc-button-size, 48px);\n    height: var(--acc-button-size, 48px);\n    display: flex;\n    cursor: pointer;\n    outline: none !important;\n    border: none !important;\n    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #0072e4), inset 0 0 0 6px white, 0 2px 5px rgba(0,0,0,0.2) !important;\n    background: var(--acc-primary-color, #0072e4) !important;\n    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;\n    overflow: visible;\n    /* Margins on a fixed box add to the edges it is anchored to, so the\n       configured offset stays clear of notches and the home indicator on\n       edge-to-edge pages (viewport-fit=cover); env() is 0 elsewhere. */\n    margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);\n    touch-action: manipulation;\n  }\n  \n  .acc-toggle-btn .acc-toggle-icon {\n    width: 60%;\n    height: 60%;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  .acc-toggle-btn .acc-toggle-icon svg {\n    width: 100%;\n    height: 100%;\n    fill: white;\n    transition: none;\n  }\n  \n  /* Touch screens keep :hover after a tap, which left the button zoomed. */\n  @media (hover: hover) {\n    .acc-toggle-btn:hover {\n      transform: scale(1.12);\n    }\n  }\n\n  /* The menu panel replaces the button while open; closeMenu() restores\n     aria-expanded before moving focus back here, so the button is visible\n     and focusable again by the time it receives focus. */\n  .acc-toggle-btn[aria-expanded=\"true\"] {\n    opacity: 0;\n    visibility: hidden;\n    pointer-events: none;\n  }\n\n  .acc-violation-bubble {\n    position: absolute;\n    top: -8px;\n    right: -8px;\n    min-width: 24px;\n    height: 24px;\n    border-radius: 12px;\n    font-size: 11px;\n    font-weight: 700;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 0 4px;\n    pointer-events: none;\n    z-index: 1;\n    color: #fff;\n    border: none;\n    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  }\n\n  .acc-violation-bubble[data-severity=\"critical\"] {\n    background: #d32f2f;\n    color: #fff;\n  }\n\n  .acc-violation-bubble[data-severity=\"serious\"] {\n    background: #f57c00;\n    color: #fff;\n  }\n\n  .acc-violation-bubble[data-severity=\"moderate\"] {\n    background: #fbc02d;\n    color: #333;\n  }\n\n  .acc-violation-bubble[hidden] {\n    display: none;\n  }\n\n  .acc-toggle-btn:focus {\n    outline: none !important;\n  }\n\n  .acc-toggle-btn:focus-visible {\n    outline: 3px solid var(--acc-primary-color, #0072e4) !important;\n    outline-offset: 2px;\n  }\n\n  @media (prefers-reduced-motion: reduce) {\n    .acc-toggle-btn {\n      transition: none;\n    }\n\n    .acc-toggle-btn .acc-toggle-icon svg {\n      transition: none;\n    }\n\n  }\n";
 
-    var reportCSS = ".acc-report-panel {\n  display: none;\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 10);\n  /* The menu's font, when it has been registered; otherwise the device's. */\n  font-family: \"AccessibleWeb Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif;\n}\n.acc-report-panel.acc-report-visible {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.acc-report-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.6);\n}\n.acc-report-dialog {\n  position: relative;\n  background: #fff;\n  border-radius: 12px;\n  width: 90%;\n  max-width: 800px;\n  max-height: 85vh;\n  /* dvh tracks the visible area while mobile browser toolbars show. */\n  max-height: 85dvh;\n  display: flex;\n  flex-direction: column;\n  box-shadow: 0 20px 60px rgba(0,0,0,0.3);\n}\n.acc-report-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 16px 20px;\n  border-bottom: 1px solid #e0e0e0;\n}\n.acc-report-title {\n  margin: 0;\n  font-size: 18px;\n  font-weight: 600;\n  color: #1a1a1a;\n}\n.acc-report-close {\n  background: none;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  border-radius: 6px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media (hover: hover) {\n  .acc-report-close:hover {\n    background: #f0f0f0;\n  }\n}\n.acc-report-close svg {\n  width: 20px;\n  height: 20px;\n  fill: #666;\n}\n.acc-report-status {\n  padding: 8px 20px;\n  font-size: 14px;\n  color: #666;\n  background: #f8f9fa;\n}\n.acc-report-content {\n  flex: 1;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 16px 20px;\n}\n.acc-report-loading {\n  text-align: center;\n  padding: 40px;\n  color: #666;\n}\n.acc-report-error {\n  color: #d32f2f;\n  padding: 20px;\n  text-align: center;\n}\n.acc-report-summary {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));\n  gap: 12px;\n  margin-bottom: 20px;\n}\n.acc-report-stat {\n  background: #f8f9fa;\n  border-radius: 8px;\n  padding: 16px;\n  text-align: center;\n}\n.acc-report-stat-value {\n  font-size: 28px;\n  font-weight: 700;\n  display: block;\n}\n.acc-report-stat-label {\n  font-size: 12px;\n  color: #666;\n  text-transform: uppercase;\n  margin-top: 4px;\n}\n.acc-report-stat.critical .acc-report-stat-value { color: #d32f2f; }\n.acc-report-stat.serious .acc-report-stat-value { color: #f57c00; }\n.acc-report-stat.moderate .acc-report-stat-value { color: #fbc02d; }\n.acc-report-stat.minor .acc-report-stat-value { color: #7cb342; }\n.acc-report-stat.passed .acc-report-stat-value { color: #43a047; }\n.acc-report-section {\n  margin-bottom: 20px;\n}\n.acc-report-section-title {\n  font-size: 14px;\n  font-weight: 600;\n  color: #333;\n  margin-bottom: 12px;\n  padding-bottom: 8px;\n  border-bottom: 2px solid #e0e0e0;\n}\n.acc-report-violation {\n  background: #fff;\n  border: 1px solid #e0e0e0;\n  border-radius: 8px;\n  margin-bottom: 12px;\n  overflow: hidden;\n}\n/* A real button, so a row opens with the keyboard; it looks as before. */\n.acc-report-violation-header {\n  width: 100%;\n  margin: 0;\n  padding: 12px 16px;\n  border: none;\n  background: #f8f9fa;\n  font: inherit;\n  text-align: start;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n.acc-report-violation-header:focus-visible {\n  outline: 2px solid var(--acc-focus-ring-color, #0072e4);\n  outline-offset: -2px;\n}\n@media (hover: hover) {\n  .acc-report-violation-header:hover {\n    background: #f0f0f0;\n  }\n}\n.acc-report-violation-impact {\n  font-size: 11px;\n  font-weight: 600;\n  text-transform: uppercase;\n  padding: 4px 8px;\n  border-radius: 4px;\n  color: #fff;\n}\n.acc-report-violation-impact.critical { background: #d32f2f; }\n.acc-report-violation-impact.serious { background: #f57c00; }\n.acc-report-violation-impact.moderate { background: #fbc02d; color: #333; }\n.acc-report-violation-impact.minor { background: #7cb342; }\n.acc-report-violation-title {\n  flex: 1;\n  font-weight: 500;\n  color: #333;\n}\n.acc-report-violation-count {\n  font-size: 12px;\n  color: #666;\n  background: #e0e0e0;\n  padding: 2px 8px;\n  border-radius: 12px;\n}\n.acc-report-violation-details {\n  display: none;\n  padding: 16px;\n  border-top: 1px solid #e0e0e0;\n}\n.acc-report-violation.expanded .acc-report-violation-details {\n  display: block;\n}\n.acc-report-violation-desc {\n  color: #666;\n  font-size: 14px;\n  margin-bottom: 12px;\n}\n.acc-report-violation-help {\n  font-size: 13px;\n  margin-bottom: 12px;\n}\n.acc-report-violation-help a {\n  color: #0072e4;\n}\n.acc-report-node {\n  background: #f8f9fa;\n  border-radius: 6px;\n  padding: 12px;\n  margin-top: 8px;\n}\n.acc-report-node-html {\n  font-family: monospace;\n  font-size: 12px;\n  background: #263238;\n  color: #80cbc4;\n  padding: 8px 12px;\n  border-radius: 4px;\n  overflow-x: auto;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n.acc-report-node-fix {\n  margin-top: 8px;\n  font-size: 13px;\n  color: #333;\n}\n.acc-report-node-fix strong {\n  color: #0072e4;\n}\n.acc-report-success {\n  text-align: center;\n  padding: 40px;\n}\n.acc-report-success-icon {\n  width: 64px;\n  height: 64px;\n  background: #43a047;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin: 0 auto 16px;\n}\n.acc-report-success-icon svg {\n  width: 32px;\n  height: 32px;\n  fill: #fff;\n}\n.acc-report-footer {\n  padding: 12px 20px;\n  border-top: 1px solid #e0e0e0;\n  text-align: center;\n}\n.acc-report-powered {\n  font-size: 12px;\n}\n@media (max-width: 600px) {\n  .acc-report-dialog {\n    width: 95%;\n    max-height: 90vh;\n    max-height: 90dvh;\n  }\n  .acc-report-summary {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n@media (pointer: coarse) {\n  .acc-report-close {\n    min-width: 44px;\n    min-height: 44px;\n  }\n}\n";
+    var reportCSS = "/* The report and Page Structure dialogs, built from the menu's pieces: a\n   light grey sheet, white cards, soft pills and the same type sizes. No\n   primary colour here; these are for reading. They live in the page's\n   own document, not the widget's shadow root, so the theme variables are\n   read with fallbacks. */\n.acc-report-panel {\n  display: none;\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 10);\n  /* The menu's font, when it has been registered; otherwise the device's. */\n  font-family: \"AccessibleWeb Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif;\n  font-size: 15px;\n  line-height: 1.5;\n  letter-spacing: normal;\n  color: var(--acc-text-color, #222222);\n  --acc-report-muted: #5b6472;\n  --acc-report-sheet: var(--acc-bg-color, #f3f5f8);\n  --acc-report-card: var(--acc-card-bg, #ffffff);\n  --acc-hover-tint: #f7f8fa;\n}\n@supports (color: color-mix(in srgb, red 50%, transparent)) {\n  .acc-report-panel {\n    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color, #c4cad3) 14%, var(--acc-card-bg, #ffffff));\n  }\n}\n.acc-report-panel *,\n.acc-report-panel *::before,\n.acc-report-panel *::after {\n  box-sizing: border-box;\n}\n.acc-report-panel.acc-report-visible {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.acc-report-overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background: rgba(0, 0, 0, 0.6);\n}\n.acc-report-dialog {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  width: 92%;\n  max-width: 760px;\n  max-height: 85vh;\n  /* dvh tracks the visible area while mobile browser toolbars show. */\n  max-height: 85dvh;\n  border-radius: 28px;\n  background: var(--acc-report-sheet);\n  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);\n}\n.acc-report-header {\n  flex-shrink: 0;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  padding: 24px 24px 0 28px;\n  padding-inline: 28px 24px;\n}\n.acc-report-heading {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  min-width: 0;\n}\n.acc-report-title {\n  margin: 0;\n  font-family: inherit;\n  font-size: 17px;\n  font-weight: 600;\n  line-height: 1.3;\n  letter-spacing: normal;\n  color: var(--acc-text-color, #222222);\n}\n.acc-report-status {\n  font-size: 15px;\n  color: var(--acc-report-muted);\n}\n.acc-report-status:empty {\n  display: none;\n}\n.acc-report-passed {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n}\n.acc-report-passed svg {\n  flex-shrink: 0;\n  width: 16px;\n  height: 16px;\n  fill: #2e7d32;\n}\n.acc-report-close {\n  flex-shrink: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 44px;\n  height: 44px;\n  padding: 0;\n  border: none;\n  border-radius: 50%;\n  background: var(--acc-report-card);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n  cursor: pointer;\n  transition: background-color 0.15s ease;\n}\n@media (hover: hover) {\n  .acc-report-close:hover {\n    background: var(--acc-hover-tint);\n  }\n}\n.acc-report-close:focus-visible {\n  outline: 2px solid var(--acc-focus-ring-color, #0072e4);\n  outline-offset: 2px;\n}\n.acc-report-close svg {\n  width: 22px;\n  height: 22px;\n  fill: var(--acc-text-color, #222222);\n}\n.acc-report-content {\n  flex: 1 1 auto;\n  min-height: 0;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n  padding: 24px;\n  scrollbar-width: thin;\n  scrollbar-color: #7c8594 transparent;\n}\n.acc-report-loading {\n  padding: 40px 16px;\n  text-align: center;\n  color: var(--acc-report-muted);\n}\n.acc-report-error {\n  padding: 24px 16px;\n  text-align: center;\n  color: #c62828;\n}\n.acc-report-summary {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 8px;\n  margin-bottom: 24px;\n}\n.acc-report-stat {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: 6px;\n  padding: 18px 8px 16px;\n  border-radius: 22px;\n  background: var(--acc-report-card);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n  text-align: center;\n}\n.acc-report-stat-value {\n  font-size: 28px;\n  font-weight: 600;\n  line-height: 1.1;\n}\n.acc-report-stat-label {\n  font-size: 13px;\n  line-height: 1.3;\n  color: var(--acc-report-muted);\n  overflow-wrap: anywhere;\n}\n/* Each of these is at least 4.5 to 1 against white. */\n.acc-report-stat.critical .acc-report-stat-value { color: #c62828; }\n.acc-report-stat.serious .acc-report-stat-value { color: #b45309; }\n.acc-report-stat.moderate .acc-report-stat-value { color: #8a6100; }\n.acc-report-stat.minor .acc-report-stat-value { color: #4d7c0f; }\n.acc-report-section {\n  margin-bottom: 24px;\n}\n.acc-report-section:last-child {\n  margin-bottom: 0;\n}\n.acc-report-section-title {\n  margin: 0 0 10px;\n  padding: 0 4px;\n  font-size: 15px;\n  font-weight: 600;\n  color: var(--acc-text-color, #222222);\n}\n.acc-report-note {\n  margin: 0;\n  padding: 0 4px;\n  font-size: 13px;\n  color: var(--acc-report-muted);\n}\n/* The note under a section's title sits close to it, above the cards. */\n.acc-report-section-title + .acc-report-note {\n  margin: -8px 0 10px;\n}\n.acc-report-violation {\n  margin-bottom: 8px;\n  overflow: hidden;\n  border-radius: 22px;\n  background: var(--acc-report-card);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n}\n.acc-report-violation:last-child {\n  margin-bottom: 0;\n}\n/* A real button, so a card opens with the keyboard. */\n.acc-report-violation-header {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  width: 100%;\n  min-height: 56px;\n  margin: 0;\n  padding: 10px 16px;\n  border: none;\n  border-radius: 22px;\n  background: transparent;\n  font: inherit;\n  color: inherit;\n  text-align: start;\n  cursor: pointer;\n  transition: background-color 0.15s ease;\n}\n@media (hover: hover) {\n  .acc-report-violation-header:hover {\n    background: var(--acc-hover-tint);\n  }\n}\n.acc-report-violation-header:focus-visible {\n  outline: 2px solid var(--acc-focus-ring-color, #0072e4);\n  outline-offset: -2px;\n}\n/* Arrow at the end of the row; it turns over when the card is open. */\n.acc-report-violation-header::after {\n  content: \"\";\n  flex-shrink: 0;\n  width: 8px;\n  height: 8px;\n  margin: 0 4px 3px;\n  border-right: 1.5px solid var(--acc-report-muted);\n  border-bottom: 1.5px solid var(--acc-report-muted);\n  transform: rotate(45deg);\n  transition: transform 0.2s ease;\n}\n.acc-report-violation.expanded .acc-report-violation-header::after {\n  margin: 3px 4px 0;\n  transform: rotate(-135deg);\n}\n/* Soft pills: a light tint with dark text of the same colour. */\n.acc-report-violation-impact {\n  flex-shrink: 0;\n  padding: 4px 10px;\n  border-radius: 999px;\n  font-size: 13px;\n  font-weight: 600;\n  line-height: 1.3;\n}\n.acc-report-violation-impact.critical { background: #fdecea; color: #a61b1b; }\n.acc-report-violation-impact.serious { background: #fff0e0; color: #8f3f00; }\n.acc-report-violation-impact.moderate { background: #fff4cf; color: #6f4e00; }\n.acc-report-violation-impact.minor { background: #edf5df; color: #3d6210; }\n.acc-report-violation-title {\n  flex: 1 1 auto;\n  min-width: 0;\n  font-size: 15px;\n  font-weight: 600;\n  line-height: 1.35;\n  color: var(--acc-text-color, #222222);\n}\n.acc-report-violation-count {\n  flex-shrink: 0;\n  padding: 3px 10px;\n  border-radius: 999px;\n  background: var(--acc-report-sheet);\n  font-size: 13px;\n  line-height: 1.3;\n  color: var(--acc-report-muted);\n  white-space: nowrap;\n}\n.acc-report-violation-details {\n  display: none;\n  padding: 4px 16px 16px;\n}\n.acc-report-violation.expanded .acc-report-violation-details {\n  display: flex;\n  flex-direction: column;\n  align-items: flex-start;\n  gap: 12px;\n}\n.acc-report-violation-desc {\n  margin: 0;\n  font-size: 15px;\n  color: var(--acc-report-muted);\n}\n/* \"How to Fix\" opens the rule's page on another site. */\n.acc-report-violation-help {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  min-height: 36px;\n  padding: 0 14px;\n  border-radius: 18px;\n  background: var(--acc-report-sheet);\n  font-size: 13px;\n  font-weight: 600;\n  line-height: 1.3;\n  color: var(--acc-text-color, #222222);\n  text-decoration: none;\n  transition: background-color 0.15s ease;\n}\n.acc-report-violation-help svg {\n  flex-shrink: 0;\n  width: 16px;\n  height: 16px;\n  fill: currentColor;\n}\n@media (hover: hover) {\n  .acc-report-violation-help:hover {\n    background: #e6e9ee;\n  }\n}\n.acc-report-violation-help:focus-visible {\n  outline: 2px solid var(--acc-focus-ring-color, #0072e4);\n  outline-offset: 2px;\n}\n.acc-report-node {\n  align-self: stretch;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n/* The element's HTML, set like a code editor: a dark box with a label,\n   a copy button, and soft colours for tags, names and values. */\n.acc-report-code {\n  overflow: hidden;\n  border-radius: 16px;\n  background: #1b2028;\n}\n.acc-report-code-bar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  height: 40px;\n  padding: 0 6px 0 16px;\n  padding-inline: 16px 6px;\n  border-bottom: 1px solid #2c333d;\n}\n.acc-report-code-lang {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;\n  font-size: 12px;\n  line-height: 1;\n  color: #aab3c0;\n}\n.acc-report-copy {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 32px;\n  height: 32px;\n  padding: 0;\n  border: none;\n  border-radius: 10px;\n  background: transparent;\n  cursor: pointer;\n}\n.acc-report-copy svg {\n  width: 18px;\n  height: 18px;\n  fill: #d5dbe3;\n}\n.acc-report-copy.acc-report-copied svg {\n  fill: #b7e3a8;\n}\n@media (hover: hover) {\n  .acc-report-copy:hover {\n    background: rgba(255, 255, 255, 0.1);\n  }\n}\n.acc-report-copy:focus-visible {\n  outline: 2px solid #ffffff;\n  outline-offset: -2px;\n}\n.acc-report-node-html {\n  margin: 0;\n  padding: 14px 16px 16px;\n  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;\n  font-size: 13px;\n  line-height: 1.6;\n  color: #e6edf3;\n  white-space: pre-wrap;\n  word-break: break-all;\n  direction: ltr;\n  text-align: left;\n}\n.acc-code-punct { color: #8b95a3; }\n.acc-code-tag { color: #f0b37e; }\n.acc-code-attr { color: #c5d1de; }\n.acc-code-value { color: #b7e3a8; }\n.acc-report-node-fix {\n  margin: 0;\n  font-size: 13px;\n  color: var(--acc-text-color, #222222);\n  /* The check's own advice can come as several short lines. */\n  white-space: pre-line;\n}\n.acc-report-node-fix strong {\n  font-weight: 600;\n}\n.acc-report-success {\n  padding: 32px 16px;\n  text-align: center;\n}\n.acc-report-success h3 {\n  margin: 0;\n  font-family: inherit;\n  font-size: 17px;\n  font-weight: 600;\n  line-height: 1.3;\n  color: var(--acc-text-color, #222222);\n}\n.acc-report-success-icon {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 56px;\n  height: 56px;\n  margin: 0 auto 16px;\n  border-radius: 50%;\n  background: #2e7d32;\n}\n.acc-report-success-icon svg {\n  width: 28px;\n  height: 28px;\n  fill: #ffffff;\n}\n.acc-report-footer {\n  flex-shrink: 0;\n  padding: 12px 24px 20px;\n  text-align: center;\n}\n.acc-report-powered {\n  font-size: 13px;\n  line-height: 1.3;\n  color: var(--acc-report-muted);\n}\n@media (max-width: 600px) {\n  .acc-report-dialog {\n    width: calc(100% - 16px);\n    max-height: 90vh;\n    max-height: 90dvh;\n  }\n  .acc-report-header {\n    padding: 20px 16px 0 20px;\n    padding-inline: 20px 16px;\n  }\n  .acc-report-content {\n    padding: 20px 16px;\n  }\n  .acc-report-summary {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n  /* The pill and the count share the first line; the title gets its own. */\n  .acc-report-violation-header {\n    flex-wrap: wrap;\n    row-gap: 8px;\n    padding: 12px 14px;\n  }\n  .acc-report-violation-title {\n    order: 3;\n    flex-basis: 100%;\n  }\n  .acc-report-violation-count {\n    margin-inline-start: auto;\n  }\n  .acc-report-footer {\n    padding: 12px 16px 16px;\n  }\n}\n";
 
     var readingGuideCSS = ".acc-rg {\n  position: fixed;\n  left: 0;\n  right: 0;\n  width: 100%;\n  pointer-events: none;\n  background-color: rgba(0, 0, 0, 0.4);\n  /* Below the widget's overlay (z - 1) and panel, so the guide dims the\n     page but never the open menu or the toggle button. */\n  z-index: calc(var(--acc-widget-z-index, 100000) - 2);\n}\n.acc-rg-top {\n  top: 0;\n}\n.acc-rg-bottom {\n  bottom: 0;\n}\n/* Softer overlay when high contrast is active */\nbody.acc-high-contrast-mode .acc-rg {\n  background-color: rgba(0, 0, 0, 0.25);\n}\n";
 
@@ -6002,7 +6005,7 @@ var AccessibleWebWidget = (function () {
 
     var annotationsCSS = ".acc-annotation-layer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 0;\n  height: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 5);\n  pointer-events: none;\n}\n\n.acc-annotation-marker {\n  position: absolute;\n  width: 20px;\n  height: 20px;\n  border: none;\n  border-radius: 999px;\n  color: #fff;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);\n  cursor: pointer;\n  pointer-events: auto;\n  transform: translate(-40%, -50%);\n}\n\n.acc-annotation-marker svg {\n  width: 12px;\n  height: 12px;\n  fill: currentColor;\n}\n\n.acc-annotation-marker[data-impact=\"critical\"] {\n  background: #b71c1c;\n}\n\n.acc-annotation-marker[data-impact=\"serious\"] {\n  background: #d84315;\n}\n\n.acc-annotation-marker[data-impact=\"moderate\"] {\n  background: #ef6c00;\n}\n\n.acc-annotation-marker[data-impact=\"minor\"] {\n  background: #1565c0;\n}\n\n.acc-annotation-popup {\n  position: absolute;\n  width: min(320px, 92vw);\n  background: #fff;\n  color: #1a1a1a;\n  border: 1px solid #d7d7d7;\n  border-radius: 10px;\n  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);\n  padding: 12px;\n  pointer-events: auto;\n}\n\n.acc-annotation-popup-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n}\n\n.acc-annotation-popup-title {\n  margin: 0;\n  font-size: 14px;\n  line-height: 1.3;\n}\n\n.acc-annotation-popup-close {\n  border: 0;\n  background: transparent;\n  padding: 2px;\n  width: 24px;\n  height: 24px;\n  color: #444;\n  cursor: pointer;\n}\n\n.acc-annotation-popup-close svg {\n  width: 20px;\n  height: 20px;\n  fill: currentColor;\n}\n\n.acc-annotation-popup p {\n  margin: 8px 0;\n  font-size: 13px;\n  line-height: 1.45;\n}\n\n.acc-annotation-popup a {\n  color: #0049a5;\n  font-weight: 600;\n  text-decoration: underline;\n}\n";
 
-    var extrasCSS = "/* TTS click-to-read — these target light-DOM page content, so they must\n   live in <head>, not the widget shadow root */\nbody.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {\n  cursor: pointer;\n}\n\n.acc-tts-active-block {\n  outline: 2px solid var(--acc-primary-color, #0072e4) !important;\n  outline-offset: 3px !important;\n  border-radius: 4px;\n}\n\n/* Text magnifier — fixed banner showing enlarged copy of hovered text */\n.acc-text-magnifier {\n  position: fixed;\n  left: 50%;\n  bottom: calc(24px + env(safe-area-inset-bottom, 0px));\n  transform: translateX(-50%);\n  /* max-content first: a left: 50% box otherwise shrink-wraps to half the\n     viewport, which turned the banner into a tall, narrow column. */\n  width: max-content;\n  max-width: min(90vw, 880px);\n  background: #111827;\n  color: #ffffff;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, Arial, sans-serif;\n  font-size: clamp(18px, 5.5vw, 28px);\n  line-height: 1.45;\n  /* Vertical spacing comes from transparent borders, not padding:\n     overflow clips at the padding box, so the first clamped-away line\n     would otherwise peek through the bottom padding. */\n  padding: 0 22px;\n  border-block: 14px solid transparent;\n  border-radius: 10px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);\n  z-index: 2147483646;\n  pointer-events: none;\n  display: none;\n  overflow: hidden;\n}\n\n/* Clamped so a long block can never cover a phone screen. */\n.acc-text-magnifier.acc-visible {\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  -webkit-line-clamp: 6;\n}\n\n/* Docked at the top while the magnified text sits in the lower part of\n   the screen, so the banner never covers what is being read. */\n.acc-text-magnifier.acc-text-magnifier-top {\n  top: calc(16px + env(safe-area-inset-top, 0px));\n  bottom: auto;\n}\n\n/* Landscape phones: six large lines would cover most of the screen. */\n@media (max-height: 500px) {\n  .acc-text-magnifier {\n    font-size: 22px;\n  }\n\n  .acc-text-magnifier.acc-visible {\n    -webkit-line-clamp: 3;\n  }\n}\n\n/* Page structure navigator — list styling inside the shared report dialog */\n.acc-structure-list {\n  list-style: none;\n  margin: 0 0 16px;\n  padding: 0;\n}\n\n.acc-structure-list li {\n  margin: 0;\n  padding: 0;\n}\n\n.acc-structure-item {\n  display: block;\n  width: 100%;\n  text-align: start;\n  background: transparent;\n  border: none;\n  border-radius: 6px;\n  padding: 8px 12px;\n  font-size: 14px;\n  line-height: 1.4;\n  color: var(--acc-text-color, #1f2937);\n  cursor: pointer;\n}\n\n@media (hover: hover) {\n  .acc-structure-item:hover {\n    background: var(--acc-hover-tint, var(--acc-hover-color, #f3f4f6));\n  }\n}\n\n@media (pointer: coarse) {\n  .acc-structure-item {\n    padding: 12px;\n  }\n}\n\n.acc-structure-item:focus-visible {\n  outline: 2px solid var(--acc-focus-ring-color, #0072e4);\n  outline-offset: -2px;\n}\n\n.acc-structure-empty {\n  color: #6b7280;\n  font-size: 14px;\n  margin: 0 0 16px;\n  padding: 0 12px;\n}\n";
+    var extrasCSS = "/* TTS click-to-read — these target light-DOM page content, so they must\n   live in <head>, not the widget shadow root */\nbody.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {\n  cursor: pointer;\n}\n\n.acc-tts-active-block {\n  outline: 2px solid var(--acc-primary-color, #0072e4) !important;\n  outline-offset: 3px !important;\n  border-radius: 4px;\n}\n\n/* Text magnifier — fixed banner showing enlarged copy of hovered text */\n.acc-text-magnifier {\n  position: fixed;\n  left: 50%;\n  bottom: calc(24px + env(safe-area-inset-bottom, 0px));\n  transform: translateX(-50%);\n  /* max-content first: a left: 50% box otherwise shrink-wraps to half the\n     viewport, which turned the banner into a tall, narrow column. */\n  width: max-content;\n  max-width: min(90vw, 880px);\n  background: #111827;\n  color: #ffffff;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, Arial, sans-serif;\n  font-size: clamp(18px, 5.5vw, 28px);\n  line-height: 1.45;\n  /* Vertical spacing comes from transparent borders, not padding:\n     overflow clips at the padding box, so the first clamped-away line\n     would otherwise peek through the bottom padding. */\n  padding: 0 22px;\n  border-block: 14px solid transparent;\n  border-radius: 10px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);\n  z-index: 2147483646;\n  pointer-events: none;\n  display: none;\n  overflow: hidden;\n}\n\n/* Clamped so a long block can never cover a phone screen. */\n.acc-text-magnifier.acc-visible {\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  -webkit-line-clamp: 6;\n}\n\n/* Docked at the top while the magnified text sits in the lower part of\n   the screen, so the banner never covers what is being read. */\n.acc-text-magnifier.acc-text-magnifier-top {\n  top: calc(16px + env(safe-area-inset-top, 0px));\n  bottom: auto;\n}\n\n/* Landscape phones: six large lines would cover most of the screen. */\n@media (max-height: 500px) {\n  .acc-text-magnifier {\n    font-size: 22px;\n  }\n\n  .acc-text-magnifier.acc-visible {\n    -webkit-line-clamp: 3;\n  }\n}\n\n/* Page structure navigator: each list is a white card of rows inside\n   the shared report dialog. */\n.acc-structure-list {\n  list-style: none;\n  margin: 0;\n  padding: 6px;\n  border-radius: 22px;\n  background: var(--acc-card-bg, #ffffff);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n}\n\n.acc-structure-list li {\n  margin: 0;\n  padding: 0;\n}\n\n.acc-structure-item {\n  display: block;\n  width: 100%;\n  margin: 0;\n  text-align: start;\n  background: transparent;\n  border: none;\n  border-radius: 16px;\n  padding: 10px 12px;\n  font: inherit;\n  font-size: 15px;\n  line-height: 1.4;\n  color: var(--acc-text-color, #222222);\n  cursor: pointer;\n  overflow-wrap: anywhere;\n}\n\n@media (hover: hover) {\n  .acc-structure-item:hover {\n    background: var(--acc-hover-tint, #f7f8fa);\n  }\n}\n\n@media (pointer: coarse) {\n  .acc-structure-item {\n    padding: 12px;\n  }\n}\n\n.acc-structure-item:focus-visible {\n  outline: 2px solid var(--acc-focus-ring-color, #0072e4);\n  outline-offset: -2px;\n}\n\n.acc-structure-empty {\n  color: #5b6472;\n  font-size: 15px;\n  margin: 0;\n  padding: 0 4px;\n}\n";
 
     const STATIC_STYLE_ID = 'acc-static-styles';
     // Widget UI styles live inside the shadow root so host-page CSS cannot
@@ -8230,7 +8233,7 @@ var AccessibleWebWidget = (function () {
         const statusArea = this.findElement('.acc-report-status', panel);
       
         // Show loading state
-        statusArea.textContent = this.translate('Loading...');
+        statusArea.textContent = '';
         contentArea.innerHTML = `<div class="acc-report-loading">${this.translate('Analyzing page...')}</div>`;
       
         try {
@@ -8330,10 +8333,12 @@ var AccessibleWebWidget = (function () {
       <div class="acc-report-overlay"></div>
       <div class="acc-report-dialog">
         <div class="acc-report-header">
-          <h2 id="acc-report-title" class="acc-report-title">${this.translate('Accessibility Report')}</h2>
+          <div class="acc-report-heading">
+            <h2 id="acc-report-title" class="acc-report-title">${this.translate('Accessibility Report')}</h2>
+            <div class="acc-report-status"></div>
+          </div>
           <button type="button" class="acc-report-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
         </div>
-        <div class="acc-report-status"></div>
         <div class="acc-report-content"></div>
         <div class="acc-report-footer">
           <span class="acc-report-powered">Powered by axe-core</span>
@@ -8349,6 +8354,116 @@ var AccessibleWebWidget = (function () {
         overlay.addEventListener('click', () => this.closeReportPanel(panel));
       
         return panel;
+      },
+
+      // Colours an HTML snippet the way a code editor would: tags, attribute
+      // names and values each get a class. Every piece is escaped on the way.
+      highlightHtml(source) {
+        const text = String(source || '');
+        const wrap = (kind, value) => `<span class="acc-code-${kind}">${this.escapeHtml(value)}</span>`;
+        const pattern = /(<\/?)([A-Za-z][\w:-]*)|([^\s"'<>=/]+)(=)("[^"]*"?|'[^']*'?)|(\/?>)/g;
+        let html = '';
+        let last = 0;
+        let match;
+        while ((match = pattern.exec(text))) {
+          html += this.escapeHtml(text.slice(last, match.index));
+          if (match[1]) {
+            html += wrap('punct', match[1]) + wrap('tag', match[2]);
+          } else if (match[3]) {
+            html += wrap('attr', match[3]) + wrap('punct', match[4]) + wrap('value', match[5]);
+          } else {
+            html += wrap('punct', match[6]);
+          }
+          last = pattern.lastIndex;
+        }
+        return html + this.escapeHtml(text.slice(last));
+      },
+
+      // What the check says about one element. Violations carry a summary;
+      // items that need review only carry each check's own message.
+      getReportNodeMessage(node) {
+        const summary = node && node.failureSummary;
+        if (summary) {
+          // Drop the lead-in line ("Fix any of the following:") when one
+          // reason follows it, so the reason reads on its own.
+          const lines = String(summary).split('\n').map(line => line.trim()).filter(Boolean);
+          return lines.length === 2 && /:$/.test(lines[0]) ? lines[1] : lines.join('\n');
+        }
+        const checks = [].concat(node?.any || [], node?.all || [], node?.none || []);
+        const withMessage = checks.find(check => check && check.message);
+        return withMessage ? String(withMessage.message) : '';
+      },
+
+      // One result as a card: a row that opens to show what is wrong, where
+      // to read more, and the elements it was found on.
+      renderReportItem(item, id, { showImpact = true } = {}) {
+        const safeHelpUrl = this.sanitizeUrl(item.helpUrl);
+        const nodes = item.nodes || [];
+        return `
+      <div class="acc-report-violation">
+        <button type="button" class="acc-report-violation-header" aria-expanded="false" aria-controls="${id}">
+          ${showImpact && item.impact ? `<span class="acc-report-violation-impact ${this.escapeHtml(item.impact)}">${this.translate(this.capitalizeFirst(item.impact))}</span>` : ''}
+          <span class="acc-report-violation-title">${this.escapeHtml(item.help)}</span>
+          <span class="acc-report-violation-count">${nodes.length} ${this.translate('Element')}${nodes.length > 1 ? 's' : ''}</span>
+        </button>
+        <div class="acc-report-violation-details" id="${id}">
+          <p class="acc-report-violation-desc">${this.escapeHtml(item.description)}</p>
+          ${safeHelpUrl ? `<a class="acc-report-violation-help" href="${safeHelpUrl}" target="_blank" rel="noopener"><span>${this.translate('How to Fix')}</span>${this.widgetIcons.externalLink}</a>` : ''}
+          ${nodes.slice(0, 5).map(node => {
+            const message = this.getReportNodeMessage(node);
+            return `
+            <div class="acc-report-node">
+              <div class="acc-report-code">
+                <div class="acc-report-code-bar">
+                  <span class="acc-report-code-lang">HTML</span>
+                  <button type="button" class="acc-report-copy" aria-label="${this.translate('Copy')}">${this.widgetIcons.copy}</button>
+                </div>
+                <pre class="acc-report-node-html">${this.highlightHtml(node.html)}</pre>
+              </div>
+              ${message ? `<p class="acc-report-node-fix"><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(message)}</p>` : ''}
+            </div>`;
+          }).join('')}
+          ${nodes.length > 5 ? `<p class="acc-report-note">... and ${nodes.length - 5} more elements</p>` : ''}
+        </div>
+      </div>
+    `;
+      },
+
+      // Copies an element's HTML and shows a check for a moment.
+      copyReportCode(button) {
+        const code = button.closest('.acc-report-code')?.querySelector('.acc-report-node-html');
+        const text = code ? code.textContent : '';
+        const done = () => {
+          button.innerHTML = this.widgetIcons.check;
+          button.setAttribute('aria-label', this.translate('Copied'));
+          button.classList.add('acc-report-copied');
+          clearTimeout(button.accCopyTimer);
+          button.accCopyTimer = setTimeout(() => {
+            button.innerHTML = this.widgetIcons.copy;
+            button.setAttribute('aria-label', this.translate('Copy'));
+            button.classList.remove('acc-report-copied');
+          }, 2000);
+        };
+        const fallback = () => {
+          // Without clipboard access (an insecure page, or permission denied),
+          // select the code so the usual copy shortcut works on it.
+          const selection = window.getSelection && window.getSelection();
+          if (!selection || !code) return;
+          const range = document.createRange();
+          range.selectNodeContents(code);
+          selection.removeAllRanges();
+          selection.addRange(range);
+          try {
+            if (document.execCommand && document.execCommand('copy')) done();
+          } catch {
+            // The code stays selected for the visitor to copy by hand.
+          }
+        };
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          navigator.clipboard.writeText(text).then(done, fallback);
+        } else {
+          fallback();
+        }
       },
 
       displayReportResults(panel, results) {
@@ -8367,11 +8482,9 @@ var AccessibleWebWidget = (function () {
           }
         });
       
-        const totalViolations = Object.values(counts).reduce((a, b) => a + b, 0);
-      
-        statusArea.textContent = totalViolations > 0
-          ? `${totalViolations} ${this.translate('Violations Found')}`
-          : this.translate('No Issues Found');
+        // Under the title: how much passed. It is context, not a problem to
+        // open, so it is a quiet line and not one of the tiles.
+        statusArea.innerHTML = `<span class="acc-report-passed">${this.widgetIcons.check}<span>${passes.length} ${this.translate('Passed Tests')}</span></span>`;
       
         let html = `
       <div class="acc-report-summary">
@@ -8391,77 +8504,48 @@ var AccessibleWebWidget = (function () {
           <span class="acc-report-stat-value">${counts.minor}</span>
           <span class="acc-report-stat-label">${this.translate('Minor')}</span>
         </div>
-        <div class="acc-report-stat passed">
-          <span class="acc-report-stat-value">${passes.length}</span>
-          <span class="acc-report-stat-label">${this.translate('Passed Tests')}</span>
-        </div>
       </div>
     `;
       
         if (violations.length === 0) {
           html += `
         <div class="acc-report-success">
-          <div class="acc-report-success-icon">
-            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-          </div>
+          <div class="acc-report-success-icon">${this.widgetIcons.check}</div>
           <h3>${this.translate('No Issues Found')}</h3>
         </div>
       `;
         } else {
-          html += `<div class="acc-report-section">
-        <div class="acc-report-section-title">${this.translate('Violations Found')} (${violations.length})</div>
-      `;
-      
           // Sort by severity
           const severityOrder = { critical: 0, serious: 1, moderate: 2, minor: 3 };
-          violations.sort((a, b) => (severityOrder[a.impact] || 4) - (severityOrder[b.impact] || 4));
+          violations.sort((a, b) => (severityOrder[a.impact] ?? 4) - (severityOrder[b.impact] ?? 4));
       
-          violations.forEach((violation, index) => {
-            const safeHelpUrl = this.sanitizeUrl(violation.helpUrl);
-            html += `
-          <div class="acc-report-violation" data-index="${index}">
-            <button type="button" class="acc-report-violation-header" aria-expanded="false" aria-controls="acc-report-violation-${index}">
-              <span class="acc-report-violation-impact ${violation.impact}">${this.translate(this.capitalizeFirst(violation.impact))}</span>
-              <span class="acc-report-violation-title">${this.escapeHtml(violation.help)}</span>
-              <span class="acc-report-violation-count">${violation.nodes.length} ${this.translate('Element')}${violation.nodes.length > 1 ? 's' : ''}</span>
-            </button>
-            <div class="acc-report-violation-details" id="acc-report-violation-${index}">
-              <p class="acc-report-violation-desc">${this.escapeHtml(violation.description)}</p>
-              ${safeHelpUrl ? `<p class="acc-report-violation-help">
-                <a href="${safeHelpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
-              </p>` : ''}
-              ${violation.nodes.slice(0, 5).map(node => `
-                <div class="acc-report-node">
-                  <div class="acc-report-node-html">${this.escapeHtml(node.html)}</div>
-                  ${node.failureSummary ? `<div class="acc-report-node-fix"><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(node.failureSummary)}</div>` : ''}
-                </div>
-              `).join('')}
-              ${violation.nodes.length > 5 ? `<p style="color:#666;font-size:13px;margin-top:12px;">... and ${violation.nodes.length - 5} more elements</p>` : ''}
-            </div>
-          </div>
-        `;
-          });
-      
-          html += `</div>`;
+          html += `<div class="acc-report-section">
+        <div class="acc-report-section-title">${this.translate('Violations Found')} (${violations.length})</div>
+        ${violations.map((violation, index) => this.renderReportItem(violation, `acc-report-violation-${index}`)).join('')}
+      </div>`;
         }
       
         if (incomplete.length > 0) {
           html += `
         <div class="acc-report-section">
           <div class="acc-report-section-title">${this.translate('Items Need Review')} (${incomplete.length})</div>
-          <p style="color:#666;font-size:14px;">These items require manual verification.</p>
+          <p class="acc-report-note">A person needs to check these.</p>
+          ${incomplete.map((item, index) => this.renderReportItem(item, `acc-report-review-${index}`, { showImpact: false })).join('')}
         </div>
       `;
         }
       
         contentArea.innerHTML = html;
       
-        // Add click handlers for expandable violations
+        // Each card opens and closes on its own.
         contentArea.querySelectorAll('.acc-report-violation-header').forEach(header => {
           header.addEventListener('click', () => {
             const expanded = header.parentElement.classList.toggle('expanded');
             header.setAttribute('aria-expanded', expanded ? 'true' : 'false');
           });
+        });
+        contentArea.querySelectorAll('.acc-report-copy').forEach(button => {
+          button.addEventListener('click', () => this.copyReportCode(button));
         });
       },
 
