@@ -85,7 +85,8 @@
   text-overflow: ellipsis;
 }
 
-.acc-menu-close {
+.acc-menu-close,
+.acc-menu-more {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,17 +101,24 @@
 }
 
 @media (hover: hover) {
-  .acc-menu-close:hover {
+  .acc-menu-close:hover,
+  .acc-menu-more:hover {
     background-color: rgba(255, 255, 255, 0.18);
   }
 }
 
-.acc-menu-close:focus-visible {
+.acc-menu-more[aria-expanded="true"] {
+  background-color: rgba(255, 255, 255, 0.24);
+}
+
+.acc-menu-close:focus-visible,
+.acc-menu-more:focus-visible {
   outline: 2px solid var(--acc-text-color-inverted);
   outline-offset: 1px;
 }
 
-.acc-menu-header .acc-menu-close svg {
+.acc-menu-header .acc-menu-close svg,
+.acc-menu-header .acc-menu-more svg {
   fill: var(--acc-text-color-inverted) !important;
   width: 20px !important;
   height: 20px !important;
@@ -462,9 +470,8 @@
   transition: background-color 0.2s ease;
 }
 
-/* Inset divider between the rows. */
-.acc-profiles-row::before,
-.acc-move-row::before {
+/* Inset divider between the two rows. */
+.acc-profiles-row::before {
   content: "";
   position: absolute;
   top: 0;
@@ -502,7 +509,7 @@
   transition: left 0.2s ease;
 }
 
-.acc-move-row[data-side="right"] .acc-move-dot {
+.acc-more-move[data-side="right"] .acc-move-dot {
   left: 27px;
 }
 
@@ -722,9 +729,10 @@
    double-tap-to-zoom on pages without a mobile viewport. */
 .acc-btn,
 .acc-menu-close,
+.acc-menu-more,
+.acc-more-item,
 .acc-card-row,
 .acc-action-reset,
-.acc-action-hide,
 .acc-lang-item {
   touch-action: manipulation;
 }
@@ -770,29 +778,102 @@
 }
 
 /* Actions and the credit line */
-.acc-actions[hidden],
+.acc-more-panel[hidden],
+.acc-more-list[hidden],
 .acc-hide-panel[hidden] {
   display: none;
 }
 
+/* The "more" button in the header, beside Close. */
+.acc-menu-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Move widget and Hide widget drop down from it, over the options. */
+.acc-more-panel {
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--acc-menu-header-height) - 6px);
+  inset-inline-end: 12px;
+  width: min(304px, calc(100% - 24px));
+  max-height: calc(100% - var(--acc-menu-header-height) - 6px);
+  overflow: auto;
+  padding: 6px;
+  border-radius: 20px;
+  background: var(--acc-card-bg);
+  box-shadow: 0 0 0 1px rgba(31, 41, 51, 0.08), 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+.acc-more-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.acc-more-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  text-align: start;
+  cursor: pointer;
+}
+
+.acc-more-item svg {
+  flex-shrink: 0;
+  width: 22px !important;
+  height: 22px !important;
+  fill: var(--acc-text-color) !important;
+}
+
+.acc-more-item .acc-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+}
+
+@media (hover: hover) {
+  .acc-more-item:hover {
+    background-color: var(--acc-bg-color);
+  }
+}
+
+.acc-more-item:focus-visible {
+  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
+  outline-offset: -2px;
+}
+
+/* The Hide icon is drawn with lines, unlike the filled icons. */
+.acc-more-hide svg {
+  fill: none !important;
+  stroke: var(--acc-text-color);
+}
+
 /* Hide widget, already hidden: shown as on. Clicking brings the button back. */
-.acc-action-hide[aria-pressed="true"] svg {
+.acc-more-hide[aria-pressed="true"] svg {
   stroke: var(--acc-primary-color);
 }
 
-.acc-action-hide[aria-pressed="true"] .acc-label {
+.acc-more-hide[aria-pressed="true"] .acc-label {
   color: var(--acc-primary-color) !important;
 }
 
-/* The step after Hide widget: for how long. It takes the buttons' place. */
+/* The step after Hide widget: for how long. It takes the list's place
+   inside the drop-down. */
 .acc-hide-panel {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
-  border-radius: 22px;
-  background: var(--acc-card-bg);
-  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
+  padding: 10px;
 }
 
 .acc-hide-title {
@@ -914,7 +995,7 @@
   outline-offset: var(--acc-focus-outline-offset);
 }
 
-/* Reset and Hide: two equal buttons between the card and the tiles. */
+/* Reset: one wide button between the card and the tiles. */
 .acc-actions {
   display: grid;
   grid-auto-flow: column;
@@ -922,8 +1003,7 @@
   gap: 8px;
 }
 
-.acc-action-reset,
-.acc-action-hide {
+.acc-action-reset {
   display: flex;
   min-width: 0;
   min-height: 48px;
@@ -939,8 +1019,7 @@
   transition: box-shadow 0.2s ease;
 }
 
-.acc-action-reset svg,
-.acc-action-hide svg {
+.acc-action-reset svg {
   flex-shrink: 0;
   width: 20px !important;
   height: 20px !important;
@@ -948,8 +1027,7 @@
 }
 
 /* Long translations wrap to a second line on narrow phones. */
-.acc-action-reset .acc-label,
-.acc-action-hide .acc-label {
+.acc-action-reset .acc-label {
   min-width: 0;
   text-align: center;
   font-size: 14px !important;
@@ -992,22 +1070,14 @@
 }
 
 @media (hover: hover) {
-  .acc-action-reset:not(:disabled):hover,
-  .acc-action-hide:hover {
+  .acc-action-reset:not(:disabled):hover {
     box-shadow: 0 0 0 1px var(--acc-border-color), 0 2px 6px rgba(31, 41, 51, 0.08);
   }
 }
 
-.acc-action-reset:focus-visible,
-.acc-action-hide:focus-visible {
+.acc-action-reset:focus-visible {
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
-}
-
-/* The Hide icon is drawn with lines, unlike the filled icons. */
-.acc-action-hide svg {
-  fill: none !important;
-  stroke: var(--acc-text-color);
 }
 
 /* Credit line: the project's name, and its statement on what a widget
@@ -1217,14 +1287,12 @@
    height. */
 @media only screen and (max-width: 449px) {
   /* Two buttons in a narrow panel: tighter, so long translations fit. */
-  .acc-action-reset,
-  .acc-action-hide {
+  .acc-action-reset {
     gap: 6px;
     padding: 6px 8px;
   }
 
-  .acc-action-reset .acc-label,
-  .acc-action-hide .acc-label {
+  .acc-action-reset .acc-label {
     font-size: 13px !important;
     overflow-wrap: anywhere;
   }
@@ -1270,15 +1338,15 @@
     padding: 12px 0 16px;
   }
 
-  .acc-action-reset,
-  .acc-action-hide {
+  .acc-action-reset {
     min-height: 44px;
   }
 }
 
 /* Touch input: grow the small controls toward a 44px target. */
 @media (pointer: coarse) {
-  .acc-menu-close {
+  .acc-menu-close,
+  .acc-menu-more {
     width: 44px;
     height: 44px;
   }

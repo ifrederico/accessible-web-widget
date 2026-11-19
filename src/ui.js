@@ -357,6 +357,11 @@ export const uiMethods = {
           event.preventDefault();
           // Escape peels back one layer: an open language list closes
           // first (its row restores focus), then the menu itself.
+          const morePanel = this.findElement('.acc-more-panel', this.activeMenuContainer);
+          if (morePanel && !morePanel.hidden) {
+            this.toggleMorePanel(this.activeMenuContainer, false);
+            return;
+          }
           const langPanel = this.findElement('#acc-lang-panel', this.activeMenuContainer);
           const langToggle = this.findElement('.acc-lang-row', this.activeMenuContainer);
           if (langPanel && !langPanel.hasAttribute('hidden') && langToggle) {
@@ -573,10 +578,45 @@ export const uiMethods = {
             <div id="accessibility-title" class="acc-menu-title">
               <span class="acc-label">Accessibility Options</span>
             </div>
-            <button type="button" class="acc-menu-close" title="Close" aria-label="Close">
-              ${this.widgetIcons.close}
-            </button>
+            <div class="acc-menu-header-actions">
+              ${this.isLauncherRemovedByOwner() ? '' : `<button type="button" class="acc-menu-more" title="Tools" aria-label="Tools" aria-haspopup="true" aria-expanded="false" aria-controls="acc-more-panel">
+                ${this.widgetIcons.more}
+              </button>`}
+              <button type="button" class="acc-menu-close" title="Close" aria-label="Close">
+                ${this.widgetIcons.close}
+              </button>
+            </div>
           </div>
+          ${this.isLauncherRemovedByOwner() ? '' : `<div id="acc-more-panel" class="acc-more-panel" role="group" aria-label="Tools" hidden>
+            <div class="acc-more-list">
+              <button type="button" class="acc-more-item acc-more-move" aria-pressed="false">
+                ${this.widgetIcons.moveWidget}
+                <span class="acc-label">Move widget</span>
+                <span class="acc-move-side" aria-hidden="true"><span class="acc-move-dot"></span></span>
+              </button>
+              <button type="button" class="acc-more-item acc-more-hide" aria-pressed="false">
+                ${this.widgetIcons.hideWidget}
+                <span class="acc-label">Hide widget</span>
+              </button>
+            </div>
+            <div id="acc-hide-panel" class="acc-hide-panel" hidden>
+                <div class="acc-hide-title">
+                  ${this.widgetIcons.hideWidget}
+                  <span class="acc-label">Hide widget</span>
+                </div>
+                <div class="acc-hide-choices" role="radiogroup" aria-label="Hide widget">
+                  ${[['visit', 'This visit'], ['day', 'One day'], ['week', 'One week'], ['always', 'Always']].map(([value, label], index) => `<button type="button" class="acc-hide-choice" role="radio" aria-checked="${index === 0}" tabindex="${index === 0 ? 0 : -1}" data-hide-for="${value}">
+                    <span class="acc-hide-radio" aria-hidden="true"></span>
+                    <span class="acc-label">${label}</span>
+                  </button>`).join('')}
+                </div>
+                <p class="acc-hide-warning acc-label" hidden>The widget stays hidden until you clear this site's data in your browser.</p>
+                <div class="acc-hide-buttons">
+                  <button type="button" class="acc-hide-cancel"><span class="acc-label">Close</span></button>
+                  <button type="button" class="acc-hide-confirm"><span class="acc-label">Hide</span></button>
+                </div>
+              </div>
+          </div>`}
           <div id="acc-menu-content" class="acc-menu-content">
             <div class="acc-options-all">
               <div class="acc-card">
@@ -614,11 +654,6 @@ export const uiMethods = {
                 <div id="acc-profiles-panel" class="acc-card-panel acc-profiles-panel" role="group" aria-label="Profiles" hidden>
                   ${profilesMarkup}
                 </div>
-                ${this.isLauncherRemovedByOwner() ? '' : `<button type="button" class="acc-card-row acc-move-row" aria-pressed="false">
-                  <span class="acc-card-row-icon" aria-hidden="true">${this.widgetIcons.moveWidget}</span>
-                  <span class="acc-card-row-label acc-label">Move widget</span>
-                  <span class="acc-move-side" aria-hidden="true"><span class="acc-move-dot"></span></span>
-                </button>`}
               </div>
               <div class="acc-actions">
                 <button type="button" class="acc-action-reset">
@@ -626,28 +661,7 @@ export const uiMethods = {
                   <span class="acc-label">Reset settings</span>
                   <span class="acc-reset-count" hidden></span>
                 </button>
-                ${this.isLauncherRemovedByOwner() ? '' : `<button type="button" class="acc-action-hide" aria-pressed="false" aria-controls="acc-hide-panel">
-                  ${this.widgetIcons.hideWidget}
-                  <span class="acc-label">Hide widget</span>
-                </button>`}
               </div>
-              ${this.isLauncherRemovedByOwner() ? '' : `<div id="acc-hide-panel" class="acc-hide-panel" hidden>
-                <div class="acc-hide-title">
-                  ${this.widgetIcons.hideWidget}
-                  <span class="acc-label">Hide widget</span>
-                </div>
-                <div class="acc-hide-choices" role="radiogroup" aria-label="Hide widget">
-                  ${[['visit', 'This visit'], ['day', 'One day'], ['week', 'One week'], ['always', 'Always']].map(([value, label], index) => `<button type="button" class="acc-hide-choice" role="radio" aria-checked="${index === 0}" tabindex="${index === 0 ? 0 : -1}" data-hide-for="${value}">
-                    <span class="acc-hide-radio" aria-hidden="true"></span>
-                    <span class="acc-label">${label}</span>
-                  </button>`).join('')}
-                </div>
-                <p class="acc-hide-warning acc-label" hidden>The widget stays hidden until you clear this site's data in your browser.</p>
-                <div class="acc-hide-buttons">
-                  <button type="button" class="acc-hide-cancel"><span class="acc-label">Close</span></button>
-                  <button type="button" class="acc-hide-confirm"><span class="acc-label">Hide</span></button>
-                </div>
-              </div>`}
               <div class="acc-options">${tilesMarkup}</div>
               ${this.options.hideAttribution === true ? '' : `<div class="acc-footer-credit">
                 <a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb</a>
@@ -794,17 +808,26 @@ export const uiMethods = {
 
         // click event handler:
         menu.addEventListener('click', (e) => {
+          // A click anywhere outside the open "more" drop-down closes it.
+          const morePanel = menu.querySelector('.acc-more-panel');
+          if (morePanel && !morePanel.hidden && !e.target.closest('.acc-more-panel, .acc-menu-more')) {
+            this.toggleMorePanel(menu, false, { restoreFocus: false });
+          }
           const target = e.target.closest('[role="button"], button, .acc-overlay');
           if (!target) return;
+          if (target.classList.contains('acc-menu-more')) {
+            this.toggleMorePanel(menu, target.getAttribute('aria-expanded') !== 'true');
+            return;
+          }
           if (target.classList.contains('acc-overlay')) {
             this.closeMenu(menuContainer);
             return;
           }
-          if (target.classList.contains('acc-move-row')) {
+          if (target.classList.contains('acc-more-move')) {
             this.moveLauncher();
             return;
           }
-          if (target.classList.contains('acc-action-hide')) {
+          if (target.classList.contains('acc-more-hide')) {
             // Already hidden (the menu was opened another way): bring the
             // button back. Otherwise ask for how long.
             if (this.isLauncherHiddenByVisitor()) {
@@ -833,7 +856,7 @@ export const uiMethods = {
               this.announce(warning.textContent);
               return;
             }
-            this.toggleHidePanel(menu, false, { restoreFocus: false });
+            this.toggleMorePanel(menu, false, { restoreFocus: false });
             this.hideLauncher(duration);
             return;
           }
@@ -951,7 +974,7 @@ export const uiMethods = {
       const menu = this.ensureMenuCreated();
       if (!menu) return false;
       if (!this.isMenuOpen()) {
-        this.toggleHidePanel(menu, false, { restoreFocus: false });
+        this.toggleMorePanel(menu, false, { restoreFocus: false });
         this.syncLauncherControls();
         this.openMenu(menu, this.widgetToggleButton);
       }
@@ -1029,11 +1052,29 @@ export const uiMethods = {
       this.setLauncherHiddenByVisitor(false);
     },
 
-  // The step between clicking Hide widget and hiding: it takes the place
-  // of the Reset and Hide buttons and asks for how long.
+  // The header's "more" button opens a small drop-down holding Move widget
+  // and Hide widget.
+  toggleMorePanel(menu, open, { restoreFocus = true } = {}) {
+      const panel = menu?.querySelector('.acc-more-panel');
+      const button = menu?.querySelector('.acc-menu-more');
+      if (!panel || !button) return;
+      // Always reopen on the two items, not on the "how long" step.
+      this.toggleHidePanel(menu, false, { restoreFocus: false });
+      panel.hidden = !open;
+      button.setAttribute('aria-expanded', String(open));
+      if (open) {
+        const first = panel.querySelector('.acc-more-item');
+        if (first) first.focus();
+      } else if (restoreFocus) {
+        button.focus();
+      }
+    },
+
+  // The step between clicking Hide widget and hiding: inside the
+  // drop-down it takes the place of the two items and asks for how long.
   toggleHidePanel(menu, open, { restoreFocus = true } = {}) {
       const panel = menu?.querySelector('.acc-hide-panel');
-      const actions = menu?.querySelector('.acc-actions');
+      const actions = menu?.querySelector('.acc-more-list');
       if (!panel || !actions) return;
       panel.hidden = !open;
       actions.hidden = open;
@@ -1046,7 +1087,7 @@ export const uiMethods = {
         const checked = panel.querySelector('.acc-hide-choice[aria-checked="true"]');
         if (checked) checked.focus();
       } else if (restoreFocus) {
-        const hide = actions.querySelector('.acc-action-hide');
+        const hide = actions.querySelector('.acc-more-hide');
         if (hide) hide.focus();
       }
     },
@@ -1108,13 +1149,13 @@ export const uiMethods = {
       const root = this.menuContainer || this.widgetContainerEl;
       if (!root) return;
       const position = this.getLauncherPosition();
-      const move = root.querySelector('.acc-move-row');
+      const move = root.querySelector('.acc-more-move');
       if (move) {
         const basePosition = String(this.options?.position || 'bottom-right');
         move.setAttribute('aria-pressed', String(position.endsWith('right') !== basePosition.endsWith('right')));
         move.dataset.side = position.endsWith('right') ? 'right' : 'left';
       }
-      const hide = root.querySelector('.acc-action-hide');
+      const hide = root.querySelector('.acc-more-hide');
       if (hide) {
         hide.setAttribute('aria-pressed', String(this.isLauncherHiddenByVisitor()));
       }

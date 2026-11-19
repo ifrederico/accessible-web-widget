@@ -81,11 +81,29 @@ test('menu closes via the header close button', async ({ page }) => {
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('header holds only the title and the close button', async ({ page }) => {
+test('header holds the title, the more button and the close button', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
-  await expect(page.locator('.acc-menu-header button')).toHaveCount(1);
+  await expect(page.locator('.acc-menu-header button')).toHaveCount(2);
   await expect(page.locator('.acc-menu-header .acc-menu-close')).toBeVisible();
+
+  // The more button drops down Move widget and Hide widget; Escape
+  // closes the drop-down first and leaves the menu open.
+  const more = page.locator('.acc-menu-more');
+  await expect(more).toHaveAttribute('aria-expanded', 'false');
+  await more.click();
+  await expect(more).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('.acc-more-item')).toHaveCount(2);
+  await expect(page.locator('.acc-more-move')).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.acc-more-panel')).toBeHidden();
+  await expect(more).toBeFocused();
+  await expect(page.locator('.acc-menu')).toBeVisible();
+
+  // So does a click elsewhere in the menu.
+  await more.click();
+  await page.locator('.acc-menu-title').click();
+  await expect(page.locator('.acc-more-panel')).toBeHidden();
 });
 
 test('Language row expands in place, searches, and switches language', async ({ page }) => {
@@ -599,22 +617,17 @@ test('Hide widget asks for how long, hides for the visit, and can be undone from
   const launcher = page.locator('.acc-toggle-btn');
   await launcher.click();
 
-  const hide = page.locator('.acc-action-hide');
+  const more = page.locator('.acc-menu-more');
+  const hide = page.locator('.acc-more-hide');
+  await expect(hide).toBeHidden();
+  await more.click();
   await expect(hide).toBeVisible();
   await expect(hide).toHaveAccessibleName('Hide widget');
-
-  // Reset and Hide sit side by side, above the tiles, at the same size.
-  const resetBox = await page.locator('.acc-action-reset').boundingBox();
-  const hideBox = await hide.boundingBox();
-  const firstTile = await page.locator('.acc-options .acc-btn').first().boundingBox();
-  expect(Math.abs(resetBox.y - hideBox.y)).toBeLessThan(1);
-  expect(Math.abs(resetBox.width - hideBox.width)).toBeLessThan(1);
-  expect(resetBox.y + resetBox.height).toBeLessThanOrEqual(firstTile.y);
 
   // Clicking Hide does not hide yet: it asks for how long.
   await hide.click();
   expect(await launcher.evaluate((el) => el.hidden)).toBe(false);
-  await expect(page.locator('.acc-actions')).toBeHidden();
+  await expect(page.locator('.acc-more-list')).toBeHidden();
   const choices = page.getByRole('radio');
   await expect(choices).toHaveCount(4);
   await expect(page.getByRole('radio', { name: 'This visit' })).toBeChecked();
@@ -642,6 +655,7 @@ test('Hide widget asks for how long, hides for the visit, and can be undone from
   // and clicking it brings the floating button back.
   await page.evaluate(() => window.AccessibleWebWidget.instance.open());
   await expect(hide).toHaveAttribute('aria-pressed', 'true');
+  await more.click();
   await hide.click();
   expect(await launcher.evaluate((el) => el.hidden)).toBe(false);
   await expect(hide).toHaveAttribute('aria-pressed', 'false');
@@ -654,7 +668,8 @@ test('Hide widget asks for how long, hides for the visit, and can be undone from
 test('Hide widget for one day outlasts the visit and ends on its own', async ({ page, context }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
-  await page.locator('.acc-action-hide').click();
+  await page.locator('.acc-menu-more').click();
+  await page.locator('.acc-more-hide').click();
   await page.getByRole('radio', { name: 'One day' }).click();
   await page.locator('.acc-hide-confirm').click();
   await expect(page.locator('.acc-toggle-btn')).toBeHidden();
@@ -678,7 +693,8 @@ test('Hide widget for one day outlasts the visit and ends on its own', async ({ 
 test('hiding the widget always warns first and survives a new visit', async ({ page, context }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
-  await page.locator('.acc-action-hide').click();
+  await page.locator('.acc-menu-more').click();
+  await page.locator('.acc-more-hide').click();
   await page.getByRole('radio', { name: 'Always' }).click();
 
   // The first click on Hide only explains how to undo it.
@@ -692,7 +708,7 @@ test('hiding the widget always warns first and survives a new visit', async ({ p
 
   // Close backs out; opening the step again starts from the choices.
   await page.locator('.acc-hide-cancel').click();
-  await page.locator('.acc-action-hide').click();
+  await page.locator('.acc-more-hide').click();
   await expect(warning).toBeHidden();
   await expect(page.getByRole('radio')).toHaveCount(4);
 
@@ -714,7 +730,8 @@ test('Move widget flips the button and the menu to the other side and remembers 
   const startsRight = (await launcher.boundingBox()).x > viewport.width / 2;
   await launcher.click();
 
-  const move = page.locator('.acc-move-row');
+  const move = page.locator('.acc-more-move');
+  await page.locator('.acc-menu-more').click();
   await expect(move).toHaveAccessibleName('Move widget');
   await expect(move).toHaveAttribute('aria-pressed', 'false');
   await move.click();
@@ -731,6 +748,7 @@ test('Move widget flips the button and the menu to the other side and remembers 
 
   // A second click puts it back.
   await launcher.click();
+  await page.locator('.acc-menu-more').click();
   await move.click();
   await expect(move).toHaveAttribute('aria-pressed', 'false');
   expect((await launcher.boundingBox()).x > viewport.width / 2).toBe(startsRight);
@@ -743,8 +761,9 @@ test('there is no Hide widget button when the site owner removed the floating bu
   await page.goto('index.html');
   await page.evaluate(() => window.AccessibleWebWidget.instance.open());
   await expect(page.locator('.acc-action-reset')).toBeVisible();
-  await expect(page.locator('.acc-action-hide')).toHaveCount(0);
-  await expect(page.locator('.acc-move-row')).toHaveCount(0);
+  await expect(page.locator('.acc-more-hide')).toHaveCount(0);
+  await expect(page.locator('.acc-more-move')).toHaveCount(0);
+  await expect(page.locator('.acc-menu-more')).toHaveCount(0);
 });
 
 test('the footer links to the accessibility statement, in the menu language', async ({ page }) => {
