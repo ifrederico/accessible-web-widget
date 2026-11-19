@@ -325,6 +325,9 @@ export const uiMethods = {
       const measure = () => {
         const gutter = Math.max(0, content.offsetWidth - content.clientWidth);
         menu.style.setProperty('--acc-scrollbar-gutter', `${gutter}px`);
+        // An always-visible scrollbar gets the widget's own shape, kept
+        // clear of the sheet's rounded corner.
+        if (gutter > 0) menu.classList.add('acc-classic-scrollbar');
       };
       measure();
       if (!this.scrollbarGutterObserver && typeof ResizeObserver === 'function') {
@@ -663,6 +666,7 @@ export const uiMethods = {
                 </div>
               </div>
           </div>`}
+          <div class="acc-menu-sheet">
           <div id="acc-menu-content" class="acc-menu-content">
             <div class="acc-options-all">
               <div class="acc-card">
@@ -712,6 +716,7 @@ export const uiMethods = {
               </div>
               <div class="acc-options">${tilesMarkup}</div>
             </div>
+          </div>
           </div>
           ${this.options.hideAttribution === true ? '' : `<div class="acc-footer">
             <a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb</a>

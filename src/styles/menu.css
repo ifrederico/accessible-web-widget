@@ -1165,6 +1165,24 @@
 }
 
 /* Content area */
+/* The sheet holds the rounded top corners and the shadow; the scrolling
+   area sits inside it. A scrolling box does not always round its own
+   corner where its scrollbar is, so the sheet does the clipping. */
+.acc-menu-sheet {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+  border-top-left-radius: 1.75rem;
+  border-top-right-radius: 1.75rem;
+  background: var(--acc-bg-color);
+  /* A soft shadow cast up onto the header, so the body reads as a sheet
+     lying over it. */
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);
+}
+
 .acc-menu-content {
   flex: 1 1 auto;
   min-height: 0;
@@ -1179,12 +1197,35 @@
   scrollbar-color: #7c8594 transparent;
   scrollbar-gutter: stable;
   padding: var(--acc-content-inline-padding) 0;
-  border-top-left-radius: 1.75rem;
-  border-top-right-radius: 1.75rem;
-  background: var(--acc-bg-color);
-  /* A soft shadow cast up onto the header, so the body reads as a sheet
-     lying over it. */
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);
+}
+
+/* An always-visible scrollbar (see syncScrollbarGutter), where the
+   browser lets it be shaped: a rounded bar that starts below the sheet's
+   rounded corner instead of being cut by it. The standard properties
+   have to be switched off for these rules to apply. Other browsers keep
+   the thin standard bar. */
+@supports selector(::-webkit-scrollbar) {
+  .acc-menu.acc-classic-scrollbar .acc-menu-content {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+
+  .acc-menu.acc-classic-scrollbar .acc-menu-content::-webkit-scrollbar {
+    width: 11px;
+  }
+
+  .acc-menu.acc-classic-scrollbar .acc-menu-content::-webkit-scrollbar-track {
+    margin-top: 20px;
+    margin-bottom: 8px;
+    background: transparent;
+  }
+
+  .acc-menu.acc-classic-scrollbar .acc-menu-content::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 6px;
+    background: #7c8594;
+    background-clip: padding-box;
+  }
 }
 
 /* Browsers without the standard scrollbar properties. */
@@ -1197,6 +1238,11 @@
   .acc-menu-content::-webkit-scrollbar-track,
   .acc-lang-panel .acc-lang-list::-webkit-scrollbar-track {
     background: transparent;
+  }
+
+  .acc-menu-content::-webkit-scrollbar-track {
+    margin-top: 20px;
+    margin-bottom: 8px;
   }
 
   .acc-menu-content::-webkit-scrollbar-thumb,
