@@ -314,6 +314,23 @@ export const uiMethods = {
       });
     },
 
+  // Where the system always shows scrollbars, the panel's scrollbar takes
+  // room on one side. The options give up that much padding on that side
+  // so they stay centred, with the scrollbar in the margin.
+  syncScrollbarGutter(menu) {
+      const content = menu?.querySelector('.acc-menu-content');
+      if (!content) return;
+      const measure = () => {
+        const gutter = Math.max(0, content.offsetWidth - content.clientWidth);
+        menu.style.setProperty('--acc-scrollbar-gutter', `${gutter}px`);
+      };
+      measure();
+      if (!this.scrollbarGutterObserver && typeof ResizeObserver === 'function') {
+        this.scrollbarGutterObserver = new ResizeObserver(measure);
+        this.scrollbarGutterObserver.observe(content);
+      }
+    },
+
   openMenu(menuContainer, toggleBtn) {
       if (!menuContainer) return;
       const menu = this.findElement('.acc-menu', menuContainer);
@@ -326,6 +343,7 @@ export const uiMethods = {
   
       menuContainer.style.display = 'block';
       if (menu) {
+        this.syncScrollbarGutter(menu);
         menu.setAttribute('aria-hidden', 'false');
         menu.setAttribute('aria-modal', 'true');
         if (!menu.hasAttribute('tabindex')) {

@@ -456,6 +456,9 @@
   flex-direction: column;
   gap: 20px;
   padding: 0 var(--acc-content-inline-padding);
+  /* The scrollbar, where the system always shows one, sits in the end
+     margin; see syncScrollbarGutter. */
+  padding-inline-end: max(4px, calc(var(--acc-content-inline-padding) - var(--acc-scrollbar-gutter, 0px)));
 }
 
 .acc-card {
@@ -569,7 +572,7 @@
   max-height: 276px;
   padding: 2px 6px 20px 12px;
   scrollbar-width: thin;
-  scrollbar-color: #c5cbd3 transparent;
+  scrollbar-color: #7c8594 transparent;
   -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
   mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
 }
@@ -1163,6 +1166,12 @@
   /* Reaching the end of the options must not hand the scroll (wheel or
      touch) to the page behind the panel. */
   overscroll-behavior: contain;
+  /* Thin and quiet, with no track, where the system always shows
+     scrollbars. Its room is kept even when nothing scrolls, so opening
+     Language does not shift the options sideways. */
+  scrollbar-width: thin;
+  scrollbar-color: #7c8594 transparent;
+  scrollbar-gutter: stable;
   padding: var(--acc-content-inline-padding) 0;
   border-top-left-radius: 1.75rem;
   border-top-right-radius: 1.75rem;
@@ -1170,6 +1179,27 @@
   /* A soft shadow cast up onto the header, so the body reads as a sheet
      lying over it. */
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);
+}
+
+/* Browsers without the standard scrollbar properties. */
+@supports not (scrollbar-width: thin) {
+  .acc-menu-content::-webkit-scrollbar,
+  .acc-lang-panel .acc-lang-list::-webkit-scrollbar {
+    width: 11px;
+  }
+
+  .acc-menu-content::-webkit-scrollbar-track,
+  .acc-lang-panel .acc-lang-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .acc-menu-content::-webkit-scrollbar-thumb,
+  .acc-lang-panel .acc-lang-list::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 6px;
+    background: #7c8594;
+    background-clip: padding-box;
+  }
 }
 
 /* Text adjustments */
