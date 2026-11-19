@@ -47,7 +47,8 @@
 /* Dragging the panel's fixed chrome must not scroll the page behind it.
    Scrolling areas (options, language list) are deliberately left out so
    they keep panning; pinch-zoom stays available everywhere. */
-.acc-menu-header {
+.acc-menu-header,
+.acc-footer {
   touch-action: pinch-zoom;
 }
 
@@ -1087,15 +1088,17 @@
   outline-offset: var(--acc-focus-outline-offset);
 }
 
-/* Credit line: the project's name, and its statement on what a widget
-   can and cannot do for a site. */
-/* The credit line closes the list, after the last row of tiles. */
-.acc-footer-credit {
+/* Footer bar: the project's name, and its statement on what a widget
+   can and cannot do for a site. It takes the header's colour, so the
+   options read as a sheet lying between the two. */
+.acc-footer {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 0 6px;
+  padding: 12px calc(var(--acc-content-inline-padding) + 6px);
+  background: var(--acc-primary-color);
 }
 
 .acc-footer-brand,
@@ -1108,8 +1111,7 @@
 
 .acc-footer-brand {
   font-weight: 400 !important;
-  color: var(--acc-text-color) !important;
-  opacity: 0.65;
+  color: var(--acc-text-color-inverted) !important;
 }
 
 .acc-footer-statement {
@@ -1122,7 +1124,7 @@
   font-size: 13px !important;
   font-weight: 600 !important;
   line-height: 1.2 !important;
-  color: var(--acc-primary-color) !important;
+  color: var(--acc-text-color-inverted) !important;
 }
 
 /* Arrow after the link; it points the other way in right-to-left. */
@@ -1131,8 +1133,8 @@
   flex-shrink: 0;
   width: 6px;
   height: 6px;
-  border-top: 1.5px solid var(--acc-primary-color);
-  border-inline-end: 1.5px solid var(--acc-primary-color);
+  border-top: 1.5px solid var(--acc-text-color-inverted);
+  border-inline-end: 1.5px solid var(--acc-text-color-inverted);
   transform: rotate(45deg);
 }
 
@@ -1141,21 +1143,18 @@
 }
 
 @media (hover: hover) {
-  .acc-footer-brand:hover {
-    opacity: 1;
-    text-decoration: underline;
-  }
-
+  .acc-footer-brand:hover,
   .acc-footer-statement:hover .acc-label {
     text-decoration: underline;
   }
 }
 
+/* On the blue bar the usual blue focus ring would not show. */
 .acc-footer-brand:focus-visible,
 .acc-footer-statement:focus-visible {
-  opacity: 1;
-  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
-  outline-offset: var(--acc-focus-outline-offset);
+  outline: 2px solid var(--acc-text-color-inverted);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Content area */
@@ -1376,8 +1375,27 @@
   }
 }
 
+/* Touch input: grow the small controls toward a 44px target. */
+@media (pointer: coarse) {
+  .acc-menu-close,
+  .acc-menu-more {
+    width: 44px;
+    height: 44px;
+  }
+
+  .acc-footer {
+    padding-block: 6px;
+  }
+
+  .acc-footer-brand,
+  .acc-footer-statement {
+    padding: 10px 0;
+  }
+}
+
 /* Landscape phones: the header and footer took over half of a ~340px
-   tall panel, leaving a sliver for the options. */
+   tall panel, leaving a sliver for the options. This comes after the
+   touch rules so its thinner footer wins there. */
 @media only screen and (max-height: 500px) {
   .acc-menu {
     --acc-menu-header-height: min(var(--acc-header-height), 48px);
@@ -1390,19 +1408,9 @@
   .acc-action-reset {
     min-height: 44px;
   }
-}
 
-/* Touch input: grow the small controls toward a 44px target. */
-@media (pointer: coarse) {
-  .acc-menu-close,
-  .acc-menu-more {
-    width: 44px;
-    height: 44px;
-  }
-
-  .acc-footer-brand,
-  .acc-footer-statement {
-    padding: 10px 0;
+  .acc-footer {
+    padding-block: 2px;
   }
 }
 

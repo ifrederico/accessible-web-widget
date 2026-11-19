@@ -405,15 +405,16 @@ test('text magnifier banner is not capped at half the viewport', async ({ page }
   expect(box.width).toBeGreaterThan(viewport.width / 2);
 });
 
-test('landscape phones get a compact header and no footer bar', async ({ page }) => {
+test('landscape phones get a compact header and a thin footer', async ({ page }) => {
   await page.setViewportSize({ width: 750, height: 342 });
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
   const header = await page.locator('.acc-menu-header').boundingBox();
   const content = await page.locator('.acc-menu-content').boundingBox();
+  const footer = await page.locator('.acc-footer').boundingBox();
   expect(header.height).toBeLessThanOrEqual(48);
-  await expect(page.locator('.acc-footer')).toHaveCount(0);
+  expect(footer.height).toBeLessThanOrEqual(52);
   expect(content.height).toBeGreaterThan(200);
 });
 

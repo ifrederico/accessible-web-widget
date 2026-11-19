@@ -791,6 +791,7 @@ test('hideAttribution removes the footer link but keeps reset', async ({ page })
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
   await expect(page.locator('.acc-action-reset')).toBeVisible();
+  await expect(page.locator('.acc-footer')).toHaveCount(0);
   await expect(page.locator('.acc-footer-brand')).toHaveCount(0);
   await expect(page.locator('.acc-footer-statement')).toHaveCount(0);
 });
