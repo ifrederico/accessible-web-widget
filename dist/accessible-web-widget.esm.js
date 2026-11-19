@@ -1,5 +1,5 @@
 /*!
- * AccessibleWeb Widget v1.6.3
+ * AccessibleWeb Widget v1.7.0
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
@@ -5238,24 +5238,41 @@ const stateMethods = {
       return this.getDefaultLanguage();
     },
 
-  isDevMode() {
+  // Developer mode needs two keys. The site owner allows it (devTools: true
+  // or data-acc-dev-tools on the script tag), and the developer asks for it
+  // on this visit (?acc-dev). The URL alone is visitor-controlled, so it
+  // must never be enough to load the audit engine on someone's site.
+  isDevToolsAllowed() {
+      const value = this.options?.devTools;
+      if (value === true) return true;
+      return typeof value === 'string' && value.trim().toLowerCase() === 'true';
+    },
+
+  isDevToolsRequested() {
       if (typeof window === 'undefined') return false;
       try {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('acc-dev') === 'true';
+        if (!urlParams.has('acc-dev')) return false;
+        return urlParams.get('acc-dev').trim().toLowerCase() !== 'false';
       } catch {
         return false;
       }
+    },
+
+  isDevMode() {
+      return this.isDevToolsAllowed() && this.isDevToolsRequested();
     },
 
   getDataAttributeOptions() {
       const options = {};
       if (typeof document === 'undefined') return options;
   
-      const attributes = ['lang', 'position', 'offset', 'size', 'icon', 'nonce', 'hide-button'];
+      const attributes = ['lang', 'position', 'offset', 'size', 'icon', 'nonce', 'hide-button', 'dev-tools'];
   
       const assignValue = (key, value) => {
-        if (value === null || typeof value === 'undefined' || value === '') return;
+        if (value === null || typeof value === 'undefined') return;
+        // data-acc-dev-tools works as a bare attribute, so '' means on.
+        if (value === '' && key !== 'dev-tools') return;
         switch (key) {
           case 'lang': {
             const lang = String(value).trim();
@@ -5291,6 +5308,10 @@ const stateMethods = {
             options.hideButton = String(value).trim().toLowerCase() !== 'false';
             break;
           }
+          case 'dev-tools': {
+            options.devTools = String(value).trim().toLowerCase() !== 'false';
+            break;
+          }
         }
       };
   
@@ -5307,7 +5328,7 @@ const stateMethods = {
       if (document.currentScript) {
         scriptCandidates.push(document.currentScript);
       }
-      document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon],script[data-acc-nonce],script[data-acc-hide-button]').forEach(script => {
+      document.querySelectorAll('script[data-acc-lang],script[data-acc-position],script[data-acc-offset],script[data-acc-size],script[data-acc-icon],script[data-acc-nonce],script[data-acc-hide-button],script[data-acc-dev-tools]').forEach(script => {
         if (!scriptCandidates.includes(script)) {
           scriptCandidates.push(script);
         }
@@ -5315,6 +5336,8 @@ const stateMethods = {
       scriptCandidates.forEach(inspectElement);
   
       attributes.forEach(key => {
+        // The dev tools key only counts on a script tag, never on page markup.
+        if (key === 'dev-tools') return;
         if (options[key] !== undefined) return;
         const el = document.querySelector(`[data-acc-${key}]`);
         if (el) {
@@ -8196,7 +8219,7 @@ const annotationMethods = {
 
   enableAnnotations(enable = false) {
     // Annotations are dev tooling. A persisted 'annotations' state must not
-    // activate (or pull axe-core) on later visits outside ?acc-dev=true;
+    // activate (or pull axe-core) on later visits outside dev mode;
     // the state is kept so the tool revives when dev mode returns.
     if (!enable || !this.isDevMode()) {
       this.disableAnnotations();
@@ -9592,7 +9615,9 @@ const uiMethods = {
         const sourceOptions = [
           ...this.contentOptions.map(option => ({ ...option })),
           ...this.colorOptions.map(option => ({ ...option, optionClass: 'acc-filter' })),
-          ...this.accessTools.map(option => ({ ...option, optionClass: 'acc-tools' }))
+          ...this.accessTools
+            .filter(option => !option.devOnly || this.isDevMode())
+            .map(option => ({ ...option, optionClass: 'acc-tools' }))
         ];
 
         const groupedOptions = {
@@ -10086,8 +10111,8 @@ const uiMethods = {
         this.translateMenuUI(widget);
         this.ensureSkipLink();
         // axe-core and the violation bubble are dev tooling: only fetch the
-        // engine and scan the page in dev mode (?acc-dev=true), so regular
-        // visitors never download or run the audit.
+        // engine and scan the page in dev mode (owner allows it and the URL
+        // asks for it), so regular visitors never download or run the audit.
         if (this.isDevMode()) {
           this.runBackgroundAxeScan().catch(() => {
             this.updateViolationBubble({ violations: [] });
@@ -10104,6 +10129,8 @@ const uiMethods = {
               setTimeout(rerunDevScan, 150);
             }, { once: true });
           }
+        } else if (this.isDevToolsRequested()) {
+          console.info("AccessibleWeb Widget: developer tools are off on this site. Add data-acc-dev-tools to the widget's script tag (or devTools: true to its options) to use ?acc-dev.");
         }
         
         // Track the last input modality for focusQuietlyAfterPointer().
@@ -10309,6 +10336,15 @@ class AccessibleWebWidget {
         key: 'page-structure',
         icon: this.widgetIcons.pageStructure,
         isAction: true
+      },
+      // Dev tools: shown only when isDevMode() is true (see displayMenu).
+      { label: 'Annotations', key: 'annotations', icon: this.widgetIcons.annotations, devOnly: true },
+      {
+        label: 'Accessibility Report',
+        key: 'accessibility-report',
+        icon: this.widgetIcons.accessibilityReport,
+        isAction: true,
+        devOnly: true
       }
     ];
 
@@ -10340,19 +10376,6 @@ class AccessibleWebWidget {
         states: { 'readable-text': 'dyslexic', 'line-spacing': true, 'letter-spacing': true }
       }
     ];
-
-    // Add dev-only tools (?acc-dev=true)
-    if (this.isDevMode()) {
-      this.accessTools.push(
-        { label: 'Annotations', key: 'annotations', icon: this.widgetIcons.annotations },
-        {
-          label: 'Accessibility Report',
-          key: 'accessibility-report',
-          icon: this.widgetIcons.accessibilityReport,
-          isAction: true
-        }
-      );
-    }
 
     // axe-core state
     this.axeCoreLoaded = false;

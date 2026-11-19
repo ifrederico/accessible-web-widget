@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 1.6.3
+Stable tag: 1.7.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -45,7 +45,7 @@ No. There is no tracking, no analytics, and no phoning home. Visitor preferences
 The bundled JavaScript is built from public, human-readable source code:
 
 * `js/accessible-web-widget.wp.min.js` — the widget itself. Source repository: https://github.com/ifrederico/accessible-web-widget (MIT). Build with `npm install && npm run build` (Rollup); this file is the `dist/accessible-web-widget.wp.min.js` output, a WordPress-specific build with no remote fallback URLs.
-* `js/axe.min.js` — axe-core 4.11.1 by Deque Systems, unmodified. Source repository: https://github.com/dequelabs/axe-core (MPL-2.0). Loaded only in developer mode (`?acc-dev=true`).
+* `js/axe.min.js` — axe-core 4.11.1 by Deque Systems, unmodified. Source repository: https://github.com/dequelabs/axe-core (MPL-2.0). Loaded only in developer mode, which is available to logged-in administrators who add `?acc-dev` to the page address.
 * `fonts/OpenDyslexic3-Regular.*` — OpenDyslexic by Abbie Gonzalez, https://opendyslexic.org/ (SIL OFL 1.1; see `fonts/LICENSE.txt`).
 
 == Screenshots ==
@@ -53,6 +53,9 @@ The bundled JavaScript is built from public, human-readable source code:
 1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
 
 == Changelog ==
+
+= 1.7.0 =
+* Developer mode (the Annotations and Accessibility Report tools) is now available only to logged-in administrators. Before, any visitor could turn it on by adding `?acc-dev=true` to a page address, which also loaded the audit engine. Administrators turn it on as before, by adding `?acc-dev` or `?acc-dev=true` to the page address.
 
 = 1.6.3 =
 * Saturation has a third level, Monochrome, which shows the page in grayscale. Tap the Saturation tile to cycle Low, High, Monochrome, off. It is remembered between visits and cleared by Reset like the other levels. Thanks to @eliran-positive for the contribution.
