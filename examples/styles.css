@@ -21,7 +21,7 @@
   --code-tag: #7dd3fc;
   --code-attr: #94a3b8;
   --code-val: #fbd38d;
-  --widget-blue: #1976d2;
+  --widget-blue: #0072e4;
   --serif: Georgia, 'Times New Roman', serif;
   --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -183,7 +183,7 @@ code { font-family: var(--mono); }
   border-radius: 50%;
   background: var(--widget-blue);
   margin-bottom: 40px;
-  box-shadow: inset 0 0 0 4px var(--widget-blue), inset 0 0 0 6px #ffffff, 0 14px 34px rgba(25, 118, 210, .28);
+  box-shadow: inset 0 0 0 4px var(--widget-blue), inset 0 0 0 6px #ffffff, 0 14px 34px rgba(0, 114, 228, .28);
 }
 
 .hero-mark svg { width: 48px; height: 48px; fill: #ffffff; }

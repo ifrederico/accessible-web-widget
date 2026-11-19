@@ -1,8 +1,8 @@
 export const WIDGET_THEME = {
       // Core colors
-      primaryColor: '#1976d2',        // Accessible blue (WCAG AA compliant)
-      primaryColorLight: '#42a5f5',   // Lighter blue
-      primaryColorDark: '#0d47a1',    // Darker blue
+      primaryColor: '#0072e4',        // Blue, oklch(0.56 0.199 253); 4.6:1 with white (WCAG AA)
+      primaryColorLight: '#4da1fe',   // Lighter blue, oklch(0.70 0.16 253)
+      primaryColorDark: '#0049a5',    // Darker blue, oklch(0.42 0.17 253)
       backgroundColor: '#f5f7fa',
       textColor: '#222222',
       textColorInverted: '#ffffff',
@@ -11,11 +11,11 @@ export const WIDGET_THEME = {
       buttonSize: '48px',
       cardBackground: '#ffffff',
       borderColor: '#d1d5db',
-      focusRingColor: '#1976d2',      // Match primary
+      focusRingColor: '#0072e4',      // Match primary
       
       // Interactive states
-      hoverColor: '#42a5f5',          // Use light blue for hover
-      activeColor: '#0d47a1',         // Use dark blue for active
+      hoverColor: '#4da1fe',          // Use light blue for hover
+      activeColor: '#0049a5',         // Use dark blue for active
       
       // Feedback colors
       successColor: '#2e7d32', // Green

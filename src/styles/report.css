@@ -190,7 +190,7 @@
   margin-bottom: 12px;
 }
 .acc-report-violation-help a {
-  color: #1976d2;
+  color: #0072e4;
 }
 .acc-report-node {
   background: #f8f9fa;
@@ -215,7 +215,7 @@
   color: #333;
 }
 .acc-report-node-fix strong {
-  color: #1976d2;
+  color: #0072e4;
 }
 .acc-report-success {
   text-align: center;

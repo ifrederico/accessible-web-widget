@@ -5,7 +5,7 @@ body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, f
 }
 
 .acc-tts-active-block {
-  outline: 2px solid var(--acc-primary-color, #1976d2) !important;
+  outline: 2px solid var(--acc-primary-color, #0072e4) !important;
   outline-offset: 3px !important;
   border-radius: 4px;
 }
@@ -102,7 +102,7 @@ body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, f
 }
 
 .acc-structure-item:focus-visible {
-  outline: 2px solid var(--acc-focus-ring-color, #1976d2);
+  outline: 2px solid var(--acc-focus-ring-color, #0072e4);
   outline-offset: -2px;
 }
 

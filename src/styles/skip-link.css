@@ -5,7 +5,7 @@
   left: 16px;
   background: var(--acc-card-bg, #ffffff);
   color: var(--acc-text-color, #222222);
-  border: 3px solid var(--acc-primary-color, #1976d2);
+  border: 3px solid var(--acc-primary-color, #0072e4);
   border-radius: var(--acc-button-border-radius, 0.4rem);
   padding: 8px 16px;
   z-index: calc(var(--acc-widget-z-index, 100000) + 2);
@@ -23,6 +23,6 @@
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
-  outline: var(--acc-focus-outline-width, 3px) solid var(--acc-focus-ring-color, #1976d2);
+  outline: var(--acc-focus-outline-width, 3px) solid var(--acc-focus-ring-color, #0072e4);
   outline-offset: var(--acc-focus-outline-offset, 2px);
 }

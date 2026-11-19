@@ -20,12 +20,12 @@
   height: auto;
   letter-spacing: 0.015em;
   color: var(--acc-text-color);
-  --acc-content-inline-padding: 14px;
+  --acc-content-inline-padding: 20px;
   /* Theme headerHeight, capped on small screens by the media queries. */
   --acc-menu-header-height: var(--acc-header-height);
-  --acc-menu-inline-gap: clamp(16px, 2.5vw, 28px);
+  --acc-menu-inline-gap: 8px;
   --acc-menu-block-gap: var(--acc-menu-inline-gap);
-  border-radius: 16px;
+  border-radius: 1.75rem;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
   /* Clear notches and the home indicator when the host page opts into
      edge-to-edge layout (viewport-fit=cover); env() is 0 everywhere else. */
@@ -251,7 +251,7 @@
 }
 
 .acc-lang-summary:hover {
-  background-color: rgba(25, 118, 210, 0.06);
+  background-color: rgba(0, 114, 228, 0.06);
 }
 
 .acc-lang-summary:focus {
@@ -343,7 +343,7 @@
 
 @media (hover: hover) {
   .acc-lang-item:hover {
-    background-color: rgba(25, 118, 210, 0.06);
+    background-color: rgba(0, 114, 228, 0.06);
   }
 }
 
@@ -353,7 +353,7 @@
 }
 
 .acc-lang-item.selected {
-  background-color: rgba(25, 118, 210, 0.08);
+  background-color: rgba(0, 114, 228, 0.08);
   font-weight: 600;
 }
 
@@ -812,7 +812,7 @@
 .acc-footer {
   flex-shrink: 0;
   background: var(--acc-card-bg);
-  padding: 12px 16px;
+  padding: 12px var(--acc-content-inline-padding);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -984,9 +984,12 @@
      touch) to the page behind the panel. */
   overscroll-behavior: contain;
   padding: 28px 0 36px;
-  border-top-left-radius: 18px;
-  border-top-right-radius: 18px;
+  border-top-left-radius: 1.75rem;
+  border-top-right-radius: 1.75rem;
   background: var(--acc-bg-color);
+  /* A soft shadow cast up onto the header, so the body reads as a sheet
+     lying over it. */
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);
 }
 
 /* Text adjustments */
@@ -1087,11 +1090,10 @@
   }
 }
 
-/* Phones: trade the floating-card spacing for room to show options. */
+/* Phones: tighter spacing leaves more room to show options. */
 @media only screen and (max-width: 480px) {
   .acc-menu {
-    --acc-menu-inline-gap: 8px;
-    --acc-content-inline-padding: 12px;
+    --acc-content-inline-padding: 16px;
     --acc-menu-header-height: min(var(--acc-header-height), 56px);
   }
 
@@ -1117,7 +1119,7 @@
   }
 
   .acc-footer {
-    padding: 10px 12px;
+    padding: 10px var(--acc-content-inline-padding);
     gap: 6px;
   }
 
@@ -1146,7 +1148,6 @@
    tall panel, leaving a sliver for the options. */
 @media only screen and (max-height: 500px) {
   .acc-menu {
-    --acc-menu-block-gap: 8px;
     --acc-menu-header-height: min(var(--acc-header-height), 48px);
   }
 
@@ -1158,7 +1159,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 12px;
+    padding: 8px var(--acc-content-inline-padding);
   }
 
   .acc-footer-reset {
