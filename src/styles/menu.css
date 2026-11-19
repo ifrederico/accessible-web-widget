@@ -32,12 +32,13 @@
      Two weights. Semibold (600): the title and the name of anything you
      press. Regular (400): everything else, including values, notes and
      the choices in a list, picked or not. */
-  /* One hover look for the whole menu: a soft fill, mixed from the
-     theme's hover colour. It stays lighter than the panel background so
-     a hovered tile does not melt into it. Grey tiles that sit on a white
-     card go a step darker instead. */
-  --acc-hover-tint: #f7f8fa;
-  --acc-hover-tint-strong: #ebedf1;
+  /* One hover look for the whole menu: a grey fill, mixed from the
+     theme's hover colour. It is a step darker than the panel background,
+     so a hovered white tile stands out from both the white it was and
+     the grey around it. Grey tiles that sit on a white card go darker
+     still. */
+  --acc-hover-tint: #e7eaee;
+  --acc-hover-tint-strong: #dfe3e8;
   --acc-menu-block-gap: var(--acc-menu-inline-gap);
   border-radius: 1.75rem;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
@@ -1332,8 +1333,8 @@
 
 @supports (color: color-mix(in srgb, red 50%, transparent)) {
   .acc-menu {
-    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color) 14%, var(--acc-card-bg));
-    --acc-hover-tint-strong: color-mix(in srgb, var(--acc-hover-color) 34%, var(--acc-card-bg));
+    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color) 40%, var(--acc-card-bg));
+    --acc-hover-tint-strong: color-mix(in srgb, var(--acc-hover-color) 54%, var(--acc-card-bg));
   }
 
   .acc-btn.acc-selected .acc-progress-dot:not(.active) {

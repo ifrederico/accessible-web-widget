@@ -20,11 +20,13 @@
   --acc-report-muted: #5b6472;
   --acc-report-sheet: var(--acc-bg-color, #f3f5f8);
   --acc-report-card: var(--acc-card-bg, #ffffff);
-  --acc-hover-tint: #f7f8fa;
+  /* A step darker than the dialog's grey, so a hovered white card stands
+     out from both. */
+  --acc-hover-tint: #e7eaee;
 }
 @supports (color: color-mix(in srgb, red 50%, transparent)) {
   .acc-report-panel {
-    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color, #c4cad3) 14%, var(--acc-card-bg, #ffffff));
+    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color, #c4cad3) 40%, var(--acc-card-bg, #ffffff));
   }
 }
 .acc-report-panel *,
@@ -328,7 +330,7 @@
 }
 @media (hover: hover) {
   .acc-report-violation-help:hover {
-    background: #e6e9ee;
+    background: #e0e4ea;
   }
 }
 .acc-report-violation-help:focus-visible {
