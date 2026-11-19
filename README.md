@@ -194,5 +194,5 @@ MIT — see [LICENSE](LICENSE).
 
 ## Acknowledgments
 
-- Icons: [Google Material Icons](https://fonts.google.com/icons)
+- Icons: [Phosphor Icons](https://phosphoricons.com/) (MIT) in the menu, [Google Material Icons](https://fonts.google.com/icons) (Apache 2.0) on the floating button
 - Fonts: [OpenDyslexic](https://opendyslexic.org/) by Abbie Gonzalez, [Atkinson Hyperlegible](https://brailleinstitute.org/freefont) by the Braille Institute, [Lexend](https://www.lexend.com/) by the Lexend Project
