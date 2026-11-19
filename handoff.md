@@ -65,6 +65,7 @@ Rules the build must follow:
 - Two font weights: semibold for the title and the name of anything you press, regular for everything else (values, notes, list choices, picked or not).
 - The panel's scrollbar is thin with no track where the system always shows scrollbars. This was checked in Chrome only, and has no automated test.
 - The menu's text is set in Inter. The files are in `src/fonts/`, copied to `dist/fonts/` by the build, and loaded from beside the script when the menu first opens (only the parts a language needs). `menuFontUrl` points at another folder; `menuFont: "system"` turns it off. Before release: check the font loads from the CDN address, and in the WordPress plugin, whose PHP line for `menuFontUrl` and font copies were added but never run.
+- The Accessibility Report and Page Structure dialogs have the menu's look (blue header, grey sheet, white cards, Inter). The report's result rows are real buttons now, so they open with the keyboard. The annotations pop-up (dev tools) still has the old look.
 - The statement page is one sheet instead of five cards.
 - "Simplify Layout" is still in English in 9 of the 54 dictionaries.
 

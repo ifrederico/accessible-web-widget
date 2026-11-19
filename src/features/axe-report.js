@@ -212,7 +212,7 @@ export const axeReportMethods = {
       this.displayReportResults(panel, results);
   
     } catch (error) {
-      contentArea.innerHTML = `<div class="acc-report-error">Error: ${error.message}</div>`;
+      contentArea.innerHTML = `<div class="acc-report-error">Error: ${this.escapeHtml(error.message)}</div>`;
       statusArea.textContent = '';
     }
   },
@@ -306,8 +306,10 @@ export const axeReportMethods = {
           <h2 id="acc-report-title" class="acc-report-title">${this.translate('Accessibility Report')}</h2>
           <button type="button" class="acc-report-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
         </div>
-        <div class="acc-report-status"></div>
-        <div class="acc-report-content"></div>
+        <div class="acc-report-sheet">
+          <div class="acc-report-status"></div>
+          <div class="acc-report-content"></div>
+        </div>
         <div class="acc-report-footer">
           <span class="acc-report-powered">Powered by axe-core</span>
         </div>
@@ -393,12 +395,12 @@ export const axeReportMethods = {
         const safeHelpUrl = this.sanitizeUrl(violation.helpUrl);
         html += `
           <div class="acc-report-violation" data-index="${index}">
-            <div class="acc-report-violation-header">
+            <button type="button" class="acc-report-violation-header" aria-expanded="false" aria-controls="acc-report-violation-${index}">
               <span class="acc-report-violation-impact ${violation.impact}">${this.translate(this.capitalizeFirst(violation.impact))}</span>
               <span class="acc-report-violation-title">${this.escapeHtml(violation.help)}</span>
               <span class="acc-report-violation-count">${violation.nodes.length} ${this.translate('Element')}${violation.nodes.length > 1 ? 's' : ''}</span>
-            </div>
-            <div class="acc-report-violation-details">
+            </button>
+            <div class="acc-report-violation-details" id="acc-report-violation-${index}">
               <p class="acc-report-violation-desc">${this.escapeHtml(violation.description)}</p>
               ${safeHelpUrl ? `<p class="acc-report-violation-help">
                 <a href="${safeHelpUrl}" target="_blank" rel="noopener">${this.translate('How to Fix')} →</a>
@@ -409,7 +411,7 @@ export const axeReportMethods = {
                   ${node.failureSummary ? `<div class="acc-report-node-fix"><strong>${this.translate('Issue')}:</strong> ${this.escapeHtml(node.failureSummary)}</div>` : ''}
                 </div>
               `).join('')}
-              ${violation.nodes.length > 5 ? `<p style="color:#666;font-size:13px;margin-top:12px;">... and ${violation.nodes.length - 5} more elements</p>` : ''}
+              ${violation.nodes.length > 5 ? `<p class="acc-report-note">... and ${violation.nodes.length - 5} more elements</p>` : ''}
             </div>
           </div>
         `;
@@ -422,7 +424,7 @@ export const axeReportMethods = {
       html += `
         <div class="acc-report-section">
           <div class="acc-report-section-title">${this.translate('Items Need Review')} (${incomplete.length})</div>
-          <p style="color:#666;font-size:14px;">These items require manual verification.</p>
+          <p class="acc-report-note">These items require manual verification.</p>
         </div>
       `;
     }
@@ -432,7 +434,8 @@ export const axeReportMethods = {
     // Add click handlers for expandable violations
     contentArea.querySelectorAll('.acc-report-violation-header').forEach(header => {
       header.addEventListener('click', () => {
-        header.parentElement.classList.toggle('expanded');
+        const expanded = header.parentElement.classList.toggle('expanded');
+        header.setAttribute('aria-expanded', expanded ? 'true' : 'false');
       });
     });
   },
