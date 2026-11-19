@@ -87,11 +87,14 @@ If you already have a toolbar or footer link for accessibility, hide the floatin
 
 `AccessibleWebWidget.instance` exposes `open()`, `close()`, and `toggle()`. They also work with the default button visible.
 
-### Visitors can hide the button
+### Visitors can move or hide the button
 
-The panel has a **Hide widget** button next to Reset, above the options. It removes the floating button for the rest of the visitor's browser session, on every page of your site, and the button is back on their next visit. The panel still opens through the skip link and through `AccessibleWebWidget.instance.open()`. To bring the button back yourself, call `AccessibleWebWidget.instance.showButton()`.
+- **Move widget** flips the floating button, and the panel with it, to the other side of the screen. The choice is remembered on that device. It keeps your top or bottom setting.
+- **Hide widget** asks for how long: this visit, one day, or one week. The button then stays away on every page of your site and comes back on its own.
 
-The Hide button is not shown when you use `data-acc-hide-button`, since there is no floating button to hide.
+While the button is hidden, the panel still opens through the skip link and through `AccessibleWebWidget.instance.open()`. In the panel, the Hide widget button shows as on, and clicking it brings the floating button back. You can also call `AccessibleWebWidget.instance.showButton()`.
+
+Neither control is shown when you use `data-acc-hide-button`, since there is no floating button to move or hide.
 
 ### Content Security Policy
 

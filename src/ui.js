@@ -614,6 +614,11 @@ export const uiMethods = {
                 <div id="acc-profiles-panel" class="acc-card-panel acc-profiles-panel" role="group" aria-label="Profiles" hidden>
                   ${profilesMarkup}
                 </div>
+                ${this.isLauncherRemovedByOwner() ? '' : `<button type="button" class="acc-card-row acc-move-row" aria-pressed="false">
+                  <span class="acc-card-row-icon" aria-hidden="true">${this.widgetIcons.moveWidget}</span>
+                  <span class="acc-card-row-label acc-label">Move widget</span>
+                  <span class="acc-move-side" aria-hidden="true"><span class="acc-move-dot"></span></span>
+                </button>`}
               </div>
               <div class="acc-actions">
                 <button type="button" class="acc-action-reset">
@@ -621,18 +626,34 @@ export const uiMethods = {
                   <span class="acc-label">Reset settings</span>
                   <span class="acc-reset-count" hidden></span>
                 </button>
-                ${this.isLauncherRemovedByOwner() ? '' : `<button type="button" class="acc-action-hide">
+                ${this.isLauncherRemovedByOwner() ? '' : `<button type="button" class="acc-action-hide" aria-pressed="false" aria-controls="acc-hide-panel">
                   ${this.widgetIcons.hideWidget}
                   <span class="acc-label">Hide widget</span>
                 </button>`}
               </div>
+              ${this.isLauncherRemovedByOwner() ? '' : `<div id="acc-hide-panel" class="acc-hide-panel" hidden>
+                <div class="acc-hide-title">
+                  ${this.widgetIcons.hideWidget}
+                  <span class="acc-label">Hide widget</span>
+                </div>
+                <div class="acc-hide-choices" role="radiogroup" aria-label="Hide widget">
+                  ${[['visit', 'This visit'], ['day', 'One day'], ['week', 'One week']].map(([value, label], index) => `<button type="button" class="acc-hide-choice" role="radio" aria-checked="${index === 0}" tabindex="${index === 0 ? 0 : -1}" data-hide-for="${value}">
+                    <span class="acc-hide-radio" aria-hidden="true"></span>
+                    <span class="acc-label">${label}</span>
+                  </button>`).join('')}
+                </div>
+                <div class="acc-hide-buttons">
+                  <button type="button" class="acc-hide-cancel"><span class="acc-label">Close</span></button>
+                  <button type="button" class="acc-hide-confirm"><span class="acc-label">Hide</span></button>
+                </div>
+              </div>`}
               <div class="acc-options">${tilesMarkup}</div>
+              ${this.options.hideAttribution === true ? '' : `<div class="acc-footer-credit">
+                <a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb</a>
+                <a class="acc-footer-statement" href="https://accessibleweb.pages.dev/statement" target="_blank" rel="noopener noreferrer"><span class="acc-label">Accessibility Statement</span></a>
+              </div>`}
             </div>
           </div>
-          ${this.options.hideAttribution === true ? '' : `<div class="acc-footer"><div class="acc-footer-credit">
-              <a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb</a>
-              <a class="acc-footer-statement" href="https://accessibleweb.pages.dev/statement" target="_blank" rel="noopener noreferrer"><span class="acc-label">Accessibility Statement</span></a>
-          </div></div>`}
         </div>
         <div class="acc-overlay"> </div>
         `;
@@ -652,16 +673,8 @@ export const uiMethods = {
         const dockOverride = this.widgetTheme.menuPosition === 'left' || this.widgetTheme.menuPosition === 'right'
           ? this.widgetTheme.menuPosition
           : null;
-        const isRightAligned = dockOverride
-          ? dockOverride === 'right'
-          : position === 'bottom-right' || position === 'top-right';
-        if (isRightAligned) {
-          menu.style.right = 'var(--acc-menu-inline-gap, 12px)';
-          menu.style.left = 'auto';
-        } else {
-          menu.style.left = 'var(--acc-menu-inline-gap, 12px)';
-          menu.style.right = 'auto';
-        }
+        this.menuDockOverride = dockOverride;
+        this.dockMenu(menu, this.getLauncherPosition(position));
 
         const config = this.loadConfig();
 
@@ -765,6 +778,19 @@ export const uiMethods = {
           });
         });
   
+        // The "how long" choices behave as one radio group: arrows move.
+        menu.addEventListener('keydown', (e) => {
+          const choice = e.target.closest ? e.target.closest('.acc-hide-choice') : null;
+          if (!choice) return;
+          const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+          if (!step) return;
+          e.preventDefault();
+          const choices = Array.from(menu.querySelectorAll('.acc-hide-choice'));
+          const next = choices[(choices.indexOf(choice) + step + choices.length) % choices.length];
+          this.selectHideChoice(menu, next);
+          next.focus();
+        });
+
         // click event handler:
         menu.addEventListener('click', (e) => {
           const target = e.target.closest('[role="button"], button, .acc-overlay');
@@ -773,8 +799,32 @@ export const uiMethods = {
             this.closeMenu(menuContainer);
             return;
           }
+          if (target.classList.contains('acc-move-row')) {
+            this.moveLauncher();
+            return;
+          }
           if (target.classList.contains('acc-action-hide')) {
-            this.hideLauncherForVisit();
+            // Already hidden (the menu was opened another way): bring the
+            // button back. Otherwise ask for how long.
+            if (this.isLauncherHiddenByVisitor()) {
+              this.showButton();
+            } else {
+              this.toggleHidePanel(menu, true);
+            }
+            return;
+          }
+          if (target.classList.contains('acc-hide-choice')) {
+            this.selectHideChoice(menu, target);
+            return;
+          }
+          if (target.classList.contains('acc-hide-cancel')) {
+            this.toggleHidePanel(menu, false);
+            return;
+          }
+          if (target.classList.contains('acc-hide-confirm')) {
+            const choice = menu.querySelector('.acc-hide-choice[aria-checked="true"]');
+            this.toggleHidePanel(menu, false, { restoreFocus: false });
+            this.hideLauncher(choice ? choice.dataset.hideFor : 'visit');
             return;
           }
           if (target.classList.contains('acc-action-reset')) {
@@ -857,6 +907,7 @@ export const uiMethods = {
       const menu = this.displayMenu({ ...launchOptions, container: this.widgetContainerEl });
       if (!menu) return null;
       this.menuContainer = menu;
+      this.syncLauncherControls();
 
       const overlay = menu.querySelector('.acc-overlay');
       if (overlay) {
@@ -890,6 +941,8 @@ export const uiMethods = {
       const menu = this.ensureMenuCreated();
       if (!menu) return false;
       if (!this.isMenuOpen()) {
+        this.toggleHidePanel(menu, false, { restoreFocus: false });
+        this.syncLauncherControls();
         this.openMenu(menu, this.widgetToggleButton);
       }
       return true;
@@ -915,19 +968,23 @@ export const uiMethods = {
       return value === true || String(value).trim().toLowerCase() === 'true';
     },
 
-  // A visitor's "Hide widget" lasts for the browser session: the floating
-  // button stays away on every page of this visit and is back on the next.
+  // A visitor can hide the floating button for this visit (remembered for
+  // the browser session) or for a day or a week (remembered with the
+  // other saved choices).
   isLauncherHiddenByVisitor() {
       try {
-        return window.sessionStorage.getItem('acc-launcher-hidden') === '1';
+        if (window.sessionStorage.getItem('acc-launcher-hidden') === '1') return true;
       } catch {
-        return false;
+        // Session storage can be blocked; fall through to the saved date.
       }
+      const until = Number(this.widgetConfig?.launcherHiddenUntil) || 0;
+      return until > Date.now();
     },
 
-  setLauncherHiddenByVisitor(hidden) {
+  setLauncherHiddenByVisitor(hidden, duration = 'visit') {
+      const days = { day: 1, week: 7 }[duration];
       try {
-        if (hidden) {
+        if (hidden && !days) {
           window.sessionStorage.setItem('acc-launcher-hidden', '1');
         } else {
           window.sessionStorage.removeItem('acc-launcher-hidden');
@@ -935,23 +992,116 @@ export const uiMethods = {
       } catch {
         // Storage can be blocked; the button is then hidden for this page only.
       }
+      const until = hidden && days ? Date.now() + days * 24 * 60 * 60 * 1000 : 0;
+      if (until || this.widgetConfig?.launcherHiddenUntil) {
+        this.saveConfig({ launcherHiddenUntil: until });
+      }
       if (this.widgetToggleButton) {
         this.widgetToggleButton.hidden = hidden;
       }
+      this.syncLauncherControls();
     },
 
-  hideLauncherForVisit() {
+  // duration: 'visit' | 'day' | 'week'
+  hideLauncher(duration = 'visit') {
       this.close();
-      this.setLauncherHiddenByVisitor(true);
+      this.setLauncherHiddenByVisitor(true, duration);
       // close() hands focus back to the button that has just gone.
       const active = this.widgetRoot?.activeElement || document.activeElement;
       if (active && typeof active.blur === 'function') active.blur();
     },
 
-  // Brings the floating button back, for a host page that offers its own
-  // "show accessibility options" control.
+  // Brings the floating button back: from the menu's own Hide button when
+  // it is already hidden, or from a host page's "show accessibility
+  // options" control.
   showButton() {
       this.setLauncherHiddenByVisitor(false);
+    },
+
+  // The step between clicking Hide widget and hiding: it takes the place
+  // of the Reset and Hide buttons and asks for how long.
+  toggleHidePanel(menu, open, { restoreFocus = true } = {}) {
+      const panel = menu?.querySelector('.acc-hide-panel');
+      const actions = menu?.querySelector('.acc-actions');
+      if (!panel || !actions) return;
+      panel.hidden = !open;
+      actions.hidden = open;
+      if (open) {
+        const checked = panel.querySelector('.acc-hide-choice[aria-checked="true"]');
+        if (checked) checked.focus();
+      } else if (restoreFocus) {
+        const hide = actions.querySelector('.acc-action-hide');
+        if (hide) hide.focus();
+      }
+    },
+
+  selectHideChoice(menu, choice) {
+      menu.querySelectorAll('.acc-hide-choice').forEach((item) => {
+        const on = item === choice;
+        item.setAttribute('aria-checked', String(on));
+        item.setAttribute('tabindex', on ? '0' : '-1');
+      });
+    },
+
+  // Where the floating button sits: the site's own setting, with the
+  // visitor's chosen side (left or right) on top of it.
+  getLauncherPosition(basePosition) {
+      const base = String(basePosition || this.options?.position || 'bottom-right');
+      const side = this.widgetConfig?.launcherSide;
+      if (side !== 'left' && side !== 'right') return base;
+      return `${base.startsWith('top') ? 'top' : 'bottom'}-${side}`;
+    },
+
+  placeLauncher() {
+      const btn = this.widgetToggleButton;
+      if (!btn) return;
+      const position = this.getLauncherPosition();
+      const [offsetX = 20, offsetY = 25] = this.launcherOffset || [20, 20];
+      const onRight = position.endsWith('right');
+      const onTop = position.startsWith('top');
+      Object.assign(btn.style, {
+        left: onRight ? 'auto' : `${offsetX}px`,
+        right: onRight ? `${offsetX}px` : 'auto',
+        top: onTop ? `${offsetY}px` : 'auto',
+        bottom: onTop ? 'auto' : `${offsetY}px`
+      });
+    },
+
+  dockMenu(menu, position) {
+      if (!menu) return;
+      const onRight = this.menuDockOverride
+        ? this.menuDockOverride === 'right'
+        : String(position).endsWith('right');
+      menu.style.right = onRight ? 'var(--acc-menu-inline-gap, 12px)' : 'auto';
+      menu.style.left = onRight ? 'auto' : 'var(--acc-menu-inline-gap, 12px)';
+    },
+
+  // Flips the floating button, and the menu with it, to the other side of
+  // the screen. The choice is remembered on this device.
+  moveLauncher() {
+      const side = this.getLauncherPosition().endsWith('right') ? 'left' : 'right';
+      this.saveConfig({ launcherSide: side });
+      this.placeLauncher();
+      const menu = this.menuContainer?.querySelector('.acc-menu');
+      this.dockMenu(menu, this.getLauncherPosition());
+      this.syncLauncherControls();
+    },
+
+  // Keeps the Move row and the Hide button in step with the saved state.
+  syncLauncherControls() {
+      const root = this.menuContainer || this.widgetContainerEl;
+      if (!root) return;
+      const position = this.getLauncherPosition();
+      const move = root.querySelector('.acc-move-row');
+      if (move) {
+        const basePosition = String(this.options?.position || 'bottom-right');
+        move.setAttribute('aria-pressed', String(position.endsWith('right') !== basePosition.endsWith('right')));
+        move.dataset.side = position.endsWith('right') ? 'right' : 'left';
+      }
+      const hide = root.querySelector('.acc-action-hide');
+      if (hide) {
+        hide.setAttribute('aria-pressed', String(this.isLauncherHiddenByVisitor()));
+      }
     },
 
   displayWidget(options) {
@@ -1007,19 +1157,9 @@ export const uiMethods = {
           this.violationBubble = this.findElement('.acc-violation-bubble', widget);
           this.widgetToggleButton = btn;
 
-          const { position = "bottom-right", offset = [20, 20], size } = options;
-          const normalizedOffset = this.normalizeOffset(offset) || [20, 20];
-          const offsetX = normalizedOffset[0] ?? 20;
-          const offsetY = normalizedOffset[1] ?? 25;
-          let buttonStyle = { left: `${offsetX}px`, bottom: `${offsetY}px` };
-          if (position === "bottom-right") {
-            buttonStyle = { right: `${offsetX}px`, left: "auto", bottom: `${offsetY}px` };
-          } else if (position === "top-left") {
-            buttonStyle = { top: `${offsetY}px`, bottom: "auto", left: `${offsetX}px` };
-          } else if (position === "top-right") {
-            buttonStyle = { top: `${offsetY}px`, right: `${offsetX}px`, bottom: "auto", left: "auto" };
-          }
-          Object.assign(btn.style, buttonStyle);
+          const { offset = [20, 20], size } = options;
+          this.launcherOffset = this.normalizeOffset(offset) || [20, 20];
+          this.placeLauncher();
 
           if (size !== undefined && size !== null && String(size).trim() !== '') {
             const buttonSize = this.normalizeButtonSize(size);

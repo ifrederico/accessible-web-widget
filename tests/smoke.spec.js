@@ -594,7 +594,7 @@ test('reset settings lives in footer instead of header button', async ({ page })
   await expect(page.locator('.acc-footer-brand')).toBeVisible();
 });
 
-test('Hide widget removes the floating button for the visit and showButton brings it back', async ({ page }) => {
+test('Hide widget asks for how long, hides for the visit, and can be undone from the menu', async ({ page }) => {
   await page.goto('index.html');
   const launcher = page.locator('.acc-toggle-btn');
   await launcher.click();
@@ -610,7 +610,27 @@ test('Hide widget removes the floating button for the visit and showButton bring
   expect(Math.abs(resetBox.y - hideBox.y)).toBeLessThan(1);
   expect(Math.abs(resetBox.width - hideBox.width)).toBeLessThan(1);
   expect(resetBox.y + resetBox.height).toBeLessThanOrEqual(firstTile.y);
+
+  // Clicking Hide does not hide yet: it asks for how long.
   await hide.click();
+  expect(await launcher.evaluate((el) => el.hidden)).toBe(false);
+  await expect(page.locator('.acc-actions')).toBeHidden();
+  const choices = page.getByRole('radio');
+  await expect(choices).toHaveCount(3);
+  await expect(page.getByRole('radio', { name: 'This visit' })).toBeChecked();
+  await expect(page.getByRole('radio', { name: 'This visit' })).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.getByRole('radio', { name: 'One day' })).toBeChecked();
+  await page.keyboard.press('ArrowUp');
+
+  // Close backs out without hiding.
+  await page.locator('.acc-hide-cancel').click();
+  await expect(page.locator('.acc-hide-panel')).toBeHidden();
+  await expect(hide).toBeFocused();
+  expect(await launcher.evaluate((el) => el.hidden)).toBe(false);
+
+  await hide.click();
+  await page.locator('.acc-hide-confirm').click();
   await expect(page.locator('.acc-menu')).toBeHidden();
   await expect(launcher).toBeHidden();
 
@@ -618,16 +638,70 @@ test('Hide widget removes the floating button for the visit and showButton bring
   await page.reload();
   await expect(launcher).toBeHidden();
 
-  // The panel can still be opened by the host page, and the button restored.
+  // The menu still opens another way; its Hide button now shows as on,
+  // and clicking it brings the floating button back.
   await page.evaluate(() => window.AccessibleWebWidget.instance.open());
-  await expect(page.locator('.acc-menu')).toBeVisible();
-  await page.evaluate(() => {
-    window.AccessibleWebWidget.instance.close();
-    window.AccessibleWebWidget.instance.showButton();
-  });
+  await expect(hide).toHaveAttribute('aria-pressed', 'true');
+  await hide.click();
+  expect(await launcher.evaluate((el) => el.hidden)).toBe(false);
+  await expect(hide).toHaveAttribute('aria-pressed', 'false');
+  await page.evaluate(() => window.AccessibleWebWidget.instance.close());
   await expect(launcher).toBeVisible();
   await page.reload();
   await expect(launcher).toBeVisible();
+});
+
+test('Hide widget for one day outlasts the visit and ends on its own', async ({ page, context }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-action-hide').click();
+  await page.getByRole('radio', { name: 'One day' }).click();
+  await page.locator('.acc-hide-confirm').click();
+  await expect(page.locator('.acc-toggle-btn')).toBeHidden();
+
+  // A new tab is a new visit: a one-day hide still holds there.
+  const second = await context.newPage();
+  await second.goto(page.url());
+  await expect(second.locator('.acc-toggle-btn')).toBeHidden();
+
+  // Two days on, the button is back.
+  await second.clock.install({ time: Date.now() + 2 * 24 * 60 * 60 * 1000 });
+  await second.reload();
+  await expect(second.locator('.acc-toggle-btn')).toBeVisible();
+
+  // showButton() ends a timed hide at once.
+  await page.evaluate(() => window.AccessibleWebWidget.instance.showButton());
+  await page.reload();
+  await expect(page.locator('.acc-toggle-btn')).toBeVisible();
+});
+
+test('Move widget flips the button and the menu to the other side and remembers it', async ({ page }) => {
+  await page.goto('index.html');
+  const launcher = page.locator('.acc-toggle-btn');
+  const viewport = page.viewportSize();
+  const startsRight = (await launcher.boundingBox()).x > viewport.width / 2;
+  await launcher.click();
+
+  const move = page.locator('.acc-move-row');
+  await expect(move).toHaveAccessibleName('Move widget');
+  await expect(move).toHaveAttribute('aria-pressed', 'false');
+  await move.click();
+  await expect(move).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.acc-menu')).toBeVisible();
+
+  const menuBox = await page.locator('.acc-menu').boundingBox();
+  const launcherBox = await launcher.boundingBox();
+  expect(launcherBox.x > viewport.width / 2).toBe(!startsRight);
+  expect(menuBox.x + menuBox.width / 2 > viewport.width / 2).toBe(!startsRight);
+
+  await page.reload();
+  expect((await launcher.boundingBox()).x > viewport.width / 2).toBe(!startsRight);
+
+  // A second click puts it back.
+  await launcher.click();
+  await move.click();
+  await expect(move).toHaveAttribute('aria-pressed', 'false');
+  expect((await launcher.boundingBox()).x > viewport.width / 2).toBe(startsRight);
 });
 
 test('there is no Hide widget button when the site owner removed the floating button', async ({ page }) => {
@@ -638,6 +712,7 @@ test('there is no Hide widget button when the site owner removed the floating bu
   await page.evaluate(() => window.AccessibleWebWidget.instance.open());
   await expect(page.locator('.acc-action-reset')).toBeVisible();
   await expect(page.locator('.acc-action-hide')).toHaveCount(0);
+  await expect(page.locator('.acc-move-row')).toHaveCount(0);
 });
 
 test('the footer links to the accessibility statement, in the menu language', async ({ page }) => {

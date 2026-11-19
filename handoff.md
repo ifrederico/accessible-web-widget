@@ -41,12 +41,14 @@ Rules the build must follow:
 - Text contrast at least 4.5 to 1, tap targets at least 44px.
 - The Vision Impaired profile sets text to 150% (it was 140%) so it matches a step.
 
-## Reset, Hide and the footer (built)
+## Reset, Hide, Move and the credit line (built)
 
-- Reset (with a count) and "Hide widget" are two equal white buttons, side by side, under the Language and Profiles card and above the tiles. This was draft B on the canvas.
-- The footer is one thin line: "AccessibleWeb" on the left and "Accessibility Statement" on the right, linking to the new statement page on the site.
-- "Hide widget" removes the floating button for the rest of the visitor's browser session. It is back on their next visit. The panel still opens through the skip link and through `AccessibleWebWidget.instance.open()`, and `showButton()` brings the button back. This "for the visit" rule was chosen as a safe default and has not been confirmed.
-- "Hide widget" and "Accessibility Statement" are translated in all 54 languages by machine, not checked by native speakers.
+- Reset (with a count) and "Hide widget" are two equal white buttons, side by side, under the top card and above the tiles.
+- "Hide widget" opens a step in the same place that asks for how long: this visit, one day, or one week, with Close and Hide. "Always" was left out on purpose, because there is no keyboard shortcut to bring the widget back.
+- While the button is hidden, the menu still opens through the skip link (press Tab on the page) or `AccessibleWebWidget.instance.open()`. The Hide button then shows as on, and clicking it brings the floating button back. `showButton()` does the same.
+- "Move widget" is a third row in the top card. One click flips the floating button and the panel to the other side. It is remembered on the device.
+- There is no footer bar any more. "AccessibleWeb" and "Accessibility Statement" sit at the end of the list, after the last tiles. This was put in to look at and is not confirmed.
+- New words, translated in all 54 languages by machine and not checked by native speakers: "Hide widget", "Move widget", "This visit", "One day", "One week", "Hide", "Accessibility Statement".
 - The statement page's wording was drafted from the README and the disclaimer. It needs the owner's read-through.
 - The statement link points at the production site, where the page only exists after `dev` is merged.
 
