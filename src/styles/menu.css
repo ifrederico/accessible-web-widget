@@ -486,33 +486,6 @@
   }
 }
 
-/* Move widget: a small picture of the screen with a dot on the side
-   where the floating button sits. */
-.acc-move-side {
-  position: relative;
-  flex-shrink: 0;
-  width: 40px;
-  height: 26px;
-  border-radius: 8px;
-  background: var(--acc-bg-color);
-  box-shadow: inset 0 0 0 1px var(--acc-border-color);
-}
-
-.acc-move-dot {
-  position: absolute;
-  bottom: 5px;
-  left: 5px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--acc-primary-color);
-  transition: left 0.2s ease;
-}
-
-.acc-more-move[data-side="right"] .acc-move-dot {
-  left: 27px;
-}
-
 /* The card clips its children, so the ring sits inside the row, rounded
    to clear the card's corners. */
 .acc-card-row:focus-visible {

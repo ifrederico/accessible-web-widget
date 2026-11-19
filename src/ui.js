@@ -592,7 +592,6 @@ export const uiMethods = {
               <button type="button" class="acc-more-item acc-more-move" aria-pressed="false">
                 ${this.widgetIcons.moveWidget}
                 <span class="acc-label">Move widget</span>
-                <span class="acc-move-side" aria-hidden="true"><span class="acc-move-dot"></span></span>
               </button>
               <button type="button" class="acc-more-item acc-more-hide" aria-pressed="false">
                 ${this.widgetIcons.hideWidget}
@@ -1153,7 +1152,6 @@ export const uiMethods = {
       if (move) {
         const basePosition = String(this.options?.position || 'bottom-right');
         move.setAttribute('aria-pressed', String(position.endsWith('right') !== basePosition.endsWith('right')));
-        move.dataset.side = position.endsWith('right') ? 'right' : 'left';
       }
       const hide = root.querySelector('.acc-more-hide');
       if (hide) {
