@@ -3,7 +3,7 @@ export const WIDGET_THEME = {
       primaryColor: '#0072e4',        // Blue, oklch(0.56 0.199 253); 4.6:1 with white (WCAG AA)
       primaryColorLight: '#4da1fe',   // Lighter blue, oklch(0.70 0.16 253)
       primaryColorDark: '#0049a5',    // Darker blue, oklch(0.42 0.17 253)
-      backgroundColor: '#f5f7fa',
+      backgroundColor: '#f3f5f8',
       textColor: '#222222',
       textColorInverted: '#ffffff',
       

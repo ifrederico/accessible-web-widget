@@ -68,6 +68,8 @@ class AccessibleWebWidget {
         label: 'Text to Speech',
         key: 'text-to-speech',
         icon: this.widgetIcons.textToSpeech,
+        // Speed levels are defined with ttsSpeedChoices below.
+        multiLevel: true,
         requiresSpeechSynthesis: true
       },
       { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
@@ -104,7 +106,7 @@ class AccessibleWebWidget {
         label: 'Vision Impaired',
         key: 'profile-vision',
         icon: this.widgetIcons.highContrast,
-        states: { 'text-scale': 1.4, 'high-contrast-mode': true, 'large-pointer': true }
+        states: { 'text-scale': 1.5, 'high-contrast-mode': true, 'large-pointer': true }
       },
       {
         label: 'ADHD Friendly',
@@ -163,10 +165,16 @@ class AccessibleWebWidget {
     // Track direct user toggles for features that have side effects.
     this.userInitiatedToggleKey = null;
 
-    // Font size slider bounds
-    this.textScaleMinPercent = 80;
-    this.textScaleMaxPercent = 150;
-    this.textScaleStepPercent = 5;
+    // Font Size levels, as the multiplier persisted in the text-scale state
+    // (1 = off). Stored values from the old slider snap to the nearest one.
+    this.textScaleLevels = [1.1, 1.25, 1.5];
+    // Text to Speech speeds, persisted by key in the text-to-speech state
+    // (legacy true = normal). Each scales the site's ttsRate.
+    this.ttsSpeedChoices = [
+      { key: 'normal', rate: 1 },
+      { key: 'slow', rate: 0.8 },
+      { key: 'fast', rate: 1.3 }
+    ];
     this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation', 'monochrome'];
 
@@ -193,7 +201,13 @@ class AccessibleWebWidget {
       },
       { label: 'Highlight Links', key: 'highlight-links', icon: this.widgetIcons.highlightLinks },
       { label: 'Highlight Title', key: 'highlight-title', icon: this.widgetIcons.highlightTitle },
-      { label: 'Font Size', key: 'text-scale', icon: this.widgetIcons.adjustFontSize }
+      {
+        label: 'Font Size',
+        key: 'text-scale',
+        icon: this.widgetIcons.adjustFontSize,
+        multiLevel: true,
+        levels: this.textScaleLevels.length
+      }
     ];
 
     this.multiLevelFeatures = {
@@ -211,6 +225,16 @@ class AccessibleWebWidget {
         levels: this.readableFontChoices.length,
         currentIndex: -1,
         values: this.readableFontChoices.map((choice) => choice.key)
+      },
+      'text-scale': {
+        levels: this.textScaleLevels.length,
+        currentIndex: -1,
+        values: this.textScaleLevels
+      },
+      'text-to-speech': {
+        levels: this.ttsSpeedChoices.length,
+        currentIndex: -1,
+        values: this.ttsSpeedChoices.map((choice) => choice.key)
       }
     };
 

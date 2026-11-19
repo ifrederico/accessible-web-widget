@@ -41,6 +41,28 @@ export const ttsMethods = {
     return Math.min(2, Math.max(0.5, configured));
   },
 
+  // Map a persisted text-to-speech state to a speed choice. Legacy configs
+  // stored a boolean (true = the only speed there was, normal).
+  resolveTtsSpeed(value) {
+    const choices = this.ttsSpeedChoices || [];
+    if (value === true) return choices[0] || null;
+    if (typeof value !== 'string') return null;
+    return choices.find((choice) => choice.key === value) || null;
+  },
+
+  // Index of the active speed level, -1 when Text to Speech is off.
+  getTtsSpeedLevel(value) {
+    const choice = this.resolveTtsSpeed(value);
+    return choice ? this.ttsSpeedChoices.indexOf(choice) : -1;
+  },
+
+  // The site's ttsRate is the normal speed; slow and fast scale from it.
+  getTtsSpeechRate() {
+    const choice = this.resolveTtsSpeed(this.retrieveState('text-to-speech'));
+    const rate = this.getNativeTtsRate() * (choice ? choice.rate : 1);
+    return Math.min(2, Math.max(0.5, Math.round(rate * 100) / 100));
+  },
+
   getNativeTtsPitch() {
     const configured = Number(this.nativeTtsConfig?.pitch);
     if (!Number.isFinite(configured)) return 1;
@@ -380,7 +402,7 @@ export const ttsMethods = {
     if (this.ttsVoice) {
       utterance.voice = this.ttsVoice;
     }
-    utterance.rate = this.getNativeTtsRate();
+    utterance.rate = this.getTtsSpeechRate();
     utterance.pitch = this.getNativeTtsPitch();
 
     utterance.onstart = () => {
@@ -489,7 +511,7 @@ export const ttsMethods = {
     if (voice) {
       utterance.voice = voice;
     }
-    utterance.rate = this.getNativeTtsRate();
+    utterance.rate = this.getTtsSpeechRate();
     utterance.pitch = this.getNativeTtsPitch();
     synth.speak(utterance);
   },

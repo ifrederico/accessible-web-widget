@@ -5,6 +5,36 @@ const allowDevTools = (page) => page.addInitScript(() => {
   window.AccessibleWebWidgetOptions = { devTools: true };
 });
 
+const readStates = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
+
+// Records every utterance handed to a mocked speechSynthesis; call before goto.
+const mockSpeech = (page) => page.addInitScript(() => {
+  class MockUtterance {
+    constructor(text) {
+      this.text = text;
+      this.lang = '';
+      this.voice = null;
+      this.rate = 1;
+      this.pitch = 1;
+    }
+  }
+  window.__speakPayloads = [];
+  const synth = {
+    speaking: false,
+    paused: false,
+    getVoices: () => [{ name: 'Samantha', lang: 'en-US', default: true, localService: true }],
+    speak: (utterance) => {
+      window.__speakPayloads.push({ text: utterance.text, rate: utterance.rate });
+      if (typeof utterance.onend === 'function') setTimeout(() => utterance.onend(), 0);
+    },
+    cancel: () => {},
+    pause: () => {},
+    resume: () => {}
+  };
+  Object.defineProperty(window, 'speechSynthesis', { configurable: true, get: () => synth });
+  Object.defineProperty(window, 'SpeechSynthesisUtterance', { configurable: true, writable: true, value: MockUtterance });
+});
+
 test('auto-init renders exactly one toggle button', async ({ page }) => {
   await page.goto('index.html');
   await expect(page.locator('.acc-toggle-btn')).toHaveCount(1);
@@ -51,18 +81,81 @@ test('menu closes via the header close button', async ({ page }) => {
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('language selector opens from the menu header', async ({ page }) => {
+test('header holds only the title and the close button', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-menu-header button')).toHaveCount(1);
+  await expect(page.locator('.acc-menu-header .acc-menu-close')).toBeVisible();
+});
+
+test('Language row expands in place, searches, and switches language', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  const languageToggle = page.locator('.acc-header-lang-toggle');
-  const languageModal = page.locator('#acc-lang-modal');
-  await expect(languageToggle).toHaveCount(1);
-  await expect(languageModal).toHaveAttribute('hidden', '');
+  const languageRow = page.locator('.acc-lang-row');
+  const languagePanel = page.locator('#acc-lang-panel');
+  await expect(languageRow).toHaveAttribute('aria-expanded', 'false');
+  await expect(languagePanel).toHaveAttribute('hidden', '');
+  await expect(page.locator('#acc-current-language')).toHaveText('English');
+  await expect(languageRow).toHaveAccessibleName('Language English');
 
-  await languageToggle.click();
-  await expect(languageModal).not.toHaveAttribute('hidden', '');
-  await expect(page.locator('.acc-lang-item').first()).toBeVisible();
+  await languageRow.click();
+  await expect(languageRow).toHaveAttribute('aria-expanded', 'true');
+  await expect(languagePanel).toBeVisible();
+  // The list sits inside the card, above the Profiles row.
+  const panelBox = await languagePanel.boundingBox();
+  const profilesBox = await page.locator('.acc-profiles-row').boundingBox();
+  expect(panelBox.y + panelBox.height).toBeLessThanOrEqual(profilesBox.y + 1);
+  await expect(page.locator('.acc-lang-item')).toHaveCount(54);
+
+  const search = page.locator('#acc-lang-search');
+  await expect(search).toBeFocused();
+  await search.fill('deutsch');
+  await expect(page.locator('.acc-lang-item:visible')).toHaveCount(1);
+  await page.locator('.acc-lang-item[data-lang="de"]').click();
+
+  await expect(languagePanel).toHaveAttribute('hidden', '');
+  await expect(languageRow).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#acc-current-language')).toHaveText('Deutsch');
+  await expect(page.locator('.acc-menu-title')).toHaveText('Optionen für Barrierefreiheit');
+  await expect(languageRow).toHaveAccessibleName('Sprache Deutsch');
+
+  // Reopening shows the full list again.
+  await languageRow.click();
+  await expect(search).toHaveValue('');
+  await expect(page.locator('.acc-lang-item:visible')).toHaveCount(54);
+});
+
+test('Profiles row expands to the profile tiles and names the active profile', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const profilesRow = page.locator('.acc-profiles-row');
+  const profilesPanel = page.locator('#acc-profiles-panel');
+  const summary = page.locator('.acc-profiles-summary');
+  await expect(profilesRow).toHaveAttribute('aria-expanded', 'false');
+  await expect(profilesPanel).toBeHidden();
+  await expect(summary).toHaveText('');
+
+  await profilesRow.click();
+  await expect(profilesRow).toHaveAttribute('aria-expanded', 'true');
+  const tiles = profilesPanel.locator('.acc-btn');
+  await expect(tiles).toHaveCount(4);
+  // Two per row.
+  const [first, second, third] = await Promise.all([0, 1, 2].map((i) => tiles.nth(i).boundingBox()));
+  expect(Math.abs(first.y - second.y)).toBeLessThan(1);
+  expect(third.y).toBeGreaterThan(first.y + first.height);
+
+  await page.locator('.acc-btn[data-key="profile-vision"]').click();
+  await expect(summary).toHaveText('Vision Impaired');
+  await page.locator('.acc-btn[data-key="profile-adhd"]').click();
+  await expect(summary).toHaveText('2');
+  await expect(profilesRow).toHaveAccessibleName('Profiles 2');
+
+  await page.reload();
+  await page.locator('.acc-toggle-btn').click();
+  await expect(summary).toHaveText('2');
+  await expect(profilesPanel).toBeHidden();
 });
 
 test('state persists after reload (bold text toggle)', async ({ page }) => {
@@ -77,56 +170,95 @@ test('state persists after reload (bold text toggle)', async ({ page }) => {
   await expect(page.locator('.acc-btn[data-key="bold-text"]')).toHaveClass(/acc-selected/);
 });
 
-test('text scale applies below 100% and persists exact percent', async ({ page }) => {
+test('Font Size tile cycles 110%, 125%, 150% and back to off, and persists', async ({ page }) => {
   const textTarget = page.locator('.hero-subtitle');
-  const textScaleRange = page.locator('.acc-text-scale-range');
-  const textScaleLabel = page.locator('.acc-text-scale-percent');
-
-  const readFontSize = async () => textTarget.evaluate((element) => parseFloat(window.getComputedStyle(element).fontSize));
-  const setTextScalePercent = async (percent) => {
-    await textScaleRange.evaluate((input, value) => {
-      input.value = String(value);
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-    }, percent);
-  };
+  const readFontSize = () => textTarget.evaluate((element) => parseFloat(window.getComputedStyle(element).fontSize));
 
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-text-scale-range')).toHaveCount(0);
+  const tile = page.locator('.acc-btn[data-key="text-scale"]');
+  const region = page.locator('#acc-live-region');
+  await expect(tile.locator('.acc-progress-dot')).toHaveCount(3);
+  await expect(tile).toHaveAttribute('aria-pressed', 'false');
   const baseSize = await readFontSize();
   expect(baseSize).toBeGreaterThan(0);
 
-  await setTextScalePercent(80);
-  await expect(textScaleLabel).toHaveText('80%');
-  const reducedSize = await readFontSize();
-  expect(reducedSize).toBeLessThan(baseSize);
+  const levels = [{ percent: 110, value: 1.1 }, { percent: 125, value: 1.25 }, { percent: 150, value: 1.5 }];
+  for (const [index, { percent, value }] of levels.entries()) {
+    await tile.click();
+    await expect(tile).toHaveAttribute('aria-pressed', 'true');
+    await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', String(index));
+    // The visible label stays put; the level is in the name and announced.
+    await expect(tile.locator('.acc-label')).toHaveText('Font Size');
+    await expect(tile).toHaveAccessibleName(`Font Size: ${percent}%`);
+    await expect(region).toHaveText(`Font Size ${percent}%`);
+    expect((await readStates(page))['text-scale']).toBe(value);
+    await expect.poll(readFontSize).toBeCloseTo(baseSize * value, 0);
+  }
 
   await page.reload();
+  await expect.poll(readFontSize).toBeCloseTo(baseSize * 1.5, 0);
   await page.locator('.acc-toggle-btn').click();
-  await expect(textScaleLabel).toHaveText('80%');
-  const reducedAfterReload = await readFontSize();
-  expect(reducedAfterReload).toBeLessThan(baseSize);
+  await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '2');
 
-  await setTextScalePercent(100);
-  await expect(textScaleLabel).toHaveText('100%');
-  const resetSize = await readFontSize();
-  expect(Math.abs(resetSize - baseSize)).toBeLessThan(0.2);
+  await tile.click();
+  await expect(tile).toHaveAttribute('aria-pressed', 'false');
+  await expect(tile.locator('.acc-progress-dot.active')).toHaveCount(0);
+  await expect(tile).toHaveAccessibleName('Font Size');
+  await expect(region).toHaveText('Font Size Off');
+  expect((await readStates(page))['text-scale']).toBe(1);
+  expect(Math.abs(await readFontSize() - baseSize)).toBeLessThan(0.2);
+});
 
+test('a font size saved by the old slider snaps to the nearest level', async ({ page }) => {
+  await page.addInitScript(() => {
+    if (!sessionStorage.getItem('seeded')) {
+      sessionStorage.setItem('seeded', '1');
+      localStorage.setItem('accweb', JSON.stringify({ states: { 'text-scale': 1.4 } }));
+    }
+  });
+  await page.goto('index.html');
+  const scaled = await page.locator('.hero-subtitle').evaluate((element) => ({
+    base: parseFloat(element.getAttribute('data-acc-baseSize')),
+    size: parseFloat(window.getComputedStyle(element).fontSize)
+  }));
+  expect(scaled.size).toBeCloseTo(scaled.base * 1.5, 0);
+
+  await page.locator('.acc-toggle-btn').click();
+  const tile = page.locator('.acc-btn[data-key="text-scale"]');
+  await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '2');
+  await expect(tile).toHaveAccessibleName('Font Size: 150%');
+  // The next tap goes on from the snapped level: off.
+  await tile.click();
+  await expect(tile).toHaveAttribute('aria-pressed', 'false');
+
+  // Values below 100% are off.
+  await page.evaluate(() => localStorage.setItem('accweb', JSON.stringify({ states: { 'text-scale': 0.8 } })));
   await page.reload();
   await page.locator('.acc-toggle-btn').click();
-  await expect(textScaleLabel).toHaveText('100%');
+  await expect(tile).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('.hero-subtitle')).not.toHaveAttribute('data-acc-baseSize', /.*/);
+});
+
+test('Vision Impaired sets the largest Font Size level', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-profiles-row').click();
+  await page.locator('.acc-btn[data-key="profile-vision"]').click();
+  expect((await readStates(page))['text-scale']).toBe(1.5);
+  await expect(page.locator('.acc-btn[data-key="text-scale"] .acc-progress-dot.active')).toHaveAttribute('data-level', '2');
 });
 
 test('text scale computes consistent base size for nested DOM elements', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  const textScaleRange = page.locator('.acc-text-scale-range');
-  await textScaleRange.evaluate((input) => {
-    input.value = '140';
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-    input.dispatchEvent(new Event('change', { bubbles: true }));
-  });
+  // 110% → 125% → 150%.
+  const fontSizeTile = page.locator('.acc-btn[data-key="text-scale"]');
+  for (let i = 0; i < 3; i++) {
+    await fontSizeTile.click();
+  }
 
   const footerLinkData = await page.locator('.footer-links a[href*="github.com/ifrederico"]').first().evaluate((link) => {
     const span = link.querySelector('span');
@@ -151,13 +283,10 @@ test('text added inside an already-scaled element is scaled only once', async ({
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  const textScaleRange = page.locator('.acc-text-scale-range');
-  const setScale = (percent) => textScaleRange.evaluate((input, value) => {
-    input.value = String(value);
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-    input.dispatchEvent(new Event('change', { bubbles: true }));
-  }, percent);
-  await setScale(140);
+  // 110% → 125%.
+  const fontSizeTile = page.locator('.acc-btn[data-key="text-scale"]');
+  await fontSizeTile.click();
+  await fontSizeTile.click();
 
   const link = page.locator('.footer-links a[href*="github.com/ifrederico"]').first();
   const readSizes = () => link.evaluate((element) => {
@@ -187,8 +316,8 @@ test('text added inside an already-scaled element is scaled only once', async ({
   expect(sizes.lateBase).toBe(sizes.siblingBase);
   expect(sizes.lateFontSize).toBe(sizes.siblingFontSize);
 
-  // And it keeps tracking the slider afterwards.
-  await setScale(120);
+  // And it keeps tracking the Font Size level afterwards (150%).
+  await fontSizeTile.click();
   sizes = await readSizes();
   expect(sizes.lateBase).toBe(sizes.siblingBase);
   expect(sizes.lateFontSize).toBe(sizes.siblingFontSize);
@@ -245,7 +374,8 @@ test('contrast is a single cycling tile and monochrome has no tile of its own', 
   await contrastButton.click();
   await expect(contrastButton).toHaveClass(/acc-selected/);
   await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
-  await expect(contrastButton).toHaveAttribute('title', 'Contrast: Light');
+  await expect(contrastButton).toHaveAttribute('title', 'Contrast: Light Contrast');
+  await expect(contrastButton.locator('.acc-label')).toHaveText('Light Contrast');
   await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'light-contrast');
   let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['light-contrast']).toBe(true);
@@ -253,7 +383,7 @@ test('contrast is a single cycling tile and monochrome has no tile of its own', 
 
   await contrastButton.click();
   await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
-  await expect(contrastButton).toHaveAttribute('title', 'Contrast: Dark');
+  await expect(contrastButton).toHaveAttribute('title', 'Contrast: Dark Contrast');
   await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'dark-contrast');
   states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['dark-contrast']).toBe(true);
@@ -285,7 +415,7 @@ test('saturation is a single cycling tile', async ({ page }) => {
   await saturationButton.click();
   await expect(saturationButton).toHaveClass(/acc-selected/);
   await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
-  await expect(saturationButton).toHaveAttribute('title', 'Saturation: Low');
+  await expect(saturationButton).toHaveAttribute('title', 'Saturation: Low Saturation');
   await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'low-saturation');
   let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['low-saturation']).toBe(true);
@@ -293,7 +423,7 @@ test('saturation is a single cycling tile', async ({ page }) => {
 
   await saturationButton.click();
   await expect(saturationButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
-  await expect(saturationButton).toHaveAttribute('title', 'Saturation: High');
+  await expect(saturationButton).toHaveAttribute('title', 'Saturation: High Saturation');
   await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'high-saturation');
   states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
   expect(states['high-saturation']).toBe(true);
@@ -348,17 +478,92 @@ test('monochrome grays out page content, persists, and clears on reset', async (
   expect(states['monochrome']).toBeFalsy();
 });
 
-test('menu renders grouped categories with their section headings', async ({ page }) => {
+test('menu renders one tile grid with the group names kept for screen readers', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  await expect(page.locator('.acc-option-category')).toHaveCount(6);
-  await expect(page.locator('.acc-option-category-profiles .acc-section-title')).toHaveText('Profiles');
-  await expect(page.locator('.acc-option-category-speech .acc-section-title')).toHaveText('Speech');
-  await expect(page.locator('.acc-option-category-text .acc-section-title')).toHaveText('Text');
-  await expect(page.locator('.acc-option-category-color .acc-section-title')).toHaveText('Color & Contrast');
-  await expect(page.locator('.acc-option-category-reading .acc-section-title')).toHaveText('Reading Aids');
-  await expect(page.locator('.acc-option-category-interaction .acc-section-title')).toHaveText('Interaction');
+  const headings = page.locator('.acc-options h2');
+  await expect(headings).toHaveText(['Speech', 'Text', 'Color & Contrast', 'Reading Aids', 'Interaction']);
+  // Visually hidden: no layout box of their own.
+  for (const box of await headings.evaluateAll((elements) => elements.map((el) => el.getBoundingClientRect()))) {
+    expect(box.width).toBeLessThanOrEqual(1);
+    expect(box.height).toBeLessThanOrEqual(1);
+  }
+
+  const keys = await page.locator('.acc-options .acc-btn').evaluateAll((tiles) => tiles.map((tile) => tile.dataset.key));
+  expect(keys).toEqual([
+    'text-to-speech', 'text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text',
+    'contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode',
+    'highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure',
+    'hide-images', 'large-pointer', 'pause-motion', 'mute-sounds'
+  ]);
+});
+
+test('tiles sit three to a row at desktop width', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const tiles = page.locator('.acc-options .acc-btn');
+  const boxes = await Promise.all([0, 1, 2, 3].map((i) => tiles.nth(i).boundingBox()));
+  expect(Math.abs(boxes[0].y - boxes[2].y)).toBeLessThan(1);
+  expect(boxes[1].x).toBeGreaterThan(boxes[0].x);
+  expect(boxes[2].x).toBeGreaterThan(boxes[1].x);
+  expect(boxes[3].y).toBeGreaterThan(boxes[0].y + boxes[0].height);
+  expect(boxes[0].height).toBeGreaterThanOrEqual(112);
+});
+
+test('an option that is on shows a check badge and a primary label', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const tile = page.locator('.acc-btn[data-key="bold-text"]');
+  const badge = () => tile.evaluate((el) => {
+    const style = getComputedStyle(el, '::before');
+    return { content: style.content, width: style.width, background: style.backgroundColor };
+  });
+
+  expect((await badge()).content).toBe('none');
+  await tile.click();
+  await expect(tile).toHaveAttribute('aria-pressed', 'true');
+  const on = await badge();
+  expect(on.content).not.toBe('none');
+  expect(on.width).toBe('18px');
+  expect(on.background).toBe('rgb(0, 114, 228)');
+  expect(await tile.locator('.acc-label').evaluate((el) => getComputedStyle(el).color)).toBe('rgb(0, 114, 228)');
+  // No On/Off text on the tile itself.
+  await expect(tile).toHaveText('Font Weight');
+});
+
+test('reset shows how many options are on and is disabled when none are', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const reset = page.locator('.acc-footer-reset');
+  const count = reset.locator('.acc-reset-count');
+  await expect(reset).toBeDisabled();
+  await expect(count).toBeHidden();
+  await expect(reset).toHaveAccessibleName('Reset settings');
+
+  await page.locator('.acc-btn[data-key="bold-text"]').click();
+  await expect(reset).toBeEnabled();
+  await expect(count).toHaveText('1');
+  await page.locator('.acc-btn[data-key="text-scale"]').click();
+  await page.locator('.acc-btn[data-key="contrast-toggle"]').click();
+  await expect(count).toHaveText('3');
+  await expect(reset).toHaveAccessibleName('Reset settings 3');
+
+  // The count survives a reload.
+  await page.reload();
+  await page.locator('.acc-toggle-btn').click();
+  await expect(count).toHaveText('3');
+
+  await reset.click();
+  await expect(reset).toBeDisabled();
+  await expect(count).toBeHidden();
+  await expect(page.locator('#acc-live-region')).toHaveText('Settings reset');
+  await expect(page.locator('.acc-btn.acc-selected')).toHaveCount(0);
+  // Focus stays inside the dialog.
+  expect(await page.evaluate(() => document.getElementById('acc-widget-host').shadowRoot.activeElement?.className)).toContain('acc-menu');
 });
 
 test('reset settings lives in footer instead of header button', async ({ page }) => {
@@ -370,16 +575,83 @@ test('reset settings lives in footer instead of header button', async ({ page })
   const footerReset = page.locator('.acc-footer-reset');
   await expect(footerReset).toHaveCount(1);
   await expect(footerReset).toBeVisible();
-  await expect(footerReset).toBeEnabled();
+  await expect(page.locator('.acc-footer-brand')).toBeVisible();
 });
 
-test('speech section renders text-to-speech control', async ({ page }) => {
+test('hideAttribution removes the footer link but keeps reset', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.AccessibleWebWidgetOptions = { hideAttribution: true };
+  });
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-footer-reset')).toBeVisible();
+  await expect(page.locator('.acc-footer-brand')).toHaveCount(0);
+});
+
+test('Text to Speech is the first tile', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  const speechButtons = page.locator('.acc-option-category-speech .acc-btn');
-  await expect(speechButtons).toHaveCount(1);
-  await expect(speechButtons.first()).toHaveAttribute('data-key', 'text-to-speech');
+  const firstTile = page.locator('.acc-options .acc-btn').first();
+  await expect(firstTile).toHaveAttribute('data-key', 'text-to-speech');
+  await expect(firstTile.locator('.acc-progress-dot')).toHaveCount(3);
+});
+
+test('Text to Speech cycles normal, slow, fast, off and remembers the speed', async ({ page }) => {
+  await mockSpeech(page);
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const tile = page.locator('.acc-btn[data-key="text-to-speech"]');
+  const region = page.locator('#acc-live-region');
+  const lastSpoken = () => page.evaluate(() => window.__speakPayloads[window.__speakPayloads.length - 1]);
+  // The demo page sets ttsRate: 0.9, which becomes the normal speed.
+  const speeds = [
+    { key: 'normal', factor: 1, rate: 0.9 },
+    { key: 'slow', factor: 0.8, rate: 0.72 },
+    { key: 'fast', factor: 1.3, rate: 1.17 }
+  ];
+  for (const [index, { key, factor, rate }] of speeds.entries()) {
+    await tile.click();
+    await expect(tile).toHaveAttribute('aria-pressed', 'true');
+    await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', String(index));
+    await expect(tile.locator('.acc-label')).toHaveText('Text to Speech');
+    await expect(tile).toHaveAccessibleName(`Text to Speech: ${factor}×`);
+    await expect(region).toHaveText(`Text to Speech: ${factor}× On`);
+    expect((await readStates(page))['text-to-speech']).toBe(key);
+    // The spoken cue plays at the new speed.
+    expect(await lastSpoken()).toEqual({ text: 'Text to Speech On', rate });
+  }
+
+  await tile.click();
+  await expect(tile).toHaveAttribute('aria-pressed', 'false');
+  await expect(region).toHaveText('Text to Speech Off');
+  expect(await lastSpoken()).toEqual({ text: 'Text to Speech Off', rate: 0.9 });
+
+  // Normal, then slow; after a reload the speed is remembered and used for reading.
+  await tile.click();
+  await tile.click();
+  await page.reload();
+  await page.locator('.acc-toggle-btn').click();
+  await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
+  await page.keyboard.press('Escape');
+  await page.locator('.hero-subtitle').click();
+  await expect.poll(lastSpoken).toMatchObject({ rate: 0.72 });
+});
+
+test('a legacy Text to Speech on state means normal speed', async ({ page }) => {
+  await mockSpeech(page);
+  await page.addInitScript(() => {
+    localStorage.setItem('accweb', JSON.stringify({ states: { 'text-to-speech': true } }));
+  });
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const tile = page.locator('.acc-btn[data-key="text-to-speech"]');
+  await expect(tile).toHaveAttribute('aria-pressed', 'true');
+  await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
+  // The next tap moves on to slow.
+  await tile.click();
+  expect((await readStates(page))['text-to-speech']).toBe('slow');
 });
 
 test('Spanish menu translates speech and layout controls', async ({ page }) => {

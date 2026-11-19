@@ -14,7 +14,7 @@ const WIDGET_THEME = {
       primaryColor: '#0072e4',        // Blue, oklch(0.56 0.199 253); 4.6:1 with white (WCAG AA)
       primaryColorLight: '#4da1fe',   // Lighter blue, oklch(0.70 0.16 253)
       primaryColorDark: '#0049a5',    // Darker blue, oklch(0.42 0.17 253)
-      backgroundColor: '#f5f7fa',
+      backgroundColor: '#f3f5f8',
       textColor: '#222222',
       textColorInverted: '#ffffff',
       
@@ -72,6 +72,8 @@ const WIDGET_ICONS = {
       monochrome: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M760-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120Zm-560-80h280v-320l280 320v-560H480v240L200-200Z"/></svg>',
       reset: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-122q-121-15-200.5-105.5T160-440q0-66 26-126.5T260-672l57 57q-38 34-57.5 79T240-440q0 88 56 155.5T440-202v80Zm80 0v-80q87-16 143.5-83T720-440q0-100-70-170t-170-70h-3l44 44-56 56-140-140 140-140 56 56-44 44h3q134 0 227 93t93 227q0 121-79.5 211.5T520-122Z"/></svg>',
       close: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>',
+      language: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-155.5t86-127Q252-817 325-848.5T480-880q83 0 155.5 31.5t127 86q54.5 54.5 86 127T880-480q0 82-31.5 155t-86 127.5q-54.5 54.5-127 86T480-80Zm0-82q26-36 45-75t31-83H404q12 44 31 83t45 75Zm-104-16q-18-33-31.5-68.5T322-320H204q29 50 72.5 87t99.5 55Zm208 0q56-18 99.5-55t72.5-87H638q-9 38-22.5 73.5T584-178ZM170-400h136q-3-20-4.5-39.5T300-480q0-21 1.5-40.5T306-560H170q-5 20-7.5 39.5T160-480q0 21 2.5 40.5T170-400Zm216 0h188q3-20 4.5-39.5T580-480q0-21-1.5-40.5T574-560H386q-3 20-4.5 39.5T380-480q0 21 1.5 40.5T386-400Zm268 0h136q5-20 7.5-39.5T800-480q0-21-2.5-40.5T790-560H654q3 20 4.5 39.5T660-480q0 21-1.5 40.5T654-400Zm-16-240h118q-29-50-72.5-87T584-782q18 33 31.5 68.5T638-640Zm-234 0h152q-12-44-31-83t-45-75q-26 36-45 75t-31 83Zm-200 0h118q9-38 22.5-73.5T376-782q-56 18-99.5 55T204-640Z"/></svg>',
+      profiles: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/></svg>',
       adjustFontSize: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 4v3h5v12h3V7h5V4H2m19 5h-9v3h3v7h3v-7h3V9Z"/></svg>',
       hideImages: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="m840-234-80-80v-446H314l-80-80h526q33 0 56.5 23.5T840-760v526ZM792-56l-64-64H200q-33 0-56.5-23.5T120-200v-528l-64-64 56-56 736 736-56 56ZM240-280l120-160 90 120 33-44-283-283v447h447l-80-80H240Zm297-257ZM424-424Z"/></svg>',
       accessibilityReport: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm221.5-198.5Q510-807 510-820t-8.5-21.5Q493-850 480-850t-21.5 8.5Q450-833 450-820t8.5 21.5Q467-790 480-790t21.5-8.5ZM200-200v-560 560Z"/></svg>',
@@ -5492,7 +5494,7 @@ const stateMethods = {
 
 };
 
-var menuCSS = "/* Base styles */\n.acc-menu {\n  position: fixed;\n  left: var(--acc-menu-inline-gap, 12px);\n  top: var(--acc-menu-block-gap, 12px);\n  bottom: var(--acc-menu-block-gap, 12px);\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);\n  opacity: 1;\n  transition: 0.3s;\n  z-index: var(--acc-widget-z-index, 100000);\n  overflow: hidden;\n  /* The primary color shows through the content margins, framing the body\n     like a gate: header across the top, posts down both sides. */\n  background: var(--acc-primary-color);\n  width: min(516px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));\n  display: flex;\n  flex-direction: column;\n  line-height: 1.5;\n  font-size: 16px;\n  height: auto;\n  letter-spacing: 0.015em;\n  color: var(--acc-text-color);\n  --acc-content-inline-padding: 20px;\n  /* Theme headerHeight, capped on small screens by the media queries. */\n  --acc-menu-header-height: var(--acc-header-height);\n  --acc-menu-inline-gap: 8px;\n  --acc-menu-block-gap: var(--acc-menu-inline-gap);\n  border-radius: 1.75rem;\n  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);\n  /* Clear notches and the home indicator when the host page opts into\n     edge-to-edge layout (viewport-fit=cover); env() is 0 everywhere else. */\n  margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);\n}\n\n/* Dragging the panel's fixed chrome must not scroll the page behind it.\n   Scrolling areas (options, language list) are deliberately left out so\n   they keep panning; pinch-zoom stays available everywhere. */\n.acc-menu-header,\n.acc-footer,\n.acc-lang-modal-header,\n.acc-lang-search-wrapper {\n  touch-action: pinch-zoom;\n}\n\n/* The dialog receives programmatic focus on open (tabindex=\"-1\", never\n   Tab-reachable); a focus ring around the whole panel would be noise. */\n.acc-menu:focus {\n  outline: none;\n}\n\n/* Ensure all elements inherit proper colors for accessibility */\n.acc-menu * {\n  color: var(--acc-text-color);\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n  padding: 0;\n  margin: 0;\n  line-height: 1.5 !important;\n  letter-spacing: normal !important;\n}\n\n/* Header section */\n.acc-menu-header {\n  flex-shrink: 0;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 var(--acc-content-inline-padding);\n  height: var(--acc-menu-header-height);\n  font-weight: 700 !important;\n  background-color: var(--acc-primary-color) !important;\n}\n\n.acc-menu-title {\n  display: flex;\n  align-items: center;\n  min-width: 0;\n  font-size: 17px !important;\n  color: var(--acc-text-color-inverted) !important;\n  font-weight: 700;\n}\n\n.acc-menu-title .acc-label {\n  color: var(--acc-text-color-inverted) !important;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.acc-menu-close {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  padding: 0;\n  border: none;\n  border-radius: 50%;\n  background: transparent;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n}\n\n@media (hover: hover) {\n  .acc-menu-close:hover {\n    background-color: rgba(255, 255, 255, 0.18);\n  }\n}\n\n.acc-menu-close:focus-visible {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-menu-header .acc-menu-close svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 20px !important;\n  height: 20px !important;\n  min-width: 20px !important;\n  min-height: 20px !important;\n  max-width: 20px !important;\n  max-height: 20px !important;\n}\n\n.acc-header-back {\n  display: flex;\n  align-items: center;\n}\n\n.acc-back-btn {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: transparent;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--acc-text-color-inverted) !important;\n  transition: background-color 0.2s ease;\n  border-radius: 4px;\n  visibility: hidden;\n}\n\n.acc-back-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-back-btn.visible {\n  visibility: visible;\n}\n\n.acc-back-btn:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-back-btn:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-back-btn svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 24px !important;\n  height: 24px !important;\n}\n\n.acc-menu-header svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n}\n\n.acc-menu-header > div {\n  display: flex;\n  align-items: center;\n}\n\n/* Interactive elements */\n.acc-menu-header div[role=\"button\"] {\n  cursor: pointer;\n  padding: 8px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  transition: background-color 0.2s ease;\n}\n\n.acc-menu-header div[role=\"button\"]:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-menu-header div[role=\"button\"]:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-menu-header .acc-header-actions {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  flex-shrink: 0;\n}\n\n.acc-language-container {\n  margin: 0 var(--acc-content-inline-padding) 24px;\n}\n\n.acc-lang-details {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  border-radius: var(--acc-button-border-radius);\n  background: var(--acc-card-bg);\n}\n\n.acc-lang-summary {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  padding: 12px 14px;\n  cursor: pointer;\n  border-radius: var(--acc-button-border-radius);\n}\n\n.acc-lang-summary::-webkit-details-marker {\n  display: none;\n}\n\n.acc-lang-summary::marker {\n  content: '';\n}\n\n.acc-lang-summary-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-current-label {\n  font-size: 16px !important;\n  font-weight: 600 !important;\n}\n\n.acc-lang-summary:hover {\n  background-color: rgba(0, 114, 228, 0.06);\n}\n\n.acc-lang-summary:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-summary-arrow {\n  width: 10px;\n  height: 10px;\n  border-right: 2px solid var(--acc-text-color);\n  border-bottom: 2px solid var(--acc-text-color);\n  transform: rotate(-45deg);\n  transition: transform 0.2s ease;\n}\n\n.acc-lang-details[open] .acc-lang-summary-arrow {\n  transform: rotate(45deg);\n}\n\n.acc-lang-details[open] .acc-lang-summary {\n  border-bottom: 1px solid var(--acc-border-color);\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.acc-lang-details-panel {\n  padding: 12px 0 8px;\n}\n\n.acc-lang-details-panel .acc-section-title {\n  font-size: 16px !important;\n  padding: 0 16px 10px;\n}\n\n.acc-lang-flag {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 22px;\n  font-size: 18px !important;\n  line-height: 1;\n}\n\n.acc-lang-search-wrapper {\n  padding: 0 16px 8px;\n}\n\n.acc-lang-search {\n  width: 100%;\n  padding: 10px 16px;\n  border: 1.5px solid var(--acc-border-color);\n  border-radius: var(--acc-button-border-radius);\n  font-size: 16px;\n  background-color: var(--acc-card-bg);\n  transition: border-color 0.2s ease;\n}\n\n.acc-lang-search:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-lang-list {\n  padding: 6px 8px 12px;\n  max-height: 280px;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n}\n\n.acc-lang-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  width: 100%;\n  text-align: left;\n  padding: 11px 10px;\n  margin-bottom: 4px;\n  background-color: transparent;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  cursor: pointer;\n  font-size: 16px;\n  color: var(--acc-text-color);\n  transition: background-color 0.12s ease;\n}\n\n@media (hover: hover) {\n  .acc-lang-item:hover {\n    background-color: rgba(0, 114, 228, 0.06);\n  }\n}\n\n.acc-lang-item:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-item.selected {\n  background-color: rgba(0, 114, 228, 0.08);\n  font-weight: 600;\n}\n\n.acc-lang-item-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-item-label {\n  font-size: 16px !important;\n  line-height: 1.4 !important;\n}\n\n.acc-icon-check {\n  display: inline-block;\n  width: 18px;\n  height: 18px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23886f60' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\");\n  background-repeat: no-repeat;\n  background-position: center;\n  opacity: 0;\n  transition: opacity 0.15s ease;\n}\n\n.acc-lang-item.selected .acc-icon-check {\n  opacity: 1;\n}\n\n.acc-menu .acc-lang-select {\n  width: 100% !important;\n  padding: 0 16px !important;\n  font-size: 16px !important;\n  font-family: inherit !important;\n  font-weight: 600 !important;\n  border-radius: var(--acc-button-border-radius) !important;\n  background: var(--acc-card-bg) !important;\n  border: 1.5px solid var(--acc-border-color) !important;\n  min-height: 48px !important;\n  max-height: 48px !important;\n  height: 48px !important;\n  color: var(--acc-text-color) !important;\n  -webkit-appearance: none !important;\n  -moz-appearance: none !important;\n  appearance: none !important;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0%20-960%20960%20960' width='24px' fill='%231f1f1f'%3E%3Cpath d='M480-344%20240-584l56-56%20184 184%20184-184%2056 56-240 240Z'/%3E%3C/svg%3E\") !important;\n  background-repeat: no-repeat !important;\n  background-position: right 12px center !important;\n  background-size: 20px !important;\n  padding-right: 44px !important;\n}\n\n/* Hide default arrows in Firefox and IE */\n.acc-menu .acc-lang-select::-ms-expand {\n  display: none !important;\n}\n\n.acc-menu .acc-lang-select:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n/* Option grid layout */\n.acc-options-all {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n  padding: 0 var(--acc-content-inline-padding) 12px;\n}\n\n.acc-option-category {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.acc-option-category-interaction {\n  padding-bottom: 12px;\n}\n\n.acc-option-category .acc-section-title {\n  font-size: 14px !important;\n  font-weight: 700 !important;\n  letter-spacing: 0.01em !important;\n  text-transform: none;\n  color: #6b7280 !important;\n  padding: 0 2px;\n}\n\n.acc-options {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 12px;\n  margin: 0;\n}\n\n.acc-options-text {\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n}\n\n.acc-options-text-inline {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n\n.acc-btn.acc-text-inline {\n  min-height: 54px;\n  aspect-ratio: auto;\n  flex-direction: row;\n  align-items: center;\n  justify-content: flex-start;\n  text-align: left;\n  gap: 10px;\n  padding: 12px 14px;\n}\n\n.acc-btn.acc-text-inline .acc-label {\n  font-size: 14px !important;\n  flex: 1 1 auto;\n  min-width: 0;\n}\n\n.acc-btn.acc-text-inline .acc-progress-indicator {\n  margin-top: 0;\n  margin-left: auto;\n  justify-content: flex-end;\n  min-width: 24px;\n}\n\n/* Phones keep the compact icon + label rows: switching to tall tiles here\n   doubled the panel height. Multi-level buttons stack their dots under\n   the label instead, so the label keeps the full width beside the icon. */\n@media only screen and (max-width: 480px) {\n  .acc-btn.acc-text-inline {\n    gap: 8px;\n    padding: 10px 12px;\n  }\n\n  .acc-btn.acc-text-inline[data-multi-level=\"true\"] {\n    display: grid;\n    grid-template-columns: auto minmax(0, 1fr);\n    grid-template-areas:\n      \"icon label\"\n      \"icon dots\";\n    align-items: center;\n    justify-items: start;\n    column-gap: 8px;\n    row-gap: 4px;\n  }\n\n  .acc-btn.acc-text-inline[data-multi-level=\"true\"] > svg {\n    grid-area: icon;\n  }\n\n  .acc-btn.acc-text-inline[data-multi-level=\"true\"] .acc-label {\n    grid-area: label;\n  }\n\n  .acc-btn.acc-text-inline[data-multi-level=\"true\"] .acc-progress-indicator {\n    grid-area: dots;\n    margin: 0;\n    min-width: 0;\n    height: 6px;\n    justify-content: flex-start;\n  }\n}\n\n.acc-tts-toggle-container {\n  margin: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.acc-text-scale-control {\n  width: 100%;\n  background: var(--acc-card-bg) !important;\n  border: 1px solid rgba(0, 0, 0, 0.1) !important;\n  border-radius: var(--acc-border-radius);\n  padding: 12px 14px;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n.acc-text-scale-meta {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n\n.acc-text-scale-icon {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n\n.acc-text-scale-icon svg {\n  width: 22px !important;\n  height: 22px !important;\n  min-width: 22px !important;\n  min-height: 22px !important;\n  max-width: 22px !important;\n  max-height: 22px !important;\n  fill: var(--acc-text-color);\n}\n\n.acc-text-scale-meta .acc-label {\n  font-size: 15px !important;\n  font-weight: 600 !important;\n}\n\n.acc-text-scale-percent {\n  margin-left: auto;\n  font-size: 15px !important;\n  font-weight: 700 !important;\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-text-scale-range {\n  width: 100%;\n  appearance: none;\n  -webkit-appearance: none;\n  background: transparent;\n  height: 20px;\n  cursor: pointer;\n  margin: 0;\n}\n\n.acc-text-scale-range:focus {\n  outline: none;\n}\n\n.acc-text-scale-range:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: 4px;\n  border-radius: 4px;\n}\n\n.acc-text-scale-range::-webkit-slider-runnable-track {\n  width: 100%;\n  height: 4px;\n  border-radius: 999px;\n  background: linear-gradient(\n    to right,\n    var(--acc-primary-color) 0%,\n    var(--acc-primary-color) var(--acc-text-scale-progress, 0%),\n    #d8d8d8 var(--acc-text-scale-progress, 0%),\n    #d8d8d8 100%\n  );\n}\n\n.acc-text-scale-range::-webkit-slider-thumb {\n  appearance: none;\n  -webkit-appearance: none;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  background: #fff;\n  border: 2px solid var(--acc-primary-color);\n  margin-top: -7px;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n}\n\n.acc-text-scale-range::-moz-range-track {\n  width: 100%;\n  height: 4px;\n  border-radius: 999px;\n  background: #d8d8d8;\n}\n\n.acc-text-scale-range::-moz-range-progress {\n  height: 4px;\n  border-radius: 999px;\n  background: var(--acc-primary-color);\n}\n\n.acc-text-scale-range::-moz-range-thumb {\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  background: #fff;\n  border: 2px solid var(--acc-primary-color);\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n}\n\n.acc-btn.acc-tts-toggle {\n  width: 100%;\n  min-height: 54px;\n  aspect-ratio: auto;\n  flex-direction: row;\n  align-items: center;\n  justify-content: flex-start;\n  gap: 10px;\n  text-align: left;\n  padding: 12px 76px 12px 14px;\n}\n\n.acc-btn.acc-tts-toggle .acc-label {\n  font-size: 15px !important;\n}\n\n.acc-btn.acc-tts-toggle svg {\n  width: 22px !important;\n  height: 22px !important;\n  min-width: 22px !important;\n  min-height: 22px !important;\n  max-width: 22px !important;\n  max-height: 22px !important;\n}\n\n.acc-btn.acc-tts-toggle::before {\n  content: \"\";\n  position: absolute;\n  right: 14px;\n  top: 50%;\n  width: 44px;\n  height: 24px;\n  border-radius: 999px;\n  transform: translateY(-50%);\n  background: #dbd7d2;\n  border: 1px solid rgba(0, 0, 0, 0.08);\n}\n\n.acc-btn.acc-tts-toggle::after {\n  content: \"\";\n  position: absolute;\n  right: 38px;\n  top: 50%;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  transform: translateY(-50%);\n  background: #fff;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);\n}\n\n.acc-btn.acc-tts-toggle.acc-selected::before {\n  background: var(--acc-primary-color);\n  border-color: var(--acc-primary-color);\n}\n\n.acc-btn.acc-tts-toggle.acc-selected::after {\n  right: 16px;\n}\n\n/* Button styling */\n.acc-btn {\n  aspect-ratio: 11 / 8;\n  border-radius: var(--acc-border-radius);\n  padding: 10px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n  text-align: center;\n  font-size: 15px !important;\n  background: var(--acc-card-bg) !important;\n  border: 1px solid rgba(0, 0, 0, 0.1) !important;\n  transition: background-color 0.2s ease;\n  cursor: pointer;\n  word-break: break-word;\n  gap: 6px;\n  position: relative;\n}\n\n/* Touch screens emulate :hover on tap and keep it until the next tap\n   elsewhere, which left the last-tapped option looking highlighted. */\n@media (hover: hover) {\n  .acc-btn:hover {\n    border-color: var(--acc-hover-color) !important;\n    border-width: 1px !important;\n    box-shadow: inset 0 0 0 1px var(--acc-hover-color);\n  }\n}\n\n/* :focus-visible keeps the ring for keyboard users without leaving it\n   stuck on whatever a mouse click or tap last pressed. */\n.acc-btn:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn .acc-label, .acc-text-adjust .acc-label div {\n  font-size: 13px !important;\n  font-weight: 600 !important;\n}\n\n/* Rapid taps (cycling Contrast or Readable Font) must not trigger\n   double-tap-to-zoom on pages without a mobile viewport. */\n.acc-btn,\n.acc-menu-close,\n.acc-header-lang-toggle,\n.acc-footer-reset,\n.acc-lang-item {\n  touch-action: manipulation;\n}\n\n/* SVG icons */\n.acc-text-adjust svg {\n  width: 20px !important;\n  height: 20px !important;\n  min-width: 20px !important;\n  min-height: 20px !important;\n  max-width: 20px !important;\n  max-height: 20px !important;\n}\n\n.acc-btn svg {\n  width: 24px !important;\n  height: 24px !important;\n  min-width: 24px !important;\n  min-height: 24px !important;\n  max-width: 24px !important;\n  max-height: 24px !important;\n  fill: var(--acc-text-color);\n}\n\n/* Selected state */\n.acc-btn.acc-selected {\n  background-color: var(--acc-primary-color) !important;\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected .acc-progress-dot {\n  background-color: rgba(255, 255, 255, 0.5);\n}\n\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-btn.acc-selected svg,\n.acc-btn.acc-selected span,\n.acc-btn.acc-selected .acc-label {\n  fill: var(--acc-text-color-inverted) !important;\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-btn.acc-tts-toggle.acc-selected {\n  background-color: var(--acc-card-bg) !important;\n  border-color: rgba(0, 0, 0, 0.1) !important;\n}\n\n.acc-btn.acc-tts-toggle.acc-selected svg,\n.acc-btn.acc-tts-toggle.acc-selected span,\n.acc-btn.acc-tts-toggle.acc-selected .acc-label {\n  fill: var(--acc-text-color) !important;\n  color: var(--acc-text-color) !important;\n}\n\n/* Footer section */\n.acc-footer {\n  flex-shrink: 0;\n  background: var(--acc-card-bg);\n  padding: 12px var(--acc-content-inline-padding);\n  display: flex;\n  flex-direction: column;\n  align-items: stretch;\n  gap: 10px;\n  border-top: 1px solid var(--acc-border-color);\n  overflow: visible;\n}\n\n.acc-footer-reset {\n  display: flex;\n  width: 100%;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  padding: 12px 16px;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  background-color: var(--acc-primary-color) !important;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n  white-space: nowrap;\n}\n\n.acc-footer-reset svg {\n  width: 24px !important;\n  height: 24px !important;\n  fill: var(--acc-text-color-inverted) !important;\n}\n\n.acc-footer-reset .acc-label {\n  font-size: 16px !important;\n  font-weight: 600 !important;\n  color: var(--acc-text-color-inverted) !important;\n  line-height: 1.2 !important;\n}\n\n@media (hover: hover) {\n  .acc-footer-reset:hover {\n    background-color: var(--acc-primary-color-dark) !important;\n  }\n}\n\n.acc-footer-reset:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-footer-brand {\n  display: block;\n  text-align: center;\n  font-size: 12px !important;\n  line-height: 1.2 !important;\n  font-weight: 400 !important;\n  color: var(--acc-text-color) !important;\n  opacity: 0.65;\n  text-decoration: none;\n  padding: 2px 0;\n}\n\n@media (hover: hover) {\n  .acc-footer-brand:hover {\n    opacity: 1;\n    text-decoration: underline;\n  }\n}\n\n.acc-footer-brand:focus-visible {\n  opacity: 1;\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-header-lang-toggle {\n  display: inline-flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  padding: 7px 10px 7px 12px;\n  border: 1px solid rgba(255, 255, 255, 0.45);\n  border-radius: var(--acc-button-border-radius);\n  background: transparent;\n  cursor: pointer;\n  transition: border-color 0.2s ease, background-color 0.2s ease;\n}\n\n@media (hover: hover) {\n  .acc-header-lang-toggle:hover {\n    background-color: rgba(255, 255, 255, 0.18);\n  }\n}\n\n.acc-header-lang-toggle:focus-visible {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-header-lang-current {\n  display: inline-block;\n  min-width: 2ch;\n  text-align: left;\n  font-size: 14px !important;\n  font-weight: 600 !important;\n  line-height: 1 !important;\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-header-lang-arrow {\n  width: 8px;\n  height: 8px;\n  border-right: 1.5px solid var(--acc-text-color-inverted);\n  border-bottom: 1.5px solid var(--acc-text-color-inverted);\n  transform: rotate(45deg) translateY(-1px);\n  transition: transform 0.2s ease;\n}\n\n.acc-header-lang-toggle[aria-expanded=\"true\"] .acc-header-lang-arrow {\n  transform: rotate(-135deg) translateY(-1px);\n}\n\n.acc-lang-modal {\n  position: absolute;\n  inset-inline-end: 12px;\n  top: calc(var(--acc-menu-header-height) + 8px);\n  width: min(320px, calc(100% - 32px));\n  border: 1px solid var(--acc-border-color);\n  border-radius: 14px;\n  background: var(--acc-card-bg);\n  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);\n  z-index: 120;\n  padding: 10px 0 8px;\n  /* Never taller than the panel below the header (landscape phones); the\n     list shrinks and scrolls instead of being clipped. */\n  display: flex;\n  flex-direction: column;\n  max-height: calc(100% - var(--acc-menu-header-height) - 16px);\n}\n\n.acc-lang-modal[hidden] {\n  display: none;\n}\n\n.acc-lang-modal-header {\n  padding: 0 14px 8px;\n}\n\n.acc-lang-modal .acc-section-title {\n  font-size: 14px !important;\n  font-weight: 700 !important;\n  color: #6b7280 !important;\n}\n\n.acc-lang-modal .acc-lang-search-wrapper {\n  padding: 0 12px 8px;\n}\n\n.acc-lang-modal .acc-lang-list {\n  padding: 6px 8px 8px;\n  max-height: 240px;\n  min-height: 0;\n  flex: 1 1 auto;\n}\n\n/* Content area */\n.acc-menu-content {\n  flex: 1 1 auto;\n  min-height: 0;\n  overflow: auto;\n  /* Reaching the end of the options must not hand the scroll (wheel or\n     touch) to the page behind the panel. */\n  overscroll-behavior: contain;\n  padding: 28px 0 36px;\n  border-top-left-radius: 1.75rem;\n  border-top-right-radius: 1.75rem;\n  background: var(--acc-bg-color);\n  /* A soft shadow cast up onto the header, so the body reads as a sheet\n     lying over it. */\n  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);\n}\n\n/* Text adjustments */\n.acc-text-adjust {\n  background: var(--acc-card-bg);\n  padding: 18px 20px;\n  margin-bottom: 20px;\n  border-radius: var(--acc-border-radius);\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.acc-text-adjust .acc-label {\n  display: flex;\n  justify-content: flex-start;\n}\n\n.acc-text-adjust > div {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 20px;\n  align-items: center;\n  font-size: 16px;\n}\n\n.acc-text-adjust .acc-label div {\n  font-size: 16px !important;\n}\n\n.acc-text-adjust div[role=\"button\"] {\n  background: var(--acc-bg-color) !important;\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  transition: border-color 0.2s ease;\n}\n\n.acc-text-adjust div[role=\"button\"]:hover {\n  border-color: var(--acc-primary-color);\n}\n\n.acc-text-adjust div[role=\"button\"]:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Overlay */\n.acc-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: calc(var(--acc-widget-z-index, 100000) - 1);\n}\n\n/* Progress indicator */\n.acc-progress-indicator {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  margin-top: 8px;\n  height: 8px;\n}\n\n.acc-progress-dot {\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background-color: var(--acc-border-color);\n  transition: background-color 0.2s ease;\n}\n\n.acc-progress-dot.active {\n  background-color: var(--acc-primary-color);\n}\n\n/* Selected state updates indicator colors */\n.acc-btn.acc-selected .acc-progress-dot.active {\n  background-color: var(--acc-bg-color);\n}\n\n/* Responsive adjustments */\n@media only screen and (max-width: 560px) {\n  /* Span the viewport between equal gaps. Anchoring both edges (rather\n     than 100vw math) stays centered beside a classic scrollbar and lets\n     the safe-area margins shrink the panel. !important beats the inline\n     dock side set from JS. */\n  .acc-menu {\n    left: var(--acc-menu-inline-gap) !important;\n    right: var(--acc-menu-inline-gap) !important;\n    width: auto;\n  }\n}\n\n/* Phones: tighter spacing leaves more room to show options. */\n@media only screen and (max-width: 480px) {\n  .acc-menu {\n    --acc-content-inline-padding: 16px;\n    --acc-menu-header-height: min(var(--acc-header-height), 56px);\n  }\n\n  .acc-menu-content {\n    padding: 16px 0 20px;\n  }\n\n  .acc-options-all {\n    gap: 14px;\n    padding-bottom: 0;\n  }\n\n  .acc-option-category {\n    gap: 8px;\n  }\n\n  .acc-option-category-interaction {\n    padding-bottom: 0;\n  }\n\n  .acc-options {\n    gap: 8px;\n  }\n\n  .acc-footer {\n    padding: 10px var(--acc-content-inline-padding);\n    gap: 6px;\n  }\n\n  .acc-footer-reset {\n    padding: 10px 16px;\n  }\n}\n\n/* The title wraps to two lines (longer translations too) rather than\n   truncating beside the header controls. */\n@media only screen and (max-width: 380px) {\n  .acc-menu-title {\n    font-size: 16px !important;\n  }\n\n  .acc-menu .acc-menu-title .acc-label {\n    display: -webkit-box;\n    -webkit-box-orient: vertical;\n    -webkit-line-clamp: 2;\n    white-space: normal;\n    line-height: 1.2 !important;\n  }\n}\n\n/* Landscape phones: the header and footer took over half of a ~340px\n   tall panel, leaving a sliver for the options. */\n@media only screen and (max-height: 500px) {\n  .acc-menu {\n    --acc-menu-header-height: min(var(--acc-header-height), 48px);\n  }\n\n  .acc-menu-content {\n    padding: 12px 0 16px;\n  }\n\n  .acc-footer {\n    flex-direction: row;\n    align-items: center;\n    justify-content: space-between;\n    padding: 8px var(--acc-content-inline-padding);\n  }\n\n  .acc-footer-reset {\n    width: auto;\n    padding: 8px 16px;\n  }\n}\n\n/* Touch input: grow the small controls toward a 44px target. */\n@media (pointer: coarse) {\n  .acc-menu-close {\n    width: 44px;\n    height: 44px;\n  }\n\n  .acc-header-lang-toggle {\n    min-height: 44px;\n  }\n\n  .acc-text-scale-range {\n    height: 36px;\n  }\n\n  .acc-text-scale-range::-webkit-slider-thumb {\n    width: 26px;\n    height: 26px;\n    margin-top: -11px;\n  }\n\n  .acc-text-scale-range::-moz-range-thumb {\n    width: 26px;\n    height: 26px;\n  }\n\n  .acc-footer-brand {\n    padding: 4px 0;\n  }\n}\n\n@media only screen and (max-width: 420px) {\n  .acc-options {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n  .acc-btn {\n    padding: 8px;\n  }\n}\n\n/* Ensure proper focus visibility for assistive technology */\n@media (prefers-reduced-motion: reduce) {\n  .acc-menu,\n  .acc-btn,\n  .acc-lang-select,\n  .acc-progress-dot,\n  .acc-menu-header div[role=\"button\"],\n  .acc-lang-toggle,\n  .acc-back-btn,\n  .acc-menu-close,\n  .acc-footer-reset,\n  .acc-header-lang-toggle,\n  .acc-header-lang-arrow,\n  .acc-text-adjust div[role=\"button\"] {\n    transition: none;\n  }\n}\n";
+var menuCSS = "/* Base styles */\n.acc-menu {\n  position: fixed;\n  left: var(--acc-menu-inline-gap, 12px);\n  top: var(--acc-menu-block-gap, 12px);\n  bottom: var(--acc-menu-block-gap, 12px);\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);\n  opacity: 1;\n  transition: 0.3s;\n  z-index: var(--acc-widget-z-index, 100000);\n  overflow: hidden;\n  /* The primary color shows through the content margins, framing the body\n     like a gate: header across the top, posts down both sides. */\n  background: var(--acc-primary-color);\n  width: min(516px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));\n  display: flex;\n  flex-direction: column;\n  line-height: 1.5;\n  font-size: 16px;\n  height: auto;\n  letter-spacing: 0.015em;\n  color: var(--acc-text-color);\n  --acc-content-inline-padding: 20px;\n  /* Theme headerHeight, capped on small screens by the media queries. */\n  --acc-menu-header-height: var(--acc-header-height);\n  --acc-menu-inline-gap: 8px;\n  --acc-menu-block-gap: var(--acc-menu-inline-gap);\n  border-radius: 1.75rem;\n  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);\n  /* Clear notches and the home indicator when the host page opts into\n     edge-to-edge layout (viewport-fit=cover); env() is 0 everywhere else. */\n  margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);\n}\n\n/* Dragging the panel's fixed chrome must not scroll the page behind it.\n   Scrolling areas (options, language list) are deliberately left out so\n   they keep panning; pinch-zoom stays available everywhere. */\n.acc-menu-header,\n.acc-footer {\n  touch-action: pinch-zoom;\n}\n\n/* The dialog receives programmatic focus on open (tabindex=\"-1\", never\n   Tab-reachable); a focus ring around the whole panel would be noise. */\n.acc-menu:focus {\n  outline: none;\n}\n\n/* Ensure all elements inherit proper colors for accessibility */\n.acc-menu * {\n  color: var(--acc-text-color);\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n  padding: 0;\n  margin: 0;\n  line-height: 1.5 !important;\n  letter-spacing: normal !important;\n}\n\n/* Header section */\n.acc-menu-header {\n  flex-shrink: 0;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 var(--acc-content-inline-padding);\n  height: var(--acc-menu-header-height);\n  font-weight: 700 !important;\n  background-color: var(--acc-primary-color) !important;\n}\n\n.acc-menu-title {\n  display: flex;\n  align-items: center;\n  min-width: 0;\n  font-size: 17px !important;\n  color: var(--acc-text-color-inverted) !important;\n  font-weight: 700;\n}\n\n.acc-menu-title .acc-label {\n  color: var(--acc-text-color-inverted) !important;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.acc-menu-close {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  padding: 0;\n  border: none;\n  border-radius: 50%;\n  background: transparent;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n}\n\n@media (hover: hover) {\n  .acc-menu-close:hover {\n    background-color: rgba(255, 255, 255, 0.18);\n  }\n}\n\n.acc-menu-close:focus-visible {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-menu-header .acc-menu-close svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 20px !important;\n  height: 20px !important;\n  min-width: 20px !important;\n  min-height: 20px !important;\n  max-width: 20px !important;\n  max-height: 20px !important;\n}\n\n.acc-header-back {\n  display: flex;\n  align-items: center;\n}\n\n.acc-back-btn {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: transparent;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--acc-text-color-inverted) !important;\n  transition: background-color 0.2s ease;\n  border-radius: 4px;\n  visibility: hidden;\n}\n\n.acc-back-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-back-btn.visible {\n  visibility: visible;\n}\n\n.acc-back-btn:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-back-btn:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-back-btn svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 24px !important;\n  height: 24px !important;\n}\n\n.acc-menu-header svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n}\n\n.acc-menu-header > div {\n  display: flex;\n  align-items: center;\n}\n\n/* Interactive elements */\n.acc-menu-header div[role=\"button\"] {\n  cursor: pointer;\n  padding: 8px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  transition: background-color 0.2s ease;\n}\n\n.acc-menu-header div[role=\"button\"]:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-menu-header div[role=\"button\"]:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-language-container {\n  margin: 0 var(--acc-content-inline-padding) 24px;\n}\n\n.acc-lang-details {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  border-radius: var(--acc-button-border-radius);\n  background: var(--acc-card-bg);\n}\n\n.acc-lang-summary {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  padding: 12px 14px;\n  cursor: pointer;\n  border-radius: var(--acc-button-border-radius);\n}\n\n.acc-lang-summary::-webkit-details-marker {\n  display: none;\n}\n\n.acc-lang-summary::marker {\n  content: '';\n}\n\n.acc-lang-summary-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-current-label {\n  font-size: 16px !important;\n  font-weight: 600 !important;\n}\n\n.acc-lang-summary:hover {\n  background-color: rgba(0, 114, 228, 0.06);\n}\n\n.acc-lang-summary:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-summary-arrow {\n  width: 10px;\n  height: 10px;\n  border-right: 2px solid var(--acc-text-color);\n  border-bottom: 2px solid var(--acc-text-color);\n  transform: rotate(-45deg);\n  transition: transform 0.2s ease;\n}\n\n.acc-lang-details[open] .acc-lang-summary-arrow {\n  transform: rotate(45deg);\n}\n\n.acc-lang-details[open] .acc-lang-summary {\n  border-bottom: 1px solid var(--acc-border-color);\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.acc-lang-details-panel {\n  padding: 12px 0 8px;\n}\n\n.acc-lang-details-panel .acc-section-title {\n  font-size: 16px !important;\n  padding: 0 16px 10px;\n}\n\n.acc-lang-flag {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 22px;\n  font-size: 18px !important;\n  line-height: 1;\n}\n\n.acc-lang-search-wrapper {\n  padding: 0 16px 8px;\n}\n\n.acc-lang-search {\n  width: 100%;\n  padding: 10px 16px;\n  border: 1.5px solid var(--acc-border-color);\n  border-radius: var(--acc-button-border-radius);\n  font-size: 16px;\n  background-color: var(--acc-card-bg);\n  transition: border-color 0.2s ease;\n}\n\n.acc-lang-search:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n.acc-lang-list {\n  padding: 6px 8px 12px;\n  max-height: 280px;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n}\n\n.acc-lang-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  width: 100%;\n  text-align: left;\n  padding: 11px 10px;\n  margin-bottom: 4px;\n  background-color: transparent;\n  border: none;\n  border-radius: var(--acc-button-border-radius);\n  cursor: pointer;\n  font-size: 16px;\n  color: var(--acc-text-color);\n  transition: background-color 0.12s ease;\n}\n\n@media (hover: hover) {\n  .acc-lang-item:hover {\n    background-color: rgba(0, 114, 228, 0.06);\n  }\n}\n\n.acc-lang-item:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-item.selected {\n  background-color: rgba(0, 114, 228, 0.08);\n  font-weight: 600;\n}\n\n.acc-lang-item-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-item-label {\n  font-size: 16px !important;\n  line-height: 1.4 !important;\n}\n\n.acc-icon-check {\n  display: inline-block;\n  width: 18px;\n  height: 18px;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23886f60' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\");\n  background-repeat: no-repeat;\n  background-position: center;\n  opacity: 0;\n  transition: opacity 0.15s ease;\n}\n\n.acc-lang-item.selected .acc-icon-check {\n  opacity: 1;\n}\n\n.acc-menu .acc-lang-select {\n  width: 100% !important;\n  padding: 0 16px !important;\n  font-size: 16px !important;\n  font-family: inherit !important;\n  font-weight: 600 !important;\n  border-radius: var(--acc-button-border-radius) !important;\n  background: var(--acc-card-bg) !important;\n  border: 1.5px solid var(--acc-border-color) !important;\n  min-height: 48px !important;\n  max-height: 48px !important;\n  height: 48px !important;\n  color: var(--acc-text-color) !important;\n  -webkit-appearance: none !important;\n  -moz-appearance: none !important;\n  appearance: none !important;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0%20-960%20960%20960' width='24px' fill='%231f1f1f'%3E%3Cpath d='M480-344%20240-584l56-56%20184 184%20184-184%2056 56-240 240Z'/%3E%3C/svg%3E\") !important;\n  background-repeat: no-repeat !important;\n  background-position: right 12px center !important;\n  background-size: 20px !important;\n  padding-right: 44px !important;\n}\n\n/* Hide default arrows in Firefox and IE */\n.acc-menu .acc-lang-select::-ms-expand {\n  display: none !important;\n}\n\n.acc-menu .acc-lang-select:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n/* Options: the Language and Profiles card, then one grid of tiles. */\n.acc-options-all {\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  padding: 0 var(--acc-content-inline-padding);\n}\n\n.acc-card {\n  overflow: hidden;\n  border-radius: 22px;\n  background: var(--acc-card-bg);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n}\n\n.acc-card-row {\n  position: relative;\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  width: 100%;\n  min-height: 56px;\n  padding: 0 16px;\n  border: none;\n  background: transparent;\n  text-align: start;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n}\n\n/* Inset divider between the two rows. */\n.acc-profiles-row::before {\n  content: \"\";\n  position: absolute;\n  top: 0;\n  inset-inline: 16px;\n  height: 1px;\n  background: var(--acc-border-color);\n}\n\n@media (hover: hover) {\n  .acc-card-row:hover {\n    background-color: var(--acc-bg-color);\n  }\n}\n\n/* The card clips its children, so the ring sits inside the row, rounded\n   to clear the card's corners. */\n.acc-card-row:focus-visible {\n  border-radius: 22px;\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: calc(-1 * var(--acc-focus-outline-width) - 3px);\n}\n\n.acc-card-row-icon {\n  display: inline-flex;\n  flex-shrink: 0;\n}\n\n.acc-card-row-icon svg {\n  width: 22px;\n  height: 22px;\n  fill: var(--acc-text-color);\n}\n\n.acc-card-row .acc-card-row-label {\n  flex: 1 1 auto;\n  min-width: 0;\n  font-size: 15px !important;\n  font-weight: 600 !important;\n}\n\n.acc-card-row .acc-card-row-value {\n  flex: 0 1 auto;\n  min-width: 0;\n  max-width: 50%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 14px !important;\n  color: #5b6472 !important;\n}\n\n.acc-card-row .acc-profiles-summary {\n  font-weight: 600 !important;\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-card-row-chevron {\n  flex-shrink: 0;\n  width: 8px;\n  height: 8px;\n  margin: 0 4px 3px !important;\n  border-right: 2px solid #5b6472;\n  border-bottom: 2px solid #5b6472;\n  transform: rotate(45deg);\n  transition: transform 0.2s ease;\n}\n\n.acc-card-row[aria-expanded=\"true\"] .acc-card-row-chevron {\n  margin: 3px 4px 0 !important;\n  transform: rotate(-135deg);\n}\n\n.acc-card-panel[hidden] {\n  display: none;\n}\n\n.acc-lang-panel {\n  padding-bottom: 8px;\n}\n\n.acc-lang-panel .acc-lang-list {\n  max-height: 280px;\n  padding: 0 8px 4px;\n}\n\n.acc-profiles-panel {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 8px;\n  padding: 4px 12px 12px;\n}\n\n/* Hidden group headings sit in the grid without taking a cell. */\n.acc-options {\n  position: relative;\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 8px;\n}\n\n.acc-menu .acc-sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  white-space: nowrap;\n  border: 0;\n}\n\n/* Tiles: icon above the label. A transparent border still draws in\n   forced-colors mode, where shadows disappear. */\n.acc-btn {\n  position: relative;\n  min-height: 112px;\n  padding: 16px 8px 12px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  text-align: center;\n  border-radius: 22px;\n  background: var(--acc-card-bg) !important;\n  border: 1px solid transparent !important;\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n  transition: box-shadow 0.2s ease;\n  cursor: pointer;\n  overflow-wrap: anywhere;\n  hyphens: auto;\n}\n\n.acc-btn.acc-profile-tile {\n  min-height: 96px;\n  padding: 14px 8px 12px;\n  border-radius: 18px;\n  background: var(--acc-bg-color) !important;\n  box-shadow: none;\n}\n\n/* Touch screens emulate :hover on tap and keep it until the next tap\n   elsewhere, which left the last-tapped option looking highlighted. */\n@media (hover: hover) {\n  .acc-btn:hover {\n    box-shadow: 0 0 0 1px var(--acc-hover-color), 0 2px 6px rgba(31, 41, 51, 0.08);\n  }\n}\n\n/* :focus-visible keeps the ring for keyboard users without leaving it\n   stuck on whatever a mouse click or tap last pressed. */\n.acc-btn:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-btn svg {\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n  flex-shrink: 0;\n  fill: var(--acc-text-color);\n}\n\n.acc-btn .acc-label {\n  font-size: 13px !important;\n  font-weight: 600 !important;\n  line-height: 1.25 !important;\n}\n\n/* Rapid taps (cycling Contrast or Font Size) must not trigger\n   double-tap-to-zoom on pages without a mobile viewport. */\n.acc-btn,\n.acc-menu-close,\n.acc-card-row,\n.acc-footer-reset,\n.acc-lang-item {\n  touch-action: manipulation;\n}\n\n/* On: primary icon and label, and a check badge in the inline-end\n   corner. The tile itself stays as it is. */\n.acc-btn.acc-selected {\n  background: var(--acc-card-bg) !important;\n}\n\n.acc-btn.acc-selected svg {\n  fill: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected .acc-label {\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected::before,\n.acc-btn.acc-selected::after {\n  content: \"\";\n  position: absolute;\n  box-sizing: border-box;\n}\n\n.acc-btn.acc-selected::before {\n  top: 9px;\n  inset-inline-end: 9px;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  background: var(--acc-primary-color);\n}\n\n.acc-btn.acc-selected::after {\n  top: 12px;\n  inset-inline-end: 15px;\n  width: 6px;\n  height: 10px;\n  border: solid var(--acc-text-color-inverted);\n  border-width: 0 2px 2px 0;\n  transform: rotate(45deg);\n}\n\n/* Footer section */\n.acc-footer {\n  flex-shrink: 0;\n  background: var(--acc-card-bg);\n  padding: 12px var(--acc-content-inline-padding);\n  display: flex;\n  flex-direction: column;\n  align-items: stretch;\n  gap: 10px;\n  border-top: 1px solid var(--acc-border-color);\n  overflow: visible;\n}\n\n.acc-footer-reset {\n  display: flex;\n  width: 100%;\n  height: 52px;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  padding: 0 16px;\n  border: 1px solid transparent;\n  border-radius: 26px;\n  background-color: var(--acc-bg-color) !important;\n  cursor: pointer;\n  transition: box-shadow 0.2s ease;\n}\n\n.acc-footer-reset svg {\n  flex-shrink: 0;\n  width: 20px !important;\n  height: 20px !important;\n  fill: var(--acc-text-color) !important;\n}\n\n/* Long translations wrap to a second line on narrow phones. */\n.acc-footer-reset .acc-label {\n  min-width: 0;\n  text-align: center;\n  font-size: 15px !important;\n  font-weight: 600 !important;\n  line-height: 1.2 !important;\n}\n\n/* How many options are on. */\n.acc-footer-reset .acc-reset-count {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 22px;\n  height: 22px;\n  padding: 0 6px;\n  border-radius: 11px;\n  background: var(--acc-text-color);\n  color: var(--acc-text-color-inverted) !important;\n  flex-shrink: 0;\n  font-size: 12px !important;\n  font-weight: 700 !important;\n  line-height: 1 !important;\n}\n\n.acc-footer-reset .acc-reset-count[hidden] {\n  display: none;\n}\n\n/* Nothing to reset: subdued, though still readable. */\n.acc-footer-reset:disabled {\n  cursor: default;\n}\n\n.acc-footer-reset:disabled svg {\n  fill: #5b6472 !important;\n}\n\n.acc-footer-reset:disabled .acc-label {\n  color: #5b6472 !important;\n}\n\n@media (hover: hover) {\n  .acc-footer-reset:not(:disabled):hover {\n    box-shadow: inset 0 0 0 1px var(--acc-border-color);\n  }\n}\n\n.acc-footer-reset:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-footer-brand {\n  display: block;\n  text-align: center;\n  font-size: 12px !important;\n  line-height: 1.2 !important;\n  font-weight: 400 !important;\n  color: var(--acc-text-color) !important;\n  opacity: 0.65;\n  text-decoration: none;\n  padding: 2px 0;\n}\n\n@media (hover: hover) {\n  .acc-footer-brand:hover {\n    opacity: 1;\n    text-decoration: underline;\n  }\n}\n\n.acc-footer-brand:focus-visible {\n  opacity: 1;\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Content area */\n.acc-menu-content {\n  flex: 1 1 auto;\n  min-height: 0;\n  overflow: auto;\n  /* Reaching the end of the options must not hand the scroll (wheel or\n     touch) to the page behind the panel. */\n  overscroll-behavior: contain;\n  padding: var(--acc-content-inline-padding) 0;\n  border-top-left-radius: 1.75rem;\n  border-top-right-radius: 1.75rem;\n  background: var(--acc-bg-color);\n  /* A soft shadow cast up onto the header, so the body reads as a sheet\n     lying over it. */\n  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);\n}\n\n/* Text adjustments */\n.acc-text-adjust {\n  background: var(--acc-card-bg);\n  padding: 18px 20px;\n  margin-bottom: 20px;\n  border-radius: var(--acc-border-radius);\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.acc-text-adjust .acc-label {\n  display: flex;\n  justify-content: flex-start;\n}\n\n.acc-text-adjust > div {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 20px;\n  align-items: center;\n  font-size: 16px;\n}\n\n.acc-text-adjust .acc-label div {\n  font-size: 16px !important;\n}\n\n.acc-text-adjust div[role=\"button\"] {\n  background: var(--acc-bg-color) !important;\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  transition: border-color 0.2s ease;\n}\n\n.acc-text-adjust div[role=\"button\"]:hover {\n  border-color: var(--acc-primary-color);\n}\n\n.acc-text-adjust div[role=\"button\"]:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Overlay */\n.acc-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: calc(var(--acc-widget-z-index, 100000) - 1);\n}\n\n/* Level dots under a cycling tile's label. */\n.acc-progress-indicator {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  height: 6px;\n}\n\n.acc-progress-dot {\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background-color: var(--acc-border-color);\n  transition: background-color 0.2s ease;\n}\n\n.acc-progress-dot.active {\n  background-color: var(--acc-primary-color);\n}\n\n@supports (color: color-mix(in srgb, red 50%, transparent)) {\n  .acc-btn.acc-selected .acc-progress-dot:not(.active) {\n    background-color: color-mix(in srgb, var(--acc-primary-color) 25%, var(--acc-card-bg));\n  }\n}\n\n/* Responsive adjustments */\n@media only screen and (max-width: 560px) {\n  /* Span the viewport between equal gaps. Anchoring both edges (rather\n     than 100vw math) stays centered beside a classic scrollbar and lets\n     the safe-area margins shrink the panel. !important beats the inline\n     dock side set from JS. */\n  .acc-menu {\n    left: var(--acc-menu-inline-gap) !important;\n    right: var(--acc-menu-inline-gap) !important;\n    width: auto;\n  }\n}\n\n/* Phones: tighter spacing leaves more room to show options. */\n@media only screen and (max-width: 480px) {\n  .acc-menu {\n    --acc-content-inline-padding: 16px;\n    --acc-menu-header-height: min(var(--acc-header-height), 56px);\n  }\n\n  .acc-options-all {\n    gap: 16px;\n  }\n\n  .acc-footer {\n    padding: 10px var(--acc-content-inline-padding);\n    gap: 6px;\n  }\n}\n\n/* Three tiles no longer fit below a ~380px panel (the viewport minus the\n   8px gaps); long labels in some languages need the width. */\n@media only screen and (max-width: 395px) {\n  .acc-options {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n\n/* The title wraps to two lines (longer translations too) rather than\n   truncating beside the header controls. */\n@media only screen and (max-width: 380px) {\n  .acc-menu-title {\n    font-size: 16px !important;\n  }\n\n  .acc-menu .acc-menu-title .acc-label {\n    display: -webkit-box;\n    -webkit-box-orient: vertical;\n    -webkit-line-clamp: 2;\n    white-space: normal;\n    line-height: 1.2 !important;\n  }\n}\n\n/* Landscape phones: the header and footer took over half of a ~340px\n   tall panel, leaving a sliver for the options. */\n@media only screen and (max-height: 500px) {\n  .acc-menu {\n    --acc-menu-header-height: min(var(--acc-header-height), 48px);\n  }\n\n  .acc-menu-content {\n    padding: 12px 0 16px;\n  }\n\n  .acc-footer {\n    flex-direction: row;\n    align-items: center;\n    justify-content: space-between;\n    padding: 8px var(--acc-content-inline-padding);\n  }\n\n  .acc-footer-reset {\n    width: auto;\n    height: 44px;\n  }\n}\n\n/* Touch input: grow the small controls toward a 44px target. */\n@media (pointer: coarse) {\n  .acc-menu-close {\n    width: 44px;\n    height: 44px;\n  }\n\n  .acc-footer-brand {\n    padding: 4px 0;\n  }\n}\n\n/* Ensure proper focus visibility for assistive technology */\n@media (prefers-reduced-motion: reduce) {\n  .acc-menu,\n  .acc-btn,\n  .acc-lang-select,\n  .acc-progress-dot,\n  .acc-menu-header div[role=\"button\"],\n  .acc-lang-toggle,\n  .acc-back-btn,\n  .acc-menu-close,\n  .acc-footer-reset,\n  .acc-card-row,\n  .acc-card-row-chevron,\n  .acc-text-adjust div[role=\"button\"] {\n    transition: none;\n  }\n}\n";
 
 var widgetCSS = "  /* Base styles for the widget */\n  .acc-widget, .acc-menu {\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n  }\n  \n  .acc-widget *, .acc-menu * { \n    box-sizing: border-box !important; \n  }\n  \n  /* Accessibility toggle button */\n  .acc-toggle-btn {\n    position: fixed;\n    z-index: var(--acc-widget-z-index, 100000);\n    left: 30px;\n    bottom: 30px;\n    border-radius: 50%;\n    align-items: center;\n    justify-content: center;\n    width: var(--acc-button-size, 48px);\n    height: var(--acc-button-size, 48px);\n    display: flex;\n    cursor: pointer;\n    outline: none !important;\n    border: none !important;\n    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #0072e4), inset 0 0 0 6px white, 0 2px 5px rgba(0,0,0,0.2) !important;\n    background: var(--acc-primary-color, #0072e4) !important;\n    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;\n    overflow: visible;\n    /* Margins on a fixed box add to the edges it is anchored to, so the\n       configured offset stays clear of notches and the home indicator on\n       edge-to-edge pages (viewport-fit=cover); env() is 0 elsewhere. */\n    margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);\n    touch-action: manipulation;\n  }\n  \n  .acc-toggle-btn .acc-toggle-icon {\n    width: 60%;\n    height: 60%;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  .acc-toggle-btn .acc-toggle-icon svg {\n    width: 100%;\n    height: 100%;\n    fill: white;\n    transition: none;\n  }\n  \n  /* Touch screens keep :hover after a tap, which left the button zoomed. */\n  @media (hover: hover) {\n    .acc-toggle-btn:hover {\n      transform: scale(1.12);\n    }\n  }\n\n  /* The menu panel replaces the button while open; closeMenu() restores\n     aria-expanded before moving focus back here, so the button is visible\n     and focusable again by the time it receives focus. */\n  .acc-toggle-btn[aria-expanded=\"true\"] {\n    opacity: 0;\n    visibility: hidden;\n    pointer-events: none;\n  }\n\n  .acc-violation-bubble {\n    position: absolute;\n    top: -8px;\n    right: -8px;\n    min-width: 24px;\n    height: 24px;\n    border-radius: 12px;\n    font-size: 11px;\n    font-weight: 700;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 0 4px;\n    pointer-events: none;\n    z-index: 1;\n    color: #fff;\n    border: none;\n    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  }\n\n  .acc-violation-bubble[data-severity=\"critical\"] {\n    background: #d32f2f;\n    color: #fff;\n  }\n\n  .acc-violation-bubble[data-severity=\"serious\"] {\n    background: #f57c00;\n    color: #fff;\n  }\n\n  .acc-violation-bubble[data-severity=\"moderate\"] {\n    background: #fbc02d;\n    color: #333;\n  }\n\n  .acc-violation-bubble[hidden] {\n    display: none;\n  }\n\n  .acc-toggle-btn:focus {\n    outline: none !important;\n  }\n\n  .acc-toggle-btn:focus-visible {\n    outline: 3px solid var(--acc-primary-color, #0072e4) !important;\n    outline-offset: 2px;\n  }\n\n  @media (prefers-reduced-motion: reduce) {\n    .acc-toggle-btn {\n      transition: none;\n    }\n\n    .acc-toggle-btn .acc-toggle-icon svg {\n      transition: none;\n    }\n\n  }\n";
 
@@ -5997,60 +5999,22 @@ const coreFeatureMethods = {
       }
     },
 
-  clampTextScalePercent(percent) {
-      const min = Number(this.textScaleMinPercent) || 80;
-      const max = Number(this.textScaleMaxPercent) || 150;
-      const step = Number(this.textScaleStepPercent) || 5;
-      const numeric = Number(percent);
-      if (!Number.isFinite(numeric)) return 100;
-      const snapped = Math.round((numeric - min) / step) * step + min;
-      return Math.min(max, Math.max(min, snapped));
+  // Snap a persisted text-scale multiplier to a Font Size level, or 1 when
+  // off. Values saved by the old slider (any multiplier, or a percent above
+  // 10) land on the nearest level; anything at or below 100% is off.
+  resolveTextScale(value) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return 1;
+      const multiplier = numeric > 10 ? numeric / 100 : numeric;
+      if (multiplier <= 1) return 1;
+      return (this.textScaleLevels || []).reduce((nearest, level) => (
+        Math.abs(level - multiplier) < Math.abs(nearest - multiplier) ? level : nearest
+      ), 1);
     },
 
-  getTextScalePercent(scaleValue = 1) {
-      if (scaleValue === false || scaleValue === null || typeof scaleValue === 'undefined') {
-        return this.clampTextScalePercent(100);
-      }
-      const numeric = Number(scaleValue);
-      if (!Number.isFinite(numeric)) {
-        return this.clampTextScalePercent(100);
-      }
-      if (numeric <= 0) {
-        return this.clampTextScalePercent(100);
-      }
-      const percent = numeric > 10 ? numeric : numeric * 100;
-      return this.clampTextScalePercent(percent);
-    },
-
-  syncTextScaleControlUI(menu, scaleValue = 1) {
-      if (!menu || !menu.querySelector) return;
-      const range = menu.querySelector('.acc-text-scale-range');
-      const label = menu.querySelector('.acc-text-scale-percent');
-      const percent = this.getTextScalePercent(scaleValue);
-      if (range) {
-        const min = Number(this.textScaleMinPercent) || 80;
-        const max = Number(this.textScaleMaxPercent) || 150;
-        const progress = ((percent - min) / (max - min)) * 100;
-        range.value = String(percent);
-        range.style.setProperty('--acc-text-scale-progress', `${Math.max(0, Math.min(100, progress))}%`);
-      }
-      if (label) {
-        label.textContent = `${percent}%`;
-      }
-    },
-
-  setTextScaleFromPercent(percent, options = {}) {
-      const shouldPersist = options.persist !== false;
-      const clampedPercent = this.getTextScalePercent(percent);
-      const multiplier = Number((clampedPercent / 100).toFixed(2));
-
-      this.scaleText(multiplier);
-
-      if (shouldPersist) {
-        this.updateState({ 'text-scale': multiplier });
-      }
-
-      return multiplier;
+  // Index of the active Font Size level, -1 when off.
+  getTextScaleLevel(value) {
+      return (this.textScaleLevels || []).indexOf(this.resolveTextScale(value));
     },
 
   enableBoldText(enable = false) {
@@ -6947,17 +6911,7 @@ const coreFeatureMethods = {
 
   applyEnhancements() {
       const { states } = this.loadConfig();
-      // Handle font size scaling
-      const hasTextScaleState = !!(states && Object.prototype.hasOwnProperty.call(states, 'text-scale'));
-      if (hasTextScaleState) {
-        const storedScale = states['text-scale'] === false ? 1 : states['text-scale'];
-        const appliedScale = this.setTextScaleFromPercent(storedScale, { persist: false });
-        this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), appliedScale);
-      } else {
-        this.scaleText(1);
-        this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), 1);
-      }
-      // Apply other enhancements
+      this.scaleText(this.resolveTextScale(states && states['text-scale']));
       this.concealImages(states && states['hide-images']);
       this.highlightTitles(states && states['highlight-title']);
       this.highlightLinks(states && states['highlight-links']);
@@ -6993,11 +6947,6 @@ const coreFeatureMethods = {
         dots.forEach(dot => dot.classList.remove('active'));
       });
       const menu = this.queryWidget('.acc-menu');
-      if (menu) {
-        this.setColorFilterUI(menu, null);
-        this.setReadableFontUI(menu, null);
-        this.syncTextScaleControlUI(menu, 1);
-      }
       
       // Remove focus from active element to fix the persistent focus ring bug
       const focused = this.getActiveElement();
@@ -7054,6 +7003,8 @@ const coreFeatureMethods = {
       this.clearSystemPreferenceListeners();
       this.detectSystemPreferences();
       this.setupMediaQueryListeners();
+      // System defaults may have switched features back on just now.
+      this.syncMenuUI(menu);
       this.updateViolationBubble(this.axeScanResults);
     },
 
@@ -7100,6 +7051,28 @@ const ttsMethods = {
     const configured = Number(this.nativeTtsConfig?.rate);
     if (!Number.isFinite(configured)) return 1;
     return Math.min(2, Math.max(0.5, configured));
+  },
+
+  // Map a persisted text-to-speech state to a speed choice. Legacy configs
+  // stored a boolean (true = the only speed there was, normal).
+  resolveTtsSpeed(value) {
+    const choices = this.ttsSpeedChoices || [];
+    if (value === true) return choices[0] || null;
+    if (typeof value !== 'string') return null;
+    return choices.find((choice) => choice.key === value) || null;
+  },
+
+  // Index of the active speed level, -1 when Text to Speech is off.
+  getTtsSpeedLevel(value) {
+    const choice = this.resolveTtsSpeed(value);
+    return choice ? this.ttsSpeedChoices.indexOf(choice) : -1;
+  },
+
+  // The site's ttsRate is the normal speed; slow and fast scale from it.
+  getTtsSpeechRate() {
+    const choice = this.resolveTtsSpeed(this.retrieveState('text-to-speech'));
+    const rate = this.getNativeTtsRate() * (choice ? choice.rate : 1);
+    return Math.min(2, Math.max(0.5, Math.round(rate * 100) / 100));
   },
 
   getNativeTtsPitch() {
@@ -7441,7 +7414,7 @@ const ttsMethods = {
     if (this.ttsVoice) {
       utterance.voice = this.ttsVoice;
     }
-    utterance.rate = this.getNativeTtsRate();
+    utterance.rate = this.getTtsSpeechRate();
     utterance.pitch = this.getNativeTtsPitch();
 
     utterance.onstart = () => {
@@ -7550,7 +7523,7 @@ const ttsMethods = {
     if (voice) {
       utterance.voice = voice;
     }
-    utterance.rate = this.getNativeTtsRate();
+    utterance.rate = this.getTtsSpeechRate();
     utterance.pitch = this.getNativeTtsPitch();
     synth.speak(utterance);
   },
@@ -8303,10 +8276,10 @@ const visualFilterMethods = {
   getContrastToggleDisplay(index) {
       const control = 'Contrast';
       if (index === 0) {
-        return { key: 'light-contrast', control, label: 'Light', icon: this.widgetIcons.lightContrast };
+        return { key: 'light-contrast', control, label: 'Light Contrast', icon: this.widgetIcons.lightContrast };
       }
       if (index === 1) {
-        return { key: 'dark-contrast', control, label: 'Dark', icon: this.widgetIcons.darkContrast };
+        return { key: 'dark-contrast', control, label: 'Dark Contrast', icon: this.widgetIcons.darkContrast };
       }
       return { key: null, control, label: control, icon: this.widgetIcons.contrast };
     },
@@ -8325,9 +8298,10 @@ const visualFilterMethods = {
         labelNode.setAttribute('data-acc-text', display.label);
         labelNode.innerText = this.translate(display.label);
       }
-      // The visible label shows only the active level ("Light"); the
-      // accessible name also names the control ("Contrast: Light") and is
-      // rebuilt from these attributes by translateMenuUI() on a language switch.
+      // The visible label shows only the active level ("Light Contrast");
+      // the accessible name also names the control ("Contrast: Light
+      // Contrast") and is rebuilt from these attributes by translateMenuUI()
+      // on a language switch.
       button.setAttribute('data-acc-text', display.control);
       if (display.key) {
         button.setAttribute('data-acc-level-text', display.label);
@@ -8347,10 +8321,10 @@ const visualFilterMethods = {
   getSaturationToggleDisplay(index) {
       const control = 'Saturation';
       if (index === 0) {
-        return { key: 'low-saturation', control, label: 'Low', icon: this.widgetIcons.lowSaturation };
+        return { key: 'low-saturation', control, label: 'Low Saturation', icon: this.widgetIcons.lowSaturation };
       }
       if (index === 1) {
-        return { key: 'high-saturation', control, label: 'High', icon: this.widgetIcons.highSaturation };
+        return { key: 'high-saturation', control, label: 'High Saturation', icon: this.widgetIcons.highSaturation };
       }
       if (index === 2) {
         return { key: 'monochrome', control, label: 'Monochrome', icon: this.widgetIcons.monochrome };
@@ -8392,6 +8366,44 @@ const visualFilterMethods = {
           dot.classList.toggle('active', dotIndex === index);
         });
       }
+    },
+
+  // Font Size and Text to Speech keep their name on the tile; the level
+  // goes into the accessible name only ("Font Size: 125%").
+  getLevelTileText(featureKey, index) {
+      if (featureKey === 'text-scale') {
+        const level = this.textScaleLevels?.[index];
+        return level ? `${Math.round(level * 100)}%` : '';
+      }
+      if (featureKey === 'text-to-speech') {
+        const choice = this.ttsSpeedChoices?.[index];
+        return choice ? `${choice.rate}×` : '';
+      }
+      return '';
+    },
+
+  setLevelTileUI(menu, featureKey, index) {
+      if (!menu || !menu.querySelector) return;
+      const feature = this.multiLevelFeatures?.[featureKey];
+      if (!feature) return;
+      feature.currentIndex = index;
+      const button = menu.querySelector(`.acc-btn[data-key="${featureKey}"]`);
+      if (!button) return;
+      const levelText = this.getLevelTileText(featureKey, index);
+      if (levelText) {
+        button.setAttribute('data-acc-level-text', levelText);
+      } else {
+        button.removeAttribute('data-acc-level-text');
+      }
+      const accessibleName = this.getTranslatedText(button);
+      button.setAttribute('title', accessibleName);
+      button.setAttribute('aria-label', accessibleName);
+      const isActive = index >= 0;
+      button.classList.toggle('acc-selected', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      button.querySelectorAll('.acc-progress-dot').forEach((dot, dotIndex) => {
+        dot.classList.toggle('active', dotIndex === index);
+      });
     },
 
   isColorFilterKey(key) {
@@ -8574,13 +8586,14 @@ const visualFilterMethods = {
   cycleMultiLevelFeature(featureKey, button) {
       const feature = this.multiLevelFeatures[featureKey];
       if (!feature || !button) return;
+      const menu = button.closest('.acc-menu');
 
       if (featureKey === 'readable-text') {
         const newIndex = feature.currentIndex + 1;
         const newFontKey = newIndex >= feature.levels ? null : feature.values[newIndex];
         this.updateState({ 'readable-text': newFontKey || false });
         this.enableReadableText(newFontKey || false);
-        this.setReadableFontUI(button.closest('.acc-menu'), newFontKey);
+        this.setReadableFontUI(menu, newFontKey);
         // setReadableFontUI re-labels the button with the control and the
         // active font ("Readable Font: Lexend"), so the announcement reads
         // "Readable Font: Lexend On" / "Readable Font Off".
@@ -8588,18 +8601,48 @@ const visualFilterMethods = {
         return;
       }
 
-      // Beyond those, only the color filter toggles render as cycling
-      // buttons; text scale is controlled by the slider in the Text section.
+      // Font Size: 110%, 125%, 150%, then back to 100% (off).
+      if (featureKey === 'text-scale') {
+        const newIndex = this.getTextScaleLevel(this.retrieveState('text-scale')) + 1;
+        const multiplier = newIndex < feature.levels ? feature.values[newIndex] : 1;
+        this.updateState({ 'text-scale': multiplier });
+        this.scaleText(multiplier);
+        this.setLevelTileUI(menu, featureKey, multiplier > 1 ? newIndex : -1);
+        const fontSize = this.translate('Font Size');
+        this.announce(multiplier > 1
+          ? `${fontSize} ${Math.round(multiplier * 100)}%`
+          : `${fontSize} ${this.translate('Off')}`);
+        return;
+      }
+
+      // Text to Speech: normal, slow, fast, then off. Each tap re-speaks
+      // the "Text to Speech On" cue at the new speed.
+      if (featureKey === 'text-to-speech') {
+        const newIndex = this.getTtsSpeedLevel(this.retrieveState('text-to-speech')) + 1;
+        const speedKey = newIndex < feature.levels ? feature.values[newIndex] : false;
+        this.userInitiatedToggleKey = featureKey;
+        try {
+          this.updateState({ 'text-to-speech': speedKey });
+          this.enableTextToSpeech(speedKey);
+        } finally {
+          this.userInitiatedToggleKey = null;
+        }
+        this.setLevelTileUI(menu, featureKey, speedKey ? newIndex : -1);
+        this.announceFeatureState(button.getAttribute('aria-label'), !!speedKey);
+        return;
+      }
+
+      // Beyond those, only the color filter toggles render as cycling buttons.
       if (featureKey !== 'contrast-toggle' && featureKey !== 'saturation-toggle') return;
 
       const newIndex = feature.currentIndex + 1;
       const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
       this.updateColorFilterState(newActiveKey);
-      this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
+      this.setColorFilterUI(menu, newActiveKey);
       this.applyVisualFilters();
       // setColorFilterUI re-labels the button with the control and the
-      // active mode ("Contrast: Light"), so the announcement reads
-      // "Contrast: Light On" / "Contrast Off".
+      // active mode ("Contrast: Light Contrast"), so the announcement reads
+      // "Contrast: Light Contrast On" / "Contrast Off".
       this.announceFeatureState(button.getAttribute('aria-label'), !!newActiveKey);
     },
 
@@ -9150,12 +9193,16 @@ const uiMethods = {
       return String.fromCodePoint(...countryCode.split('').map(char => 127397 + char.charCodeAt(0)));
     },
 
+  // Native name of a supported language: "Deutsch" from "Deutsch (German)".
+  getLanguageName(language) {
+      return String(language?.label || language?.code || '')
+        .split('(')[0]
+        .trim() || String(language?.code || 'en').toUpperCase();
+    },
+
   formatLanguageLabel(language) {
       if (!language) return 'English (USA)';
-      const baseName = String(language.label || language.code || '')
-        .split('(')[0]
-        .trim() || String(language.code || 'en').toUpperCase();
-      return `${baseName} (${this.getLanguageCountryLabel(language.code)})`;
+      return `${this.getLanguageName(language)} (${this.getLanguageCountryLabel(language.code)})`;
     },
 
   getWidgetIconMarkup(iconKey) {
@@ -9258,7 +9305,34 @@ const uiMethods = {
       this.setColorFilterUI(menu, activeColorFilter);
       const readableChoice = this.resolveReadableFontChoice(states['readable-text']);
       this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
-      this.syncTextScaleControlUI(menu, states['text-scale'] || 1);
+      this.setLevelTileUI(menu, 'text-scale', this.getTextScaleLevel(states['text-scale']));
+      this.setLevelTileUI(menu, 'text-to-speech', this.getTtsSpeedLevel(states['text-to-speech']));
+      this.syncMenuSummary(menu);
+    },
+
+  // The Profiles row names the active profile (a count when several are
+  // on), and the Reset button counts the options that are on and turns
+  // inactive when there is nothing to reset.
+  syncMenuSummary(menu) {
+      if (!menu || !menu.querySelector) return;
+      const states = this.loadConfig().states || {};
+      const activeProfiles = (this.accessibilityProfiles || []).filter(profile => states[profile.key]);
+      const profileSummary = menu.querySelector('.acc-profiles-summary');
+      if (profileSummary) {
+        if (activeProfiles.length === 1) {
+          profileSummary.textContent = this.translate(activeProfiles[0].label);
+        } else {
+          profileSummary.textContent = activeProfiles.length ? String(activeProfiles.length) : '';
+        }
+      }
+      const resetButton = menu.querySelector('.acc-footer-reset');
+      const resetCount = menu.querySelector('.acc-reset-count');
+      if (resetButton && resetCount) {
+        const activeCount = menu.querySelectorAll('.acc-options .acc-btn.acc-selected').length;
+        resetCount.textContent = String(activeCount);
+        resetCount.hidden = activeCount === 0;
+        resetButton.disabled = activeCount === 0 && activeProfiles.length === 0;
+      }
     },
 
   getFocusableElements(root) {
@@ -9326,11 +9400,11 @@ const uiMethods = {
         if (!this.activeMenuContainer) return;
         if (event.key === 'Escape' || event.key === 'Esc') {
           event.preventDefault();
-          // Escape peels back one layer: an open language popover closes
-          // first (its toggle restores focus), then the menu itself.
-          const langModal = this.findElement('#acc-lang-modal', this.activeMenuContainer);
-          const langToggle = this.findElement('.acc-header-lang-toggle', this.activeMenuContainer);
-          if (langModal && !langModal.hasAttribute('hidden') && langToggle) {
+          // Escape peels back one layer: an open language list closes
+          // first (its row restores focus), then the menu itself.
+          const langPanel = this.findElement('#acc-lang-panel', this.activeMenuContainer);
+          const langToggle = this.findElement('.acc-lang-row', this.activeMenuContainer);
+          if (langPanel && !langPanel.hasAttribute('hidden') && langToggle) {
             langToggle.click();
             return;
           }
@@ -9375,12 +9449,12 @@ const uiMethods = {
         menu.setAttribute('aria-modal', 'false');
       }
 
-      const langModal = this.findElement('#acc-lang-modal', targetContainer);
-      if (langModal) {
-        langModal.setAttribute('hidden', '');
+      const langPanel = this.findElement('#acc-lang-panel', targetContainer);
+      if (langPanel) {
+        langPanel.setAttribute('hidden', '');
       }
 
-      const langToggle = this.findElement('.acc-header-lang-toggle', targetContainer);
+      const langToggle = this.findElement('.acc-lang-row', targetContainer);
       if (langToggle) {
         langToggle.setAttribute('aria-expanded', 'false');
       }
@@ -9442,6 +9516,7 @@ const uiMethods = {
           type="button" 
           data-key="${opt.key}" 
           data-multi-level="${isMultiLevel}"
+          data-acc-text="${opt.label}"
           title="${opt.label}"
           aria-label="${opt.label}"
           aria-pressed="${this.multiLevelFeatures[opt.key]?.currentIndex >= 0 || false}"
@@ -9452,34 +9527,6 @@ const uiMethods = {
           </button>`;
       }
       return html;
-    },
-
-  renderTextScaleControl(scaleValue = 1) {
-      const percent = this.getTextScalePercent(scaleValue);
-      const min = Number(this.textScaleMinPercent) || 80;
-      const max = Number(this.textScaleMaxPercent) || 150;
-      const step = Number(this.textScaleStepPercent) || 5;
-      const progress = ((percent - min) / (max - min)) * 100;
-
-      return `
-        <div class="acc-text-scale-control" data-key="text-scale">
-          <div class="acc-text-scale-meta">
-            <span class="acc-text-scale-icon" aria-hidden="true">${this.widgetIcons.adjustFontSize}</span>
-            <span class="acc-label" data-acc-text="Font Size">Font Size</span>
-            <span class="acc-text-scale-percent">${percent}%</span>
-          </div>
-          <input
-            type="range"
-            class="acc-text-scale-range"
-            min="${min}"
-            max="${max}"
-            step="${step}"
-            value="${percent}"
-            data-acc-text="Font Size"
-            aria-label="Font Size"
-            style="--acc-text-scale-progress: ${Math.max(0, Math.min(100, progress))}%">
-        </div>
-      `;
     },
 
   getTranslatedText(el, defaultValue) {
@@ -9519,6 +9566,7 @@ const uiMethods = {
       menu.querySelectorAll("[aria-label]").forEach(el => {
         el.setAttribute("aria-label", this.getTranslatedText(el, el.getAttribute("aria-label")));
       });
+      this.syncMenuSummary(menuElement);
       this.updateSkipLinkLabel();
     },
 
@@ -9528,6 +9576,41 @@ const uiMethods = {
         this.registerStaticStyles();
 
         const activeLanguageCode = String(lang || 'en').split(/[_-]/)[0].toLowerCase();
+        const activeLanguage = this.supportedLanguages.find(language => language.code === lang) ||
+          this.supportedLanguages.find(language => language.code === activeLanguageCode);
+
+        const sourceOptions = [
+          ...this.contentOptions.map(option => ({ ...option })),
+          ...this.colorOptions.map(option => ({ ...option, optionClass: 'acc-filter' })),
+          ...this.accessTools
+            .filter(option => !option.devOnly || this.isDevMode())
+            .map(option => ({ ...option, optionClass: 'acc-tools' }))
+        ];
+        const optionsByKey = new Map();
+        sourceOptions.forEach(option => {
+          if (option?.key && !optionsByKey.has(option.key)) optionsByKey.set(option.key, option);
+        });
+
+        // One grid of tiles in this order. The group names are not shown,
+        // but stay as visually hidden headings so screen reader users can
+        // still jump between groups. Options missing from these lists join
+        // the last group.
+        const tileGroups = [
+          { label: 'Speech', keys: ['text-to-speech'] },
+          { label: 'Text', keys: ['text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text'] },
+          { label: 'Color & Contrast', keys: ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'] },
+          { label: 'Reading Aids', keys: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'] },
+          { label: 'Interaction', keys: ['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds', 'annotations', 'accessibility-report'] }
+        ];
+        const groupedKeys = new Set(tileGroups.flatMap(group => group.keys));
+        const ungroupedKeys = [...optionsByKey.keys()].filter(key => !groupedKeys.has(key));
+        const tilesMarkup = tileGroups.map((group, index) => {
+          const keys = index === tileGroups.length - 1 ? [...group.keys, ...ungroupedKeys] : group.keys;
+          const tiles = this.renderOptions(keys.map(key => optionsByKey.get(key)).filter(Boolean));
+          return tiles ? `<h2 class="acc-section-title acc-label acc-sr-only">${group.label}</h2>${tiles}` : '';
+        }).join('');
+
+        const profilesMarkup = this.renderOptions((this.accessibilityProfiles || []).map(profile => ({ ...profile })), 'acc-profile-tile');
 
         const menuTemplate = `
         <div class="acc-menu" role="dialog" aria-labelledby="accessibility-title">
@@ -9535,44 +9618,55 @@ const uiMethods = {
             <div id="accessibility-title" class="acc-menu-title">
               <span class="acc-label">Accessibility Options</span>
             </div>
-            <div class="acc-header-actions">
-              <button type="button" class="acc-header-lang-toggle" title="Language" aria-label="Language" aria-expanded="false" aria-controls="acc-lang-modal">
-                <span id="acc-current-language" class="acc-header-lang-current">${String(activeLanguageCode || 'en').toUpperCase()}</span>
-                <span class="acc-header-lang-arrow" aria-hidden="true"> </span>
-              </button>
-              <button type="button" class="acc-menu-close" title="Close" aria-label="Close">
-                ${this.widgetIcons.close}
-              </button>
-            </div>
-          </div>
-          <div id="acc-lang-modal" class="acc-lang-modal" hidden>
-            <div class="acc-lang-modal-header">
-              <div class="acc-section-title acc-label">All Languages</div>
-            </div>
-            <div class="acc-lang-search-wrapper">
-              <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
-            </div>
-            <div class="acc-lang-list">
-              ${this.supportedLanguages.map(language => {
-                const languageLabel = this.formatLanguageLabel(language);
-                const languageFlag = this.getLanguageFlag(language.code);
-                return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
-                  <span class="acc-lang-item-main">
-                    <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
-                    <span class="acc-lang-item-label">${languageLabel}</span>
-                  </span>
-                  <span class="acc-icon-check" aria-hidden="true"> </span>
-                </button>`;
-              }).join('')}
-            </div>
+            <button type="button" class="acc-menu-close" title="Close" aria-label="Close">
+              ${this.widgetIcons.close}
+            </button>
           </div>
           <div id="acc-menu-content" class="acc-menu-content">
-            <div class="acc-options-all"> </div>
+            <div class="acc-options-all">
+              <div class="acc-card">
+                <button type="button" class="acc-card-row acc-lang-row" aria-expanded="false" aria-controls="acc-lang-panel">
+                  <span class="acc-card-row-icon" aria-hidden="true">${this.widgetIcons.language}</span>
+                  <span class="acc-card-row-label acc-label">Language</span>
+                  <span id="acc-current-language" class="acc-card-row-value">${this.getLanguageName(activeLanguage)}</span>
+                  <span class="acc-card-row-chevron" aria-hidden="true"> </span>
+                </button>
+                <div id="acc-lang-panel" class="acc-card-panel acc-lang-panel" hidden>
+                  <div class="acc-lang-search-wrapper">
+                    <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
+                  </div>
+                  <div class="acc-lang-list">
+                    ${this.supportedLanguages.map(language => {
+                      const languageLabel = this.formatLanguageLabel(language);
+                      const languageFlag = this.getLanguageFlag(language.code);
+                      return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
+                        <span class="acc-lang-item-main">
+                          <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
+                          <span class="acc-lang-item-label">${languageLabel}</span>
+                        </span>
+                        <span class="acc-icon-check" aria-hidden="true"> </span>
+                      </button>`;
+                    }).join('')}
+                  </div>
+                </div>
+                <button type="button" class="acc-card-row acc-profiles-row" aria-expanded="false" aria-controls="acc-profiles-panel">
+                  <span class="acc-card-row-icon" aria-hidden="true">${this.widgetIcons.profiles}</span>
+                  <span class="acc-card-row-label acc-label">Profiles</span>
+                  <span class="acc-card-row-value acc-profiles-summary"></span>
+                  <span class="acc-card-row-chevron" aria-hidden="true"> </span>
+                </button>
+                <div id="acc-profiles-panel" class="acc-card-panel acc-profiles-panel" role="group" aria-label="Profiles" hidden>
+                  ${profilesMarkup}
+                </div>
+              </div>
+              <div class="acc-options">${tilesMarkup}</div>
+            </div>
           </div>
           <div class="acc-footer">
-            <button type="button" class="acc-footer-reset" title="Reset settings" aria-label="Reset settings">
+            <button type="button" class="acc-footer-reset">
               ${this.widgetIcons.reset}
               <span class="acc-label">Reset settings</span>
+              <span class="acc-reset-count" hidden></span>
             </button>
             ${this.options.hideAttribution === true ? '' : '<a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>'}
           </div>
@@ -9608,191 +9702,18 @@ const uiMethods = {
 
         const config = this.loadConfig();
 
-        const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text']);
-        const colorKeys = new Set(['contrast-toggle', 'invert-colors', 'saturation-toggle', 'high-contrast-mode']);
-        const readingAidsKeys = new Set(['reading-aid', 'highlight-links', 'highlight-title', 'simple-layout', 'text-magnifier', 'page-structure']);
-
-        const sourceOptions = [
-          ...this.contentOptions.map(option => ({ ...option })),
-          ...this.colorOptions.map(option => ({ ...option, optionClass: 'acc-filter' })),
-          ...this.accessTools
-            .filter(option => !option.devOnly || this.isDevMode())
-            .map(option => ({ ...option, optionClass: 'acc-tools' }))
-        ];
-
-        const groupedOptions = {
-          profiles: (this.accessibilityProfiles || []).map(profile => ({ ...profile })),
-          speech: [],
-          text: [],
-          color: [],
-          reading: [],
-          interaction: []
-        };
-
-        const seenKeys = new Set();
-        sourceOptions.forEach(option => {
-          if (!option?.key || seenKeys.has(option.key)) return;
-          seenKeys.add(option.key);
-
-          if (option.key === 'text-to-speech') {
-            groupedOptions.speech.push(option);
-            return;
-          }
-          if (textKeys.has(option.key)) {
-            groupedOptions.text.push(option);
-            return;
-          }
-          if (colorKeys.has(option.key)) {
-            groupedOptions.color.push(option);
-            return;
-          }
-          if (readingAidsKeys.has(option.key)) {
-            groupedOptions.reading.push(option);
-            return;
-          }
-          groupedOptions.interaction.push(option);
-        });
-
-        const sectionConfig = [
-          { key: 'profiles', label: 'Profiles', containerClass: 'acc-tts-toggle-container', optionClass: 'acc-tts-toggle' },
-          { key: 'speech', label: 'Speech', containerClass: 'acc-tts-toggle-container', optionClass: 'acc-tts-toggle' },
-          { key: 'text', label: 'Text', containerClass: 'acc-options acc-options-text' },
-          { key: 'color', label: 'Color & Contrast', containerClass: 'acc-options' },
-          { key: 'reading', label: 'Reading Aids', containerClass: 'acc-options' },
-          { key: 'interaction', label: 'Interaction', containerClass: 'acc-options' }
-        ];
-
-        const sortOptionsByOrder = (sectionOptions, order) => {
-          sectionOptions.sort((a, b) => {
-            const indexA = order.indexOf(a.key);
-            const indexB = order.indexOf(b.key);
-            const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
-            const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
-            return rankA - rankB;
-          });
-        };
-
-        const renderThinRowSection = (section, sectionOptions, { order, rows = [], specialContent = '' }) => {
-          sortOptionsByOrder(sectionOptions, order);
-          const rowsHtml = rows.map(rowKeys => {
-            const rowOptions = sectionOptions.filter(option => rowKeys.has(option.key));
-            return rowOptions.length
-              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(rowOptions, 'acc-text-inline')}</div>`
-              : '';
-          }).join('');
-          const remainingOptions = sectionOptions.filter(option => (
-            !rows.some(rowKeys => rowKeys.has(option.key))
-          ));
-          const remainingHtml = remainingOptions.length
-            ? `<div class="${section.containerClass}">${this.renderOptions(remainingOptions, section.optionClass || '')}</div>`
-            : '';
-
-          if (!specialContent && !rowsHtml && !remainingHtml) return '';
-
-          return `
-            <section class="acc-option-category acc-option-category-${section.key}">
-              <div class="acc-section-title acc-label">${section.label}</div>
-              ${specialContent}
-              ${rowsHtml}
-              ${remainingHtml}
-            </section>
-          `;
-        };
-
-        const sectionMarkup = sectionConfig.map(section => {
-          let sectionOptions = groupedOptions[section.key];
-          let specialContent = '';
-
-          // Profiles render two-up like the Text/Color/Reading sections;
-          // a profile added without a row assignment falls through to a
-          // full-width row via section.containerClass.
-          if (section.key === 'profiles') {
-            return renderThinRowSection(section, sectionOptions, {
-              order: ['profile-seizure-safe', 'profile-vision', 'profile-adhd', 'profile-dyslexia'],
-              rows: [
-                new Set(['profile-seizure-safe', 'profile-vision']),
-                new Set(['profile-adhd', 'profile-dyslexia'])
-              ]
-            });
-          }
-
-          if (section.key === 'text') {
-            const textScaleOption = sectionOptions.find(option => option.key === 'text-scale');
-            sectionOptions = sectionOptions.filter(option => option.key !== 'text-scale');
-            return renderThinRowSection(section, sectionOptions, {
-              order: ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'],
-              rows: [
-                new Set(['line-spacing', 'letter-spacing']),
-                new Set(['bold-text', 'readable-text'])
-              ],
-              specialContent: textScaleOption
-                ? this.renderTextScaleControl(config.states?.['text-scale'] || 1)
-                : ''
-            });
-          }
-
-          if (section.key === 'color') {
-            return renderThinRowSection(section, sectionOptions, {
-              order: ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'],
-              rows: [
-                new Set(['contrast-toggle', 'saturation-toggle']),
-                new Set(['invert-colors', 'high-contrast-mode'])
-              ]
-            });
-          }
-
-          if (section.key === 'reading') {
-            return renderThinRowSection(section, sectionOptions, {
-              order: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'],
-              rows: [
-                new Set(['highlight-links', 'highlight-title']),
-                new Set(['reading-aid', 'simple-layout']),
-                new Set(['text-magnifier', 'page-structure'])
-              ]
-            });
-          }
-
-          // Same compact rows as the sections above, as one auto-flowing
-          // grid so the pairs close up when an option is skipped (Big
-          // Cursor on touch-only devices).
-          if (section.key === 'interaction') {
-            const interactionOrder = ['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds', 'annotations', 'accessibility-report'];
-            return renderThinRowSection(section, sectionOptions, {
-              order: interactionOrder,
-              rows: [new Set(interactionOrder)]
-            });
-          }
-
-          const sectionOptionsHtml = sectionOptions.length
-            ? this.renderOptions(sectionOptions, section.optionClass || '')
-            : '';
-
-          if (!specialContent && !sectionOptionsHtml.trim()) return '';
-
-          const optionsContainer = sectionOptionsHtml.trim()
-            ? `<div class="${section.containerClass}">${sectionOptionsHtml}</div>`
-            : '';
-
-          return `
-            <section class="acc-option-category acc-option-category-${section.key}">
-              <div class="acc-section-title acc-label">${section.label}</div>
-              ${specialContent}
-              ${optionsContainer}
-            </section>
-          `;
-        }).join('');
-
-        menu.querySelector(".acc-options-all").innerHTML = sectionMarkup;
-        const langModal = this.findElement("#acc-lang-modal", menu);
-        const langToggle = this.findElement(".acc-header-lang-toggle", menu);
+        const langPanel = this.findElement("#acc-lang-panel", menu);
+        const langToggle = this.findElement(".acc-lang-row", menu);
         const langSearch = this.findElement("#acc-lang-search", menu);
         const langItems = menu.querySelectorAll(".acc-lang-item");
+        const profilesPanel = this.findElement("#acc-profiles-panel", menu);
+        const profilesToggle = this.findElement(".acc-profiles-row", menu);
 
-        const closeLanguageModal = () => {
-          // Hiding the popover would otherwise drop focus out of the dialog.
-          const focusWasInside = Boolean(langModal && langModal.contains(this.getActiveElement()));
-          if (langModal) {
-            langModal.setAttribute('hidden', '');
+        const closeLanguagePanel = () => {
+          // Hiding the list would otherwise drop focus out of the dialog.
+          const focusWasInside = Boolean(langPanel && langPanel.contains(this.getActiveElement()));
+          if (langPanel) {
+            langPanel.setAttribute('hidden', '');
           }
           if (focusWasInside && langToggle) {
             this.focusQuietlyAfterPointer(langToggle);
@@ -9808,9 +9729,9 @@ const uiMethods = {
           });
         };
 
-        const openLanguageModal = () => {
-          if (langModal) {
-            langModal.removeAttribute('hidden');
+        const openLanguagePanel = () => {
+          if (langPanel) {
+            langPanel.removeAttribute('hidden');
           }
           if (langToggle) {
             langToggle.setAttribute('aria-expanded', 'true');
@@ -9818,7 +9739,7 @@ const uiMethods = {
           // On touch-only devices focusing the search field pops the
           // on-screen keyboard over the list, so land on the current
           // language; with a keyboard, typing filters right away.
-          const selectedItem = this.findElement('.acc-lang-item.selected', langModal) || langItems[0];
+          const selectedItem = this.findElement('.acc-lang-item.selected', langPanel) || langItems[0];
           if (this.isTouchOnlyDevice() && selectedItem) {
             this.focusQuietlyAfterPointer(selectedItem);
           } else if (langSearch) {
@@ -9826,15 +9747,21 @@ const uiMethods = {
           }
         };
 
-        if (langToggle && langModal) {
-          langToggle.addEventListener('click', (event) => {
-            event.stopPropagation();
-            const isOpen = !langModal.hasAttribute('hidden');
-            if (isOpen) {
-              closeLanguageModal();
+        if (langToggle && langPanel) {
+          langToggle.addEventListener('click', () => {
+            if (langPanel.hasAttribute('hidden')) {
+              openLanguagePanel();
             } else {
-              openLanguageModal();
+              closeLanguagePanel();
             }
+          });
+        }
+
+        if (profilesToggle && profilesPanel) {
+          profilesToggle.addEventListener('click', () => {
+            const willOpen = profilesPanel.hasAttribute('hidden');
+            profilesPanel.toggleAttribute('hidden', !willOpen);
+            profilesToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
           });
         }
   
@@ -9863,9 +9790,9 @@ const uiMethods = {
             // Update current language display
             const currentLang = this.findElement("#acc-current-language", menu);
             if (currentLang) {
-              currentLang.textContent = String(langCode).toUpperCase();
+              currentLang.textContent = this.getLanguageName(this.supportedLanguages.find(language => language.code === langCode));
             }
-            closeLanguageModal();
+            closeLanguagePanel();
             
             // Save language preference and update UI. langUserSelected marks
             // this as an explicit visitor choice that outranks the embed
@@ -9874,31 +9801,9 @@ const uiMethods = {
             this.translateMenuUI(menuContainer);
           });
         });
-
-        const textScaleRange = this.findElement('.acc-text-scale-range', menu);
-        if (textScaleRange) {
-          textScaleRange.addEventListener('input', () => {
-            const multiplier = this.setTextScaleFromPercent(textScaleRange.value, { persist: false });
-            this.syncTextScaleControlUI(menu, multiplier);
-          });
-          textScaleRange.addEventListener('change', () => {
-            const multiplier = this.setTextScaleFromPercent(textScaleRange.value, { persist: true });
-            this.syncTextScaleControlUI(menu, multiplier);
-            this.announce(`${this.translate('Font Size')} ${this.getTextScalePercent(multiplier)}%`);
-          });
-          this.syncTextScaleControlUI(menu, config.states?.['text-scale'] || 1);
-        }
   
         // click event handler:
         menu.addEventListener('click', (e) => {
-          if (langModal && !langModal.hasAttribute('hidden')) {
-            const clickedInsideLanguageModal = Boolean(e.target.closest('.acc-lang-modal'));
-            const clickedLanguageToggle = Boolean(e.target.closest('.acc-header-lang-toggle'));
-            if (!clickedInsideLanguageModal && !clickedLanguageToggle) {
-              closeLanguageModal();
-            }
-          }
-
           const target = e.target.closest('[role="button"], button, .acc-overlay');
           if (!target) return;
           if (target.classList.contains('acc-overlay')) {
@@ -9908,6 +9813,9 @@ const uiMethods = {
           if (target.classList.contains('acc-footer-reset')) {
             this.resetEnhancements();
             this.announce(this.translate('Settings reset'));
+            // Reset usually leaves nothing to reset and disables itself;
+            // keep focus inside the dialog rather than on a dead button.
+            this.focusQuietlyAfterPointer(target.disabled ? menu : target);
             return;
           }
           const btn = target.classList.contains('acc-btn') ? target : null;
@@ -9930,7 +9838,7 @@ const uiMethods = {
             else if (key && key.startsWith('profile-')) {
               this.toggleAccessibilityProfile(key, menu);
             }
-            // Handle multi-level features (font size, contrast).
+            // Handle multi-level features (speech, font size, contrast).
             else if (this.multiLevelFeatures[key]) {
               this.cycleMultiLevelFeature(key, btn);
             }
@@ -9957,6 +9865,7 @@ const uiMethods = {
               }
               this.announceFeatureState(btn.getAttribute('aria-label'), isSelected);
             }
+            this.syncMenuSummary(menu);
           }
         });
         this.translateMenuUI(menuContainer);
@@ -10325,6 +10234,8 @@ class AccessibleWebWidget {
         label: 'Text to Speech',
         key: 'text-to-speech',
         icon: this.widgetIcons.textToSpeech,
+        // Speed levels are defined with ttsSpeedChoices below.
+        multiLevel: true,
         requiresSpeechSynthesis: true
       },
       { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
@@ -10361,7 +10272,7 @@ class AccessibleWebWidget {
         label: 'Vision Impaired',
         key: 'profile-vision',
         icon: this.widgetIcons.highContrast,
-        states: { 'text-scale': 1.4, 'high-contrast-mode': true, 'large-pointer': true }
+        states: { 'text-scale': 1.5, 'high-contrast-mode': true, 'large-pointer': true }
       },
       {
         label: 'ADHD Friendly',
@@ -10420,10 +10331,16 @@ class AccessibleWebWidget {
     // Track direct user toggles for features that have side effects.
     this.userInitiatedToggleKey = null;
 
-    // Font size slider bounds
-    this.textScaleMinPercent = 80;
-    this.textScaleMaxPercent = 150;
-    this.textScaleStepPercent = 5;
+    // Font Size levels, as the multiplier persisted in the text-scale state
+    // (1 = off). Stored values from the old slider snap to the nearest one.
+    this.textScaleLevels = [1.1, 1.25, 1.5];
+    // Text to Speech speeds, persisted by key in the text-to-speech state
+    // (legacy true = normal). Each scales the site's ttsRate.
+    this.ttsSpeedChoices = [
+      { key: 'normal', rate: 1 },
+      { key: 'slow', rate: 0.8 },
+      { key: 'fast', rate: 1.3 }
+    ];
     this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation', 'monochrome'];
 
@@ -10450,7 +10367,13 @@ class AccessibleWebWidget {
       },
       { label: 'Highlight Links', key: 'highlight-links', icon: this.widgetIcons.highlightLinks },
       { label: 'Highlight Title', key: 'highlight-title', icon: this.widgetIcons.highlightTitle },
-      { label: 'Font Size', key: 'text-scale', icon: this.widgetIcons.adjustFontSize }
+      {
+        label: 'Font Size',
+        key: 'text-scale',
+        icon: this.widgetIcons.adjustFontSize,
+        multiLevel: true,
+        levels: this.textScaleLevels.length
+      }
     ];
 
     this.multiLevelFeatures = {
@@ -10468,6 +10391,16 @@ class AccessibleWebWidget {
         levels: this.readableFontChoices.length,
         currentIndex: -1,
         values: this.readableFontChoices.map((choice) => choice.key)
+      },
+      'text-scale': {
+        levels: this.textScaleLevels.length,
+        currentIndex: -1,
+        values: this.textScaleLevels
+      },
+      'text-to-speech': {
+        levels: this.ttsSpeedChoices.length,
+        currentIndex: -1,
+        values: this.ttsSpeedChoices.map((choice) => choice.key)
       }
     };
 

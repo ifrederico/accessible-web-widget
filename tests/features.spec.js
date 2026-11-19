@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test';
 
 const readStates = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
 
+// Profile tiles live in the Profiles row of the top card, collapsed by default.
+const openProfiles = (page) => page.locator('.acc-profiles-row').click();
+
 // The accessible name and the tooltip of a cycling button always match.
 const expectButtonName = async (button, name) => {
   await expect(button).toHaveAccessibleName(name);
@@ -32,6 +35,7 @@ test('widget UI is encapsulated in a shadow root and survives hostile page CSS',
 test('profile applies and clears its bundled feature states', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
+  await openProfiles(page);
 
   const profileBtn = page.locator('.acc-btn[data-key="profile-dyslexia"]');
   await expect(profileBtn).toBeVisible();
@@ -61,6 +65,7 @@ test('disabling a profile restores prior explicit user choices', async ({ page }
   await page.locator('.acc-toggle-btn').click();
 
   await page.locator('.acc-btn[data-key="line-spacing"]').click();
+  await openProfiles(page);
   const profileBtn = page.locator('.acc-btn[data-key="profile-dyslexia"]');
   await profileBtn.click();
   await profileBtn.click();
@@ -80,6 +85,7 @@ test('disabling a profile keeps honoring the OS reduced-motion preference', asyn
   )).toBe(true);
 
   await page.locator('.acc-toggle-btn').click();
+  await openProfiles(page);
   const profileBtn = page.locator('.acc-btn[data-key="profile-seizure-safe"]');
   await profileBtn.click();
   await profileBtn.click();
@@ -91,6 +97,7 @@ test('disabling a profile keeps honoring the OS reduced-motion preference', asyn
 test('disabling a profile leaves a manually chosen color filter active', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
+  await openProfiles(page);
 
   const profileBtn = page.locator('.acc-btn[data-key="profile-seizure-safe"]');
   await profileBtn.click();
@@ -108,6 +115,7 @@ test('disabling a profile leaves a manually chosen color filter active', async (
 test('seizure safe profile activates the low saturation color filter', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
+  await openProfiles(page);
 
   await page.locator('.acc-btn[data-key="profile-seizure-safe"]').click();
   const states = await readStates(page);
@@ -309,25 +317,23 @@ test('switching to Arabic flips the menu to RTL and back', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  await page.locator('.acc-header-lang-toggle').click();
+  await page.locator('.acc-lang-row').click();
   await page.locator('.acc-lang-item[data-lang="ar"]').click();
   await expect(page.locator('.acc-menu')).toHaveAttribute('dir', 'rtl');
-  await expect(page.locator('#acc-current-language')).toHaveText('AR');
+  await expect(page.locator('#acc-current-language')).toHaveText('العربية');
 
-  await page.locator('.acc-header-lang-toggle').click();
+  await page.locator('.acc-lang-row').click();
   await page.locator('.acc-lang-item[data-lang="en"]').click();
   await expect(page.locator('.acc-menu')).toHaveAttribute('dir', 'ltr');
 });
 
-test('interaction options render as compact rows like the other sections', async ({ page }) => {
+test('interaction options close the tile grid, Big Cursor included on desktop', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  const rows = page.locator('.acc-option-category-interaction .acc-btn.acc-text-inline');
-  await expect(rows).toHaveCount(4);
+  const keys = await page.locator('.acc-options .acc-btn').evaluateAll((tiles) => tiles.map((tile) => tile.dataset.key));
+  expect(keys.slice(-4)).toEqual(['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds']);
   await expect(page.locator('.acc-btn[data-key="large-pointer"]')).toBeVisible();
-  const height = await page.locator('.acc-btn[data-key="mute-sounds"]').evaluate((el) => el.getBoundingClientRect().height);
-  expect(height).toBeLessThan(70);
 });
 
 test('wheel scrolling past the end of the menu leaves the page in place', async ({ page }) => {
@@ -364,13 +370,13 @@ test('mouse clicks leave no focus ring while keyboard focus shows one', async ({
 test('Escape closes the language list before the menu and keeps focus in the dialog', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
-  const languageToggle = page.locator('.acc-header-lang-toggle');
-  const languageModal = page.locator('#acc-lang-modal');
+  const languageToggle = page.locator('.acc-lang-row');
+  const languagePanel = page.locator('#acc-lang-panel');
 
   await languageToggle.click();
-  await expect(languageModal).not.toHaveAttribute('hidden', '');
+  await expect(languagePanel).not.toHaveAttribute('hidden', '');
   await page.keyboard.press('Escape');
-  await expect(languageModal).toHaveAttribute('hidden', '');
+  await expect(languagePanel).toHaveAttribute('hidden', '');
   await expect(page.locator('.acc-menu')).toBeVisible();
   await expect(languageToggle).toBeFocused();
 
@@ -438,8 +444,8 @@ test('cycling buttons name both the control and the active level', async ({ page
   const region = page.locator('#acc-live-region');
 
   const controls = [
-    { key: 'contrast-toggle', name: 'Contrast', levels: ['Light', 'Dark'] },
-    { key: 'saturation-toggle', name: 'Saturation', levels: ['Low', 'High', 'Monochrome'] },
+    { key: 'contrast-toggle', name: 'Contrast', levels: ['Light Contrast', 'Dark Contrast'] },
+    { key: 'saturation-toggle', name: 'Saturation', levels: ['Low Saturation', 'High Saturation', 'Monochrome'] },
     { key: 'readable-text', name: 'Readable Font', levels: ['Dyslexia Font', 'Legible Font', 'Lexend'] }
   ];
   for (const { key, name, levels } of controls) {
@@ -467,7 +473,7 @@ test('switching language re-translates both parts of a cycling button name', asy
   const saturation = page.locator('.acc-btn[data-key="saturation-toggle"]');
   const readableFont = page.locator('.acc-btn[data-key="readable-text"]');
   const switchLanguage = async (code) => {
-    await page.locator('.acc-header-lang-toggle').click();
+    await page.locator('.acc-lang-row').click();
     await page.locator(`.acc-lang-item[data-lang="${code}"]`).click();
   };
 
@@ -476,27 +482,27 @@ test('switching language re-translates both parts of a cycling button name', asy
   for (let i = 0; i < 3; i++) {
     await readableFont.click();
   }
-  await expectButtonName(contrast, 'Contrast: Light');
+  await expectButtonName(contrast, 'Contrast: Light Contrast');
   await expectButtonName(readableFont, 'Readable Font: Lexend');
 
   await switchLanguage('es');
-  await expectButtonName(contrast, 'Contraste: Claro');
-  await expect(contrast.locator('.acc-label')).toHaveText('Claro');
+  await expectButtonName(contrast, 'Contraste: Contraste Claro');
+  await expect(contrast.locator('.acc-label')).toHaveText('Contraste Claro');
   // Lexend is a font name and stays untranslated.
   await expectButtonName(readableFont, 'Fuente Legible: Lexend');
   await expectButtonName(saturation, 'Saturación');
 
   await contrast.click();
-  await expectButtonName(contrast, 'Contraste: Oscuro');
-  await expect(page.locator('#acc-live-region')).toHaveText('Contraste: Oscuro Activado');
+  await expectButtonName(contrast, 'Contraste: Contraste Oscuro');
+  await expect(page.locator('#acc-live-region')).toHaveText('Contraste: Contraste Oscuro Activado');
 
   // A saturation level replaces the active contrast filter.
   await saturation.click();
-  await expectButtonName(saturation, 'Saturación: Baja');
+  await expectButtonName(saturation, 'Saturación: Baja Saturación');
   await expectButtonName(contrast, 'Contraste');
 
   await switchLanguage('en');
-  await expectButtonName(saturation, 'Saturation: Low');
+  await expectButtonName(saturation, 'Saturation: Low Saturation');
   await expectButtonName(readableFont, 'Readable Font: Lexend');
   await expectButtonName(contrast, 'Contrast');
 });
@@ -511,7 +517,7 @@ test('saved cycling levels are named in the configured language on load', async 
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  await expectButtonName(page.locator('.acc-btn[data-key="contrast-toggle"]'), 'Contraste: Oscuro');
+  await expectButtonName(page.locator('.acc-btn[data-key="contrast-toggle"]'), 'Contraste: Contraste Oscuro');
   await expectButtonName(page.locator('.acc-btn[data-key="readable-text"]'), 'Fuente Legible: Fuente para Dislexia');
   await expectButtonName(page.locator('.acc-btn[data-key="saturation-toggle"]'), 'Saturación');
 });

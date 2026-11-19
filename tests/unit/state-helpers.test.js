@@ -51,27 +51,37 @@ test('resolveSupportedLanguage falls back for auto/empty/unsupported tags', () =
 
 const scaleCtx = {
   ...coreFeatureMethods,
-  textScaleMinPercent: 80,
-  textScaleMaxPercent: 150,
-  textScaleStepPercent: 5
+  textScaleLevels: [1.1, 1.25, 1.5]
 };
 
-test('clampTextScalePercent snaps to step and clamps to range', () => {
-  assert.equal(scaleCtx.clampTextScalePercent(100), 100);
-  assert.equal(scaleCtx.clampTextScalePercent(102), 100);
-  assert.equal(scaleCtx.clampTextScalePercent(103), 105);
-  assert.equal(scaleCtx.clampTextScalePercent(10), 80);
-  assert.equal(scaleCtx.clampTextScalePercent(999), 150);
-  assert.equal(scaleCtx.clampTextScalePercent('not a number'), 100);
+test('resolveTextScale snaps stored values to a Font Size level', () => {
+  assert.equal(scaleCtx.resolveTextScale(1.1), 1.1);
+  assert.equal(scaleCtx.resolveTextScale(1.25), 1.25);
+  assert.equal(scaleCtx.resolveTextScale(1.5), 1.5);
+  // Values saved by the old slider land on the nearest level.
+  assert.equal(scaleCtx.resolveTextScale(1.4), 1.5);
+  assert.equal(scaleCtx.resolveTextScale(1.2), 1.25);
+  assert.equal(scaleCtx.resolveTextScale(1.15), 1.1);
+  assert.equal(scaleCtx.resolveTextScale(1.04), 1);
+  assert.equal(scaleCtx.resolveTextScale(2), 1.5);
+  // Percentages from older configs are read as percentages.
+  assert.equal(scaleCtx.resolveTextScale(125), 1.25);
 });
 
-test('getTextScalePercent accepts multipliers and percentages', () => {
-  assert.equal(scaleCtx.getTextScalePercent(1.2), 120);
-  assert.equal(scaleCtx.getTextScalePercent(0.9), 90);
-  assert.equal(scaleCtx.getTextScalePercent(120), 120);
-  assert.equal(scaleCtx.getTextScalePercent(false), 100);
-  assert.equal(scaleCtx.getTextScalePercent(undefined), 100);
-  assert.equal(scaleCtx.getTextScalePercent(-5), 100);
+test('resolveTextScale treats 100% and below, and garbage, as off', () => {
+  assert.equal(scaleCtx.resolveTextScale(1), 1);
+  assert.equal(scaleCtx.resolveTextScale(0.8), 1);
+  assert.equal(scaleCtx.resolveTextScale(-5), 1);
+  assert.equal(scaleCtx.resolveTextScale(false), 1);
+  assert.equal(scaleCtx.resolveTextScale(undefined), 1);
+  assert.equal(scaleCtx.resolveTextScale('not a number'), 1);
+});
+
+test('getTextScaleLevel returns the level index, -1 when off', () => {
+  assert.equal(scaleCtx.getTextScaleLevel(1.1), 0);
+  assert.equal(scaleCtx.getTextScaleLevel(1.4), 2);
+  assert.equal(scaleCtx.getTextScaleLevel(1), -1);
+  assert.equal(scaleCtx.getTextScaleLevel(undefined), -1);
 });
 
 const langFlagCtx = (config) => ({

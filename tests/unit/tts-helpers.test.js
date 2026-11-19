@@ -53,3 +53,39 @@ test('getNativeTtsRate and getNativeTtsPitch clamp and default', () => {
   assert.equal(make(1, -3).getNativeTtsPitch(), 0);
   assert.equal(make(1, 9).getNativeTtsPitch(), 2);
 });
+
+const speedChoices = [
+  { key: 'normal', rate: 1 },
+  { key: 'slow', rate: 0.8 },
+  { key: 'fast', rate: 1.3 }
+];
+const speedCtx = (state, rate) => ({
+  ...ttsMethods,
+  ttsSpeedChoices: speedChoices,
+  nativeTtsConfig: { rate },
+  retrieveState: () => state
+});
+
+test('resolveTtsSpeed maps stored speeds and treats legacy true as normal', () => {
+  const ctx = speedCtx();
+  assert.equal(ctx.resolveTtsSpeed('slow').key, 'slow');
+  assert.equal(ctx.resolveTtsSpeed(true).key, 'normal');
+  assert.equal(ctx.resolveTtsSpeed(false), null);
+  assert.equal(ctx.resolveTtsSpeed('warp'), null);
+  assert.equal(ctx.getTtsSpeedLevel('fast'), 2);
+  assert.equal(ctx.getTtsSpeedLevel(true), 0);
+  assert.equal(ctx.getTtsSpeedLevel(undefined), -1);
+});
+
+test('getTtsSpeechRate scales the site rate by the chosen speed', () => {
+  assert.equal(speedCtx('normal').getTtsSpeechRate(), 1);
+  assert.equal(speedCtx('slow').getTtsSpeechRate(), 0.8);
+  assert.equal(speedCtx('fast').getTtsSpeechRate(), 1.3);
+  assert.equal(speedCtx(true).getTtsSpeechRate(), 1);
+  // A configured ttsRate is the normal speed.
+  assert.equal(speedCtx('normal', 0.9).getTtsSpeechRate(), 0.9);
+  assert.equal(speedCtx('slow', 0.9).getTtsSpeechRate(), 0.72);
+  // The result stays within the supported range.
+  assert.equal(speedCtx('fast', 1.8).getTtsSpeechRate(), 2);
+  assert.equal(speedCtx('slow', 0.5).getTtsSpeechRate(), 0.5);
+});

@@ -229,60 +229,22 @@ export const coreFeatureMethods = {
       }
     },
 
-  clampTextScalePercent(percent) {
-      const min = Number(this.textScaleMinPercent) || 80;
-      const max = Number(this.textScaleMaxPercent) || 150;
-      const step = Number(this.textScaleStepPercent) || 5;
-      const numeric = Number(percent);
-      if (!Number.isFinite(numeric)) return 100;
-      const snapped = Math.round((numeric - min) / step) * step + min;
-      return Math.min(max, Math.max(min, snapped));
+  // Snap a persisted text-scale multiplier to a Font Size level, or 1 when
+  // off. Values saved by the old slider (any multiplier, or a percent above
+  // 10) land on the nearest level; anything at or below 100% is off.
+  resolveTextScale(value) {
+      const numeric = Number(value);
+      if (!Number.isFinite(numeric)) return 1;
+      const multiplier = numeric > 10 ? numeric / 100 : numeric;
+      if (multiplier <= 1) return 1;
+      return (this.textScaleLevels || []).reduce((nearest, level) => (
+        Math.abs(level - multiplier) < Math.abs(nearest - multiplier) ? level : nearest
+      ), 1);
     },
 
-  getTextScalePercent(scaleValue = 1) {
-      if (scaleValue === false || scaleValue === null || typeof scaleValue === 'undefined') {
-        return this.clampTextScalePercent(100);
-      }
-      const numeric = Number(scaleValue);
-      if (!Number.isFinite(numeric)) {
-        return this.clampTextScalePercent(100);
-      }
-      if (numeric <= 0) {
-        return this.clampTextScalePercent(100);
-      }
-      const percent = numeric > 10 ? numeric : numeric * 100;
-      return this.clampTextScalePercent(percent);
-    },
-
-  syncTextScaleControlUI(menu, scaleValue = 1) {
-      if (!menu || !menu.querySelector) return;
-      const range = menu.querySelector('.acc-text-scale-range');
-      const label = menu.querySelector('.acc-text-scale-percent');
-      const percent = this.getTextScalePercent(scaleValue);
-      if (range) {
-        const min = Number(this.textScaleMinPercent) || 80;
-        const max = Number(this.textScaleMaxPercent) || 150;
-        const progress = ((percent - min) / (max - min)) * 100;
-        range.value = String(percent);
-        range.style.setProperty('--acc-text-scale-progress', `${Math.max(0, Math.min(100, progress))}%`);
-      }
-      if (label) {
-        label.textContent = `${percent}%`;
-      }
-    },
-
-  setTextScaleFromPercent(percent, options = {}) {
-      const shouldPersist = options.persist !== false;
-      const clampedPercent = this.getTextScalePercent(percent);
-      const multiplier = Number((clampedPercent / 100).toFixed(2));
-
-      this.scaleText(multiplier);
-
-      if (shouldPersist) {
-        this.updateState({ 'text-scale': multiplier });
-      }
-
-      return multiplier;
+  // Index of the active Font Size level, -1 when off.
+  getTextScaleLevel(value) {
+      return (this.textScaleLevels || []).indexOf(this.resolveTextScale(value));
     },
 
   enableBoldText(enable = false) {
@@ -1179,17 +1141,7 @@ export const coreFeatureMethods = {
 
   applyEnhancements() {
       const { states } = this.loadConfig();
-      // Handle font size scaling
-      const hasTextScaleState = !!(states && Object.prototype.hasOwnProperty.call(states, 'text-scale'));
-      if (hasTextScaleState) {
-        const storedScale = states['text-scale'] === false ? 1 : states['text-scale'];
-        const appliedScale = this.setTextScaleFromPercent(storedScale, { persist: false });
-        this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), appliedScale);
-      } else {
-        this.scaleText(1);
-        this.syncTextScaleControlUI(this.queryWidget('.acc-menu'), 1);
-      }
-      // Apply other enhancements
+      this.scaleText(this.resolveTextScale(states && states['text-scale']));
       this.concealImages(states && states['hide-images']);
       this.highlightTitles(states && states['highlight-title']);
       this.highlightLinks(states && states['highlight-links']);
@@ -1225,11 +1177,6 @@ export const coreFeatureMethods = {
         dots.forEach(dot => dot.classList.remove('active'));
       });
       const menu = this.queryWidget('.acc-menu');
-      if (menu) {
-        this.setColorFilterUI(menu, null);
-        this.setReadableFontUI(menu, null);
-        this.syncTextScaleControlUI(menu, 1);
-      }
       
       // Remove focus from active element to fix the persistent focus ring bug
       const focused = this.getActiveElement();
@@ -1286,6 +1233,8 @@ export const coreFeatureMethods = {
       this.clearSystemPreferenceListeners();
       this.detectSystemPreferences();
       this.setupMediaQueryListeners();
+      // System defaults may have switched features back on just now.
+      this.syncMenuUI(menu);
       this.updateViolationBubble(this.axeScanResults);
     },
 

@@ -50,7 +50,7 @@ Or self-host — just download `dist/accessible-web-widget.min.js` and serve it 
 ## What you get
 
 - **Profiles** — One-tap presets: Seizure Safe, Vision Impaired, ADHD Friendly, Dyslexia Friendly
-- **Text** — Font size, bold, line height, letter spacing, readable font
+- **Text** — Font size (three steps), bold, line height, letter spacing, readable font
 - **Color** — Contrast (light/dark), invert, saturation (low/high/monochrome), high contrast
 - **Reading** — readable fonts (OpenDyslexic, Atkinson Hyperlegible, Lexend), reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, page structure navigator (headings/landmarks/links)
 - **Interaction** — Large cursor, pause animations (including videos and animated GIFs), hide images, mute sounds
@@ -100,18 +100,22 @@ If your policy locks down remote requests, also allow `font-src https://accessib
 
 ### Text-to-speech voices
 
-TTS uses native browser voices. When enabled, visitors click any text block to hear it read aloud.
+TTS uses native browser voices. When enabled, visitors click any text block to hear it read aloud. Tapping the Text to Speech tile again steps through three speeds (normal, slow at 0.8×, fast at 1.3×) and then turns it off; the choice is remembered.
 
 ```html
 <script>
   window.AccessibleWebWidgetOptions = {
     ttsNativeVoiceName: "Samantha",  // best-effort match
     ttsNativeVoiceLang: "en-US",
-    ttsRate: 1.0,                    // 0.5 – 2.0
+    ttsRate: 1.0,                    // 0.5 – 2.0, the normal speed; slow and fast scale from it
     ttsPitch: 1.0                    // 0 – 2.0
   };
 </script>
 ```
+
+### Font size
+
+The Font Size tile has three steps, 110%, 125% and 150%; a fourth tap returns to 100%. Earlier versions used a slider: a size saved by it snaps to the nearest step, and the slider's `textScaleMinPercent`, `textScaleMaxPercent` and `textScaleStepPercent` settings are now ignored.
 
 ### Readable font sources
 

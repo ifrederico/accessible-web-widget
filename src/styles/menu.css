@@ -36,9 +36,7 @@
    Scrolling areas (options, language list) are deliberately left out so
    they keep panning; pinch-zoom stays available everywhere. */
 .acc-menu-header,
-.acc-footer,
-.acc-lang-modal-header,
-.acc-lang-search-wrapper {
+.acc-footer {
   touch-action: pinch-zoom;
 }
 
@@ -200,13 +198,6 @@
 .acc-menu-header div[role="button"]:focus {
   outline: 2px solid var(--acc-text-color-inverted);
   outline-offset: 1px;
-}
-
-.acc-menu-header .acc-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
 }
 
 .acc-language-container {
@@ -418,317 +409,186 @@
   border-color: var(--acc-primary-color) !important;
 }
 
-/* Option grid layout */
+/* Options: the Language and Profiles card, then one grid of tiles. */
 .acc-options-all {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 0 var(--acc-content-inline-padding) 12px;
+  gap: 20px;
+  padding: 0 var(--acc-content-inline-padding);
 }
 
-.acc-option-category {
+.acc-card {
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--acc-card-bg);
+  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
+}
+
+.acc-card-row {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.acc-option-category-interaction {
-  padding-bottom: 12px;
-}
-
-.acc-option-category .acc-section-title {
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.01em !important;
-  text-transform: none;
-  color: #6b7280 !important;
-  padding: 0 2px;
-}
-
-.acc-options {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin: 0;
-}
-
-.acc-options-text {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.acc-options-text-inline {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.acc-btn.acc-text-inline {
-  min-height: 54px;
-  aspect-ratio: auto;
-  flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
-  text-align: left;
-  gap: 10px;
-  padding: 12px 14px;
-}
-
-.acc-btn.acc-text-inline .acc-label {
-  font-size: 14px !important;
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.acc-btn.acc-text-inline .acc-progress-indicator {
-  margin-top: 0;
-  margin-left: auto;
-  justify-content: flex-end;
-  min-width: 24px;
-}
-
-/* Phones keep the compact icon + label rows: switching to tall tiles here
-   doubled the panel height. Multi-level buttons stack their dots under
-   the label instead, so the label keeps the full width beside the icon. */
-@media only screen and (max-width: 480px) {
-  .acc-btn.acc-text-inline {
-    gap: 8px;
-    padding: 10px 12px;
-  }
-
-  .acc-btn.acc-text-inline[data-multi-level="true"] {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas:
-      "icon label"
-      "icon dots";
-    align-items: center;
-    justify-items: start;
-    column-gap: 8px;
-    row-gap: 4px;
-  }
-
-  .acc-btn.acc-text-inline[data-multi-level="true"] > svg {
-    grid-area: icon;
-  }
-
-  .acc-btn.acc-text-inline[data-multi-level="true"] .acc-label {
-    grid-area: label;
-  }
-
-  .acc-btn.acc-text-inline[data-multi-level="true"] .acc-progress-indicator {
-    grid-area: dots;
-    margin: 0;
-    min-width: 0;
-    height: 6px;
-    justify-content: flex-start;
-  }
-}
-
-.acc-tts-toggle-container {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
   gap: 12px;
-}
-
-.acc-text-scale-control {
   width: 100%;
-  background: var(--acc-card-bg) !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  border-radius: var(--acc-border-radius);
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  min-height: 56px;
+  padding: 0 16px;
+  border: none;
+  background: transparent;
+  text-align: start;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.acc-text-scale-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* Inset divider between the two rows. */
+.acc-profiles-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  inset-inline: 16px;
+  height: 1px;
+  background: var(--acc-border-color);
 }
 
-.acc-text-scale-icon {
+@media (hover: hover) {
+  .acc-card-row:hover {
+    background-color: var(--acc-bg-color);
+  }
+}
+
+/* The card clips its children, so the ring sits inside the row, rounded
+   to clear the card's corners. */
+.acc-card-row:focus-visible {
+  border-radius: 22px;
+  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
+  outline-offset: calc(-1 * var(--acc-focus-outline-width) - 3px);
+}
+
+.acc-card-row-icon {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
 }
 
-.acc-text-scale-icon svg {
-  width: 22px !important;
-  height: 22px !important;
-  min-width: 22px !important;
-  min-height: 22px !important;
-  max-width: 22px !important;
-  max-height: 22px !important;
+.acc-card-row-icon svg {
+  width: 22px;
+  height: 22px;
   fill: var(--acc-text-color);
 }
 
-.acc-text-scale-meta .acc-label {
+.acc-card-row .acc-card-row-label {
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: 15px !important;
   font-weight: 600 !important;
 }
 
-.acc-text-scale-percent {
-  margin-left: auto;
-  font-size: 15px !important;
-  font-weight: 700 !important;
+.acc-card-row .acc-card-row-value {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px !important;
+  color: #5b6472 !important;
+}
+
+.acc-card-row .acc-profiles-summary {
+  font-weight: 600 !important;
   color: var(--acc-primary-color) !important;
 }
 
-.acc-text-scale-range {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  background: transparent;
-  height: 20px;
-  cursor: pointer;
-  margin: 0;
+.acc-card-row-chevron {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin: 0 4px 3px !important;
+  border-right: 2px solid #5b6472;
+  border-bottom: 2px solid #5b6472;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
 }
 
-.acc-text-scale-range:focus {
-  outline: none;
+.acc-card-row[aria-expanded="true"] .acc-card-row-chevron {
+  margin: 3px 4px 0 !important;
+  transform: rotate(-135deg);
 }
 
-.acc-text-scale-range:focus-visible {
-  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
-  outline-offset: 4px;
-  border-radius: 4px;
+.acc-card-panel[hidden] {
+  display: none;
 }
 
-.acc-text-scale-range::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(
-    to right,
-    var(--acc-primary-color) 0%,
-    var(--acc-primary-color) var(--acc-text-scale-progress, 0%),
-    #d8d8d8 var(--acc-text-scale-progress, 0%),
-    #d8d8d8 100%
-  );
+.acc-lang-panel {
+  padding-bottom: 8px;
 }
 
-.acc-text-scale-range::-webkit-slider-thumb {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2px solid var(--acc-primary-color);
-  margin-top: -7px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+.acc-lang-panel .acc-lang-list {
+  max-height: 280px;
+  padding: 0 8px 4px;
 }
 
-.acc-text-scale-range::-moz-range-track {
-  width: 100%;
-  height: 4px;
-  border-radius: 999px;
-  background: #d8d8d8;
+.acc-profiles-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 4px 12px 12px;
 }
 
-.acc-text-scale-range::-moz-range-progress {
-  height: 4px;
-  border-radius: 999px;
-  background: var(--acc-primary-color);
+/* Hidden group headings sit in the grid without taking a cell. */
+.acc-options {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 }
 
-.acc-text-scale-range::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2px solid var(--acc-primary-color);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-.acc-btn.acc-tts-toggle {
-  width: 100%;
-  min-height: 54px;
-  aspect-ratio: auto;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  text-align: left;
-  padding: 12px 76px 12px 14px;
-}
-
-.acc-btn.acc-tts-toggle .acc-label {
-  font-size: 15px !important;
-}
-
-.acc-btn.acc-tts-toggle svg {
-  width: 22px !important;
-  height: 22px !important;
-  min-width: 22px !important;
-  min-height: 22px !important;
-  max-width: 22px !important;
-  max-height: 22px !important;
-}
-
-.acc-btn.acc-tts-toggle::before {
-  content: "";
+.acc-menu .acc-sr-only {
   position: absolute;
-  right: 14px;
-  top: 50%;
-  width: 44px;
-  height: 24px;
-  border-radius: 999px;
-  transform: translateY(-50%);
-  background: #dbd7d2;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
-.acc-btn.acc-tts-toggle::after {
-  content: "";
-  position: absolute;
-  right: 38px;
-  top: 50%;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  transform: translateY(-50%);
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
-}
-
-.acc-btn.acc-tts-toggle.acc-selected::before {
-  background: var(--acc-primary-color);
-  border-color: var(--acc-primary-color);
-}
-
-.acc-btn.acc-tts-toggle.acc-selected::after {
-  right: 16px;
-}
-
-/* Button styling */
+/* Tiles: icon above the label. A transparent border still draws in
+   forced-colors mode, where shadows disappear. */
 .acc-btn {
-  aspect-ratio: 11 / 8;
-  border-radius: var(--acc-border-radius);
-  padding: 10px;
+  position: relative;
+  min-height: 112px;
+  padding: 16px 8px 12px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  gap: 8px;
   text-align: center;
-  font-size: 15px !important;
+  border-radius: 22px;
   background: var(--acc-card-bg) !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  transition: background-color 0.2s ease;
+  border: 1px solid transparent !important;
+  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
+  transition: box-shadow 0.2s ease;
   cursor: pointer;
-  word-break: break-word;
-  gap: 6px;
-  position: relative;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.acc-btn.acc-profile-tile {
+  min-height: 96px;
+  padding: 14px 8px 12px;
+  border-radius: 18px;
+  background: var(--acc-bg-color) !important;
+  box-shadow: none;
 }
 
 /* Touch screens emulate :hover on tap and keep it until the next tap
    elsewhere, which left the last-tapped option looking highlighted. */
 @media (hover: hover) {
   .acc-btn:hover {
-    border-color: var(--acc-hover-color) !important;
-    border-width: 1px !important;
-    box-shadow: inset 0 0 0 1px var(--acc-hover-color);
+    box-shadow: 0 0 0 1px var(--acc-hover-color), 0 2px 6px rgba(31, 41, 51, 0.08);
   }
 }
 
@@ -737,75 +597,73 @@
 .acc-btn:focus-visible {
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
-  border-color: var(--acc-primary-color) !important;
 }
 
-.acc-btn .acc-label, .acc-text-adjust .acc-label div {
+.acc-btn svg {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+  max-width: 28px !important;
+  max-height: 28px !important;
+  flex-shrink: 0;
+  fill: var(--acc-text-color);
+}
+
+.acc-btn .acc-label {
   font-size: 13px !important;
   font-weight: 600 !important;
+  line-height: 1.25 !important;
 }
 
-/* Rapid taps (cycling Contrast or Readable Font) must not trigger
+/* Rapid taps (cycling Contrast or Font Size) must not trigger
    double-tap-to-zoom on pages without a mobile viewport. */
 .acc-btn,
 .acc-menu-close,
-.acc-header-lang-toggle,
+.acc-card-row,
 .acc-footer-reset,
 .acc-lang-item {
   touch-action: manipulation;
 }
 
-/* SVG icons */
-.acc-text-adjust svg {
-  width: 20px !important;
-  height: 20px !important;
-  min-width: 20px !important;
-  min-height: 20px !important;
-  max-width: 20px !important;
-  max-height: 20px !important;
-}
-
-.acc-btn svg {
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  min-height: 24px !important;
-  max-width: 24px !important;
-  max-height: 24px !important;
-  fill: var(--acc-text-color);
-}
-
-/* Selected state */
+/* On: primary icon and label, and a check badge in the inline-end
+   corner. The tile itself stays as it is. */
 .acc-btn.acc-selected {
-  background-color: var(--acc-primary-color) !important;
-  border-color: var(--acc-primary-color) !important;
+  background: var(--acc-card-bg) !important;
 }
 
-.acc-btn.acc-selected .acc-progress-dot {
-  background-color: rgba(255, 255, 255, 0.5);
+.acc-btn.acc-selected svg {
+  fill: var(--acc-primary-color) !important;
 }
 
-.acc-btn.acc-selected .acc-progress-dot.active {
-  background-color: var(--acc-text-color-inverted) !important;
-}
-
-.acc-btn.acc-selected svg,
-.acc-btn.acc-selected span,
 .acc-btn.acc-selected .acc-label {
-  fill: var(--acc-text-color-inverted) !important;
-  color: var(--acc-text-color-inverted) !important;
+  color: var(--acc-primary-color) !important;
 }
 
-.acc-btn.acc-tts-toggle.acc-selected {
-  background-color: var(--acc-card-bg) !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
+.acc-btn.acc-selected::before,
+.acc-btn.acc-selected::after {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
 }
 
-.acc-btn.acc-tts-toggle.acc-selected svg,
-.acc-btn.acc-tts-toggle.acc-selected span,
-.acc-btn.acc-tts-toggle.acc-selected .acc-label {
-  fill: var(--acc-text-color) !important;
-  color: var(--acc-text-color) !important;
+.acc-btn.acc-selected::before {
+  top: 9px;
+  inset-inline-end: 9px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--acc-primary-color);
+}
+
+.acc-btn.acc-selected::after {
+  top: 12px;
+  inset-inline-end: 15px;
+  width: 6px;
+  height: 10px;
+  border: solid var(--acc-text-color-inverted);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 /* Footer section */
@@ -824,34 +682,71 @@
 .acc-footer-reset {
   display: flex;
   width: 100%;
+  height: 52px;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 12px 16px;
-  border: none;
-  border-radius: var(--acc-button-border-radius);
-  background-color: var(--acc-primary-color) !important;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 26px;
+  background-color: var(--acc-bg-color) !important;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  white-space: nowrap;
+  transition: box-shadow 0.2s ease;
 }
 
 .acc-footer-reset svg {
-  width: 24px !important;
-  height: 24px !important;
-  fill: var(--acc-text-color-inverted) !important;
+  flex-shrink: 0;
+  width: 20px !important;
+  height: 20px !important;
+  fill: var(--acc-text-color) !important;
 }
 
+/* Long translations wrap to a second line on narrow phones. */
 .acc-footer-reset .acc-label {
-  font-size: 16px !important;
+  min-width: 0;
+  text-align: center;
+  font-size: 15px !important;
   font-weight: 600 !important;
-  color: var(--acc-text-color-inverted) !important;
   line-height: 1.2 !important;
 }
 
+/* How many options are on. */
+.acc-footer-reset .acc-reset-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: var(--acc-text-color);
+  color: var(--acc-text-color-inverted) !important;
+  flex-shrink: 0;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+.acc-footer-reset .acc-reset-count[hidden] {
+  display: none;
+}
+
+/* Nothing to reset: subdued, though still readable. */
+.acc-footer-reset:disabled {
+  cursor: default;
+}
+
+.acc-footer-reset:disabled svg {
+  fill: #5b6472 !important;
+}
+
+.acc-footer-reset:disabled .acc-label {
+  color: #5b6472 !important;
+}
+
 @media (hover: hover) {
-  .acc-footer-reset:hover {
-    background-color: var(--acc-primary-color-dark) !important;
+  .acc-footer-reset:not(:disabled):hover {
+    box-shadow: inset 0 0 0 1px var(--acc-border-color);
   }
 }
 
@@ -885,96 +780,6 @@
   outline-offset: var(--acc-focus-outline-offset);
 }
 
-.acc-header-lang-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 7px 10px 7px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  border-radius: var(--acc-button-border-radius);
-  background: transparent;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-
-@media (hover: hover) {
-  .acc-header-lang-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.18);
-  }
-}
-
-.acc-header-lang-toggle:focus-visible {
-  outline: 2px solid var(--acc-text-color-inverted);
-  outline-offset: 1px;
-}
-
-.acc-header-lang-current {
-  display: inline-block;
-  min-width: 2ch;
-  text-align: left;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  line-height: 1 !important;
-  color: var(--acc-text-color-inverted) !important;
-}
-
-.acc-header-lang-arrow {
-  width: 8px;
-  height: 8px;
-  border-right: 1.5px solid var(--acc-text-color-inverted);
-  border-bottom: 1.5px solid var(--acc-text-color-inverted);
-  transform: rotate(45deg) translateY(-1px);
-  transition: transform 0.2s ease;
-}
-
-.acc-header-lang-toggle[aria-expanded="true"] .acc-header-lang-arrow {
-  transform: rotate(-135deg) translateY(-1px);
-}
-
-.acc-lang-modal {
-  position: absolute;
-  inset-inline-end: 12px;
-  top: calc(var(--acc-menu-header-height) + 8px);
-  width: min(320px, calc(100% - 32px));
-  border: 1px solid var(--acc-border-color);
-  border-radius: 14px;
-  background: var(--acc-card-bg);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
-  z-index: 120;
-  padding: 10px 0 8px;
-  /* Never taller than the panel below the header (landscape phones); the
-     list shrinks and scrolls instead of being clipped. */
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100% - var(--acc-menu-header-height) - 16px);
-}
-
-.acc-lang-modal[hidden] {
-  display: none;
-}
-
-.acc-lang-modal-header {
-  padding: 0 14px 8px;
-}
-
-.acc-lang-modal .acc-section-title {
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  color: #6b7280 !important;
-}
-
-.acc-lang-modal .acc-lang-search-wrapper {
-  padding: 0 12px 8px;
-}
-
-.acc-lang-modal .acc-lang-list {
-  padding: 6px 8px 8px;
-  max-height: 240px;
-  min-height: 0;
-  flex: 1 1 auto;
-}
-
 /* Content area */
 .acc-menu-content {
   flex: 1 1 auto;
@@ -983,7 +788,7 @@
   /* Reaching the end of the options must not hand the scroll (wheel or
      touch) to the page behind the panel. */
   overscroll-behavior: contain;
-  padding: 28px 0 36px;
+  padding: var(--acc-content-inline-padding) 0;
   border-top-left-radius: 1.75rem;
   border-top-right-radius: 1.75rem;
   background: var(--acc-bg-color);
@@ -1050,14 +855,13 @@
   z-index: calc(var(--acc-widget-z-index, 100000) - 1);
 }
 
-/* Progress indicator */
+/* Level dots under a cycling tile's label. */
 .acc-progress-indicator {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 4px;
-  margin-top: 8px;
-  height: 8px;
+  height: 6px;
 }
 
 .acc-progress-dot {
@@ -1072,9 +876,10 @@
   background-color: var(--acc-primary-color);
 }
 
-/* Selected state updates indicator colors */
-.acc-btn.acc-selected .acc-progress-dot.active {
-  background-color: var(--acc-bg-color);
+@supports (color: color-mix(in srgb, red 50%, transparent)) {
+  .acc-btn.acc-selected .acc-progress-dot:not(.active) {
+    background-color: color-mix(in srgb, var(--acc-primary-color) 25%, var(--acc-card-bg));
+  }
 }
 
 /* Responsive adjustments */
@@ -1097,34 +902,21 @@
     --acc-menu-header-height: min(var(--acc-header-height), 56px);
   }
 
-  .acc-menu-content {
-    padding: 16px 0 20px;
-  }
-
   .acc-options-all {
-    gap: 14px;
-    padding-bottom: 0;
-  }
-
-  .acc-option-category {
-    gap: 8px;
-  }
-
-  .acc-option-category-interaction {
-    padding-bottom: 0;
-  }
-
-  .acc-options {
-    gap: 8px;
+    gap: 16px;
   }
 
   .acc-footer {
     padding: 10px var(--acc-content-inline-padding);
     gap: 6px;
   }
+}
 
-  .acc-footer-reset {
-    padding: 10px 16px;
+/* Three tiles no longer fit below a ~380px panel (the viewport minus the
+   8px gaps); long labels in some languages need the width. */
+@media only screen and (max-width: 395px) {
+  .acc-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1164,7 +956,7 @@
 
   .acc-footer-reset {
     width: auto;
-    padding: 8px 16px;
+    height: 44px;
   }
 }
 
@@ -1175,36 +967,8 @@
     height: 44px;
   }
 
-  .acc-header-lang-toggle {
-    min-height: 44px;
-  }
-
-  .acc-text-scale-range {
-    height: 36px;
-  }
-
-  .acc-text-scale-range::-webkit-slider-thumb {
-    width: 26px;
-    height: 26px;
-    margin-top: -11px;
-  }
-
-  .acc-text-scale-range::-moz-range-thumb {
-    width: 26px;
-    height: 26px;
-  }
-
   .acc-footer-brand {
     padding: 4px 0;
-  }
-}
-
-@media only screen and (max-width: 420px) {
-  .acc-options {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .acc-btn {
-    padding: 8px;
   }
 }
 
@@ -1219,8 +983,8 @@
   .acc-back-btn,
   .acc-menu-close,
   .acc-footer-reset,
-  .acc-header-lang-toggle,
-  .acc-header-lang-arrow,
+  .acc-card-row,
+  .acc-card-row-chevron,
   .acc-text-adjust div[role="button"] {
     transition: none;
   }

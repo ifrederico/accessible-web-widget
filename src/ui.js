@@ -148,12 +148,16 @@ export const uiMethods = {
       return String.fromCodePoint(...countryCode.split('').map(char => 127397 + char.charCodeAt(0)));
     },
 
+  // Native name of a supported language: "Deutsch" from "Deutsch (German)".
+  getLanguageName(language) {
+      return String(language?.label || language?.code || '')
+        .split('(')[0]
+        .trim() || String(language?.code || 'en').toUpperCase();
+    },
+
   formatLanguageLabel(language) {
       if (!language) return 'English (USA)';
-      const baseName = String(language.label || language.code || '')
-        .split('(')[0]
-        .trim() || String(language.code || 'en').toUpperCase();
-      return `${baseName} (${this.getLanguageCountryLabel(language.code)})`;
+      return `${this.getLanguageName(language)} (${this.getLanguageCountryLabel(language.code)})`;
     },
 
   getWidgetIconMarkup(iconKey) {
@@ -256,7 +260,34 @@ export const uiMethods = {
       this.setColorFilterUI(menu, activeColorFilter);
       const readableChoice = this.resolveReadableFontChoice(states['readable-text']);
       this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
-      this.syncTextScaleControlUI(menu, states['text-scale'] || 1);
+      this.setLevelTileUI(menu, 'text-scale', this.getTextScaleLevel(states['text-scale']));
+      this.setLevelTileUI(menu, 'text-to-speech', this.getTtsSpeedLevel(states['text-to-speech']));
+      this.syncMenuSummary(menu);
+    },
+
+  // The Profiles row names the active profile (a count when several are
+  // on), and the Reset button counts the options that are on and turns
+  // inactive when there is nothing to reset.
+  syncMenuSummary(menu) {
+      if (!menu || !menu.querySelector) return;
+      const states = this.loadConfig().states || {};
+      const activeProfiles = (this.accessibilityProfiles || []).filter(profile => states[profile.key]);
+      const profileSummary = menu.querySelector('.acc-profiles-summary');
+      if (profileSummary) {
+        if (activeProfiles.length === 1) {
+          profileSummary.textContent = this.translate(activeProfiles[0].label);
+        } else {
+          profileSummary.textContent = activeProfiles.length ? String(activeProfiles.length) : '';
+        }
+      }
+      const resetButton = menu.querySelector('.acc-footer-reset');
+      const resetCount = menu.querySelector('.acc-reset-count');
+      if (resetButton && resetCount) {
+        const activeCount = menu.querySelectorAll('.acc-options .acc-btn.acc-selected').length;
+        resetCount.textContent = String(activeCount);
+        resetCount.hidden = activeCount === 0;
+        resetButton.disabled = activeCount === 0 && activeProfiles.length === 0;
+      }
     },
 
   getFocusableElements(root) {
@@ -324,11 +355,11 @@ export const uiMethods = {
         if (!this.activeMenuContainer) return;
         if (event.key === 'Escape' || event.key === 'Esc') {
           event.preventDefault();
-          // Escape peels back one layer: an open language popover closes
-          // first (its toggle restores focus), then the menu itself.
-          const langModal = this.findElement('#acc-lang-modal', this.activeMenuContainer);
-          const langToggle = this.findElement('.acc-header-lang-toggle', this.activeMenuContainer);
-          if (langModal && !langModal.hasAttribute('hidden') && langToggle) {
+          // Escape peels back one layer: an open language list closes
+          // first (its row restores focus), then the menu itself.
+          const langPanel = this.findElement('#acc-lang-panel', this.activeMenuContainer);
+          const langToggle = this.findElement('.acc-lang-row', this.activeMenuContainer);
+          if (langPanel && !langPanel.hasAttribute('hidden') && langToggle) {
             langToggle.click();
             return;
           }
@@ -373,12 +404,12 @@ export const uiMethods = {
         menu.setAttribute('aria-modal', 'false');
       }
 
-      const langModal = this.findElement('#acc-lang-modal', targetContainer);
-      if (langModal) {
-        langModal.setAttribute('hidden', '');
+      const langPanel = this.findElement('#acc-lang-panel', targetContainer);
+      if (langPanel) {
+        langPanel.setAttribute('hidden', '');
       }
 
-      const langToggle = this.findElement('.acc-header-lang-toggle', targetContainer);
+      const langToggle = this.findElement('.acc-lang-row', targetContainer);
       if (langToggle) {
         langToggle.setAttribute('aria-expanded', 'false');
       }
@@ -440,6 +471,7 @@ export const uiMethods = {
           type="button" 
           data-key="${opt.key}" 
           data-multi-level="${isMultiLevel}"
+          data-acc-text="${opt.label}"
           title="${opt.label}"
           aria-label="${opt.label}"
           aria-pressed="${this.multiLevelFeatures[opt.key]?.currentIndex >= 0 || false}"
@@ -450,34 +482,6 @@ export const uiMethods = {
           </button>`;
       }
       return html;
-    },
-
-  renderTextScaleControl(scaleValue = 1) {
-      const percent = this.getTextScalePercent(scaleValue);
-      const min = Number(this.textScaleMinPercent) || 80;
-      const max = Number(this.textScaleMaxPercent) || 150;
-      const step = Number(this.textScaleStepPercent) || 5;
-      const progress = ((percent - min) / (max - min)) * 100;
-
-      return `
-        <div class="acc-text-scale-control" data-key="text-scale">
-          <div class="acc-text-scale-meta">
-            <span class="acc-text-scale-icon" aria-hidden="true">${this.widgetIcons.adjustFontSize}</span>
-            <span class="acc-label" data-acc-text="Font Size">Font Size</span>
-            <span class="acc-text-scale-percent">${percent}%</span>
-          </div>
-          <input
-            type="range"
-            class="acc-text-scale-range"
-            min="${min}"
-            max="${max}"
-            step="${step}"
-            value="${percent}"
-            data-acc-text="Font Size"
-            aria-label="Font Size"
-            style="--acc-text-scale-progress: ${Math.max(0, Math.min(100, progress))}%">
-        </div>
-      `;
     },
 
   getTranslatedText(el, defaultValue) {
@@ -517,6 +521,7 @@ export const uiMethods = {
       menu.querySelectorAll("[aria-label]").forEach(el => {
         el.setAttribute("aria-label", this.getTranslatedText(el, el.getAttribute("aria-label")));
       });
+      this.syncMenuSummary(menuElement);
       this.updateSkipLinkLabel();
     },
 
@@ -526,6 +531,41 @@ export const uiMethods = {
         this.registerStaticStyles();
 
         const activeLanguageCode = String(lang || 'en').split(/[_-]/)[0].toLowerCase();
+        const activeLanguage = this.supportedLanguages.find(language => language.code === lang) ||
+          this.supportedLanguages.find(language => language.code === activeLanguageCode);
+
+        const sourceOptions = [
+          ...this.contentOptions.map(option => ({ ...option })),
+          ...this.colorOptions.map(option => ({ ...option, optionClass: 'acc-filter' })),
+          ...this.accessTools
+            .filter(option => !option.devOnly || this.isDevMode())
+            .map(option => ({ ...option, optionClass: 'acc-tools' }))
+        ];
+        const optionsByKey = new Map();
+        sourceOptions.forEach(option => {
+          if (option?.key && !optionsByKey.has(option.key)) optionsByKey.set(option.key, option);
+        });
+
+        // One grid of tiles in this order. The group names are not shown,
+        // but stay as visually hidden headings so screen reader users can
+        // still jump between groups. Options missing from these lists join
+        // the last group.
+        const tileGroups = [
+          { label: 'Speech', keys: ['text-to-speech'] },
+          { label: 'Text', keys: ['text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text'] },
+          { label: 'Color & Contrast', keys: ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'] },
+          { label: 'Reading Aids', keys: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'] },
+          { label: 'Interaction', keys: ['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds', 'annotations', 'accessibility-report'] }
+        ];
+        const groupedKeys = new Set(tileGroups.flatMap(group => group.keys));
+        const ungroupedKeys = [...optionsByKey.keys()].filter(key => !groupedKeys.has(key));
+        const tilesMarkup = tileGroups.map((group, index) => {
+          const keys = index === tileGroups.length - 1 ? [...group.keys, ...ungroupedKeys] : group.keys;
+          const tiles = this.renderOptions(keys.map(key => optionsByKey.get(key)).filter(Boolean));
+          return tiles ? `<h2 class="acc-section-title acc-label acc-sr-only">${group.label}</h2>${tiles}` : '';
+        }).join('');
+
+        const profilesMarkup = this.renderOptions((this.accessibilityProfiles || []).map(profile => ({ ...profile })), 'acc-profile-tile');
 
         const menuTemplate = `
         <div class="acc-menu" role="dialog" aria-labelledby="accessibility-title">
@@ -533,44 +573,55 @@ export const uiMethods = {
             <div id="accessibility-title" class="acc-menu-title">
               <span class="acc-label">Accessibility Options</span>
             </div>
-            <div class="acc-header-actions">
-              <button type="button" class="acc-header-lang-toggle" title="Language" aria-label="Language" aria-expanded="false" aria-controls="acc-lang-modal">
-                <span id="acc-current-language" class="acc-header-lang-current">${String(activeLanguageCode || 'en').toUpperCase()}</span>
-                <span class="acc-header-lang-arrow" aria-hidden="true"> </span>
-              </button>
-              <button type="button" class="acc-menu-close" title="Close" aria-label="Close">
-                ${this.widgetIcons.close}
-              </button>
-            </div>
-          </div>
-          <div id="acc-lang-modal" class="acc-lang-modal" hidden>
-            <div class="acc-lang-modal-header">
-              <div class="acc-section-title acc-label">All Languages</div>
-            </div>
-            <div class="acc-lang-search-wrapper">
-              <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
-            </div>
-            <div class="acc-lang-list">
-              ${this.supportedLanguages.map(language => {
-                const languageLabel = this.formatLanguageLabel(language);
-                const languageFlag = this.getLanguageFlag(language.code);
-                return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
-                  <span class="acc-lang-item-main">
-                    <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
-                    <span class="acc-lang-item-label">${languageLabel}</span>
-                  </span>
-                  <span class="acc-icon-check" aria-hidden="true"> </span>
-                </button>`;
-              }).join('')}
-            </div>
+            <button type="button" class="acc-menu-close" title="Close" aria-label="Close">
+              ${this.widgetIcons.close}
+            </button>
           </div>
           <div id="acc-menu-content" class="acc-menu-content">
-            <div class="acc-options-all"> </div>
+            <div class="acc-options-all">
+              <div class="acc-card">
+                <button type="button" class="acc-card-row acc-lang-row" aria-expanded="false" aria-controls="acc-lang-panel">
+                  <span class="acc-card-row-icon" aria-hidden="true">${this.widgetIcons.language}</span>
+                  <span class="acc-card-row-label acc-label">Language</span>
+                  <span id="acc-current-language" class="acc-card-row-value">${this.getLanguageName(activeLanguage)}</span>
+                  <span class="acc-card-row-chevron" aria-hidden="true"> </span>
+                </button>
+                <div id="acc-lang-panel" class="acc-card-panel acc-lang-panel" hidden>
+                  <div class="acc-lang-search-wrapper">
+                    <input type="text" id="acc-lang-search" class="acc-lang-search" placeholder="Search language" aria-label="Search language">
+                  </div>
+                  <div class="acc-lang-list">
+                    ${this.supportedLanguages.map(language => {
+                      const languageLabel = this.formatLanguageLabel(language);
+                      const languageFlag = this.getLanguageFlag(language.code);
+                      return `<button type="button" class="acc-lang-item${language.code === activeLanguageCode ? ' selected' : ''}" data-lang="${language.code}" aria-label="${languageLabel}">
+                        <span class="acc-lang-item-main">
+                          <span class="acc-lang-flag" aria-hidden="true">${languageFlag}</span>
+                          <span class="acc-lang-item-label">${languageLabel}</span>
+                        </span>
+                        <span class="acc-icon-check" aria-hidden="true"> </span>
+                      </button>`;
+                    }).join('')}
+                  </div>
+                </div>
+                <button type="button" class="acc-card-row acc-profiles-row" aria-expanded="false" aria-controls="acc-profiles-panel">
+                  <span class="acc-card-row-icon" aria-hidden="true">${this.widgetIcons.profiles}</span>
+                  <span class="acc-card-row-label acc-label">Profiles</span>
+                  <span class="acc-card-row-value acc-profiles-summary"></span>
+                  <span class="acc-card-row-chevron" aria-hidden="true"> </span>
+                </button>
+                <div id="acc-profiles-panel" class="acc-card-panel acc-profiles-panel" role="group" aria-label="Profiles" hidden>
+                  ${profilesMarkup}
+                </div>
+              </div>
+              <div class="acc-options">${tilesMarkup}</div>
+            </div>
           </div>
           <div class="acc-footer">
-            <button type="button" class="acc-footer-reset" title="Reset settings" aria-label="Reset settings">
+            <button type="button" class="acc-footer-reset">
               ${this.widgetIcons.reset}
               <span class="acc-label">Reset settings</span>
+              <span class="acc-reset-count" hidden></span>
             </button>
             ${this.options.hideAttribution === true ? '' : '<a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>'}
           </div>
@@ -606,191 +657,18 @@ export const uiMethods = {
 
         const config = this.loadConfig();
 
-        const textKeys = new Set(['text-scale', 'bold-text', 'line-spacing', 'letter-spacing', 'readable-text']);
-        const colorKeys = new Set(['contrast-toggle', 'invert-colors', 'saturation-toggle', 'high-contrast-mode']);
-        const readingAidsKeys = new Set(['reading-aid', 'highlight-links', 'highlight-title', 'simple-layout', 'text-magnifier', 'page-structure']);
-
-        const sourceOptions = [
-          ...this.contentOptions.map(option => ({ ...option })),
-          ...this.colorOptions.map(option => ({ ...option, optionClass: 'acc-filter' })),
-          ...this.accessTools
-            .filter(option => !option.devOnly || this.isDevMode())
-            .map(option => ({ ...option, optionClass: 'acc-tools' }))
-        ];
-
-        const groupedOptions = {
-          profiles: (this.accessibilityProfiles || []).map(profile => ({ ...profile })),
-          speech: [],
-          text: [],
-          color: [],
-          reading: [],
-          interaction: []
-        };
-
-        const seenKeys = new Set();
-        sourceOptions.forEach(option => {
-          if (!option?.key || seenKeys.has(option.key)) return;
-          seenKeys.add(option.key);
-
-          if (option.key === 'text-to-speech') {
-            groupedOptions.speech.push(option);
-            return;
-          }
-          if (textKeys.has(option.key)) {
-            groupedOptions.text.push(option);
-            return;
-          }
-          if (colorKeys.has(option.key)) {
-            groupedOptions.color.push(option);
-            return;
-          }
-          if (readingAidsKeys.has(option.key)) {
-            groupedOptions.reading.push(option);
-            return;
-          }
-          groupedOptions.interaction.push(option);
-        });
-
-        const sectionConfig = [
-          { key: 'profiles', label: 'Profiles', containerClass: 'acc-tts-toggle-container', optionClass: 'acc-tts-toggle' },
-          { key: 'speech', label: 'Speech', containerClass: 'acc-tts-toggle-container', optionClass: 'acc-tts-toggle' },
-          { key: 'text', label: 'Text', containerClass: 'acc-options acc-options-text' },
-          { key: 'color', label: 'Color & Contrast', containerClass: 'acc-options' },
-          { key: 'reading', label: 'Reading Aids', containerClass: 'acc-options' },
-          { key: 'interaction', label: 'Interaction', containerClass: 'acc-options' }
-        ];
-
-        const sortOptionsByOrder = (sectionOptions, order) => {
-          sectionOptions.sort((a, b) => {
-            const indexA = order.indexOf(a.key);
-            const indexB = order.indexOf(b.key);
-            const rankA = indexA === -1 ? Number.MAX_SAFE_INTEGER : indexA;
-            const rankB = indexB === -1 ? Number.MAX_SAFE_INTEGER : indexB;
-            return rankA - rankB;
-          });
-        };
-
-        const renderThinRowSection = (section, sectionOptions, { order, rows = [], specialContent = '' }) => {
-          sortOptionsByOrder(sectionOptions, order);
-          const rowsHtml = rows.map(rowKeys => {
-            const rowOptions = sectionOptions.filter(option => rowKeys.has(option.key));
-            return rowOptions.length
-              ? `<div class="acc-options acc-options-text-inline">${this.renderOptions(rowOptions, 'acc-text-inline')}</div>`
-              : '';
-          }).join('');
-          const remainingOptions = sectionOptions.filter(option => (
-            !rows.some(rowKeys => rowKeys.has(option.key))
-          ));
-          const remainingHtml = remainingOptions.length
-            ? `<div class="${section.containerClass}">${this.renderOptions(remainingOptions, section.optionClass || '')}</div>`
-            : '';
-
-          if (!specialContent && !rowsHtml && !remainingHtml) return '';
-
-          return `
-            <section class="acc-option-category acc-option-category-${section.key}">
-              <div class="acc-section-title acc-label">${section.label}</div>
-              ${specialContent}
-              ${rowsHtml}
-              ${remainingHtml}
-            </section>
-          `;
-        };
-
-        const sectionMarkup = sectionConfig.map(section => {
-          let sectionOptions = groupedOptions[section.key];
-          let specialContent = '';
-
-          // Profiles render two-up like the Text/Color/Reading sections;
-          // a profile added without a row assignment falls through to a
-          // full-width row via section.containerClass.
-          if (section.key === 'profiles') {
-            return renderThinRowSection(section, sectionOptions, {
-              order: ['profile-seizure-safe', 'profile-vision', 'profile-adhd', 'profile-dyslexia'],
-              rows: [
-                new Set(['profile-seizure-safe', 'profile-vision']),
-                new Set(['profile-adhd', 'profile-dyslexia'])
-              ]
-            });
-          }
-
-          if (section.key === 'text') {
-            const textScaleOption = sectionOptions.find(option => option.key === 'text-scale');
-            sectionOptions = sectionOptions.filter(option => option.key !== 'text-scale');
-            return renderThinRowSection(section, sectionOptions, {
-              order: ['line-spacing', 'letter-spacing', 'bold-text', 'readable-text'],
-              rows: [
-                new Set(['line-spacing', 'letter-spacing']),
-                new Set(['bold-text', 'readable-text'])
-              ],
-              specialContent: textScaleOption
-                ? this.renderTextScaleControl(config.states?.['text-scale'] || 1)
-                : ''
-            });
-          }
-
-          if (section.key === 'color') {
-            return renderThinRowSection(section, sectionOptions, {
-              order: ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'],
-              rows: [
-                new Set(['contrast-toggle', 'saturation-toggle']),
-                new Set(['invert-colors', 'high-contrast-mode'])
-              ]
-            });
-          }
-
-          if (section.key === 'reading') {
-            return renderThinRowSection(section, sectionOptions, {
-              order: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'],
-              rows: [
-                new Set(['highlight-links', 'highlight-title']),
-                new Set(['reading-aid', 'simple-layout']),
-                new Set(['text-magnifier', 'page-structure'])
-              ]
-            });
-          }
-
-          // Same compact rows as the sections above, as one auto-flowing
-          // grid so the pairs close up when an option is skipped (Big
-          // Cursor on touch-only devices).
-          if (section.key === 'interaction') {
-            const interactionOrder = ['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds', 'annotations', 'accessibility-report'];
-            return renderThinRowSection(section, sectionOptions, {
-              order: interactionOrder,
-              rows: [new Set(interactionOrder)]
-            });
-          }
-
-          const sectionOptionsHtml = sectionOptions.length
-            ? this.renderOptions(sectionOptions, section.optionClass || '')
-            : '';
-
-          if (!specialContent && !sectionOptionsHtml.trim()) return '';
-
-          const optionsContainer = sectionOptionsHtml.trim()
-            ? `<div class="${section.containerClass}">${sectionOptionsHtml}</div>`
-            : '';
-
-          return `
-            <section class="acc-option-category acc-option-category-${section.key}">
-              <div class="acc-section-title acc-label">${section.label}</div>
-              ${specialContent}
-              ${optionsContainer}
-            </section>
-          `;
-        }).join('');
-
-        menu.querySelector(".acc-options-all").innerHTML = sectionMarkup;
-        const langModal = this.findElement("#acc-lang-modal", menu);
-        const langToggle = this.findElement(".acc-header-lang-toggle", menu);
+        const langPanel = this.findElement("#acc-lang-panel", menu);
+        const langToggle = this.findElement(".acc-lang-row", menu);
         const langSearch = this.findElement("#acc-lang-search", menu);
         const langItems = menu.querySelectorAll(".acc-lang-item");
+        const profilesPanel = this.findElement("#acc-profiles-panel", menu);
+        const profilesToggle = this.findElement(".acc-profiles-row", menu);
 
-        const closeLanguageModal = () => {
-          // Hiding the popover would otherwise drop focus out of the dialog.
-          const focusWasInside = Boolean(langModal && langModal.contains(this.getActiveElement()));
-          if (langModal) {
-            langModal.setAttribute('hidden', '');
+        const closeLanguagePanel = () => {
+          // Hiding the list would otherwise drop focus out of the dialog.
+          const focusWasInside = Boolean(langPanel && langPanel.contains(this.getActiveElement()));
+          if (langPanel) {
+            langPanel.setAttribute('hidden', '');
           }
           if (focusWasInside && langToggle) {
             this.focusQuietlyAfterPointer(langToggle);
@@ -806,9 +684,9 @@ export const uiMethods = {
           });
         };
 
-        const openLanguageModal = () => {
-          if (langModal) {
-            langModal.removeAttribute('hidden');
+        const openLanguagePanel = () => {
+          if (langPanel) {
+            langPanel.removeAttribute('hidden');
           }
           if (langToggle) {
             langToggle.setAttribute('aria-expanded', 'true');
@@ -816,7 +694,7 @@ export const uiMethods = {
           // On touch-only devices focusing the search field pops the
           // on-screen keyboard over the list, so land on the current
           // language; with a keyboard, typing filters right away.
-          const selectedItem = this.findElement('.acc-lang-item.selected', langModal) || langItems[0];
+          const selectedItem = this.findElement('.acc-lang-item.selected', langPanel) || langItems[0];
           if (this.isTouchOnlyDevice() && selectedItem) {
             this.focusQuietlyAfterPointer(selectedItem);
           } else if (langSearch) {
@@ -824,15 +702,21 @@ export const uiMethods = {
           }
         };
 
-        if (langToggle && langModal) {
-          langToggle.addEventListener('click', (event) => {
-            event.stopPropagation();
-            const isOpen = !langModal.hasAttribute('hidden');
-            if (isOpen) {
-              closeLanguageModal();
+        if (langToggle && langPanel) {
+          langToggle.addEventListener('click', () => {
+            if (langPanel.hasAttribute('hidden')) {
+              openLanguagePanel();
             } else {
-              openLanguageModal();
+              closeLanguagePanel();
             }
+          });
+        }
+
+        if (profilesToggle && profilesPanel) {
+          profilesToggle.addEventListener('click', () => {
+            const willOpen = profilesPanel.hasAttribute('hidden');
+            profilesPanel.toggleAttribute('hidden', !willOpen);
+            profilesToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
           });
         }
   
@@ -861,9 +745,9 @@ export const uiMethods = {
             // Update current language display
             const currentLang = this.findElement("#acc-current-language", menu);
             if (currentLang) {
-              currentLang.textContent = String(langCode).toUpperCase();
+              currentLang.textContent = this.getLanguageName(this.supportedLanguages.find(language => language.code === langCode));
             }
-            closeLanguageModal();
+            closeLanguagePanel();
             
             // Save language preference and update UI. langUserSelected marks
             // this as an explicit visitor choice that outranks the embed
@@ -872,31 +756,9 @@ export const uiMethods = {
             this.translateMenuUI(menuContainer);
           });
         });
-
-        const textScaleRange = this.findElement('.acc-text-scale-range', menu);
-        if (textScaleRange) {
-          textScaleRange.addEventListener('input', () => {
-            const multiplier = this.setTextScaleFromPercent(textScaleRange.value, { persist: false });
-            this.syncTextScaleControlUI(menu, multiplier);
-          });
-          textScaleRange.addEventListener('change', () => {
-            const multiplier = this.setTextScaleFromPercent(textScaleRange.value, { persist: true });
-            this.syncTextScaleControlUI(menu, multiplier);
-            this.announce(`${this.translate('Font Size')} ${this.getTextScalePercent(multiplier)}%`);
-          });
-          this.syncTextScaleControlUI(menu, config.states?.['text-scale'] || 1);
-        }
   
         // click event handler:
         menu.addEventListener('click', (e) => {
-          if (langModal && !langModal.hasAttribute('hidden')) {
-            const clickedInsideLanguageModal = Boolean(e.target.closest('.acc-lang-modal'));
-            const clickedLanguageToggle = Boolean(e.target.closest('.acc-header-lang-toggle'));
-            if (!clickedInsideLanguageModal && !clickedLanguageToggle) {
-              closeLanguageModal();
-            }
-          }
-
           const target = e.target.closest('[role="button"], button, .acc-overlay');
           if (!target) return;
           if (target.classList.contains('acc-overlay')) {
@@ -906,6 +768,9 @@ export const uiMethods = {
           if (target.classList.contains('acc-footer-reset')) {
             this.resetEnhancements();
             this.announce(this.translate('Settings reset'));
+            // Reset usually leaves nothing to reset and disables itself;
+            // keep focus inside the dialog rather than on a dead button.
+            this.focusQuietlyAfterPointer(target.disabled ? menu : target);
             return;
           }
           const btn = target.classList.contains('acc-btn') ? target : null;
@@ -928,7 +793,7 @@ export const uiMethods = {
             else if (key && key.startsWith('profile-')) {
               this.toggleAccessibilityProfile(key, menu);
             }
-            // Handle multi-level features (font size, contrast).
+            // Handle multi-level features (speech, font size, contrast).
             else if (this.multiLevelFeatures[key]) {
               this.cycleMultiLevelFeature(key, btn);
             }
@@ -955,6 +820,7 @@ export const uiMethods = {
               }
               this.announceFeatureState(btn.getAttribute('aria-label'), isSelected);
             }
+            this.syncMenuSummary(menu);
           }
         });
         this.translateMenuUI(menuContainer);

@@ -8,7 +8,7 @@ Written 2026-11-19.
 
 - **`main` is version 1.7.0, released.** Dev tools are now off by default and need `data-acc-dev-tools` on the script tag (or `devTools: true`) plus `?acc-dev` in the URL. Issue #33 is closed. GitHub, the CDN, npm and the WordPress plugin directory all have 1.7.0.
 - **`dev` is ahead of `main`.** It holds the panel's new look: the blue `#0072e4`, 28px corners, 8px gap around the panel, a soft shadow onto the header, and 20px inside padding. The `dev` preview site builds from this branch.
-- **A menu redesign is in progress on `dev`** (see below). When it lands it will be a commit after this file's commit. If `git log origin/dev` shows no such commit, the build was not finished and has to be done from the spec below.
+- **The menu redesign is built and on `dev`** (see below). All tests pass. It has not been tried with a real screen reader yet.
 
 ## Still to do from the 1.7.0 release
 
@@ -27,11 +27,11 @@ What was decided:
 - **No visible section titles** (Speech, Text, Color & Contrast, Reading Aids, Interaction). Keep the group names for screen readers only.
 - **One grid, three tiles per row** (two per row on very narrow screens).
 - **Tile look:** white tile on a light background (`oklch(97% 1% 255deg)`, stored as `#f3f5f8` for older browsers), 22px corners, icon centered above the label, no circle behind the icon, no "On/Off" words.
-- **A tile that is on:** icon and label in blue, a small soft glow instead of an outline, and a check mark in the top corner.
+- **A tile that is on:** icon and label in blue and a check mark in the top corner. No outline and no blue glow.
 - **Levels:** the existing dots under the label. Contrast, Saturation and Readable Font show the level's name as the label while on.
-- **Font Size is a tile with three taps** (110%, 125%, 150%, then off). The slider goes away. These three steps are placeholders; confirm them.
+- **Font Size is a tile with three taps** (110%, 125%, 150%, then off). The slider is gone. These three steps are placeholders; confirm them.
 - **Text to Speech is a tile**, first in the grid. Taps change the speed (normal, slow, fast, then off). Click any text to hear it, as today.
-- **Footer:** one quiet Reset button with a count of what is on. It is disabled when nothing is on.
+- **Footer:** one quiet Reset button with a count of what is on. It is disabled when nothing is on. The footer is still being redesigned (see below).
 
 Rules the build must follow:
 
@@ -40,6 +40,12 @@ Rules the build must follow:
 - Keyboard use, screen reader announcements, right-to-left languages, phone layouts, dev tools gating and Reset must keep working.
 - Text contrast at least 4.5 to 1, tap targets at least 44px.
 - The Vision Impaired profile sets text to 150% (it was 140%) so it matches a step.
+
+## Footer, still being decided on the canvas
+
+- A small round "Hide widget" button beside Reset. This is a new feature: it needs a rule for when the widget comes back, and new words in all 54 languages.
+- A credit strip and an "Accessibility Statement" link. The statement link also needs a new option for the site owner's address, and new words to translate.
+- Where each of these sits in the footer is not decided.
 
 ## Planned next, not started
 

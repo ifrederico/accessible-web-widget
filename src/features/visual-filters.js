@@ -6,10 +6,10 @@ export const visualFilterMethods = {
   getContrastToggleDisplay(index) {
       const control = 'Contrast';
       if (index === 0) {
-        return { key: 'light-contrast', control, label: 'Light', icon: this.widgetIcons.lightContrast };
+        return { key: 'light-contrast', control, label: 'Light Contrast', icon: this.widgetIcons.lightContrast };
       }
       if (index === 1) {
-        return { key: 'dark-contrast', control, label: 'Dark', icon: this.widgetIcons.darkContrast };
+        return { key: 'dark-contrast', control, label: 'Dark Contrast', icon: this.widgetIcons.darkContrast };
       }
       return { key: null, control, label: control, icon: this.widgetIcons.contrast };
     },
@@ -28,9 +28,10 @@ export const visualFilterMethods = {
         labelNode.setAttribute('data-acc-text', display.label);
         labelNode.innerText = this.translate(display.label);
       }
-      // The visible label shows only the active level ("Light"); the
-      // accessible name also names the control ("Contrast: Light") and is
-      // rebuilt from these attributes by translateMenuUI() on a language switch.
+      // The visible label shows only the active level ("Light Contrast");
+      // the accessible name also names the control ("Contrast: Light
+      // Contrast") and is rebuilt from these attributes by translateMenuUI()
+      // on a language switch.
       button.setAttribute('data-acc-text', display.control);
       if (display.key) {
         button.setAttribute('data-acc-level-text', display.label);
@@ -50,10 +51,10 @@ export const visualFilterMethods = {
   getSaturationToggleDisplay(index) {
       const control = 'Saturation';
       if (index === 0) {
-        return { key: 'low-saturation', control, label: 'Low', icon: this.widgetIcons.lowSaturation };
+        return { key: 'low-saturation', control, label: 'Low Saturation', icon: this.widgetIcons.lowSaturation };
       }
       if (index === 1) {
-        return { key: 'high-saturation', control, label: 'High', icon: this.widgetIcons.highSaturation };
+        return { key: 'high-saturation', control, label: 'High Saturation', icon: this.widgetIcons.highSaturation };
       }
       if (index === 2) {
         return { key: 'monochrome', control, label: 'Monochrome', icon: this.widgetIcons.monochrome };
@@ -95,6 +96,44 @@ export const visualFilterMethods = {
           dot.classList.toggle('active', dotIndex === index);
         });
       }
+    },
+
+  // Font Size and Text to Speech keep their name on the tile; the level
+  // goes into the accessible name only ("Font Size: 125%").
+  getLevelTileText(featureKey, index) {
+      if (featureKey === 'text-scale') {
+        const level = this.textScaleLevels?.[index];
+        return level ? `${Math.round(level * 100)}%` : '';
+      }
+      if (featureKey === 'text-to-speech') {
+        const choice = this.ttsSpeedChoices?.[index];
+        return choice ? `${choice.rate}×` : '';
+      }
+      return '';
+    },
+
+  setLevelTileUI(menu, featureKey, index) {
+      if (!menu || !menu.querySelector) return;
+      const feature = this.multiLevelFeatures?.[featureKey];
+      if (!feature) return;
+      feature.currentIndex = index;
+      const button = menu.querySelector(`.acc-btn[data-key="${featureKey}"]`);
+      if (!button) return;
+      const levelText = this.getLevelTileText(featureKey, index);
+      if (levelText) {
+        button.setAttribute('data-acc-level-text', levelText);
+      } else {
+        button.removeAttribute('data-acc-level-text');
+      }
+      const accessibleName = this.getTranslatedText(button);
+      button.setAttribute('title', accessibleName);
+      button.setAttribute('aria-label', accessibleName);
+      const isActive = index >= 0;
+      button.classList.toggle('acc-selected', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      button.querySelectorAll('.acc-progress-dot').forEach((dot, dotIndex) => {
+        dot.classList.toggle('active', dotIndex === index);
+      });
     },
 
   isColorFilterKey(key) {
@@ -277,13 +316,14 @@ export const visualFilterMethods = {
   cycleMultiLevelFeature(featureKey, button) {
       const feature = this.multiLevelFeatures[featureKey];
       if (!feature || !button) return;
+      const menu = button.closest('.acc-menu');
 
       if (featureKey === 'readable-text') {
         const newIndex = feature.currentIndex + 1;
         const newFontKey = newIndex >= feature.levels ? null : feature.values[newIndex];
         this.updateState({ 'readable-text': newFontKey || false });
         this.enableReadableText(newFontKey || false);
-        this.setReadableFontUI(button.closest('.acc-menu'), newFontKey);
+        this.setReadableFontUI(menu, newFontKey);
         // setReadableFontUI re-labels the button with the control and the
         // active font ("Readable Font: Lexend"), so the announcement reads
         // "Readable Font: Lexend On" / "Readable Font Off".
@@ -291,18 +331,48 @@ export const visualFilterMethods = {
         return;
       }
 
-      // Beyond those, only the color filter toggles render as cycling
-      // buttons; text scale is controlled by the slider in the Text section.
+      // Font Size: 110%, 125%, 150%, then back to 100% (off).
+      if (featureKey === 'text-scale') {
+        const newIndex = this.getTextScaleLevel(this.retrieveState('text-scale')) + 1;
+        const multiplier = newIndex < feature.levels ? feature.values[newIndex] : 1;
+        this.updateState({ 'text-scale': multiplier });
+        this.scaleText(multiplier);
+        this.setLevelTileUI(menu, featureKey, multiplier > 1 ? newIndex : -1);
+        const fontSize = this.translate('Font Size');
+        this.announce(multiplier > 1
+          ? `${fontSize} ${Math.round(multiplier * 100)}%`
+          : `${fontSize} ${this.translate('Off')}`);
+        return;
+      }
+
+      // Text to Speech: normal, slow, fast, then off. Each tap re-speaks
+      // the "Text to Speech On" cue at the new speed.
+      if (featureKey === 'text-to-speech') {
+        const newIndex = this.getTtsSpeedLevel(this.retrieveState('text-to-speech')) + 1;
+        const speedKey = newIndex < feature.levels ? feature.values[newIndex] : false;
+        this.userInitiatedToggleKey = featureKey;
+        try {
+          this.updateState({ 'text-to-speech': speedKey });
+          this.enableTextToSpeech(speedKey);
+        } finally {
+          this.userInitiatedToggleKey = null;
+        }
+        this.setLevelTileUI(menu, featureKey, speedKey ? newIndex : -1);
+        this.announceFeatureState(button.getAttribute('aria-label'), !!speedKey);
+        return;
+      }
+
+      // Beyond those, only the color filter toggles render as cycling buttons.
       if (featureKey !== 'contrast-toggle' && featureKey !== 'saturation-toggle') return;
 
       const newIndex = feature.currentIndex + 1;
       const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
       this.updateColorFilterState(newActiveKey);
-      this.setColorFilterUI(button.closest('.acc-menu'), newActiveKey);
+      this.setColorFilterUI(menu, newActiveKey);
       this.applyVisualFilters();
       // setColorFilterUI re-labels the button with the control and the
-      // active mode ("Contrast: Light"), so the announcement reads
-      // "Contrast: Light On" / "Contrast Off".
+      // active mode ("Contrast: Light Contrast"), so the announcement reads
+      // "Contrast: Light Contrast On" / "Contrast Off".
       this.announceFeatureState(button.getAttribute('aria-label'), !!newActiveKey);
     },
 

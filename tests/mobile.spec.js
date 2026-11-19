@@ -31,21 +31,34 @@ const touchScroll = async (page, x, y, yDistance) => {
   await page.waitForTimeout(300);
 };
 
-test('phone menu keeps compact two-column rows', async ({ page }) => {
+test('phone menu spans the screen with tiles three to a row', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').tap();
   const menu = page.locator('.acc-menu');
   await expect(menu).toBeVisible();
 
-  const first = await page.locator('.acc-btn[data-key="profile-seizure-safe"]').boundingBox();
-  const second = await page.locator('.acc-btn[data-key="profile-vision"]').boundingBox();
-  // Side by side, as short rows rather than tall tiles.
-  expect(Math.abs(first.y - second.y)).toBeLessThan(1);
-  expect(first.height).toBeLessThan(80);
+  // A ~396px panel still fits three tiles side by side.
+  const tiles = page.locator('.acc-options .acc-btn');
+  const [first, second, third, fourth] = await Promise.all([0, 1, 2, 3].map((i) => tiles.nth(i).boundingBox()));
+  expect(Math.abs(first.y - third.y)).toBeLessThan(1);
+  expect(second.x).toBeGreaterThan(first.x);
+  expect(fourth.y).toBeGreaterThan(first.y + first.height);
+  expect(first.height).toBeGreaterThanOrEqual(112);
 
   // The panel spans the screen between small gaps.
   const box = await menu.boundingBox();
   expect(box.width).toBeGreaterThan(phone.viewport.width - 24);
+});
+
+test('narrow phones fall back to two tiles per row', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 780 });
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').tap();
+
+  const tiles = page.locator('.acc-options .acc-btn');
+  const [first, second, third] = await Promise.all([0, 1, 2].map((i) => tiles.nth(i).boundingBox()));
+  expect(Math.abs(first.y - second.y)).toBeLessThan(1);
+  expect(third.y).toBeGreaterThan(first.y + first.height);
 });
 
 test('Big Cursor is hidden on touch-only devices', async ({ page }) => {
@@ -87,8 +100,8 @@ test('tapping options leaves no stuck focus ring', async ({ page }) => {
 test('language list opens without raising the on-screen keyboard', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').tap();
-  await page.locator('.acc-header-lang-toggle').tap();
-  await expect(page.locator('#acc-lang-modal')).not.toHaveAttribute('hidden', '');
+  await page.locator('.acc-lang-row').tap();
+  await expect(page.locator('#acc-lang-panel')).not.toHaveAttribute('hidden', '');
 
   const focused = await page.evaluate(() => {
     const active = document.getElementById('acc-widget-host').shadowRoot.activeElement;
