@@ -29,7 +29,7 @@
   /* One hover look for the whole menu, from the theme's hover colour:
      a ring on cards that sit on the background (tiles, Reset), and this
      tint on rows that sit inside a card. */
-  --acc-hover-tint: rgba(0, 114, 228, 0.06);
+  --acc-hover-tint: rgba(31, 41, 51, 0.05);
   --acc-menu-block-gap: var(--acc-menu-inline-gap);
   border-radius: 1.75rem;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
@@ -1248,7 +1248,7 @@
 
 @supports (color: color-mix(in srgb, red 50%, transparent)) {
   .acc-menu {
-    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color) 12%, transparent);
+    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color) 20%, transparent);
   }
 
   .acc-btn.acc-selected .acc-progress-dot:not(.active) {

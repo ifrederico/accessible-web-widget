@@ -91,7 +91,7 @@ body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, f
 
 @media (hover: hover) {
   .acc-structure-item:hover {
-    background: var(--acc-hover-color, #f3f4f6);
+    background: var(--acc-hover-tint, var(--acc-hover-color, #f3f4f6));
   }
 }
 

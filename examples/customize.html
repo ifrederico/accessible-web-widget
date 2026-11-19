@@ -507,7 +507,6 @@
                     primaryColorLight: colors.light,
                     primaryColorDark: colors.dark,
                     focusRingColor: colors.base,
-                    hoverColor: colors.light,
                     activeColor: colors.dark
                 };
             }
@@ -699,7 +698,6 @@
                     '      primaryColorLight: ' + quoteJs(themeOptions.primaryColorLight) + ',\n' +
                     '      primaryColorDark: ' + quoteJs(themeOptions.primaryColorDark) + ',\n' +
                     '      focusRingColor: ' + quoteJs(themeOptions.focusRingColor) + ',\n' +
-                    '      hoverColor: ' + quoteJs(themeOptions.hoverColor) + ',\n' +
                     '      activeColor: ' + quoteJs(themeOptions.activeColor) + ',\n' +
                     '      ttsNativeVoiceName: ' + quoteJs(config.ttsNativeVoiceName) + ',\n' +
                     '      ttsRate: ' + formatDecimal(config.ttsRate) + ',\n' +
@@ -775,7 +773,6 @@
                 root.style.setProperty('--acc-primary-color-light', themeOptions.primaryColorLight);
                 root.style.setProperty('--acc-primary-color-dark', themeOptions.primaryColorDark);
                 root.style.setProperty('--acc-focus-ring-color', themeOptions.focusRingColor);
-                root.style.setProperty('--acc-hover-color', themeOptions.hoverColor);
                 root.style.setProperty('--acc-active-color', themeOptions.activeColor);
                 return true;
             }

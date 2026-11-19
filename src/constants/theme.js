@@ -14,7 +14,7 @@ export const WIDGET_THEME = {
       focusRingColor: '#0072e4',      // Match primary
       
       // Interactive states
-      hoverColor: '#4da1fe',          // Use light blue for hover
+      hoverColor: '#c4cad3',          // Neutral grey; blue is kept for "on" and keyboard focus
       activeColor: '#0049a5',         // Use dark blue for active
       
       // Feedback colors
