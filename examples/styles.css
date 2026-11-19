@@ -1039,6 +1039,23 @@ pre.export-code code {
 .faq-answer p + p { margin-top: 10px; }
 .faq-answer a { color: var(--text); }
 
+.statement-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+}
+
+.statement-list .panel p {
+  font: 400 15.5px/1.65 var(--sans);
+  color: var(--text-2);
+  margin-top: 12px;
+  max-width: 640px;
+  text-wrap: pretty;
+}
+
+.statement-list .panel a { color: var(--text); }
+
 .faq-empty-state {
   max-width: 800px;
   margin: 20px auto 0;

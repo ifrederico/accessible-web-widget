@@ -623,7 +623,10 @@ export const uiMethods = {
               <span class="acc-label">Reset settings</span>
               <span class="acc-reset-count" hidden></span>
             </button>
-            ${this.options.hideAttribution === true ? '' : '<a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb Widget</a>'}
+            ${this.options.hideAttribution === true ? '' : `<div class="acc-footer-credit">
+              <a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb</a>
+              <a class="acc-footer-statement" href="https://accessibleweb.pages.dev/statement" target="_blank" rel="noopener noreferrer"><span class="acc-label">Accessibility Statement</span></a>
+            </div>`}
           </div>
         </div>
         <div class="acc-overlay"> </div>

@@ -578,6 +578,20 @@ test('reset settings lives in footer instead of header button', async ({ page })
   await expect(page.locator('.acc-footer-brand')).toBeVisible();
 });
 
+test('the footer links to the accessibility statement, in the menu language', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+
+  const statement = page.locator('.acc-footer-statement');
+  await expect(statement).toBeVisible();
+  await expect(statement).toHaveAttribute('href', 'https://accessibleweb.pages.dev/statement');
+  await expect(statement).toHaveText('Accessibility Statement');
+
+  await page.locator('.acc-lang-row').click();
+  await page.locator('.acc-lang-item[data-lang="de"]').click();
+  await expect(statement).toHaveText('Erklärung zur Barrierefreiheit');
+});
+
 test('hideAttribution removes the footer link but keeps reset', async ({ page }) => {
   await page.addInitScript(() => {
     window.AccessibleWebWidgetOptions = { hideAttribution: true };
@@ -586,6 +600,7 @@ test('hideAttribution removes the footer link but keeps reset', async ({ page })
   await page.locator('.acc-toggle-btn').click();
   await expect(page.locator('.acc-footer-reset')).toBeVisible();
   await expect(page.locator('.acc-footer-brand')).toHaveCount(0);
+  await expect(page.locator('.acc-footer-statement')).toHaveCount(0);
 });
 
 test('Text to Speech is the first tile', async ({ page }) => {

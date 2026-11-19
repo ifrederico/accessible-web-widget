@@ -764,16 +764,56 @@
   outline-offset: var(--acc-focus-outline-offset);
 }
 
-.acc-footer-brand {
-  display: block;
-  text-align: center;
-  font-size: 12px !important;
+/* Credit line: the project's name, and its statement on what a widget
+   can and cannot do for a site. */
+.acc-footer-credit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 6px;
+}
+
+.acc-footer-brand,
+.acc-footer-statement {
+  padding: 4px 0;
+  font-size: 13px !important;
   line-height: 1.2 !important;
+  text-decoration: none;
+}
+
+.acc-footer-brand {
   font-weight: 400 !important;
   color: var(--acc-text-color) !important;
   opacity: 0.65;
-  text-decoration: none;
-  padding: 2px 0;
+}
+
+.acc-footer-statement {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.acc-footer-statement .acc-label {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  color: var(--acc-primary-color) !important;
+}
+
+/* Arrow after the link; it points the other way in right-to-left. */
+.acc-footer-statement::after {
+  content: "";
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-top: 1.5px solid var(--acc-primary-color);
+  border-inline-end: 1.5px solid var(--acc-primary-color);
+  transform: rotate(45deg);
+}
+
+.acc-menu[dir="rtl"] .acc-footer-statement::after {
+  transform: rotate(-45deg);
 }
 
 @media (hover: hover) {
@@ -781,9 +821,14 @@
     opacity: 1;
     text-decoration: underline;
   }
+
+  .acc-footer-statement:hover .acc-label {
+    text-decoration: underline;
+  }
 }
 
-.acc-footer-brand:focus-visible {
+.acc-footer-brand:focus-visible,
+.acc-footer-statement:focus-visible {
   opacity: 1;
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
@@ -967,6 +1012,12 @@
     width: auto;
     height: 44px;
   }
+
+  .acc-footer-credit {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    gap: 16px;
+  }
 }
 
 /* Touch input: grow the small controls toward a 44px target. */
@@ -976,8 +1027,9 @@
     height: 44px;
   }
 
-  .acc-footer-brand {
-    padding: 4px 0;
+  .acc-footer-brand,
+  .acc-footer-statement {
+    padding: 12px 0;
   }
 }
 
