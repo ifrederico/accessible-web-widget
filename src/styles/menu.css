@@ -26,6 +26,10 @@
   /* Theme headerHeight, capped on small screens by the media queries. */
   --acc-menu-header-height: var(--acc-header-height);
   --acc-menu-inline-gap: 8px;
+  /* One hover look for the whole menu, from the theme's hover colour:
+     a ring on cards that sit on the background (tiles, Reset), and this
+     tint on rows that sit inside a card. */
+  --acc-hover-tint: rgba(0, 114, 228, 0.06);
   --acc-menu-block-gap: var(--acc-menu-inline-gap);
   border-radius: 1.75rem;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
@@ -356,7 +360,7 @@
 
 @media (hover: hover) {
   .acc-lang-item:hover {
-    background-color: rgba(0, 114, 228, 0.06);
+    background-color: var(--acc-hover-tint);
   }
 }
 
@@ -482,7 +486,7 @@
 
 @media (hover: hover) {
   .acc-card-row:hover {
-    background-color: rgba(31, 41, 51, 0.04);
+    background-color: var(--acc-hover-tint);
   }
 }
 
@@ -819,8 +823,9 @@
 }
 
 @media (hover: hover) {
-  .acc-more-item:hover {
-    background-color: var(--acc-bg-color);
+  .acc-more-item:hover,
+  .acc-hide-choice:not([aria-checked="true"]):hover {
+    background-color: var(--acc-hover-tint);
   }
 }
 
@@ -1065,7 +1070,7 @@
 
 @media (hover: hover) {
   .acc-action-reset:not(:disabled):hover {
-    box-shadow: 0 0 0 1px var(--acc-border-color), 0 2px 6px rgba(31, 41, 51, 0.08);
+    box-shadow: 0 0 0 1px var(--acc-hover-color), 0 2px 6px rgba(31, 41, 51, 0.08);
   }
 }
 
@@ -1242,6 +1247,10 @@
 }
 
 @supports (color: color-mix(in srgb, red 50%, transparent)) {
+  .acc-menu {
+    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color) 12%, transparent);
+  }
+
   .acc-btn.acc-selected .acc-progress-dot:not(.active) {
     background-color: color-mix(in srgb, var(--acc-primary-color) 25%, var(--acc-card-bg));
   }
