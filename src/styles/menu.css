@@ -26,6 +26,10 @@
   /* Theme headerHeight, capped on small screens by the media queries. */
   --acc-menu-header-height: var(--acc-header-height);
   --acc-menu-inline-gap: 8px;
+  /* Text sizes. Title 17; rows and buttons 15; tile labels and small
+     print 13. Semibold for what you click, regular for helper text. The
+     search field stays 16 so phones do not zoom in on it, and the Reset
+     count is 12. */
   /* One hover look for the whole menu: a soft fill, mixed from the
      theme's hover colour. It stays lighter than the panel background so
      a hovered tile does not melt into it. Grey tiles that sit on a white
@@ -355,7 +359,7 @@
   border: none;
   border-radius: 14px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--acc-text-color);
   transition: background-color 0.12s ease;
 }
@@ -384,14 +388,14 @@
 }
 
 .acc-lang-item-label {
-  font-size: 16px !important;
+  font-size: 15px !important;
   line-height: 1.4 !important;
 }
 
 /* The country reads as a quiet note after the language's name. */
 .acc-lang-item-region {
   margin-inline-start: 4px;
-  font-size: 14px !important;
+  font-size: 13px !important;
   font-weight: 400 !important;
   color: #5b6472 !important;
 }
@@ -525,7 +529,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 14px !important;
+  font-size: 15px !important;
   color: #5b6472 !important;
 }
 
@@ -921,7 +925,7 @@
 
 .acc-hide-choice .acc-label {
   font-size: 15px !important;
-  font-weight: 500 !important;
+  font-weight: 400 !important;
 }
 
 .acc-hide-choice[aria-checked="true"] .acc-label {
@@ -935,7 +939,7 @@
   border-radius: 12px;
   background: var(--acc-bg-color);
   font-size: 15px !important;
-  font-weight: 500 !important;
+  font-weight: 400 !important;
   line-height: 1.4 !important;
 }
 
@@ -966,7 +970,7 @@
 
 .acc-hide-cancel .acc-label,
 .acc-hide-confirm .acc-label {
-  font-size: 14px !important;
+  font-size: 15px !important;
   font-weight: 600 !important;
 }
 
@@ -1025,7 +1029,7 @@
 .acc-action-reset .acc-label {
   min-width: 0;
   text-align: center;
-  font-size: 14px !important;
+  font-size: 15px !important;
   font-weight: 600 !important;
   line-height: 1.2 !important;
 }
@@ -1302,7 +1306,6 @@
   }
 
   .acc-action-reset .acc-label {
-    font-size: 13px !important;
     overflow-wrap: anywhere;
   }
 
@@ -1317,6 +1320,13 @@
 
   .acc-btn {
     aspect-ratio: auto;
+  }
+}
+
+/* The very smallest phones: long translations of Reset stay on one line. */
+@media only screen and (max-width: 359px) {
+  .acc-action-reset .acc-label {
+    font-size: 13px !important;
   }
 }
 

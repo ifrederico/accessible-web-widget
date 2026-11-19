@@ -1039,14 +1039,20 @@ pre.export-code code {
 .faq-answer p + p { margin-top: 10px; }
 .faq-answer a { color: var(--text); }
 
-.statement-list {
+/* One sheet, read top to bottom; the headings divide it. */
+.statement {
   max-width: 800px;
   margin: 0 auto;
-  display: grid;
-  gap: 14px;
 }
 
-.statement-list .panel p {
+.statement section + section { margin-top: clamp(30px, 4vw, 44px); }
+
+.statement h2 {
+  font: 400 26px/1.2 var(--serif);
+  letter-spacing: -0.5px;
+}
+
+.statement p {
   font: 400 15.5px/1.65 var(--sans);
   color: var(--text-2);
   margin-top: 12px;
@@ -1054,7 +1060,7 @@ pre.export-code code {
   text-wrap: pretty;
 }
 
-.statement-list .panel a { color: var(--text); }
+.statement a { color: var(--text); }
 
 .faq-empty-state {
   max-width: 800px;
