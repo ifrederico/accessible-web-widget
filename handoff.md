@@ -62,6 +62,7 @@ Rules the build must follow:
 - Menu icons are Phosphor Icons, Light weight (MIT), a little larger. Hide Images is that set's picture icon with a slash added by hand. The floating button keeps its Material icons.
 - Hover is a soft grey fill everywhere (tiles, Reset, rows). Blue is kept for options that are on and for keyboard focus. The theme's default `hoverColor` is now grey, and the customizer no longer sets one.
 - Text sizes: 17 for the title, 15 for rows and buttons, 13 for tile labels and small print. The search field stays 16 so iPhones do not zoom in on it.
+- Two font weights: semibold for the title and the name of anything you press, regular for everything else (values, notes, list choices, picked or not).
 - The panel's scrollbar is thin with no track where the system always shows scrollbars. This was checked in Chrome only, and has no automated test.
 - The menu's text is set in Inter. The files are in `src/fonts/`, copied to `dist/fonts/` by the build, and loaded from beside the script when the menu first opens (only the parts a language needs). `menuFontUrl` points at another folder; `menuFont: "system"` turns it off. Before release: check the font loads from the CDN address, and in the WordPress plugin, whose PHP line for `menuFontUrl` and font copies were added but never run.
 - The statement page is one sheet instead of five cards.

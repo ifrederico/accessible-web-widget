@@ -27,9 +27,11 @@
   --acc-menu-header-height: var(--acc-header-height);
   --acc-menu-inline-gap: 8px;
   /* Text sizes. Title 17; rows and buttons 15; tile labels and small
-     print 13. Semibold for what you click, regular for helper text. The
-     search field stays 16 so phones do not zoom in on it, and the Reset
-     count is 12. */
+     print 13. The search field stays 16 so phones do not zoom in on it,
+     and the Reset count is 12.
+     Two weights. Semibold (600): the title and the name of anything you
+     press. Regular (400): everything else, including values, notes and
+     the choices in a list, picked or not. */
   /* One hover look for the whole menu: a soft fill, mixed from the
      theme's hover colour. It stays lighter than the panel background so
      a hovered tile does not melt into it. Grey tiles that sit on a white
@@ -83,7 +85,7 @@
   justify-content: space-between;
   padding: 0 var(--acc-content-inline-padding);
   height: var(--acc-menu-header-height);
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   background-color: var(--acc-primary-color) !important;
 }
 
@@ -93,7 +95,7 @@
   min-width: 0;
   font-size: 17px !important;
   color: var(--acc-text-color-inverted) !important;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .acc-menu-title .acc-label {
@@ -383,9 +385,10 @@
   outline-offset: var(--acc-focus-outline-offset);
 }
 
+/* A picked language keeps its weight: the tint and the check mark show
+   it, and the words do not shift. */
 .acc-lang-item.selected {
   background-color: rgba(0, 114, 228, 0.08);
-  font-weight: 600;
 }
 
 .acc-lang-item-main {
@@ -545,7 +548,7 @@
 }
 
 .acc-card-row .acc-profiles-summary {
-  font-weight: 600 !important;
+  font-weight: 400 !important;
   color: var(--acc-primary-color) !important;
 }
 
@@ -939,9 +942,6 @@
   font-weight: 400 !important;
 }
 
-.acc-hide-choice[aria-checked="true"] .acc-label {
-  font-weight: 600 !important;
-}
 
 /* Shown before an "Always" hide: how to get the widget back. */
 .acc-hide-warning {
@@ -1063,7 +1063,7 @@
   color: var(--acc-text-color-inverted) !important;
   flex-shrink: 0;
   font-size: 12px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   line-height: 1 !important;
 }
 
@@ -1117,7 +1117,7 @@
 }
 
 .acc-footer-brand {
-  font-weight: 400 !important;
+  font-weight: 600 !important;
   color: var(--acc-text-color-inverted) !important;
 }
 
