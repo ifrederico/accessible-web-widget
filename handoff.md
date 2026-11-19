@@ -41,11 +41,20 @@ Rules the build must follow:
 - Text contrast at least 4.5 to 1, tap targets at least 44px.
 - The Vision Impaired profile sets text to 150% (it was 140%) so it matches a step.
 
-## Footer, still being decided on the canvas
+## Footer (built)
 
-- A small round "Hide widget" button beside Reset. This is a new feature: it needs a rule for when the widget comes back, and new words in all 54 languages.
-- A credit strip and an "Accessibility Statement" link. The statement link also needs a new option for the site owner's address, and new words to translate.
-- Where each of these sits in the footer is not decided.
+- A wide Reset button with a count, and a small round "Hide widget" button beside it.
+- "Hide widget" removes the floating button for the rest of the visitor's browser session. It is back on their next visit. The panel still opens through the skip link and through `AccessibleWebWidget.instance.open()`, and `showButton()` brings the button back. This "for the visit" rule was chosen as a safe default and has not been confirmed.
+- Under the buttons: "AccessibleWeb" on the left and "Accessibility Statement" on the right, linking to the new statement page on the site.
+- "Hide widget" and "Accessibility Statement" are translated in all 54 languages by machine, not checked by native speakers.
+- The statement page's wording was drafted from the README and the disclaimer. It needs the owner's read-through.
+- The statement link points at the production site, where the page only exists after `dev` is merged.
+
+## Other changes since the redesign
+
+- Tiles are square and the panel is 456px wide, the narrowest that keeps every English label on one line. Phones show two tiles per row.
+- Profiles are short rows, icon then name, two by two (one per row on phones).
+- The language list has a soft search field, a thin scrollbar and a fade at the bottom.
 
 ## Planned next, not started
 

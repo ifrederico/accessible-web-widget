@@ -619,11 +619,14 @@ export const uiMethods = {
             </div>
           </div>
           <div class="acc-footer">
+            <div class="acc-footer-actions">
             <button type="button" class="acc-footer-reset">
               ${this.widgetIcons.reset}
               <span class="acc-label">Reset settings</span>
               <span class="acc-reset-count" hidden></span>
             </button>
+            ${this.isLauncherRemovedByOwner() ? '' : `<button type="button" class="acc-footer-hide" title="Hide widget" aria-label="Hide widget">${this.widgetIcons.hideWidget}</button>`}
+            </div>
             ${this.options.hideAttribution === true ? '' : `<div class="acc-footer-credit">
               <a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb</a>
               <a class="acc-footer-statement" href="https://accessibleweb.pages.dev/statement" target="_blank" rel="noopener noreferrer"><span class="acc-label">Accessibility Statement</span></a>
@@ -769,6 +772,10 @@ export const uiMethods = {
             this.closeMenu(menuContainer);
             return;
           }
+          if (target.classList.contains('acc-footer-hide')) {
+            this.hideLauncherForVisit();
+            return;
+          }
           if (target.classList.contains('acc-footer-reset')) {
             this.resetEnhancements();
             this.announce(this.translate('Settings reset'));
@@ -900,6 +907,52 @@ export const uiMethods = {
       }
     },
 
+  // The site owner replaced the floating button with their own trigger
+  // (hideButton), so there is nothing for a visitor to hide.
+  isLauncherRemovedByOwner() {
+      const value = this.options?.hideButton;
+      return value === true || String(value).trim().toLowerCase() === 'true';
+    },
+
+  // A visitor's "Hide widget" lasts for the browser session: the floating
+  // button stays away on every page of this visit and is back on the next.
+  isLauncherHiddenByVisitor() {
+      try {
+        return window.sessionStorage.getItem('acc-launcher-hidden') === '1';
+      } catch {
+        return false;
+      }
+    },
+
+  setLauncherHiddenByVisitor(hidden) {
+      try {
+        if (hidden) {
+          window.sessionStorage.setItem('acc-launcher-hidden', '1');
+        } else {
+          window.sessionStorage.removeItem('acc-launcher-hidden');
+        }
+      } catch {
+        // Storage can be blocked; the button is then hidden for this page only.
+      }
+      if (this.widgetToggleButton) {
+        this.widgetToggleButton.hidden = hidden;
+      }
+    },
+
+  hideLauncherForVisit() {
+      this.close();
+      this.setLauncherHiddenByVisitor(true);
+      // close() hands focus back to the button that has just gone.
+      const active = this.widgetRoot?.activeElement || document.activeElement;
+      if (active && typeof active.blur === 'function') active.blur();
+    },
+
+  // Brings the floating button back, for a host page that offers its own
+  // "show accessibility options" control.
+  showButton() {
+      this.setLauncherHiddenByVisitor(false);
+    },
+
   displayWidget(options) {
     try {
       this.applyThemeVariables();
@@ -973,6 +1026,9 @@ export const uiMethods = {
           }
 
           btn.addEventListener("click", () => this.toggle());
+          if (this.isLauncherHiddenByVisitor()) {
+            btn.hidden = true;
+          }
         }
 
         document.body.appendChild(host);

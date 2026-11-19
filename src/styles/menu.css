@@ -703,6 +703,7 @@
 .acc-menu-close,
 .acc-card-row,
 .acc-footer-reset,
+.acc-footer-hide,
 .acc-lang-item {
   touch-action: manipulation;
 }
@@ -760,9 +761,17 @@
   overflow: visible;
 }
 
+/* Reset and Hide share one row; Reset takes the room that is left. */
+.acc-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .acc-footer-reset {
   display: flex;
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
   height: 52px;
   align-items: center;
   justify-content: center;
@@ -831,9 +840,39 @@
   }
 }
 
-.acc-footer-reset:focus-visible {
+.acc-footer-reset:focus-visible,
+.acc-footer-hide:focus-visible {
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
+}
+
+/* Hides the floating button for the rest of the visit. */
+.acc-footer-hide {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background-color: var(--acc-bg-color) !important;
+  color: var(--acc-text-color);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.acc-footer-hide svg {
+  width: 22px !important;
+  height: 22px !important;
+  fill: none !important;
+  stroke: var(--acc-text-color);
+}
+
+@media (hover: hover) {
+  .acc-footer-hide:hover {
+    box-shadow: inset 0 0 0 1px var(--acc-border-color);
+  }
 }
 
 /* Credit line: the project's name, and its statement on what a widget
@@ -1093,8 +1132,16 @@
     padding: 8px var(--acc-content-inline-padding);
   }
 
+  .acc-footer-actions {
+    flex: 0 0 auto;
+  }
+
   .acc-footer-reset {
-    width: auto;
+    height: 44px;
+  }
+
+  .acc-footer-hide {
+    width: 44px;
     height: 44px;
   }
 

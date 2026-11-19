@@ -594,6 +594,44 @@ test('reset settings lives in footer instead of header button', async ({ page })
   await expect(page.locator('.acc-footer-brand')).toBeVisible();
 });
 
+test('Hide widget removes the floating button for the visit and showButton brings it back', async ({ page }) => {
+  await page.goto('index.html');
+  const launcher = page.locator('.acc-toggle-btn');
+  await launcher.click();
+
+  const hide = page.locator('.acc-footer-hide');
+  await expect(hide).toBeVisible();
+  await expect(hide).toHaveAccessibleName('Hide widget');
+  await hide.click();
+  await expect(page.locator('.acc-menu')).toBeHidden();
+  await expect(launcher).toBeHidden();
+
+  // Still hidden on the next page of the same visit.
+  await page.reload();
+  await expect(launcher).toBeHidden();
+
+  // The panel can still be opened by the host page, and the button restored.
+  await page.evaluate(() => window.AccessibleWebWidget.instance.open());
+  await expect(page.locator('.acc-menu')).toBeVisible();
+  await page.evaluate(() => {
+    window.AccessibleWebWidget.instance.close();
+    window.AccessibleWebWidget.instance.showButton();
+  });
+  await expect(launcher).toBeVisible();
+  await page.reload();
+  await expect(launcher).toBeVisible();
+});
+
+test('there is no Hide widget button when the site owner removed the floating button', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.AccessibleWebWidgetOptions = { hideButton: true };
+  });
+  await page.goto('index.html');
+  await page.evaluate(() => window.AccessibleWebWidget.instance.open());
+  await expect(page.locator('.acc-footer-reset')).toBeVisible();
+  await expect(page.locator('.acc-footer-hide')).toHaveCount(0);
+});
+
 test('the footer links to the accessibility statement, in the menu language', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
