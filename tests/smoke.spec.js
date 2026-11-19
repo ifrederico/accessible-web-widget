@@ -577,10 +577,14 @@ test('reset shows how many options are on and is disabled when none are', async 
   await expect(reset).toBeDisabled();
   await expect(count).toBeHidden();
   await expect(reset).toHaveAccessibleName('Reset settings');
+  const labelLeft = async () => (await reset.locator('.acc-label').boundingBox()).x;
+  const labelLeftBefore = await labelLeft();
 
   await page.locator('.acc-btn[data-key="bold-text"]').click();
   await expect(reset).toBeEnabled();
   await expect(count).toHaveText('1');
+  // The label stays where it was when the count appears beside it.
+  expect(await labelLeft()).toBe(labelLeftBefore);
   await page.locator('.acc-btn[data-key="text-scale"]').click();
   await page.locator('.acc-btn[data-key="contrast-toggle"]').click();
   await expect(count).toHaveText('3');

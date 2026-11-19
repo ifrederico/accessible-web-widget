@@ -657,8 +657,10 @@ export const uiMethods = {
               <div class="acc-actions">
                 <button type="button" class="acc-action-reset">
                   ${this.widgetIcons.reset}
-                  <span class="acc-label">Reset settings</span>
-                  <span class="acc-reset-count" hidden></span>
+                  <span class="acc-reset-text">
+                    <span class="acc-label">Reset settings</span>
+                    <span class="acc-reset-count" hidden></span>
+                  </span>
                 </button>
               </div>
               <div class="acc-options">${tilesMarkup}</div>

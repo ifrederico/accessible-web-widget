@@ -990,7 +990,9 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 6px 12px;
+  /* Room on both sides for the count, which hangs off the end of the
+     label, so the icon and label stay centred when it appears. */
+  padding: 6px 42px;
   border: 1px solid transparent;
   border-radius: 24px;
   background-color: var(--acc-card-bg) !important;
@@ -1006,6 +1008,13 @@
   fill: var(--acc-text-color) !important;
 }
 
+.acc-action-reset .acc-reset-text {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
 /* Long translations wrap to a second line on narrow phones. */
 .acc-action-reset .acc-label {
   min-width: 0;
@@ -1015,8 +1024,13 @@
   line-height: 1.2 !important;
 }
 
-/* How many options are on. */
+/* How many options are on. Out of the flow, so the label does not shift
+   when it appears. */
 .acc-action-reset .acc-reset-count {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: calc(100% + 8px);
+  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1266,10 +1280,14 @@
    squares per row would be very tall, so the tiles go back to a fixed
    height. */
 @media only screen and (max-width: 449px) {
-  /* Two buttons in a narrow panel: tighter, so long translations fit. */
+  /* A narrow panel: tighter, so long translations fit. */
   .acc-action-reset {
     gap: 6px;
-    padding: 6px 8px;
+    padding: 6px 32px;
+  }
+
+  .acc-action-reset .acc-reset-count {
+    inset-inline-start: calc(100% + 5px);
   }
 
   .acc-action-reset .acc-label {
