@@ -31,7 +31,7 @@ What was decided:
 - **Levels:** the existing dots under the label. Contrast, Saturation and Readable Font show the level's name as the label while on.
 - **Font Size is a tile with three taps** (110%, 125%, 150%, then off). The slider is gone. These three steps are placeholders; confirm them.
 - **Text to Speech is a tile**, first in the grid. Taps change the speed (normal, slow, fast, then off). Click any text to hear it, as today.
-- **Footer:** one quiet Reset button with a count of what is on. It is disabled when nothing is on. The footer is still being redesigned (see below).
+- **Reset:** one quiet button with a count of what is on. It is disabled when nothing is on. Its final place is described below.
 
 Rules the build must follow:
 
@@ -41,11 +41,11 @@ Rules the build must follow:
 - Text contrast at least 4.5 to 1, tap targets at least 44px.
 - The Vision Impaired profile sets text to 150% (it was 140%) so it matches a step.
 
-## Footer (built)
+## Reset, Hide and the footer (built)
 
-- A wide Reset button with a count, and a small round "Hide widget" button beside it.
+- Reset (with a count) and "Hide widget" are two equal white buttons, side by side, under the Language and Profiles card and above the tiles. This was draft B on the canvas.
+- The footer is one thin line: "AccessibleWeb" on the left and "Accessibility Statement" on the right, linking to the new statement page on the site.
 - "Hide widget" removes the floating button for the rest of the visitor's browser session. It is back on their next visit. The panel still opens through the skip link and through `AccessibleWebWidget.instance.open()`, and `showButton()` brings the button back. This "for the visit" rule was chosen as a safe default and has not been confirmed.
-- Under the buttons: "AccessibleWeb" on the left and "Accessibility Statement" on the right, linking to the new statement page on the site.
 - "Hide widget" and "Accessibility Statement" are translated in all 54 languages by machine, not checked by native speakers.
 - The statement page's wording was drafted from the README and the disclaimer. It needs the owner's read-through.
 - The statement link points at the production site, where the page only exists after `dev` is merged.

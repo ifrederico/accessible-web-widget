@@ -479,7 +479,7 @@ test('monochrome grays out page content, persists, and clears on reset', async (
   await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'monochrome');
   await expect(saturationButton).toHaveAttribute('aria-pressed', 'true');
 
-  await page.locator('.acc-footer-reset').click();
+  await page.locator('.acc-action-reset').click();
   await expect.poll(contentFilter).toBe('none');
   await expect(saturationButton).toHaveAttribute('data-saturation-mode', 'off');
   const states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
@@ -554,7 +554,7 @@ test('reset shows how many options are on and is disabled when none are', async 
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  const reset = page.locator('.acc-footer-reset');
+  const reset = page.locator('.acc-action-reset');
   const count = reset.locator('.acc-reset-count');
   await expect(reset).toBeDisabled();
   await expect(count).toBeHidden();
@@ -588,7 +588,7 @@ test('reset settings lives in footer instead of header button', async ({ page })
 
   await expect(page.locator('.acc-reset-btn')).toHaveCount(0);
   await expect(page.locator('.acc-header-reset')).toHaveCount(0);
-  const footerReset = page.locator('.acc-footer-reset');
+  const footerReset = page.locator('.acc-action-reset');
   await expect(footerReset).toHaveCount(1);
   await expect(footerReset).toBeVisible();
   await expect(page.locator('.acc-footer-brand')).toBeVisible();
@@ -599,9 +599,17 @@ test('Hide widget removes the floating button for the visit and showButton bring
   const launcher = page.locator('.acc-toggle-btn');
   await launcher.click();
 
-  const hide = page.locator('.acc-footer-hide');
+  const hide = page.locator('.acc-action-hide');
   await expect(hide).toBeVisible();
   await expect(hide).toHaveAccessibleName('Hide widget');
+
+  // Reset and Hide sit side by side, above the tiles, at the same size.
+  const resetBox = await page.locator('.acc-action-reset').boundingBox();
+  const hideBox = await hide.boundingBox();
+  const firstTile = await page.locator('.acc-options .acc-btn').first().boundingBox();
+  expect(Math.abs(resetBox.y - hideBox.y)).toBeLessThan(1);
+  expect(Math.abs(resetBox.width - hideBox.width)).toBeLessThan(1);
+  expect(resetBox.y + resetBox.height).toBeLessThanOrEqual(firstTile.y);
   await hide.click();
   await expect(page.locator('.acc-menu')).toBeHidden();
   await expect(launcher).toBeHidden();
@@ -628,8 +636,8 @@ test('there is no Hide widget button when the site owner removed the floating bu
   });
   await page.goto('index.html');
   await page.evaluate(() => window.AccessibleWebWidget.instance.open());
-  await expect(page.locator('.acc-footer-reset')).toBeVisible();
-  await expect(page.locator('.acc-footer-hide')).toHaveCount(0);
+  await expect(page.locator('.acc-action-reset')).toBeVisible();
+  await expect(page.locator('.acc-action-hide')).toHaveCount(0);
 });
 
 test('the footer links to the accessibility statement, in the menu language', async ({ page }) => {
@@ -652,7 +660,7 @@ test('hideAttribution removes the footer link but keeps reset', async ({ page })
   });
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
-  await expect(page.locator('.acc-footer-reset')).toBeVisible();
+  await expect(page.locator('.acc-action-reset')).toBeVisible();
   await expect(page.locator('.acc-footer-brand')).toHaveCount(0);
   await expect(page.locator('.acc-footer-statement')).toHaveCount(0);
 });
@@ -743,7 +751,7 @@ test('reset clears text styling while Simplify Layout is active', async ({ page 
   await expect(page.locator('html')).toHaveClass(/acc-line-spacing/);
   await expect(page.locator('body')).toHaveClass(/acc-simple-layout-enabled/);
 
-  await page.locator('.acc-footer-reset').click();
+  await page.locator('.acc-action-reset').click();
   await expect(page.locator('html')).not.toHaveClass(/acc-line-spacing/);
   await expect(page.locator('body')).not.toHaveClass(/acc-simple-layout-enabled/);
 });
@@ -1175,7 +1183,7 @@ test('system preferences only auto-enable pause motion', async ({ page }) => {
   await expect(page.locator('.acc-btn[data-key="pause-motion"]')).toHaveClass(/acc-selected/);
   await expect(page.locator('.acc-btn[data-key="contrast-toggle"]')).not.toHaveClass(/acc-selected/);
 
-  await page.locator('.acc-footer-reset').click();
+  await page.locator('.acc-action-reset').click();
 
   const statesAfterReset = await page.evaluate(() => {
     const raw = localStorage.getItem('accweb');
@@ -1235,7 +1243,7 @@ test('high contrast mode persists and works with other features', async ({ page 
   await expect(page.locator('body')).toHaveClass(/acc-high-contrast-mode/);
 
   // Reset clears everything
-  await page.locator('.acc-footer-reset').click();
+  await page.locator('.acc-action-reset').click();
   await expect(page.locator('body')).not.toHaveClass(/acc-high-contrast-mode/);
   await expect(page.locator('.acc-btn[data-key="high-contrast-mode"]')).not.toHaveClass(/acc-selected/);
 });

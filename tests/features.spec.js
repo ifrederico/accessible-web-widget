@@ -29,7 +29,7 @@ test('widget UI is encapsulated in a shadow root and survives hostile page CSS',
   await expect(toggle).toBeVisible();
   await toggle.click();
   await expect(page.locator('.acc-menu')).toBeVisible();
-  await expect(page.locator('.acc-footer-reset')).toBeVisible();
+  await expect(page.locator('.acc-action-reset')).toBeVisible();
 });
 
 test('profile applies and clears its bundled feature states', async ({ page }) => {
@@ -405,17 +405,16 @@ test('text magnifier banner is not capped at half the viewport', async ({ page }
   expect(box.width).toBeGreaterThan(viewport.width / 2);
 });
 
-test('landscape phones get a compact header and a one-row footer', async ({ page }) => {
+test('landscape phones get a compact header and a thin footer', async ({ page }) => {
   await page.setViewportSize({ width: 750, height: 342 });
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
   const header = await page.locator('.acc-menu-header').boundingBox();
-  const reset = await page.locator('.acc-footer-reset').boundingBox();
-  const brand = await page.locator('.acc-footer-brand').boundingBox();
+  const footer = await page.locator('.acc-footer').boundingBox();
   const content = await page.locator('.acc-menu-content').boundingBox();
   expect(header.height).toBeLessThanOrEqual(48);
-  expect(Math.abs((reset.y + reset.height / 2) - (brand.y + brand.height / 2))).toBeLessThan(2);
+  expect(footer.height).toBeLessThanOrEqual(52);
   expect(content.height).toBeGreaterThan(200);
 });
 

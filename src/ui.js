@@ -280,7 +280,7 @@ export const uiMethods = {
           profileSummary.textContent = activeProfiles.length ? String(activeProfiles.length) : '';
         }
       }
-      const resetButton = menu.querySelector('.acc-footer-reset');
+      const resetButton = menu.querySelector('.acc-action-reset');
       const resetCount = menu.querySelector('.acc-reset-count');
       if (resetButton && resetCount) {
         const activeCount = menu.querySelectorAll('.acc-options .acc-btn.acc-selected').length;
@@ -615,23 +615,24 @@ export const uiMethods = {
                   ${profilesMarkup}
                 </div>
               </div>
+              <div class="acc-actions">
+                <button type="button" class="acc-action-reset">
+                  ${this.widgetIcons.reset}
+                  <span class="acc-label">Reset settings</span>
+                  <span class="acc-reset-count" hidden></span>
+                </button>
+                ${this.isLauncherRemovedByOwner() ? '' : `<button type="button" class="acc-action-hide">
+                  ${this.widgetIcons.hideWidget}
+                  <span class="acc-label">Hide widget</span>
+                </button>`}
+              </div>
               <div class="acc-options">${tilesMarkup}</div>
             </div>
           </div>
-          <div class="acc-footer">
-            <div class="acc-footer-actions">
-            <button type="button" class="acc-footer-reset">
-              ${this.widgetIcons.reset}
-              <span class="acc-label">Reset settings</span>
-              <span class="acc-reset-count" hidden></span>
-            </button>
-            ${this.isLauncherRemovedByOwner() ? '' : `<button type="button" class="acc-footer-hide" title="Hide widget" aria-label="Hide widget">${this.widgetIcons.hideWidget}</button>`}
-            </div>
-            ${this.options.hideAttribution === true ? '' : `<div class="acc-footer-credit">
+          ${this.options.hideAttribution === true ? '' : `<div class="acc-footer"><div class="acc-footer-credit">
               <a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb</a>
               <a class="acc-footer-statement" href="https://accessibleweb.pages.dev/statement" target="_blank" rel="noopener noreferrer"><span class="acc-label">Accessibility Statement</span></a>
-            </div>`}
-          </div>
+          </div></div>`}
         </div>
         <div class="acc-overlay"> </div>
         `;
@@ -772,11 +773,11 @@ export const uiMethods = {
             this.closeMenu(menuContainer);
             return;
           }
-          if (target.classList.contains('acc-footer-hide')) {
+          if (target.classList.contains('acc-action-hide')) {
             this.hideLauncherForVisit();
             return;
           }
-          if (target.classList.contains('acc-footer-reset')) {
+          if (target.classList.contains('acc-action-reset')) {
             this.resetEnhancements();
             this.announce(this.translate('Settings reset'));
             // Reset usually leaves nothing to reset and disables itself;
