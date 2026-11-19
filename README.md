@@ -90,7 +90,7 @@ If you already have a toolbar or footer link for accessibility, hide the floatin
 ### Visitors can move or hide the button
 
 - **Move widget** flips the floating button, and the panel with it, to the other side of the screen. The choice is remembered on that device. It keeps your top or bottom setting.
-- **Hide widget** asks for how long: this visit, one day, or one week. The button then stays away on every page of your site and comes back on its own.
+- **Hide widget** asks for how long: this visit, one day, one week, or always. The button then stays away on every page of your site. The timed choices end on their own. "Always" first tells the visitor that it lasts until they clear the site's data in their browser, and takes a second click.
 
 While the button is hidden, the panel still opens through the skip link and through `AccessibleWebWidget.instance.open()`. In the panel, the Hide widget button shows as on, and clicking it brings the floating button back. You can also call `AccessibleWebWidget.instance.showButton()`.
 

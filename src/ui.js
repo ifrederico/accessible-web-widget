@@ -637,11 +637,12 @@ export const uiMethods = {
                   <span class="acc-label">Hide widget</span>
                 </div>
                 <div class="acc-hide-choices" role="radiogroup" aria-label="Hide widget">
-                  ${[['visit', 'This visit'], ['day', 'One day'], ['week', 'One week']].map(([value, label], index) => `<button type="button" class="acc-hide-choice" role="radio" aria-checked="${index === 0}" tabindex="${index === 0 ? 0 : -1}" data-hide-for="${value}">
+                  ${[['visit', 'This visit'], ['day', 'One day'], ['week', 'One week'], ['always', 'Always']].map(([value, label], index) => `<button type="button" class="acc-hide-choice" role="radio" aria-checked="${index === 0}" tabindex="${index === 0 ? 0 : -1}" data-hide-for="${value}">
                     <span class="acc-hide-radio" aria-hidden="true"></span>
                     <span class="acc-label">${label}</span>
                   </button>`).join('')}
                 </div>
+                <p class="acc-hide-warning acc-label" hidden>The widget stays hidden until you clear this site's data in your browser.</p>
                 <div class="acc-hide-buttons">
                   <button type="button" class="acc-hide-cancel"><span class="acc-label">Close</span></button>
                   <button type="button" class="acc-hide-confirm"><span class="acc-label">Hide</span></button>
@@ -823,8 +824,17 @@ export const uiMethods = {
           }
           if (target.classList.contains('acc-hide-confirm')) {
             const choice = menu.querySelector('.acc-hide-choice[aria-checked="true"]');
+            const duration = choice ? choice.dataset.hideFor : 'visit';
+            // "Always" takes a second click, after saying how to undo it.
+            const warning = menu.querySelector('.acc-hide-warning');
+            if (duration === 'always' && warning && warning.hidden) {
+              warning.hidden = false;
+              menu.querySelector('.acc-hide-choices').hidden = true;
+              this.announce(warning.textContent);
+              return;
+            }
             this.toggleHidePanel(menu, false, { restoreFocus: false });
-            this.hideLauncher(choice ? choice.dataset.hideFor : 'visit');
+            this.hideLauncher(duration);
             return;
           }
           if (target.classList.contains('acc-action-reset')) {
@@ -969,8 +979,8 @@ export const uiMethods = {
     },
 
   // A visitor can hide the floating button for this visit (remembered for
-  // the browser session) or for a day or a week (remembered with the
-  // other saved choices).
+  // the browser session), or for a day, a week or always (remembered with
+  // the other saved choices).
   isLauncherHiddenByVisitor() {
       try {
         if (window.sessionStorage.getItem('acc-launcher-hidden') === '1') return true;
@@ -982,7 +992,8 @@ export const uiMethods = {
     },
 
   setLauncherHiddenByVisitor(hidden, duration = 'visit') {
-      const days = { day: 1, week: 7 }[duration];
+      // "Always" is stored as a date a hundred years away.
+      const days = { day: 1, week: 7, always: 36500 }[duration];
       try {
         if (hidden && !days) {
           window.sessionStorage.setItem('acc-launcher-hidden', '1');
@@ -1002,7 +1013,7 @@ export const uiMethods = {
       this.syncLauncherControls();
     },
 
-  // duration: 'visit' | 'day' | 'week'
+  // duration: 'visit' | 'day' | 'week' | 'always'
   hideLauncher(duration = 'visit') {
       this.close();
       this.setLauncherHiddenByVisitor(true, duration);
@@ -1026,6 +1037,11 @@ export const uiMethods = {
       if (!panel || !actions) return;
       panel.hidden = !open;
       actions.hidden = open;
+      // Always start from the choices, not from the "Always" warning.
+      const warning = panel.querySelector('.acc-hide-warning');
+      const choices = panel.querySelector('.acc-hide-choices');
+      if (warning) warning.hidden = true;
+      if (choices) choices.hidden = false;
       if (open) {
         const checked = panel.querySelector('.acc-hide-choice[aria-checked="true"]');
         if (checked) checked.focus();

@@ -616,7 +616,7 @@ test('Hide widget asks for how long, hides for the visit, and can be undone from
   expect(await launcher.evaluate((el) => el.hidden)).toBe(false);
   await expect(page.locator('.acc-actions')).toBeHidden();
   const choices = page.getByRole('radio');
-  await expect(choices).toHaveCount(3);
+  await expect(choices).toHaveCount(4);
   await expect(page.getByRole('radio', { name: 'This visit' })).toBeChecked();
   await expect(page.getByRole('radio', { name: 'This visit' })).toBeFocused();
   await page.keyboard.press('ArrowDown');
@@ -673,6 +673,38 @@ test('Hide widget for one day outlasts the visit and ends on its own', async ({ 
   await page.evaluate(() => window.AccessibleWebWidget.instance.showButton());
   await page.reload();
   await expect(page.locator('.acc-toggle-btn')).toBeVisible();
+});
+
+test('hiding the widget always warns first and survives a new visit', async ({ page, context }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-action-hide').click();
+  await page.getByRole('radio', { name: 'Always' }).click();
+
+  // The first click on Hide only explains how to undo it.
+  const warning = page.locator('.acc-hide-warning');
+  await expect(warning).toBeHidden();
+  await page.locator('.acc-hide-confirm').click();
+  await expect(warning).toBeVisible();
+  await expect(warning).toContainText('clear this site');
+  await expect(page.locator('.acc-menu')).toBeVisible();
+  expect(await page.locator('.acc-toggle-btn').evaluate((el) => el.hidden)).toBe(false);
+
+  // Close backs out; opening the step again starts from the choices.
+  await page.locator('.acc-hide-cancel').click();
+  await page.locator('.acc-action-hide').click();
+  await expect(warning).toBeHidden();
+  await expect(page.getByRole('radio')).toHaveCount(4);
+
+  await page.locator('.acc-hide-confirm').click();
+  await page.locator('.acc-hide-confirm').click();
+  await expect(page.locator('.acc-toggle-btn')).toBeHidden();
+
+  // Still hidden a year later, in a new tab.
+  const second = await context.newPage();
+  await second.clock.install({ time: Date.now() + 365 * 24 * 60 * 60 * 1000 });
+  await second.goto(page.url());
+  await expect(second.locator('.acc-toggle-btn')).toBeHidden();
 });
 
 test('Move widget flips the button and the menu to the other side and remembers it', async ({ page }) => {

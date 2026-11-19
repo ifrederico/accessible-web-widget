@@ -313,17 +313,11 @@
 }
 
 /* The field is focused as soon as the panel opens, so its focus look is
-   a clear line with a soft halo rather than the heavy ring used elsewhere. */
+   a quiet grey line, not the blue ring used for keyboard focus elsewhere. */
 .acc-lang-search:focus {
-  outline: 2px solid var(--acc-focus-ring-color);
-  outline-offset: -2px;
+  outline: 1.5px solid #7c8594;
+  outline-offset: -1.5px;
   background-color: var(--acc-card-bg);
-}
-
-@supports (color: color-mix(in srgb, red 50%, transparent)) {
-  .acc-lang-search:focus {
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc-focus-ring-color) 16%, transparent);
-  }
 }
 
 .acc-lang-list {
@@ -865,6 +859,22 @@
 
 .acc-hide-choice[aria-checked="true"] .acc-label {
   font-weight: 600 !important;
+}
+
+/* Shown before an "Always" hide: how to get the widget back. */
+.acc-hide-warning {
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--acc-bg-color);
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+}
+
+.acc-hide-warning[hidden],
+.acc-hide-choices[hidden] {
+  display: none;
 }
 
 .acc-hide-buttons {

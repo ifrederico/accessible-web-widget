@@ -44,11 +44,11 @@ Rules the build must follow:
 ## Reset, Hide, Move and the credit line (built)
 
 - Reset (with a count) and "Hide widget" are two equal white buttons, side by side, under the top card and above the tiles.
-- "Hide widget" opens a step in the same place that asks for how long: this visit, one day, or one week, with Close and Hide. "Always" was left out on purpose, because there is no keyboard shortcut to bring the widget back.
+- "Hide widget" opens a step in the same place that asks for how long: this visit, one day, one week, or always, with Close and Hide. "Always" takes a second click, after a note saying the widget stays hidden until the visitor clears the site's data in their browser.
 - While the button is hidden, the menu still opens through the skip link (press Tab on the page) or `AccessibleWebWidget.instance.open()`. The Hide button then shows as on, and clicking it brings the floating button back. `showButton()` does the same.
 - "Move widget" is a third row in the top card. One click flips the floating button and the panel to the other side. It is remembered on the device.
 - There is no footer bar any more. "AccessibleWeb" and "Accessibility Statement" sit at the end of the list, after the last tiles. This was put in to look at and is not confirmed.
-- New words, translated in all 54 languages by machine and not checked by native speakers: "Hide widget", "Move widget", "This visit", "One day", "One week", "Hide", "Accessibility Statement".
+- New words, translated in all 54 languages by machine and not checked by native speakers: "Hide widget", "Move widget", "This visit", "One day", "One week", "Always", "Hide", "Accessibility Statement", and the one-sentence "Always" note. The note is a full sentence, so it is the most likely to read badly in some languages.
 - The statement page's wording was drafted from the README and the disclaimer. It needs the owner's read-through.
 - The statement link points at the production site, where the page only exists after `dev` is merged.
 

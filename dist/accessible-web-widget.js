@@ -111,6 +111,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "This visit",
             "One day": "One day",
             "One week": "One week",
+            "Always": "Always",
+            "The widget stays hidden until you clear this site's data in your browser.": "The widget stays hidden until you clear this site's data in your browser.",
             "Hide": "Hide",
             "Reset settings": "Reset settings",
             "Reset All Settings": "Reset All Settings",
@@ -210,6 +212,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Esta visita",
             "One day": "Um dia",
             "One week": "Uma semana",
+            "Always": "Sempre",
+            "The widget stays hidden until you clear this site's data in your browser.": "O widget fica oculto até limpar os dados deste site no seu navegador.",
             "Hide": "Ocultar",
             "Reset settings": "Redefinir configurações",
             "Reset All Settings": "Redefinir todas as configurações",
@@ -309,6 +313,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Questa visita",
             "One day": "Un giorno",
             "One week": "Una settimana",
+            "Always": "Sempre",
+            "The widget stays hidden until you clear this site's data in your browser.": "Il widget resta nascosto finché non cancelli i dati di questo sito nel browser.",
             "Hide": "Nascondi",
             "Reset settings": "Ripristina impostazioni",
             "Reset All Settings": "Ripristina tutte le impostazioni",
@@ -408,6 +414,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Cette visite",
             "One day": "Un jour",
             "One week": "Une semaine",
+            "Always": "Toujours",
+            "The widget stays hidden until you clear this site's data in your browser.": "Le widget reste masqué jusqu'à ce que vous effaciez les données de ce site dans votre navigateur.",
             "Hide": "Masquer",
             "Reset settings": "Réinitialiser les paramètres",
             "Reset All Settings": "Réinitialiser tous les paramètres",
@@ -507,6 +515,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Dieser Besuch",
             "One day": "Ein Tag",
             "One week": "Eine Woche",
+            "Always": "Immer",
+            "The widget stays hidden until you clear this site's data in your browser.": "Das Widget bleibt ausgeblendet, bis Sie die Daten dieser Website in Ihrem Browser löschen.",
             "Hide": "Ausblenden",
             "Reset settings": "Einstellungen zurücksetzen",
             "Reset All Settings": "Alle Einstellungen zurücksetzen",
@@ -606,6 +616,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Esta visita",
             "One day": "Un día",
             "One week": "Una semana",
+            "Always": "Siempre",
+            "The widget stays hidden until you clear this site's data in your browser.": "El widget permanece oculto hasta que borre los datos de este sitio en su navegador.",
             "Hide": "Ocultar",
             "Reset settings": "Restablecer configuración",
             "Reset All Settings": "Restablecer toda la configuración",
@@ -705,6 +717,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Этот визит",
             "One day": "Один день",
             "One week": "Одна неделя",
+            "Always": "Всегда",
+            "The widget stays hidden until you clear this site's data in your browser.": "Виджет останется скрытым, пока вы не очистите данные этого сайта в браузере.",
             "Hide": "Скрыть",
             "Reset settings": "Сбросить настройки",
             "Reset All Settings": "Сбросить все настройки",
@@ -804,6 +818,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Ta wizyta",
             "One day": "Jeden dzień",
             "One week": "Jeden tydzień",
+            "Always": "Zawsze",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widżet pozostanie ukryty, dopóki nie wyczyścisz danych tej witryny w przeglądarce.",
             "Hide": "Ukryj",
             "Reset settings": "Zresetuj ustawienia",
             "Reset All Settings": "Zresetuj wszystkie ustawienia",
@@ -903,6 +919,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Această vizită",
             "One day": "O zi",
             "One week": "O săptămână",
+            "Always": "Întotdeauna",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widgetul rămâne ascuns până când ștergeți datele acestui site din browser.",
             "Hide": "Ascunde",
             "Reset settings": "Resetare setări",
             "Reset All Settings": "Resetare toate setările",
@@ -1002,6 +1020,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Dit bezoek",
             "One day": "Eén dag",
             "One week": "Eén week",
+            "Always": "Altijd",
+            "The widget stays hidden until you clear this site's data in your browser.": "De widget blijft verborgen totdat u de gegevens van deze site in uw browser wist.",
             "Hide": "Verbergen",
             "Reset settings": "Instellingen resetten",
             "Reset All Settings": "Alle instellingen resetten",
@@ -1101,6 +1121,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Цей візит",
             "One day": "Один день",
             "One week": "Один тиждень",
+            "Always": "Завжди",
+            "The widget stays hidden until you clear this site's data in your browser.": "Віджет залишатиметься прихованим, доки ви не очистите дані цього сайту в браузері.",
             "Hide": "Сховати",
             "Reset settings": "Скинути налаштування",
             "Reset All Settings": "Скинути всі налаштування",
@@ -1200,6 +1222,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "هذه الزيارة",
             "One day": "يوم واحد",
             "One week": "أسبوع واحد",
+            "Always": "دائمًا",
+            "The widget stays hidden until you clear this site's data in your browser.": "تبقى الأداة مخفية حتى تمسح بيانات هذا الموقع من متصفحك.",
             "Hide": "إخفاء",
             "Reset settings": "إعادة تعيين الإعدادات",
             "Reset All Settings": "إعادة تعيين جميع الإعدادات",
@@ -1299,6 +1323,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "הביקור הזה",
             "One day": "יום אחד",
             "One week": "שבוע אחד",
+            "Always": "תמיד",
+            "The widget stays hidden until you clear this site's data in your browser.": "הווידג'ט יישאר מוסתר עד שתנקה את נתוני האתר הזה בדפדפן.",
             "Hide": "הסתר",
             "Reset settings": "איפוס הגדרות",
             "Reset All Settings": "איפוס כל ההגדרות",
@@ -1398,6 +1424,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Det här besöket",
             "One day": "En dag",
             "One week": "En vecka",
+            "Always": "Alltid",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widgeten förblir dold tills du rensar webbplatsens data i din webbläsare.",
             "Hide": "Dölj",
             "Reset settings": "Återställ inställningar",
             "Reset All Settings": "Återställ alla inställningar",
@@ -1497,6 +1525,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Dette besøg",
             "One day": "En dag",
             "One week": "En uge",
+            "Always": "Altid",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widgetten forbliver skjult, indtil du rydder dette websteds data i din browser.",
             "Hide": "Skjul",
             "Reset settings": "Nulstil indstillinger",
             "Reset All Settings": "Nulstil alle indstillinger",
@@ -1596,6 +1626,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Aquesta visita",
             "One day": "Un dia",
             "One week": "Una setmana",
+            "Always": "Sempre",
+            "The widget stays hidden until you clear this site's data in your browser.": "El giny continua amagat fins que esborreu les dades d'aquest lloc al navegador.",
             "Hide": "Amaga",
             "Reset settings": "Restableix la configuració",
             "Reset All Settings": "Restableix tota la configuració",
@@ -1695,6 +1727,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Ta obisk",
             "One day": "En dan",
             "One week": "En teden",
+            "Always": "Vedno",
+            "The widget stays hidden until you clear this site's data in your browser.": "Gradnik ostane skrit, dokler v brskalniku ne počistite podatkov tega spletnega mesta.",
             "Hide": "Skrij",
             "Reset settings": "Ponastavi nastavitve",
             "Reset All Settings": "Ponastavi vse nastavitve",
@@ -1794,6 +1828,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Šis apmeklējums",
             "One day": "Viena diena",
             "One week": "Viena nedēļa",
+            "Always": "Vienmēr",
+            "The widget stays hidden until you clear this site's data in your browser.": "Logrīks paliek paslēpts, līdz pārlūkprogrammā notīrāt šīs vietnes datus.",
             "Hide": "Paslēpt",
             "Reset settings": "Atiestatīt iestatījumus",
             "Reset All Settings": "Atiestatīt visus iestatījumus",
@@ -1893,6 +1929,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Αυτή η επίσκεψη",
             "One day": "Μία ημέρα",
             "One week": "Μία εβδομάδα",
+            "Always": "Πάντα",
+            "The widget stays hidden until you clear this site's data in your browser.": "Το widget παραμένει κρυφό μέχρι να διαγράψετε τα δεδομένα αυτού του ιστότοπου στο πρόγραμμα περιήγησής σας.",
             "Hide": "Απόκρυψη",
             "Reset settings": "Επαναφορά ρυθμίσεων",
             "Reset All Settings": "Επαναφορά όλων των ρυθμίσεων",
@@ -1992,6 +2030,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "ეს ვიზიტი",
             "One day": "ერთი დღე",
             "One week": "ერთი კვირა",
+            "Always": "ყოველთვის",
+            "The widget stays hidden until you clear this site's data in your browser.": "ვიჯეტი დამალული დარჩება, სანამ ბრაუზერში ამ საიტის მონაცემებს არ გაასუფთავებთ.",
             "Hide": "დამალვა",
             "Reset settings": "პარამეტრების აღდგენა",
             "Reset All Settings": "ყველა პარამეტრის აღდგენა",
@@ -2091,6 +2131,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "ይህ ጉብኝት",
             "One day": "አንድ ቀን",
             "One week": "አንድ ሳምንት",
+            "Always": "ሁልጊዜ",
+            "The widget stays hidden until you clear this site's data in your browser.": "በአሳሽዎ ውስጥ የዚህን ጣቢያ ውሂብ እስኪያጸዱ ድረስ ዊጅቱ ተደብቆ ይቆያል።",
             "Hide": "ደብቅ",
             "Reset settings": "ቅንብሮችን ዳግም አስጀምር",
             "Reset All Settings": "ሁሉንም ቅንብሮች ዳግም አስጀምር",
@@ -2190,6 +2232,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Това посещение",
             "One day": "Един ден",
             "One week": "Една седмица",
+            "Always": "Винаги",
+            "The widget stays hidden until you clear this site's data in your browser.": "Уиджетът остава скрит, докато не изчистите данните на този сайт в браузъра си.",
             "Hide": "Скриване",
             "Reset settings": "Нулиране на настройките",
             "Reset All Settings": "Нулиране на всички настройки",
@@ -2289,6 +2333,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "এই ভিজিট",
             "One day": "এক দিন",
             "One week": "এক সপ্তাহ",
+            "Always": "সবসময়",
+            "The widget stays hidden until you clear this site's data in your browser.": "আপনি ব্রাউজারে এই সাইটের ডেটা না মোছা পর্যন্ত উইজেটটি লুকানো থাকবে।",
             "Hide": "লুকান",
             "Reset settings": "সেটিংস রিসেট করুন",
             "Reset All Settings": "সব সেটিংস রিসেট করুন",
@@ -2388,6 +2434,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Tato návštěva",
             "One day": "Jeden den",
             "One week": "Jeden týden",
+            "Always": "Vždy",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widget zůstane skrytý, dokud v prohlížeči nevymažete data tohoto webu.",
             "Hide": "Skrýt",
             "Reset settings": "Obnovit nastavení",
             "Reset All Settings": "Obnovit všechna nastavení",
@@ -2487,6 +2535,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "این بازدید",
             "One day": "یک روز",
             "One week": "یک هفته",
+            "Always": "همیشه",
+            "The widget stays hidden until you clear this site's data in your browser.": "ابزارک تا زمانی که داده‌های این سایت را در مرورگر خود پاک نکنید پنهان می‌ماند.",
             "Hide": "پنهان کردن",
             "Reset settings": "بازنشانی تنظیمات",
             "Reset All Settings": "بازنشانی همهٔ تنظیمات",
@@ -2586,6 +2636,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Tämä käynti",
             "One day": "Yksi päivä",
             "One week": "Yksi viikko",
+            "Always": "Aina",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widget pysyy piilossa, kunnes tyhjennät tämän sivuston tiedot selaimestasi.",
             "Hide": "Piilota",
             "Reset settings": "Palauta asetukset",
             "Reset All Settings": "Palauta kaikki asetukset",
@@ -2685,6 +2737,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Sa pagbisitang ito",
             "One day": "Isang araw",
             "One week": "Isang linggo",
+            "Always": "Palagi",
+            "The widget stays hidden until you clear this site's data in your browser.": "Mananatiling nakatago ang widget hanggang i-clear mo ang data ng site na ito sa iyong browser.",
             "Hide": "Itago",
             "Reset settings": "I-reset ang mga setting",
             "Reset All Settings": "I-reset ang Lahat ng Setting",
@@ -2784,6 +2838,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "यह विज़िट",
             "One day": "एक दिन",
             "One week": "एक सप्ताह",
+            "Always": "हमेशा",
+            "The widget stays hidden until you clear this site's data in your browser.": "जब तक आप अपने ब्राउज़र में इस साइट का डेटा साफ़ नहीं करते, विजेट छिपा रहेगा।",
             "Hide": "छिपाएँ",
             "Reset settings": "सेटिंग्स रीसेट करें",
             "Reset All Settings": "सभी सेटिंग्स रीसेट करें",
@@ -2883,6 +2939,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Ovaj posjet",
             "One day": "Jedan dan",
             "One week": "Jedan tjedan",
+            "Always": "Uvijek",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widget ostaje skriven dok u pregledniku ne izbrišete podatke ove stranice.",
             "Hide": "Sakrij",
             "Reset settings": "Vrati postavke na zadano",
             "Reset All Settings": "Vrati sve postavke na zadano",
@@ -2982,6 +3040,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Ez a látogatás",
             "One day": "Egy nap",
             "One week": "Egy hét",
+            "Always": "Mindig",
+            "The widget stays hidden until you clear this site's data in your browser.": "A widget rejtve marad, amíg nem törli a webhely adatait a böngészőjében.",
             "Hide": "Elrejtés",
             "Reset settings": "Beállítások visszaállítása",
             "Reset All Settings": "Összes beállítás visszaállítása",
@@ -3081,6 +3141,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Kunjungan ini",
             "One day": "Satu hari",
             "One week": "Satu minggu",
+            "Always": "Selalu",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widget tetap tersembunyi sampai Anda menghapus data situs ini di browser Anda.",
             "Hide": "Sembunyikan",
             "Reset settings": "Atur ulang pengaturan",
             "Reset All Settings": "Atur Ulang Semua Pengaturan",
@@ -3180,6 +3242,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "今回の訪問",
             "One day": "1日",
             "One week": "1週間",
+            "Always": "常に",
+            "The widget stays hidden until you clear this site's data in your browser.": "ブラウザでこのサイトのデータを消去するまで、ウィジェットは非表示のままです。",
             "Hide": "非表示",
             "Reset settings": "設定をリセット",
             "Reset All Settings": "すべての設定をリセット",
@@ -3279,6 +3343,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "ಈ ಭೇಟಿ",
             "One day": "ಒಂದು ದಿನ",
             "One week": "ಒಂದು ವಾರ",
+            "Always": "ಯಾವಾಗಲೂ",
+            "The widget stays hidden until you clear this site's data in your browser.": "ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಈ ಸೈಟ್‌ನ ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸುವವರೆಗೆ ವಿಜೆಟ್ ಮರೆಯಾಗಿರುತ್ತದೆ.",
             "Hide": "ಮರೆಮಾಡಿ",
             "Reset settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮರುಹೊಂದಿಸಿ",
             "Reset All Settings": "ಎಲ್ಲಾ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮರುಹೊಂದಿಸಿ",
@@ -3378,6 +3444,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "이번 방문",
             "One day": "하루",
             "One week": "일주일",
+            "Always": "항상",
+            "The widget stays hidden until you clear this site's data in your browser.": "브라우저에서 이 사이트의 데이터를 지울 때까지 위젯이 숨겨집니다.",
             "Hide": "숨기기",
             "Reset settings": "설정 초기화",
             "Reset All Settings": "모든 설정 초기화",
@@ -3477,6 +3545,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Ev serdan",
             "One day": "Rojek",
             "One week": "Hefteyek",
+            "Always": "Hertim",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widget veşartî dimîne heta ku hûn daneyên vê malperê di geroka xwe de paqij bikin.",
             "Hide": "Veşêre",
             "Reset settings": "Mîhengan vegerîne",
             "Reset All Settings": "Hemû Mîhengan Vegerîne",
@@ -3576,6 +3646,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Dëse Besuch",
             "One day": "Een Dag",
             "One week": "Eng Woch",
+            "Always": "Ëmmer",
+            "The widget stays hidden until you clear this site's data in your browser.": "De Widget bleift verstoppt, bis Dir d'Date vun dësem Site an Ärem Browser läscht.",
             "Hide": "Verstoppen",
             "Reset settings": "Astellungen zerécksetzen",
             "Reset All Settings": "All Astellungen zerécksetzen",
@@ -3675,6 +3747,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "ഈ സന്ദർശനം",
             "One day": "ഒരു ദിവസം",
             "One week": "ഒരു ആഴ്ച",
+            "Always": "എപ്പോഴും",
+            "The widget stays hidden until you clear this site's data in your browser.": "നിങ്ങളുടെ ബ്രൗസറിൽ ഈ സൈറ്റിന്റെ ഡാറ്റ മായ്ക്കുന്നതുവരെ വിജറ്റ് മറഞ്ഞിരിക്കും.",
             "Hide": "മറയ്ക്കുക",
             "Reset settings": "ക്രമീകരണങ്ങൾ പുനഃസജ്ജമാക്കുക",
             "Reset All Settings": "എല്ലാ ക്രമീകരണങ്ങളും പുനഃസജ്ജമാക്കുക",
@@ -3774,6 +3848,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Энэ зочлолт",
             "One day": "Нэг өдөр",
             "One week": "Нэг долоо хоног",
+            "Always": "Үргэлж",
+            "The widget stays hidden until you clear this site's data in your browser.": "Та хөтөч дээрээ энэ сайтын өгөгдлийг цэвэрлэх хүртэл виджет нуугдсан хэвээр байна.",
             "Hide": "Нуух",
             "Reset settings": "Тохиргоог сэргээх",
             "Reset All Settings": "Бүх тохиргоог сэргээх",
@@ -3873,6 +3949,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Lawatan ini",
             "One day": "Satu hari",
             "One week": "Satu minggu",
+            "Always": "Sentiasa",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widget kekal tersembunyi sehingga anda mengosongkan data laman ini dalam pelayar anda.",
             "Hide": "Sembunyikan",
             "Reset settings": "Tetapkan semula tetapan",
             "Reset All Settings": "Tetapkan Semula Semua Tetapan",
@@ -3972,6 +4050,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "ဤလည်ပတ်မှု",
             "One day": "တစ်ရက်",
             "One week": "တစ်ပတ်",
+            "Always": "အမြဲတမ်း",
+            "The widget stays hidden until you clear this site's data in your browser.": "သင့်ဘရောက်ဇာတွင် ဤဆိုက်၏ဒေတာကို မရှင်းလင်းမချင်း ဝစ်ဂျက်ကို ဖျောက်ထားပါမည်။",
             "Hide": "ဖျောက်ရန်",
             "Reset settings": "ဆက်တင်များ ပြန်လည်သတ်မှတ်ရန်",
             "Reset All Settings": "ဆက်တင်အားလုံး ပြန်လည်သတ်မှတ်ရန်",
@@ -4071,6 +4151,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Dette besøket",
             "One day": "Én dag",
             "One week": "Én uke",
+            "Always": "Alltid",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widgeten forblir skjult til du sletter dette nettstedets data i nettleseren din.",
             "Hide": "Skjul",
             "Reset settings": "Tilbakestill innstillinger",
             "Reset All Settings": "Tilbakestill alle innstillinger",
@@ -4170,6 +4252,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "ਇਹ ਫੇਰੀ",
             "One day": "ਇੱਕ ਦਿਨ",
             "One week": "ਇੱਕ ਹਫ਼ਤਾ",
+            "Always": "ਹਮੇਸ਼ਾ",
+            "The widget stays hidden until you clear this site's data in your browser.": "ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਆਪਣੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਇਸ ਸਾਈਟ ਦਾ ਡਾਟਾ ਸਾਫ਼ ਨਹੀਂ ਕਰਦੇ, ਵਿਜੇਟ ਲੁਕਿਆ ਰਹੇਗਾ।",
             "Hide": "ਲੁਕਾਓ",
             "Reset settings": "ਸੈਟਿੰਗਾਂ ਰੀਸੈੱਟ ਕਰੋ",
             "Reset All Settings": "ਸਾਰੀਆਂ ਸੈਟਿੰਗਾਂ ਰੀਸੈੱਟ ਕਰੋ",
@@ -4269,6 +4353,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "මෙම පිවිසුම",
             "One day": "එක් දිනක්",
             "One week": "එක් සතියක්",
+            "Always": "සැමවිටම",
+            "The widget stays hidden until you clear this site's data in your browser.": "ඔබගේ බ්‍රවුසරයේ මෙම අඩවියේ දත්ත හිස් කරන තුරු විජට් එක සැඟවී පවතී.",
             "Hide": "සඟවන්න",
             "Reset settings": "සැකසුම් යළි සකසන්න",
             "Reset All Settings": "සියලු සැකසුම් යළි සකසන්න",
@@ -4368,6 +4454,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Táto návšteva",
             "One day": "Jeden deň",
             "One week": "Jeden týždeň",
+            "Always": "Vždy",
+            "The widget stays hidden until you clear this site's data in your browser.": "Widget zostane skrytý, kým v prehliadači nevymažete údaje tejto stránky.",
             "Hide": "Skryť",
             "Reset settings": "Obnoviť nastavenia",
             "Reset All Settings": "Obnoviť všetky nastavenia",
@@ -4467,6 +4555,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Ова посета",
             "One day": "Један дан",
             "One week": "Једна недеља",
+            "Always": "Увек",
+            "The widget stays hidden until you clear this site's data in your browser.": "Виџет остаје сакривен док у прегледачу не обришете податке овог сајта.",
             "Hide": "Сакриј",
             "Reset settings": "Ресетуј подешавања",
             "Reset All Settings": "Ресетуј сва подешавања",
@@ -4566,6 +4656,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Ziara hii",
             "One day": "Siku moja",
             "One week": "Wiki moja",
+            "Always": "Daima",
+            "The widget stays hidden until you clear this site's data in your browser.": "Wijeti itabaki imefichwa hadi ufute data ya tovuti hii kwenye kivinjari chako.",
             "Hide": "Ficha",
             "Reset settings": "Weka upya mipangilio",
             "Reset All Settings": "Weka Upya Mipangilio Yote",
@@ -4665,6 +4757,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "இந்த வருகை",
             "One day": "ஒரு நாள்",
             "One week": "ஒரு வாரம்",
+            "Always": "எப்போதும்",
+            "The widget stays hidden until you clear this site's data in your browser.": "உங்கள் உலாவியில் இந்தத் தளத்தின் தரவை அழிக்கும் வரை விட்ஜெட் மறைந்திருக்கும்.",
             "Hide": "மறை",
             "Reset settings": "அமைப்புகளை மீட்டமை",
             "Reset All Settings": "எல்லா அமைப்புகளையும் மீட்டமை",
@@ -4764,6 +4858,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "ఈ సందర్శన",
             "One day": "ఒక రోజు",
             "One week": "ఒక వారం",
+            "Always": "ఎల్లప్పుడూ",
+            "The widget stays hidden until you clear this site's data in your browser.": "మీ బ్రౌజర్‌లో ఈ సైట్ డేటాను క్లియర్ చేసే వరకు విడ్జెట్ దాగి ఉంటుంది.",
             "Hide": "దాచు",
             "Reset settings": "సెట్టింగ్‌లను రీసెట్ చేయండి",
             "Reset All Settings": "అన్ని సెట్టింగ్‌లను రీసెట్ చేయండి",
@@ -4863,6 +4959,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "การเข้าชมครั้งนี้",
             "One day": "หนึ่งวัน",
             "One week": "หนึ่งสัปดาห์",
+            "Always": "ตลอดไป",
+            "The widget stays hidden until you clear this site's data in your browser.": "วิดเจ็ตจะถูกซ่อนไว้จนกว่าคุณจะล้างข้อมูลของเว็บไซต์นี้ในเบราว์เซอร์",
             "Hide": "ซ่อน",
             "Reset settings": "รีเซ็ตการตั้งค่า",
             "Reset All Settings": "รีเซ็ตการตั้งค่าทั้งหมด",
@@ -4962,6 +5060,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Bu ziyaret",
             "One day": "Bir gün",
             "One week": "Bir hafta",
+            "Always": "Her zaman",
+            "The widget stays hidden until you clear this site's data in your browser.": "Tarayıcınızda bu sitenin verilerini temizleyene kadar widget gizli kalır.",
             "Hide": "Gizle",
             "Reset settings": "Ayarları sıfırla",
             "Reset All Settings": "Tüm Ayarları Sıfırla",
@@ -5061,6 +5161,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "یہ وزٹ",
             "One day": "ایک دن",
             "One week": "ایک ہفتہ",
+            "Always": "ہمیشہ",
+            "The widget stays hidden until you clear this site's data in your browser.": "جب تک آپ اپنے براؤزر میں اس سائٹ کا ڈیٹا صاف نہیں کرتے، ویجٹ چھپا رہے گا۔",
             "Hide": "چھپائیں",
             "Reset settings": "ترتیبات بحال کریں",
             "Reset All Settings": "تمام ترتیبات بحال کریں",
@@ -5160,6 +5262,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "Lần truy cập này",
             "One day": "Một ngày",
             "One week": "Một tuần",
+            "Always": "Luôn luôn",
+            "The widget stays hidden until you clear this site's data in your browser.": "Tiện ích sẽ bị ẩn cho đến khi bạn xóa dữ liệu của trang web này trong trình duyệt.",
             "Hide": "Ẩn",
             "Reset settings": "Đặt lại cài đặt",
             "Reset All Settings": "Đặt lại tất cả các cài đặt",
@@ -5259,6 +5363,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "本次访问",
             "One day": "一天",
             "One week": "一周",
+            "Always": "始终",
+            "The widget stays hidden until you clear this site's data in your browser.": "在您清除浏览器中此网站的数据之前，小工具将保持隐藏。",
             "Hide": "隐藏",
             "Reset settings": "重置设置",
             "Reset All Settings": "重置所有设置",
@@ -5358,6 +5464,8 @@ var AccessibleWebWidget = (function () {
             "This visit": "本次造訪",
             "One day": "一天",
             "One week": "一週",
+            "Always": "一律",
+            "The widget stays hidden until you clear this site's data in your browser.": "在您清除瀏覽器中此網站的資料之前，小工具將保持隱藏。",
             "Hide": "隱藏",
             "Reset settings": "重設設定",
             "Reset All Settings": "重設所有設定",
@@ -5877,7 +5985,7 @@ var AccessibleWebWidget = (function () {
 
     };
 
-    var menuCSS = "/* Base styles */\n.acc-menu {\n  position: fixed;\n  left: var(--acc-menu-inline-gap, 12px);\n  top: var(--acc-menu-block-gap, 12px);\n  bottom: var(--acc-menu-block-gap, 12px);\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);\n  opacity: 1;\n  transition: 0.3s;\n  z-index: var(--acc-widget-z-index, 100000);\n  overflow: hidden;\n  /* The primary color shows through the content margins, framing the body\n     like a gate: header across the top, posts down both sides. */\n  background: var(--acc-primary-color);\n  /* Wide enough for three square tiles whose longest English labels stay\n     on one line. */\n  width: min(456px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));\n  display: flex;\n  flex-direction: column;\n  line-height: 1.5;\n  font-size: 16px;\n  height: auto;\n  letter-spacing: 0.015em;\n  color: var(--acc-text-color);\n  --acc-content-inline-padding: 20px;\n  /* Theme headerHeight, capped on small screens by the media queries. */\n  --acc-menu-header-height: var(--acc-header-height);\n  --acc-menu-inline-gap: 8px;\n  --acc-menu-block-gap: var(--acc-menu-inline-gap);\n  border-radius: 1.75rem;\n  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);\n  /* Clear notches and the home indicator when the host page opts into\n     edge-to-edge layout (viewport-fit=cover); env() is 0 everywhere else. */\n  margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);\n}\n\n/* Dragging the panel's fixed chrome must not scroll the page behind it.\n   Scrolling areas (options, language list) are deliberately left out so\n   they keep panning; pinch-zoom stays available everywhere. */\n.acc-menu-header {\n  touch-action: pinch-zoom;\n}\n\n/* The dialog receives programmatic focus on open (tabindex=\"-1\", never\n   Tab-reachable); a focus ring around the whole panel would be noise. */\n.acc-menu:focus {\n  outline: none;\n}\n\n/* Ensure all elements inherit proper colors for accessibility */\n.acc-menu * {\n  color: var(--acc-text-color);\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n  padding: 0;\n  margin: 0;\n  line-height: 1.5 !important;\n  letter-spacing: normal !important;\n}\n\n/* Header section */\n.acc-menu-header {\n  flex-shrink: 0;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 var(--acc-content-inline-padding);\n  height: var(--acc-menu-header-height);\n  font-weight: 700 !important;\n  background-color: var(--acc-primary-color) !important;\n}\n\n.acc-menu-title {\n  display: flex;\n  align-items: center;\n  min-width: 0;\n  font-size: 17px !important;\n  color: var(--acc-text-color-inverted) !important;\n  font-weight: 700;\n}\n\n.acc-menu-title .acc-label {\n  color: var(--acc-text-color-inverted) !important;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.acc-menu-close {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  padding: 0;\n  border: none;\n  border-radius: 50%;\n  background: transparent;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n}\n\n@media (hover: hover) {\n  .acc-menu-close:hover {\n    background-color: rgba(255, 255, 255, 0.18);\n  }\n}\n\n.acc-menu-close:focus-visible {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-menu-header .acc-menu-close svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 20px !important;\n  height: 20px !important;\n  min-width: 20px !important;\n  min-height: 20px !important;\n  max-width: 20px !important;\n  max-height: 20px !important;\n}\n\n.acc-header-back {\n  display: flex;\n  align-items: center;\n}\n\n.acc-back-btn {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: transparent;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--acc-text-color-inverted) !important;\n  transition: background-color 0.2s ease;\n  border-radius: 4px;\n  visibility: hidden;\n}\n\n.acc-back-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-back-btn.visible {\n  visibility: visible;\n}\n\n.acc-back-btn:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-back-btn:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-back-btn svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 24px !important;\n  height: 24px !important;\n}\n\n.acc-menu-header svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n}\n\n.acc-menu-header > div {\n  display: flex;\n  align-items: center;\n}\n\n/* Interactive elements */\n.acc-menu-header div[role=\"button\"] {\n  cursor: pointer;\n  padding: 8px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  transition: background-color 0.2s ease;\n}\n\n.acc-menu-header div[role=\"button\"]:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-menu-header div[role=\"button\"]:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-language-container {\n  margin: 0 var(--acc-content-inline-padding) 24px;\n}\n\n.acc-lang-details {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  border-radius: var(--acc-button-border-radius);\n  background: var(--acc-card-bg);\n}\n\n.acc-lang-summary {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  padding: 12px 14px;\n  cursor: pointer;\n  border-radius: var(--acc-button-border-radius);\n}\n\n.acc-lang-summary::-webkit-details-marker {\n  display: none;\n}\n\n.acc-lang-summary::marker {\n  content: '';\n}\n\n.acc-lang-summary-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-current-label {\n  font-size: 16px !important;\n  font-weight: 600 !important;\n}\n\n.acc-lang-summary:hover {\n  background-color: rgba(0, 114, 228, 0.06);\n}\n\n.acc-lang-summary:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-summary-arrow {\n  width: 10px;\n  height: 10px;\n  border-right: 2px solid var(--acc-text-color);\n  border-bottom: 2px solid var(--acc-text-color);\n  transform: rotate(-45deg);\n  transition: transform 0.2s ease;\n}\n\n.acc-lang-details[open] .acc-lang-summary-arrow {\n  transform: rotate(45deg);\n}\n\n.acc-lang-details[open] .acc-lang-summary {\n  border-bottom: 1px solid var(--acc-border-color);\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.acc-lang-details-panel {\n  padding: 12px 0 8px;\n}\n\n.acc-lang-details-panel .acc-section-title {\n  font-size: 16px !important;\n  padding: 0 16px 10px;\n}\n\n.acc-lang-flag {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 22px;\n  font-size: 18px !important;\n  line-height: 1;\n}\n\n.acc-lang-search-wrapper {\n  padding: 4px 12px 8px;\n}\n\n/* A soft field with a magnifier, shaped like the Reset button. */\n.acc-lang-search {\n  width: 100%;\n  height: 48px;\n  padding-block: 0;\n  padding-inline: 44px 16px;\n  border: 0;\n  border-radius: 16px;\n  font-size: 16px;\n  background-color: var(--acc-bg-color);\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6472' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E\");\n  background-repeat: no-repeat;\n  background-position: left 14px center;\n  background-size: 18px;\n}\n\n.acc-menu[dir=\"rtl\"] .acc-lang-search {\n  background-position: right 14px center;\n}\n\n/* The field is focused as soon as the panel opens, so its focus look is\n   a clear line with a soft halo rather than the heavy ring used elsewhere. */\n.acc-lang-search:focus {\n  outline: 2px solid var(--acc-focus-ring-color);\n  outline-offset: -2px;\n  background-color: var(--acc-card-bg);\n}\n\n@supports (color: color-mix(in srgb, red 50%, transparent)) {\n  .acc-lang-search:focus {\n    box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc-focus-ring-color) 16%, transparent);\n  }\n}\n\n.acc-lang-list {\n  padding: 6px 8px 12px;\n  max-height: 280px;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n}\n\n.acc-lang-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  width: 100%;\n  text-align: left;\n  min-height: 48px;\n  padding: 10px 12px;\n  margin-bottom: 2px;\n  background-color: transparent;\n  border: none;\n  border-radius: 14px;\n  cursor: pointer;\n  font-size: 16px;\n  color: var(--acc-text-color);\n  transition: background-color 0.12s ease;\n}\n\n@media (hover: hover) {\n  .acc-lang-item:hover {\n    background-color: rgba(0, 114, 228, 0.06);\n  }\n}\n\n.acc-lang-item:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-item.selected {\n  background-color: rgba(0, 114, 228, 0.08);\n  font-weight: 600;\n}\n\n.acc-lang-item-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-item-label {\n  font-size: 16px !important;\n  line-height: 1.4 !important;\n}\n\n/* The country reads as a quiet note after the language's name. */\n.acc-lang-item-region {\n  margin-inline-start: 4px;\n  font-size: 14px !important;\n  font-weight: 400 !important;\n  color: #5b6472 !important;\n}\n\n.acc-icon-check {\n  display: inline-block;\n  flex-shrink: 0;\n  width: 18px;\n  height: 18px;\n  background-color: var(--acc-primary-color);\n  -webkit-mask: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\") center / contain no-repeat;\n  mask: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\") center / contain no-repeat;\n  opacity: 0;\n  transition: opacity 0.15s ease;\n}\n\n.acc-lang-item.selected .acc-icon-check {\n  opacity: 1;\n}\n\n.acc-menu .acc-lang-select {\n  width: 100% !important;\n  padding: 0 16px !important;\n  font-size: 16px !important;\n  font-family: inherit !important;\n  font-weight: 600 !important;\n  border-radius: var(--acc-button-border-radius) !important;\n  background: var(--acc-card-bg) !important;\n  border: 1.5px solid var(--acc-border-color) !important;\n  min-height: 48px !important;\n  max-height: 48px !important;\n  height: 48px !important;\n  color: var(--acc-text-color) !important;\n  -webkit-appearance: none !important;\n  -moz-appearance: none !important;\n  appearance: none !important;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0%20-960%20960%20960' width='24px' fill='%231f1f1f'%3E%3Cpath d='M480-344%20240-584l56-56%20184 184%20184-184%2056 56-240 240Z'/%3E%3C/svg%3E\") !important;\n  background-repeat: no-repeat !important;\n  background-position: right 12px center !important;\n  background-size: 20px !important;\n  padding-right: 44px !important;\n}\n\n/* Hide default arrows in Firefox and IE */\n.acc-menu .acc-lang-select::-ms-expand {\n  display: none !important;\n}\n\n.acc-menu .acc-lang-select:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n/* Options: the Language and Profiles card, then one grid of tiles. */\n.acc-options-all {\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  padding: 0 var(--acc-content-inline-padding);\n}\n\n.acc-card {\n  overflow: hidden;\n  border-radius: 22px;\n  background: var(--acc-card-bg);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n}\n\n.acc-card-row {\n  position: relative;\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  width: 100%;\n  min-height: 56px;\n  padding: 0 16px;\n  border: none;\n  background: transparent;\n  text-align: start;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n}\n\n/* Inset divider between the rows. */\n.acc-profiles-row::before,\n.acc-move-row::before {\n  content: \"\";\n  position: absolute;\n  top: 0;\n  inset-inline: 16px;\n  height: 1px;\n  background: var(--acc-border-color);\n}\n\n@media (hover: hover) {\n  .acc-card-row:hover {\n    background-color: rgba(31, 41, 51, 0.04);\n  }\n}\n\n/* Move widget: a small picture of the screen with a dot on the side\n   where the floating button sits. */\n.acc-move-side {\n  position: relative;\n  flex-shrink: 0;\n  width: 40px;\n  height: 26px;\n  border-radius: 8px;\n  background: var(--acc-bg-color);\n  box-shadow: inset 0 0 0 1px var(--acc-border-color);\n}\n\n.acc-move-dot {\n  position: absolute;\n  bottom: 5px;\n  left: 5px;\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  background: var(--acc-primary-color);\n  transition: left 0.2s ease;\n}\n\n.acc-move-row[data-side=\"right\"] .acc-move-dot {\n  left: 27px;\n}\n\n/* The card clips its children, so the ring sits inside the row, rounded\n   to clear the card's corners. */\n.acc-card-row:focus-visible {\n  border-radius: 22px;\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: calc(-1 * var(--acc-focus-outline-width) - 3px);\n}\n\n.acc-card-row-icon {\n  display: inline-flex;\n  flex-shrink: 0;\n}\n\n.acc-card-row-icon svg {\n  width: 22px;\n  height: 22px;\n  fill: var(--acc-text-color);\n}\n\n.acc-card-row .acc-card-row-label {\n  flex: 1 1 auto;\n  min-width: 0;\n  font-size: 15px !important;\n  font-weight: 600 !important;\n}\n\n.acc-card-row .acc-card-row-value {\n  flex: 0 1 auto;\n  min-width: 0;\n  max-width: 50%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 14px !important;\n  color: #5b6472 !important;\n}\n\n.acc-card-row .acc-profiles-summary {\n  font-weight: 600 !important;\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-card-row-chevron {\n  flex-shrink: 0;\n  width: 8px;\n  height: 8px;\n  margin: 0 4px 3px !important;\n  border-right: 2px solid #5b6472;\n  border-bottom: 2px solid #5b6472;\n  transform: rotate(45deg);\n  transition: transform 0.2s ease;\n}\n\n.acc-card-row[aria-expanded=\"true\"] .acc-card-row-chevron {\n  margin: 3px 4px 0 !important;\n  transform: rotate(-135deg);\n}\n\n.acc-card-panel[hidden] {\n  display: none;\n}\n\n.acc-lang-panel {\n  padding-bottom: 8px;\n}\n\n/* Five and a half rows show, fading out at the bottom, so it is plain\n   that the list scrolls. The bottom padding lets the last row clear the\n   fade. */\n.acc-lang-panel .acc-lang-list {\n  max-height: 276px;\n  padding: 2px 6px 20px 12px;\n  scrollbar-width: thin;\n  scrollbar-color: #c5cbd3 transparent;\n  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);\n  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);\n}\n\n.acc-menu[dir=\"rtl\"] .acc-lang-panel .acc-lang-list {\n  padding: 2px 12px 20px 6px;\n}\n\n.acc-profiles-panel {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 8px;\n  padding: 4px 8px 8px;\n}\n\n/* Hidden group headings sit in the grid without taking a cell. */\n.acc-options {\n  position: relative;\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 8px;\n}\n\n.acc-menu .acc-sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  white-space: nowrap;\n  border: 0;\n}\n\n/* Tiles: icon above the label. A transparent border still draws in\n   forced-colors mode, where shadows disappear. */\n.acc-btn {\n  position: relative;\n  /* Square; a tile still grows if a long label wraps. */\n  aspect-ratio: 1 / 1;\n  min-height: 112px;\n  padding: 16px 8px 12px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  text-align: center;\n  border-radius: 22px;\n  background: var(--acc-card-bg) !important;\n  border: 1px solid transparent !important;\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n  transition: box-shadow 0.2s ease;\n  cursor: pointer;\n  overflow-wrap: anywhere;\n  hyphens: auto;\n}\n\n/* Profile tiles are short rows, icon then name, two by two. Grey so they\n   show on the white card. */\n.acc-btn.acc-profile-tile {\n  aspect-ratio: auto;\n  min-height: 56px;\n  padding: 8px 12px;\n  flex-direction: row;\n  justify-content: flex-start;\n  gap: 8px;\n  text-align: start;\n  border-radius: 16px;\n  background: var(--acc-bg-color) !important;\n  box-shadow: none;\n}\n\n.acc-btn.acc-profile-tile svg {\n  width: 24px !important;\n  height: 24px !important;\n  min-width: 24px !important;\n  min-height: 24px !important;\n  max-width: 24px !important;\n  max-height: 24px !important;\n}\n\n/* The check sits at the end of the row, level with the name. */\n.acc-btn.acc-profile-tile.acc-selected {\n  padding-inline-end: 36px;\n}\n\n.acc-btn.acc-profile-tile.acc-selected::before {\n  top: calc(50% - 9px);\n  inset-inline-end: 10px;\n}\n\n.acc-btn.acc-profile-tile.acc-selected::after {\n  top: calc(50% - 6px);\n  inset-inline-end: 16px;\n}\n\n/* Inside the white card an on tile would vanish, so it lifts off the card\n   with a hairline and a soft shadow. */\n.acc-btn.acc-profile-tile.acc-selected {\n  background: var(--acc-card-bg) !important;\n  box-shadow: 0 0 0 1px var(--acc-border-color), 0 2px 6px rgba(31, 41, 51, 0.1);\n}\n\n/* Touch screens emulate :hover on tap and keep it until the next tap\n   elsewhere, which left the last-tapped option looking highlighted. */\n@media (hover: hover) {\n  .acc-btn:hover {\n    box-shadow: 0 0 0 1px var(--acc-hover-color), 0 2px 6px rgba(31, 41, 51, 0.08);\n  }\n}\n\n/* :focus-visible keeps the ring for keyboard users without leaving it\n   stuck on whatever a mouse click or tap last pressed. */\n.acc-btn:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-btn svg {\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n  flex-shrink: 0;\n  fill: var(--acc-text-color);\n}\n\n.acc-btn .acc-label {\n  font-size: 13px !important;\n  font-weight: 600 !important;\n  line-height: 1.25 !important;\n}\n\n/* Rapid taps (cycling Contrast or Font Size) must not trigger\n   double-tap-to-zoom on pages without a mobile viewport. */\n.acc-btn,\n.acc-menu-close,\n.acc-card-row,\n.acc-action-reset,\n.acc-action-hide,\n.acc-lang-item {\n  touch-action: manipulation;\n}\n\n/* On: primary icon and label, and a check badge in the inline-end\n   corner. The tile itself stays as it is. */\n.acc-btn.acc-selected {\n  background: var(--acc-card-bg) !important;\n}\n\n.acc-btn.acc-selected svg {\n  fill: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected .acc-label {\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected::before,\n.acc-btn.acc-selected::after {\n  content: \"\";\n  position: absolute;\n  box-sizing: border-box;\n}\n\n.acc-btn.acc-selected::before {\n  top: 9px;\n  inset-inline-end: 9px;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  background: var(--acc-primary-color);\n}\n\n.acc-btn.acc-selected::after {\n  top: 12px;\n  inset-inline-end: 15px;\n  width: 6px;\n  height: 10px;\n  border: solid var(--acc-text-color-inverted);\n  border-width: 0 2px 2px 0;\n  transform: rotate(45deg);\n}\n\n/* Actions and the credit line */\n.acc-actions[hidden],\n.acc-hide-panel[hidden] {\n  display: none;\n}\n\n/* Hide widget, already hidden: shown as on. Clicking brings the button back. */\n.acc-action-hide[aria-pressed=\"true\"] svg {\n  stroke: var(--acc-primary-color);\n}\n\n.acc-action-hide[aria-pressed=\"true\"] .acc-label {\n  color: var(--acc-primary-color) !important;\n}\n\n/* The step after Hide widget: for how long. It takes the buttons' place. */\n.acc-hide-panel {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  padding: 16px;\n  border-radius: 22px;\n  background: var(--acc-card-bg);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n}\n\n.acc-hide-title {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.acc-hide-title svg {\n  flex-shrink: 0;\n  width: 22px !important;\n  height: 22px !important;\n  fill: none !important;\n  stroke: var(--acc-text-color);\n}\n\n.acc-hide-title .acc-label {\n  font-size: 15px !important;\n  font-weight: 600 !important;\n}\n\n.acc-hide-choices {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.acc-hide-choice {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  width: 100%;\n  min-height: 44px;\n  padding: 4px 10px;\n  border: none;\n  border-radius: 12px;\n  background: transparent;\n  text-align: start;\n  cursor: pointer;\n}\n\n.acc-hide-choice[aria-checked=\"true\"] {\n  background: var(--acc-bg-color);\n}\n\n.acc-hide-radio {\n  flex-shrink: 0;\n  box-sizing: border-box;\n  width: 20px;\n  height: 20px;\n  border: 1.5px solid #7c8594;\n  border-radius: 50%;\n  background: var(--acc-card-bg);\n}\n\n.acc-hide-choice[aria-checked=\"true\"] .acc-hide-radio {\n  border: 6px solid var(--acc-primary-color);\n}\n\n.acc-hide-choice .acc-label {\n  font-size: 15px !important;\n  font-weight: 500 !important;\n}\n\n.acc-hide-choice[aria-checked=\"true\"] .acc-label {\n  font-weight: 600 !important;\n}\n\n.acc-hide-buttons {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 8px;\n}\n\n.acc-hide-cancel,\n.acc-hide-confirm {\n  min-height: 48px;\n  padding: 6px 12px;\n  border: none;\n  border-radius: 24px;\n  background: var(--acc-bg-color);\n  cursor: pointer;\n}\n\n.acc-hide-confirm {\n  background: var(--acc-primary-color);\n}\n\n.acc-hide-cancel .acc-label,\n.acc-hide-confirm .acc-label {\n  font-size: 14px !important;\n  font-weight: 600 !important;\n}\n\n.acc-hide-confirm .acc-label {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-hide-choice:focus-visible,\n.acc-hide-cancel:focus-visible,\n.acc-hide-confirm:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Reset and Hide: two equal buttons between the card and the tiles. */\n.acc-actions {\n  display: grid;\n  grid-auto-flow: column;\n  grid-auto-columns: minmax(0, 1fr);\n  gap: 8px;\n}\n\n.acc-action-reset,\n.acc-action-hide {\n  display: flex;\n  min-width: 0;\n  min-height: 48px;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  padding: 6px 12px;\n  border: 1px solid transparent;\n  border-radius: 24px;\n  background-color: var(--acc-card-bg) !important;\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n  cursor: pointer;\n  transition: box-shadow 0.2s ease;\n}\n\n.acc-action-reset svg,\n.acc-action-hide svg {\n  flex-shrink: 0;\n  width: 20px !important;\n  height: 20px !important;\n  fill: var(--acc-text-color) !important;\n}\n\n/* Long translations wrap to a second line on narrow phones. */\n.acc-action-reset .acc-label,\n.acc-action-hide .acc-label {\n  min-width: 0;\n  text-align: center;\n  font-size: 14px !important;\n  font-weight: 600 !important;\n  line-height: 1.2 !important;\n}\n\n/* How many options are on. */\n.acc-action-reset .acc-reset-count {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 22px;\n  height: 22px;\n  padding: 0 6px;\n  border-radius: 11px;\n  background: var(--acc-text-color);\n  color: var(--acc-text-color-inverted) !important;\n  flex-shrink: 0;\n  font-size: 12px !important;\n  font-weight: 700 !important;\n  line-height: 1 !important;\n}\n\n.acc-action-reset .acc-reset-count[hidden] {\n  display: none;\n}\n\n/* Nothing to reset: subdued, though still readable. */\n.acc-action-reset:disabled {\n  cursor: default;\n}\n\n.acc-action-reset:disabled svg {\n  fill: #5b6472 !important;\n}\n\n.acc-action-reset:disabled .acc-label {\n  color: #5b6472 !important;\n}\n\n@media (hover: hover) {\n  .acc-action-reset:not(:disabled):hover,\n  .acc-action-hide:hover {\n    box-shadow: 0 0 0 1px var(--acc-border-color), 0 2px 6px rgba(31, 41, 51, 0.08);\n  }\n}\n\n.acc-action-reset:focus-visible,\n.acc-action-hide:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* The Hide icon is drawn with lines, unlike the filled icons. */\n.acc-action-hide svg {\n  fill: none !important;\n  stroke: var(--acc-text-color);\n}\n\n/* Credit line: the project's name, and its statement on what a widget\n   can and cannot do for a site. */\n/* The credit line closes the list, after the last row of tiles. */\n.acc-footer-credit {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  padding: 0 6px;\n}\n\n.acc-footer-brand,\n.acc-footer-statement {\n  padding: 4px 0;\n  font-size: 13px !important;\n  line-height: 1.2 !important;\n  text-decoration: none;\n}\n\n.acc-footer-brand {\n  font-weight: 400 !important;\n  color: var(--acc-text-color) !important;\n  opacity: 0.65;\n}\n\n.acc-footer-statement {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.acc-footer-statement .acc-label {\n  font-size: 13px !important;\n  font-weight: 600 !important;\n  line-height: 1.2 !important;\n  color: var(--acc-primary-color) !important;\n}\n\n/* Arrow after the link; it points the other way in right-to-left. */\n.acc-footer-statement::after {\n  content: \"\";\n  flex-shrink: 0;\n  width: 6px;\n  height: 6px;\n  border-top: 1.5px solid var(--acc-primary-color);\n  border-inline-end: 1.5px solid var(--acc-primary-color);\n  transform: rotate(45deg);\n}\n\n.acc-menu[dir=\"rtl\"] .acc-footer-statement::after {\n  transform: rotate(-45deg);\n}\n\n@media (hover: hover) {\n  .acc-footer-brand:hover {\n    opacity: 1;\n    text-decoration: underline;\n  }\n\n  .acc-footer-statement:hover .acc-label {\n    text-decoration: underline;\n  }\n}\n\n.acc-footer-brand:focus-visible,\n.acc-footer-statement:focus-visible {\n  opacity: 1;\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Content area */\n.acc-menu-content {\n  flex: 1 1 auto;\n  min-height: 0;\n  overflow: auto;\n  /* Reaching the end of the options must not hand the scroll (wheel or\n     touch) to the page behind the panel. */\n  overscroll-behavior: contain;\n  padding: var(--acc-content-inline-padding) 0;\n  border-top-left-radius: 1.75rem;\n  border-top-right-radius: 1.75rem;\n  background: var(--acc-bg-color);\n  /* A soft shadow cast up onto the header, so the body reads as a sheet\n     lying over it. */\n  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);\n}\n\n/* Text adjustments */\n.acc-text-adjust {\n  background: var(--acc-card-bg);\n  padding: 18px 20px;\n  margin-bottom: 20px;\n  border-radius: var(--acc-border-radius);\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.acc-text-adjust .acc-label {\n  display: flex;\n  justify-content: flex-start;\n}\n\n.acc-text-adjust > div {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 20px;\n  align-items: center;\n  font-size: 16px;\n}\n\n.acc-text-adjust .acc-label div {\n  font-size: 16px !important;\n}\n\n.acc-text-adjust div[role=\"button\"] {\n  background: var(--acc-bg-color) !important;\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  transition: border-color 0.2s ease;\n}\n\n.acc-text-adjust div[role=\"button\"]:hover {\n  border-color: var(--acc-primary-color);\n}\n\n.acc-text-adjust div[role=\"button\"]:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Overlay */\n.acc-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: calc(var(--acc-widget-z-index, 100000) - 1);\n}\n\n/* Level dots under a cycling tile's label. */\n.acc-progress-indicator {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  height: 6px;\n}\n\n.acc-progress-dot {\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background-color: var(--acc-border-color);\n  transition: background-color 0.2s ease;\n}\n\n.acc-progress-dot.active {\n  background-color: var(--acc-primary-color);\n}\n\n@supports (color: color-mix(in srgb, red 50%, transparent)) {\n  .acc-btn.acc-selected .acc-progress-dot:not(.active) {\n    background-color: color-mix(in srgb, var(--acc-primary-color) 25%, var(--acc-card-bg));\n  }\n}\n\n/* Responsive adjustments */\n@media only screen and (max-width: 560px) {\n  /* Span the viewport between equal gaps. Anchoring both edges (rather\n     than 100vw math) stays centered beside a classic scrollbar and lets\n     the safe-area margins shrink the panel. !important beats the inline\n     dock side set from JS. */\n  .acc-menu {\n    left: var(--acc-menu-inline-gap) !important;\n    right: var(--acc-menu-inline-gap) !important;\n    width: auto;\n  }\n}\n\n/* Phones: tighter spacing leaves more room to show options. */\n@media only screen and (max-width: 480px) {\n  .acc-menu {\n    --acc-content-inline-padding: 16px;\n    --acc-menu-header-height: min(var(--acc-header-height), 56px);\n  }\n\n  .acc-options-all {\n    gap: 16px;\n  }\n\n}\n\n/* Three tiles no longer fit below a ~380px panel (the viewport minus the\n   8px gaps); long labels in some languages need the width. */\n/* Below this width three square tiles would be too narrow for the longer\n   labels to stay on one line, so the grid drops to two per row. Two\n   squares per row would be very tall, so the tiles go back to a fixed\n   height. */\n@media only screen and (max-width: 449px) {\n  /* Two buttons in a narrow panel: tighter, so long translations fit. */\n  .acc-action-reset,\n  .acc-action-hide {\n    gap: 6px;\n    padding: 6px 8px;\n  }\n\n  .acc-action-reset .acc-label,\n  .acc-action-hide .acc-label {\n    font-size: 13px !important;\n    overflow-wrap: anywhere;\n  }\n\n  .acc-options {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  /* One profile per row, so the names stay on one line. */\n  .acc-profiles-panel {\n    grid-template-columns: minmax(0, 1fr);\n  }\n\n  .acc-btn {\n    aspect-ratio: auto;\n  }\n}\n\n/* The title wraps to two lines (longer translations too) rather than\n   truncating beside the header controls. */\n@media only screen and (max-width: 380px) {\n  .acc-menu-title {\n    font-size: 16px !important;\n  }\n\n  .acc-menu .acc-menu-title .acc-label {\n    display: -webkit-box;\n    -webkit-box-orient: vertical;\n    -webkit-line-clamp: 2;\n    white-space: normal;\n    line-height: 1.2 !important;\n  }\n}\n\n/* Landscape phones: the header and footer took over half of a ~340px\n   tall panel, leaving a sliver for the options. */\n@media only screen and (max-height: 500px) {\n  .acc-menu {\n    --acc-menu-header-height: min(var(--acc-header-height), 48px);\n  }\n\n  .acc-menu-content {\n    padding: 12px 0 16px;\n  }\n\n  .acc-action-reset,\n  .acc-action-hide {\n    min-height: 44px;\n  }\n}\n\n/* Touch input: grow the small controls toward a 44px target. */\n@media (pointer: coarse) {\n  .acc-menu-close {\n    width: 44px;\n    height: 44px;\n  }\n\n  .acc-footer-brand,\n  .acc-footer-statement {\n    padding: 10px 0;\n  }\n}\n\n/* Ensure proper focus visibility for assistive technology */\n@media (prefers-reduced-motion: reduce) {\n  .acc-menu,\n  .acc-btn,\n  .acc-lang-select,\n  .acc-progress-dot,\n  .acc-menu-header div[role=\"button\"],\n  .acc-lang-toggle,\n  .acc-back-btn,\n  .acc-menu-close,\n  .acc-action-reset,\n  .acc-card-row,\n  .acc-card-row-chevron,\n  .acc-text-adjust div[role=\"button\"] {\n    transition: none;\n  }\n}\n";
+    var menuCSS = "/* Base styles */\n.acc-menu {\n  position: fixed;\n  left: var(--acc-menu-inline-gap, 12px);\n  top: var(--acc-menu-block-gap, 12px);\n  bottom: var(--acc-menu-block-gap, 12px);\n  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);\n  opacity: 1;\n  transition: 0.3s;\n  z-index: var(--acc-widget-z-index, 100000);\n  overflow: hidden;\n  /* The primary color shows through the content margins, framing the body\n     like a gate: header across the top, posts down both sides. */\n  background: var(--acc-primary-color);\n  /* Wide enough for three square tiles whose longest English labels stay\n     on one line. */\n  width: min(456px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));\n  display: flex;\n  flex-direction: column;\n  line-height: 1.5;\n  font-size: 16px;\n  height: auto;\n  letter-spacing: 0.015em;\n  color: var(--acc-text-color);\n  --acc-content-inline-padding: 20px;\n  /* Theme headerHeight, capped on small screens by the media queries. */\n  --acc-menu-header-height: var(--acc-header-height);\n  --acc-menu-inline-gap: 8px;\n  --acc-menu-block-gap: var(--acc-menu-inline-gap);\n  border-radius: 1.75rem;\n  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);\n  /* Clear notches and the home indicator when the host page opts into\n     edge-to-edge layout (viewport-fit=cover); env() is 0 everywhere else. */\n  margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);\n}\n\n/* Dragging the panel's fixed chrome must not scroll the page behind it.\n   Scrolling areas (options, language list) are deliberately left out so\n   they keep panning; pinch-zoom stays available everywhere. */\n.acc-menu-header {\n  touch-action: pinch-zoom;\n}\n\n/* The dialog receives programmatic focus on open (tabindex=\"-1\", never\n   Tab-reachable); a focus ring around the whole panel would be noise. */\n.acc-menu:focus {\n  outline: none;\n}\n\n/* Ensure all elements inherit proper colors for accessibility */\n.acc-menu * {\n  color: var(--acc-text-color);\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\n  padding: 0;\n  margin: 0;\n  line-height: 1.5 !important;\n  letter-spacing: normal !important;\n}\n\n/* Header section */\n.acc-menu-header {\n  flex-shrink: 0;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 0 var(--acc-content-inline-padding);\n  height: var(--acc-menu-header-height);\n  font-weight: 700 !important;\n  background-color: var(--acc-primary-color) !important;\n}\n\n.acc-menu-title {\n  display: flex;\n  align-items: center;\n  min-width: 0;\n  font-size: 17px !important;\n  color: var(--acc-text-color-inverted) !important;\n  font-weight: 700;\n}\n\n.acc-menu-title .acc-label {\n  color: var(--acc-text-color-inverted) !important;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.acc-menu-close {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  padding: 0;\n  border: none;\n  border-radius: 50%;\n  background: transparent;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n}\n\n@media (hover: hover) {\n  .acc-menu-close:hover {\n    background-color: rgba(255, 255, 255, 0.18);\n  }\n}\n\n.acc-menu-close:focus-visible {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-menu-header .acc-menu-close svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 20px !important;\n  height: 20px !important;\n  min-width: 20px !important;\n  min-height: 20px !important;\n  max-width: 20px !important;\n  max-height: 20px !important;\n}\n\n.acc-header-back {\n  display: flex;\n  align-items: center;\n}\n\n.acc-back-btn {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  background: transparent;\n  border: none;\n  padding: 8px;\n  cursor: pointer;\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--acc-text-color-inverted) !important;\n  transition: background-color 0.2s ease;\n  border-radius: 4px;\n  visibility: hidden;\n}\n\n.acc-back-btn > span {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-back-btn.visible {\n  visibility: visible;\n}\n\n.acc-back-btn:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-back-btn:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-back-btn svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 24px !important;\n  height: 24px !important;\n}\n\n.acc-menu-header svg {\n  fill: var(--acc-text-color-inverted) !important;\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n}\n\n.acc-menu-header > div {\n  display: flex;\n  align-items: center;\n}\n\n/* Interactive elements */\n.acc-menu-header div[role=\"button\"] {\n  cursor: pointer;\n  padding: 8px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 36px;\n  height: 36px;\n  transition: background-color 0.2s ease;\n}\n\n.acc-menu-header div[role=\"button\"]:hover {\n  background-color: rgba(255, 255, 255, 0.18);\n}\n\n.acc-menu-header div[role=\"button\"]:focus {\n  outline: 2px solid var(--acc-text-color-inverted);\n  outline-offset: 1px;\n}\n\n.acc-language-container {\n  margin: 0 var(--acc-content-inline-padding) 24px;\n}\n\n.acc-lang-details {\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  border-radius: var(--acc-button-border-radius);\n  background: var(--acc-card-bg);\n}\n\n.acc-lang-summary {\n  list-style: none;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  padding: 12px 14px;\n  cursor: pointer;\n  border-radius: var(--acc-button-border-radius);\n}\n\n.acc-lang-summary::-webkit-details-marker {\n  display: none;\n}\n\n.acc-lang-summary::marker {\n  content: '';\n}\n\n.acc-lang-summary-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-current-label {\n  font-size: 16px !important;\n  font-weight: 600 !important;\n}\n\n.acc-lang-summary:hover {\n  background-color: rgba(0, 114, 228, 0.06);\n}\n\n.acc-lang-summary:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-summary-arrow {\n  width: 10px;\n  height: 10px;\n  border-right: 2px solid var(--acc-text-color);\n  border-bottom: 2px solid var(--acc-text-color);\n  transform: rotate(-45deg);\n  transition: transform 0.2s ease;\n}\n\n.acc-lang-details[open] .acc-lang-summary-arrow {\n  transform: rotate(45deg);\n}\n\n.acc-lang-details[open] .acc-lang-summary {\n  border-bottom: 1px solid var(--acc-border-color);\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n}\n\n.acc-lang-details-panel {\n  padding: 12px 0 8px;\n}\n\n.acc-lang-details-panel .acc-section-title {\n  font-size: 16px !important;\n  padding: 0 16px 10px;\n}\n\n.acc-lang-flag {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 22px;\n  font-size: 18px !important;\n  line-height: 1;\n}\n\n.acc-lang-search-wrapper {\n  padding: 4px 12px 8px;\n}\n\n/* A soft field with a magnifier, shaped like the Reset button. */\n.acc-lang-search {\n  width: 100%;\n  height: 48px;\n  padding-block: 0;\n  padding-inline: 44px 16px;\n  border: 0;\n  border-radius: 16px;\n  font-size: 16px;\n  background-color: var(--acc-bg-color);\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6472' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E\");\n  background-repeat: no-repeat;\n  background-position: left 14px center;\n  background-size: 18px;\n}\n\n.acc-menu[dir=\"rtl\"] .acc-lang-search {\n  background-position: right 14px center;\n}\n\n/* The field is focused as soon as the panel opens, so its focus look is\n   a quiet grey line, not the blue ring used for keyboard focus elsewhere. */\n.acc-lang-search:focus {\n  outline: 1.5px solid #7c8594;\n  outline-offset: -1.5px;\n  background-color: var(--acc-card-bg);\n}\n\n.acc-lang-list {\n  padding: 6px 8px 12px;\n  max-height: 280px;\n  overflow-y: auto;\n  overscroll-behavior: contain;\n}\n\n.acc-lang-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 8px;\n  width: 100%;\n  text-align: left;\n  min-height: 48px;\n  padding: 10px 12px;\n  margin-bottom: 2px;\n  background-color: transparent;\n  border: none;\n  border-radius: 14px;\n  cursor: pointer;\n  font-size: 16px;\n  color: var(--acc-text-color);\n  transition: background-color 0.12s ease;\n}\n\n@media (hover: hover) {\n  .acc-lang-item:hover {\n    background-color: rgba(0, 114, 228, 0.06);\n  }\n}\n\n.acc-lang-item:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-lang-item.selected {\n  background-color: rgba(0, 114, 228, 0.08);\n  font-weight: 600;\n}\n\n.acc-lang-item-main {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n}\n\n.acc-lang-item-label {\n  font-size: 16px !important;\n  line-height: 1.4 !important;\n}\n\n/* The country reads as a quiet note after the language's name. */\n.acc-lang-item-region {\n  margin-inline-start: 4px;\n  font-size: 14px !important;\n  font-weight: 400 !important;\n  color: #5b6472 !important;\n}\n\n.acc-icon-check {\n  display: inline-block;\n  flex-shrink: 0;\n  width: 18px;\n  height: 18px;\n  background-color: var(--acc-primary-color);\n  -webkit-mask: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\") center / contain no-repeat;\n  mask: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E\") center / contain no-repeat;\n  opacity: 0;\n  transition: opacity 0.15s ease;\n}\n\n.acc-lang-item.selected .acc-icon-check {\n  opacity: 1;\n}\n\n.acc-menu .acc-lang-select {\n  width: 100% !important;\n  padding: 0 16px !important;\n  font-size: 16px !important;\n  font-family: inherit !important;\n  font-weight: 600 !important;\n  border-radius: var(--acc-button-border-radius) !important;\n  background: var(--acc-card-bg) !important;\n  border: 1.5px solid var(--acc-border-color) !important;\n  min-height: 48px !important;\n  max-height: 48px !important;\n  height: 48px !important;\n  color: var(--acc-text-color) !important;\n  -webkit-appearance: none !important;\n  -moz-appearance: none !important;\n  appearance: none !important;\n  background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0%20-960%20960%20960' width='24px' fill='%231f1f1f'%3E%3Cpath d='M480-344%20240-584l56-56%20184 184%20184-184%2056 56-240 240Z'/%3E%3C/svg%3E\") !important;\n  background-repeat: no-repeat !important;\n  background-position: right 12px center !important;\n  background-size: 20px !important;\n  padding-right: 44px !important;\n}\n\n/* Hide default arrows in Firefox and IE */\n.acc-menu .acc-lang-select::-ms-expand {\n  display: none !important;\n}\n\n.acc-menu .acc-lang-select:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n  border-color: var(--acc-primary-color) !important;\n}\n\n/* Options: the Language and Profiles card, then one grid of tiles. */\n.acc-options-all {\n  display: flex;\n  flex-direction: column;\n  gap: 20px;\n  padding: 0 var(--acc-content-inline-padding);\n}\n\n.acc-card {\n  overflow: hidden;\n  border-radius: 22px;\n  background: var(--acc-card-bg);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n}\n\n.acc-card-row {\n  position: relative;\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  width: 100%;\n  min-height: 56px;\n  padding: 0 16px;\n  border: none;\n  background: transparent;\n  text-align: start;\n  cursor: pointer;\n  transition: background-color 0.2s ease;\n}\n\n/* Inset divider between the rows. */\n.acc-profiles-row::before,\n.acc-move-row::before {\n  content: \"\";\n  position: absolute;\n  top: 0;\n  inset-inline: 16px;\n  height: 1px;\n  background: var(--acc-border-color);\n}\n\n@media (hover: hover) {\n  .acc-card-row:hover {\n    background-color: rgba(31, 41, 51, 0.04);\n  }\n}\n\n/* Move widget: a small picture of the screen with a dot on the side\n   where the floating button sits. */\n.acc-move-side {\n  position: relative;\n  flex-shrink: 0;\n  width: 40px;\n  height: 26px;\n  border-radius: 8px;\n  background: var(--acc-bg-color);\n  box-shadow: inset 0 0 0 1px var(--acc-border-color);\n}\n\n.acc-move-dot {\n  position: absolute;\n  bottom: 5px;\n  left: 5px;\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  background: var(--acc-primary-color);\n  transition: left 0.2s ease;\n}\n\n.acc-move-row[data-side=\"right\"] .acc-move-dot {\n  left: 27px;\n}\n\n/* The card clips its children, so the ring sits inside the row, rounded\n   to clear the card's corners. */\n.acc-card-row:focus-visible {\n  border-radius: 22px;\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: calc(-1 * var(--acc-focus-outline-width) - 3px);\n}\n\n.acc-card-row-icon {\n  display: inline-flex;\n  flex-shrink: 0;\n}\n\n.acc-card-row-icon svg {\n  width: 22px;\n  height: 22px;\n  fill: var(--acc-text-color);\n}\n\n.acc-card-row .acc-card-row-label {\n  flex: 1 1 auto;\n  min-width: 0;\n  font-size: 15px !important;\n  font-weight: 600 !important;\n}\n\n.acc-card-row .acc-card-row-value {\n  flex: 0 1 auto;\n  min-width: 0;\n  max-width: 50%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  font-size: 14px !important;\n  color: #5b6472 !important;\n}\n\n.acc-card-row .acc-profiles-summary {\n  font-weight: 600 !important;\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-card-row-chevron {\n  flex-shrink: 0;\n  width: 8px;\n  height: 8px;\n  margin: 0 4px 3px !important;\n  border-right: 2px solid #5b6472;\n  border-bottom: 2px solid #5b6472;\n  transform: rotate(45deg);\n  transition: transform 0.2s ease;\n}\n\n.acc-card-row[aria-expanded=\"true\"] .acc-card-row-chevron {\n  margin: 3px 4px 0 !important;\n  transform: rotate(-135deg);\n}\n\n.acc-card-panel[hidden] {\n  display: none;\n}\n\n.acc-lang-panel {\n  padding-bottom: 8px;\n}\n\n/* Five and a half rows show, fading out at the bottom, so it is plain\n   that the list scrolls. The bottom padding lets the last row clear the\n   fade. */\n.acc-lang-panel .acc-lang-list {\n  max-height: 276px;\n  padding: 2px 6px 20px 12px;\n  scrollbar-width: thin;\n  scrollbar-color: #c5cbd3 transparent;\n  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);\n  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);\n}\n\n.acc-menu[dir=\"rtl\"] .acc-lang-panel .acc-lang-list {\n  padding: 2px 12px 20px 6px;\n}\n\n.acc-profiles-panel {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 8px;\n  padding: 4px 8px 8px;\n}\n\n/* Hidden group headings sit in the grid without taking a cell. */\n.acc-options {\n  position: relative;\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 8px;\n}\n\n.acc-menu .acc-sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  margin: -1px;\n  padding: 0;\n  overflow: hidden;\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  white-space: nowrap;\n  border: 0;\n}\n\n/* Tiles: icon above the label. A transparent border still draws in\n   forced-colors mode, where shadows disappear. */\n.acc-btn {\n  position: relative;\n  /* Square; a tile still grows if a long label wraps. */\n  aspect-ratio: 1 / 1;\n  min-height: 112px;\n  padding: 16px 8px 12px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  text-align: center;\n  border-radius: 22px;\n  background: var(--acc-card-bg) !important;\n  border: 1px solid transparent !important;\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n  transition: box-shadow 0.2s ease;\n  cursor: pointer;\n  overflow-wrap: anywhere;\n  hyphens: auto;\n}\n\n/* Profile tiles are short rows, icon then name, two by two. Grey so they\n   show on the white card. */\n.acc-btn.acc-profile-tile {\n  aspect-ratio: auto;\n  min-height: 56px;\n  padding: 8px 12px;\n  flex-direction: row;\n  justify-content: flex-start;\n  gap: 8px;\n  text-align: start;\n  border-radius: 16px;\n  background: var(--acc-bg-color) !important;\n  box-shadow: none;\n}\n\n.acc-btn.acc-profile-tile svg {\n  width: 24px !important;\n  height: 24px !important;\n  min-width: 24px !important;\n  min-height: 24px !important;\n  max-width: 24px !important;\n  max-height: 24px !important;\n}\n\n/* The check sits at the end of the row, level with the name. */\n.acc-btn.acc-profile-tile.acc-selected {\n  padding-inline-end: 36px;\n}\n\n.acc-btn.acc-profile-tile.acc-selected::before {\n  top: calc(50% - 9px);\n  inset-inline-end: 10px;\n}\n\n.acc-btn.acc-profile-tile.acc-selected::after {\n  top: calc(50% - 6px);\n  inset-inline-end: 16px;\n}\n\n/* Inside the white card an on tile would vanish, so it lifts off the card\n   with a hairline and a soft shadow. */\n.acc-btn.acc-profile-tile.acc-selected {\n  background: var(--acc-card-bg) !important;\n  box-shadow: 0 0 0 1px var(--acc-border-color), 0 2px 6px rgba(31, 41, 51, 0.1);\n}\n\n/* Touch screens emulate :hover on tap and keep it until the next tap\n   elsewhere, which left the last-tapped option looking highlighted. */\n@media (hover: hover) {\n  .acc-btn:hover {\n    box-shadow: 0 0 0 1px var(--acc-hover-color), 0 2px 6px rgba(31, 41, 51, 0.08);\n  }\n}\n\n/* :focus-visible keeps the ring for keyboard users without leaving it\n   stuck on whatever a mouse click or tap last pressed. */\n.acc-btn:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n.acc-btn svg {\n  width: 28px !important;\n  height: 28px !important;\n  min-width: 28px !important;\n  min-height: 28px !important;\n  max-width: 28px !important;\n  max-height: 28px !important;\n  flex-shrink: 0;\n  fill: var(--acc-text-color);\n}\n\n.acc-btn .acc-label {\n  font-size: 13px !important;\n  font-weight: 600 !important;\n  line-height: 1.25 !important;\n}\n\n/* Rapid taps (cycling Contrast or Font Size) must not trigger\n   double-tap-to-zoom on pages without a mobile viewport. */\n.acc-btn,\n.acc-menu-close,\n.acc-card-row,\n.acc-action-reset,\n.acc-action-hide,\n.acc-lang-item {\n  touch-action: manipulation;\n}\n\n/* On: primary icon and label, and a check badge in the inline-end\n   corner. The tile itself stays as it is. */\n.acc-btn.acc-selected {\n  background: var(--acc-card-bg) !important;\n}\n\n.acc-btn.acc-selected svg {\n  fill: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected .acc-label {\n  color: var(--acc-primary-color) !important;\n}\n\n.acc-btn.acc-selected::before,\n.acc-btn.acc-selected::after {\n  content: \"\";\n  position: absolute;\n  box-sizing: border-box;\n}\n\n.acc-btn.acc-selected::before {\n  top: 9px;\n  inset-inline-end: 9px;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  background: var(--acc-primary-color);\n}\n\n.acc-btn.acc-selected::after {\n  top: 12px;\n  inset-inline-end: 15px;\n  width: 6px;\n  height: 10px;\n  border: solid var(--acc-text-color-inverted);\n  border-width: 0 2px 2px 0;\n  transform: rotate(45deg);\n}\n\n/* Actions and the credit line */\n.acc-actions[hidden],\n.acc-hide-panel[hidden] {\n  display: none;\n}\n\n/* Hide widget, already hidden: shown as on. Clicking brings the button back. */\n.acc-action-hide[aria-pressed=\"true\"] svg {\n  stroke: var(--acc-primary-color);\n}\n\n.acc-action-hide[aria-pressed=\"true\"] .acc-label {\n  color: var(--acc-primary-color) !important;\n}\n\n/* The step after Hide widget: for how long. It takes the buttons' place. */\n.acc-hide-panel {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  padding: 16px;\n  border-radius: 22px;\n  background: var(--acc-card-bg);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n}\n\n.acc-hide-title {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.acc-hide-title svg {\n  flex-shrink: 0;\n  width: 22px !important;\n  height: 22px !important;\n  fill: none !important;\n  stroke: var(--acc-text-color);\n}\n\n.acc-hide-title .acc-label {\n  font-size: 15px !important;\n  font-weight: 600 !important;\n}\n\n.acc-hide-choices {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n\n.acc-hide-choice {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  width: 100%;\n  min-height: 44px;\n  padding: 4px 10px;\n  border: none;\n  border-radius: 12px;\n  background: transparent;\n  text-align: start;\n  cursor: pointer;\n}\n\n.acc-hide-choice[aria-checked=\"true\"] {\n  background: var(--acc-bg-color);\n}\n\n.acc-hide-radio {\n  flex-shrink: 0;\n  box-sizing: border-box;\n  width: 20px;\n  height: 20px;\n  border: 1.5px solid #7c8594;\n  border-radius: 50%;\n  background: var(--acc-card-bg);\n}\n\n.acc-hide-choice[aria-checked=\"true\"] .acc-hide-radio {\n  border: 6px solid var(--acc-primary-color);\n}\n\n.acc-hide-choice .acc-label {\n  font-size: 15px !important;\n  font-weight: 500 !important;\n}\n\n.acc-hide-choice[aria-checked=\"true\"] .acc-label {\n  font-weight: 600 !important;\n}\n\n/* Shown before an \"Always\" hide: how to get the widget back. */\n.acc-hide-warning {\n  margin: 0;\n  padding: 12px;\n  border-radius: 12px;\n  background: var(--acc-bg-color);\n  font-size: 15px !important;\n  font-weight: 500 !important;\n  line-height: 1.4 !important;\n}\n\n.acc-hide-warning[hidden],\n.acc-hide-choices[hidden] {\n  display: none;\n}\n\n.acc-hide-buttons {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 8px;\n}\n\n.acc-hide-cancel,\n.acc-hide-confirm {\n  min-height: 48px;\n  padding: 6px 12px;\n  border: none;\n  border-radius: 24px;\n  background: var(--acc-bg-color);\n  cursor: pointer;\n}\n\n.acc-hide-confirm {\n  background: var(--acc-primary-color);\n}\n\n.acc-hide-cancel .acc-label,\n.acc-hide-confirm .acc-label {\n  font-size: 14px !important;\n  font-weight: 600 !important;\n}\n\n.acc-hide-confirm .acc-label {\n  color: var(--acc-text-color-inverted) !important;\n}\n\n.acc-hide-choice:focus-visible,\n.acc-hide-cancel:focus-visible,\n.acc-hide-confirm:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Reset and Hide: two equal buttons between the card and the tiles. */\n.acc-actions {\n  display: grid;\n  grid-auto-flow: column;\n  grid-auto-columns: minmax(0, 1fr);\n  gap: 8px;\n}\n\n.acc-action-reset,\n.acc-action-hide {\n  display: flex;\n  min-width: 0;\n  min-height: 48px;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  padding: 6px 12px;\n  border: 1px solid transparent;\n  border-radius: 24px;\n  background-color: var(--acc-card-bg) !important;\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n  cursor: pointer;\n  transition: box-shadow 0.2s ease;\n}\n\n.acc-action-reset svg,\n.acc-action-hide svg {\n  flex-shrink: 0;\n  width: 20px !important;\n  height: 20px !important;\n  fill: var(--acc-text-color) !important;\n}\n\n/* Long translations wrap to a second line on narrow phones. */\n.acc-action-reset .acc-label,\n.acc-action-hide .acc-label {\n  min-width: 0;\n  text-align: center;\n  font-size: 14px !important;\n  font-weight: 600 !important;\n  line-height: 1.2 !important;\n}\n\n/* How many options are on. */\n.acc-action-reset .acc-reset-count {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-width: 22px;\n  height: 22px;\n  padding: 0 6px;\n  border-radius: 11px;\n  background: var(--acc-text-color);\n  color: var(--acc-text-color-inverted) !important;\n  flex-shrink: 0;\n  font-size: 12px !important;\n  font-weight: 700 !important;\n  line-height: 1 !important;\n}\n\n.acc-action-reset .acc-reset-count[hidden] {\n  display: none;\n}\n\n/* Nothing to reset: subdued, though still readable. */\n.acc-action-reset:disabled {\n  cursor: default;\n}\n\n.acc-action-reset:disabled svg {\n  fill: #5b6472 !important;\n}\n\n.acc-action-reset:disabled .acc-label {\n  color: #5b6472 !important;\n}\n\n@media (hover: hover) {\n  .acc-action-reset:not(:disabled):hover,\n  .acc-action-hide:hover {\n    box-shadow: 0 0 0 1px var(--acc-border-color), 0 2px 6px rgba(31, 41, 51, 0.08);\n  }\n}\n\n.acc-action-reset:focus-visible,\n.acc-action-hide:focus-visible {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* The Hide icon is drawn with lines, unlike the filled icons. */\n.acc-action-hide svg {\n  fill: none !important;\n  stroke: var(--acc-text-color);\n}\n\n/* Credit line: the project's name, and its statement on what a widget\n   can and cannot do for a site. */\n/* The credit line closes the list, after the last row of tiles. */\n.acc-footer-credit {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n  padding: 0 6px;\n}\n\n.acc-footer-brand,\n.acc-footer-statement {\n  padding: 4px 0;\n  font-size: 13px !important;\n  line-height: 1.2 !important;\n  text-decoration: none;\n}\n\n.acc-footer-brand {\n  font-weight: 400 !important;\n  color: var(--acc-text-color) !important;\n  opacity: 0.65;\n}\n\n.acc-footer-statement {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n}\n\n.acc-footer-statement .acc-label {\n  font-size: 13px !important;\n  font-weight: 600 !important;\n  line-height: 1.2 !important;\n  color: var(--acc-primary-color) !important;\n}\n\n/* Arrow after the link; it points the other way in right-to-left. */\n.acc-footer-statement::after {\n  content: \"\";\n  flex-shrink: 0;\n  width: 6px;\n  height: 6px;\n  border-top: 1.5px solid var(--acc-primary-color);\n  border-inline-end: 1.5px solid var(--acc-primary-color);\n  transform: rotate(45deg);\n}\n\n.acc-menu[dir=\"rtl\"] .acc-footer-statement::after {\n  transform: rotate(-45deg);\n}\n\n@media (hover: hover) {\n  .acc-footer-brand:hover {\n    opacity: 1;\n    text-decoration: underline;\n  }\n\n  .acc-footer-statement:hover .acc-label {\n    text-decoration: underline;\n  }\n}\n\n.acc-footer-brand:focus-visible,\n.acc-footer-statement:focus-visible {\n  opacity: 1;\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Content area */\n.acc-menu-content {\n  flex: 1 1 auto;\n  min-height: 0;\n  overflow: auto;\n  /* Reaching the end of the options must not hand the scroll (wheel or\n     touch) to the page behind the panel. */\n  overscroll-behavior: contain;\n  padding: var(--acc-content-inline-padding) 0;\n  border-top-left-radius: 1.75rem;\n  border-top-right-radius: 1.75rem;\n  background: var(--acc-bg-color);\n  /* A soft shadow cast up onto the header, so the body reads as a sheet\n     lying over it. */\n  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);\n}\n\n/* Text adjustments */\n.acc-text-adjust {\n  background: var(--acc-card-bg);\n  padding: 18px 20px;\n  margin-bottom: 20px;\n  border-radius: var(--acc-border-radius);\n  border: 1px solid rgba(0, 0, 0, 0.1);\n}\n\n.acc-text-adjust .acc-label {\n  display: flex;\n  justify-content: flex-start;\n}\n\n.acc-text-adjust > div {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 20px;\n  align-items: center;\n  font-size: 16px;\n}\n\n.acc-text-adjust .acc-label div {\n  font-size: 16px !important;\n}\n\n.acc-text-adjust div[role=\"button\"] {\n  background: var(--acc-bg-color) !important;\n  border-radius: 50%;\n  width: 40px;\n  height: 40px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  cursor: pointer;\n  border: 1px solid rgba(0, 0, 0, 0.1);\n  transition: border-color 0.2s ease;\n}\n\n.acc-text-adjust div[role=\"button\"]:hover {\n  border-color: var(--acc-primary-color);\n}\n\n.acc-text-adjust div[role=\"button\"]:focus {\n  outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);\n  outline-offset: var(--acc-focus-outline-offset);\n}\n\n/* Overlay */\n.acc-overlay {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: calc(var(--acc-widget-z-index, 100000) - 1);\n}\n\n/* Level dots under a cycling tile's label. */\n.acc-progress-indicator {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  gap: 4px;\n  height: 6px;\n}\n\n.acc-progress-dot {\n  width: 6px;\n  height: 6px;\n  border-radius: 50%;\n  background-color: var(--acc-border-color);\n  transition: background-color 0.2s ease;\n}\n\n.acc-progress-dot.active {\n  background-color: var(--acc-primary-color);\n}\n\n@supports (color: color-mix(in srgb, red 50%, transparent)) {\n  .acc-btn.acc-selected .acc-progress-dot:not(.active) {\n    background-color: color-mix(in srgb, var(--acc-primary-color) 25%, var(--acc-card-bg));\n  }\n}\n\n/* Responsive adjustments */\n@media only screen and (max-width: 560px) {\n  /* Span the viewport between equal gaps. Anchoring both edges (rather\n     than 100vw math) stays centered beside a classic scrollbar and lets\n     the safe-area margins shrink the panel. !important beats the inline\n     dock side set from JS. */\n  .acc-menu {\n    left: var(--acc-menu-inline-gap) !important;\n    right: var(--acc-menu-inline-gap) !important;\n    width: auto;\n  }\n}\n\n/* Phones: tighter spacing leaves more room to show options. */\n@media only screen and (max-width: 480px) {\n  .acc-menu {\n    --acc-content-inline-padding: 16px;\n    --acc-menu-header-height: min(var(--acc-header-height), 56px);\n  }\n\n  .acc-options-all {\n    gap: 16px;\n  }\n\n}\n\n/* Three tiles no longer fit below a ~380px panel (the viewport minus the\n   8px gaps); long labels in some languages need the width. */\n/* Below this width three square tiles would be too narrow for the longer\n   labels to stay on one line, so the grid drops to two per row. Two\n   squares per row would be very tall, so the tiles go back to a fixed\n   height. */\n@media only screen and (max-width: 449px) {\n  /* Two buttons in a narrow panel: tighter, so long translations fit. */\n  .acc-action-reset,\n  .acc-action-hide {\n    gap: 6px;\n    padding: 6px 8px;\n  }\n\n  .acc-action-reset .acc-label,\n  .acc-action-hide .acc-label {\n    font-size: 13px !important;\n    overflow-wrap: anywhere;\n  }\n\n  .acc-options {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n\n  /* One profile per row, so the names stay on one line. */\n  .acc-profiles-panel {\n    grid-template-columns: minmax(0, 1fr);\n  }\n\n  .acc-btn {\n    aspect-ratio: auto;\n  }\n}\n\n/* The title wraps to two lines (longer translations too) rather than\n   truncating beside the header controls. */\n@media only screen and (max-width: 380px) {\n  .acc-menu-title {\n    font-size: 16px !important;\n  }\n\n  .acc-menu .acc-menu-title .acc-label {\n    display: -webkit-box;\n    -webkit-box-orient: vertical;\n    -webkit-line-clamp: 2;\n    white-space: normal;\n    line-height: 1.2 !important;\n  }\n}\n\n/* Landscape phones: the header and footer took over half of a ~340px\n   tall panel, leaving a sliver for the options. */\n@media only screen and (max-height: 500px) {\n  .acc-menu {\n    --acc-menu-header-height: min(var(--acc-header-height), 48px);\n  }\n\n  .acc-menu-content {\n    padding: 12px 0 16px;\n  }\n\n  .acc-action-reset,\n  .acc-action-hide {\n    min-height: 44px;\n  }\n}\n\n/* Touch input: grow the small controls toward a 44px target. */\n@media (pointer: coarse) {\n  .acc-menu-close {\n    width: 44px;\n    height: 44px;\n  }\n\n  .acc-footer-brand,\n  .acc-footer-statement {\n    padding: 10px 0;\n  }\n}\n\n/* Ensure proper focus visibility for assistive technology */\n@media (prefers-reduced-motion: reduce) {\n  .acc-menu,\n  .acc-btn,\n  .acc-lang-select,\n  .acc-progress-dot,\n  .acc-menu-header div[role=\"button\"],\n  .acc-lang-toggle,\n  .acc-back-btn,\n  .acc-menu-close,\n  .acc-action-reset,\n  .acc-card-row,\n  .acc-card-row-chevron,\n  .acc-text-adjust div[role=\"button\"] {\n    transition: none;\n  }\n}\n";
 
     var widgetCSS = "  /* Base styles for the widget */\n  .acc-widget, .acc-menu {\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n  }\n  \n  .acc-widget *, .acc-menu * { \n    box-sizing: border-box !important; \n  }\n  \n  /* Accessibility toggle button */\n  /* Hidden by the visitor for this visit. */\n  .acc-toggle-btn[hidden] {\n    display: none !important;\n  }\n\n  .acc-toggle-btn {\n    position: fixed;\n    z-index: var(--acc-widget-z-index, 100000);\n    left: 30px;\n    bottom: 30px;\n    border-radius: 50%;\n    align-items: center;\n    justify-content: center;\n    width: var(--acc-button-size, 48px);\n    height: var(--acc-button-size, 48px);\n    display: flex;\n    cursor: pointer;\n    outline: none !important;\n    border: none !important;\n    box-shadow: inset 0 0 0 4px var(--acc-primary-color, #0072e4), inset 0 0 0 6px white, 0 2px 5px rgba(0,0,0,0.2) !important;\n    background: var(--acc-primary-color, #0072e4) !important;\n    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;\n    overflow: visible;\n    /* Margins on a fixed box add to the edges it is anchored to, so the\n       configured offset stays clear of notches and the home indicator on\n       edge-to-edge pages (viewport-fit=cover); env() is 0 elsewhere. */\n    margin: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);\n    touch-action: manipulation;\n  }\n  \n  .acc-toggle-btn .acc-toggle-icon {\n    width: 60%;\n    height: 60%;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  .acc-toggle-btn .acc-toggle-icon svg {\n    width: 100%;\n    height: 100%;\n    fill: white;\n    transition: none;\n  }\n  \n  /* Touch screens keep :hover after a tap, which left the button zoomed. */\n  @media (hover: hover) {\n    .acc-toggle-btn:hover {\n      transform: scale(1.12);\n    }\n  }\n\n  /* The menu panel replaces the button while open; closeMenu() restores\n     aria-expanded before moving focus back here, so the button is visible\n     and focusable again by the time it receives focus. */\n  .acc-toggle-btn[aria-expanded=\"true\"] {\n    opacity: 0;\n    visibility: hidden;\n    pointer-events: none;\n  }\n\n  .acc-violation-bubble {\n    position: absolute;\n    top: -8px;\n    right: -8px;\n    min-width: 24px;\n    height: 24px;\n    border-radius: 12px;\n    font-size: 11px;\n    font-weight: 700;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 0 4px;\n    pointer-events: none;\n    z-index: 1;\n    color: #fff;\n    border: none;\n    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  }\n\n  .acc-violation-bubble[data-severity=\"critical\"] {\n    background: #d32f2f;\n    color: #fff;\n  }\n\n  .acc-violation-bubble[data-severity=\"serious\"] {\n    background: #f57c00;\n    color: #fff;\n  }\n\n  .acc-violation-bubble[data-severity=\"moderate\"] {\n    background: #fbc02d;\n    color: #333;\n  }\n\n  .acc-violation-bubble[hidden] {\n    display: none;\n  }\n\n  .acc-toggle-btn:focus {\n    outline: none !important;\n  }\n\n  .acc-toggle-btn:focus-visible {\n    outline: 3px solid var(--acc-primary-color, #0072e4) !important;\n    outline-offset: 2px;\n  }\n\n  @media (prefers-reduced-motion: reduce) {\n    .acc-toggle-btn {\n      transition: none;\n    }\n\n    .acc-toggle-btn .acc-toggle-icon svg {\n      transition: none;\n    }\n\n  }\n";
 
@@ -10065,11 +10173,12 @@ var AccessibleWebWidget = (function () {
                   <span class="acc-label">Hide widget</span>
                 </div>
                 <div class="acc-hide-choices" role="radiogroup" aria-label="Hide widget">
-                  ${[['visit', 'This visit'], ['day', 'One day'], ['week', 'One week']].map(([value, label], index) => `<button type="button" class="acc-hide-choice" role="radio" aria-checked="${index === 0}" tabindex="${index === 0 ? 0 : -1}" data-hide-for="${value}">
+                  ${[['visit', 'This visit'], ['day', 'One day'], ['week', 'One week'], ['always', 'Always']].map(([value, label], index) => `<button type="button" class="acc-hide-choice" role="radio" aria-checked="${index === 0}" tabindex="${index === 0 ? 0 : -1}" data-hide-for="${value}">
                     <span class="acc-hide-radio" aria-hidden="true"></span>
                     <span class="acc-label">${label}</span>
                   </button>`).join('')}
                 </div>
+                <p class="acc-hide-warning acc-label" hidden>The widget stays hidden until you clear this site's data in your browser.</p>
                 <div class="acc-hide-buttons">
                   <button type="button" class="acc-hide-cancel"><span class="acc-label">Close</span></button>
                   <button type="button" class="acc-hide-confirm"><span class="acc-label">Hide</span></button>
@@ -10251,8 +10360,17 @@ var AccessibleWebWidget = (function () {
               }
               if (target.classList.contains('acc-hide-confirm')) {
                 const choice = menu.querySelector('.acc-hide-choice[aria-checked="true"]');
+                const duration = choice ? choice.dataset.hideFor : 'visit';
+                // "Always" takes a second click, after saying how to undo it.
+                const warning = menu.querySelector('.acc-hide-warning');
+                if (duration === 'always' && warning && warning.hidden) {
+                  warning.hidden = false;
+                  menu.querySelector('.acc-hide-choices').hidden = true;
+                  this.announce(warning.textContent);
+                  return;
+                }
                 this.toggleHidePanel(menu, false, { restoreFocus: false });
-                this.hideLauncher(choice ? choice.dataset.hideFor : 'visit');
+                this.hideLauncher(duration);
                 return;
               }
               if (target.classList.contains('acc-action-reset')) {
@@ -10397,8 +10515,8 @@ var AccessibleWebWidget = (function () {
         },
 
       // A visitor can hide the floating button for this visit (remembered for
-      // the browser session) or for a day or a week (remembered with the
-      // other saved choices).
+      // the browser session), or for a day, a week or always (remembered with
+      // the other saved choices).
       isLauncherHiddenByVisitor() {
           try {
             if (window.sessionStorage.getItem('acc-launcher-hidden') === '1') return true;
@@ -10410,7 +10528,8 @@ var AccessibleWebWidget = (function () {
         },
 
       setLauncherHiddenByVisitor(hidden, duration = 'visit') {
-          const days = { day: 1, week: 7 }[duration];
+          // "Always" is stored as a date a hundred years away.
+          const days = { day: 1, week: 7, always: 36500 }[duration];
           try {
             if (hidden && !days) {
               window.sessionStorage.setItem('acc-launcher-hidden', '1');
@@ -10430,7 +10549,7 @@ var AccessibleWebWidget = (function () {
           this.syncLauncherControls();
         },
 
-      // duration: 'visit' | 'day' | 'week'
+      // duration: 'visit' | 'day' | 'week' | 'always'
       hideLauncher(duration = 'visit') {
           this.close();
           this.setLauncherHiddenByVisitor(true, duration);
@@ -10454,6 +10573,11 @@ var AccessibleWebWidget = (function () {
           if (!panel || !actions) return;
           panel.hidden = !open;
           actions.hidden = open;
+          // Always start from the choices, not from the "Always" warning.
+          const warning = panel.querySelector('.acc-hide-warning');
+          const choices = panel.querySelector('.acc-hide-choices');
+          if (warning) warning.hidden = true;
+          if (choices) choices.hidden = false;
           if (open) {
             const checked = panel.querySelector('.acc-hide-choice[aria-checked="true"]');
             if (checked) checked.focus();
