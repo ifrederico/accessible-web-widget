@@ -364,9 +364,7 @@ export const pageToolMethods = {
           <h2 id="acc-structure-title" class="acc-report-title">${this.translate('Page Structure')}</h2>
           <button type="button" class="acc-report-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
         </div>
-        <div class="acc-report-sheet">
-          <div class="acc-report-content"></div>
-        </div>
+        <div class="acc-report-content"></div>
       </div>
     `;
 

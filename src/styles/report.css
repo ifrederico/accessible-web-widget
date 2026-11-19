@@ -1,8 +1,3 @@
-/* The report and Page Structure dialogs. They share the menu's look: a
-   header in the primary colour, a grey sheet with rounded top corners
-   lying over it, and white cards on the sheet. These live in the page's
-   own document, not the widget's shadow root, so the theme variables are
-   read with fallbacks. */
 .acc-report-panel {
   display: none;
   position: fixed;
@@ -12,23 +7,7 @@
   bottom: 0;
   z-index: calc(var(--acc-widget-z-index, 100000) + 10);
   /* The menu's font, when it has been registered; otherwise the device's. */
-  font-family: "AccessibleWeb Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-  letter-spacing: normal;
-  color: var(--acc-text-color, #222222);
-  --acc-report-muted: #5b6472;
-  --acc-hover-tint: #f7f8fa;
-}
-@supports (color: color-mix(in srgb, red 50%, transparent)) {
-  .acc-report-panel {
-    --acc-hover-tint: color-mix(in srgb, var(--acc-hover-color, #c4cad3) 14%, var(--acc-card-bg, #ffffff));
-  }
-}
-.acc-report-panel *,
-.acc-report-panel *::before,
-.acc-report-panel *::after {
-  box-sizing: border-box;
+  font-family: "AccessibleWeb Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 .acc-report-panel.acc-report-visible {
   display: flex;
@@ -41,386 +20,254 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(0, 0, 0, 0.6);
 }
 .acc-report-dialog {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  width: 92%;
-  max-width: 760px;
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
   max-height: 85vh;
   /* dvh tracks the visible area while mobile browser toolbars show. */
   max-height: 85dvh;
-  border-radius: 28px;
-  background: var(--acc-primary-color, #0072e4);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
 .acc-report-header {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  min-height: 64px;
-  padding: 10px 12px 10px 24px;
-  padding-inline: 24px 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e0e0e0;
 }
 .acc-report-title {
   margin: 0;
-  font-family: inherit;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: normal;
-  color: var(--acc-text-color-inverted, #ffffff);
+  color: #1a1a1a;
 }
 .acc-report-close {
-  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
 }
 @media (hover: hover) {
   .acc-report-close:hover {
-    background: rgba(255, 255, 255, 0.18);
+    background: #f0f0f0;
   }
 }
-/* On the blue header the usual blue focus ring would not show. */
-.acc-report-close:focus-visible {
-  outline: 2px solid var(--acc-text-color-inverted, #ffffff);
-  outline-offset: 1px;
-}
 .acc-report-close svg {
-  width: 24px;
-  height: 24px;
-  fill: var(--acc-text-color-inverted, #ffffff);
-}
-/* The sheet holds the rounded corners; the scrolling area sits inside it. */
-.acc-report-sheet {
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-top-left-radius: 28px;
-  border-top-right-radius: 28px;
-  background: var(--acc-bg-color, #f3f5f8);
-  /* Cast onto the header above and the footer below; isolation lets the
-     shadow show over the footer. */
-  isolation: isolate;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.18);
+  width: 20px;
+  height: 20px;
+  fill: #666;
 }
 .acc-report-status {
-  flex-shrink: 0;
-  padding: 20px 28px 0;
-  font-size: 15px;
-  color: var(--acc-report-muted);
-}
-.acc-report-status:empty {
-  display: none;
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #666;
+  background: #f8f9fa;
 }
 .acc-report-content {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 20px 24px 24px;
-  scrollbar-width: thin;
-  scrollbar-color: #7c8594 transparent;
+  padding: 16px 20px;
 }
 .acc-report-loading {
-  padding: 40px 16px;
   text-align: center;
-  color: var(--acc-report-muted);
+  padding: 40px;
+  color: #666;
 }
 .acc-report-error {
-  padding: 24px 16px;
+  color: #d32f2f;
+  padding: 20px;
   text-align: center;
-  color: #c62828;
 }
 .acc-report-summary {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
 }
 .acc-report-stat {
-  padding: 18px 8px 16px;
-  border-radius: 22px;
-  background: var(--acc-card-bg, #ffffff);
-  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
   text-align: center;
 }
 .acc-report-stat-value {
-  display: block;
   font-size: 28px;
-  font-weight: 600;
-  line-height: 1.1;
+  font-weight: 700;
+  display: block;
 }
 .acc-report-stat-label {
-  display: block;
-  margin-top: 6px;
-  font-size: 13px;
-  line-height: 1.3;
-  color: var(--acc-report-muted);
-  overflow-wrap: anywhere;
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  margin-top: 4px;
 }
-/* Each of these is at least 4.5 to 1 against white. */
-.acc-report-stat.critical .acc-report-stat-value { color: #c62828; }
-.acc-report-stat.serious .acc-report-stat-value { color: #b45309; }
-.acc-report-stat.moderate .acc-report-stat-value { color: #8a6100; }
-.acc-report-stat.minor .acc-report-stat-value { color: #4d7c0f; }
-.acc-report-stat.passed .acc-report-stat-value { color: #2e7d32; }
+.acc-report-stat.critical .acc-report-stat-value { color: #d32f2f; }
+.acc-report-stat.serious .acc-report-stat-value { color: #f57c00; }
+.acc-report-stat.moderate .acc-report-stat-value { color: #fbc02d; }
+.acc-report-stat.minor .acc-report-stat-value { color: #7cb342; }
+.acc-report-stat.passed .acc-report-stat-value { color: #43a047; }
 .acc-report-section {
-  margin-bottom: 24px;
-}
-.acc-report-section:last-child {
-  margin-bottom: 0;
+  margin-bottom: 20px;
 }
 .acc-report-section-title {
-  margin: 0 0 10px;
-  padding: 0 4px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--acc-text-color, #222222);
-}
-.acc-report-note {
-  margin: 0;
-  padding: 0 4px;
-  font-size: 15px;
-  color: var(--acc-report-muted);
-}
-.acc-report-violation-details .acc-report-note {
-  margin-top: 12px;
-  font-size: 13px;
+  color: #333;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e0e0e0;
 }
 .acc-report-violation {
-  margin-bottom: 8px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 12px;
   overflow: hidden;
-  border-radius: 18px;
-  background: var(--acc-card-bg, #ffffff);
-  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
 }
-.acc-report-violation:last-child {
-  margin-bottom: 0;
-}
+/* A real button, so a row opens with the keyboard; it looks as before. */
 .acc-report-violation-header {
+  width: 100%;
+  margin: 0;
+  padding: 12px 16px;
+  border: none;
+  background: #f8f9fa;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 100%;
-  min-height: 56px;
-  margin: 0;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 18px;
-  background: transparent;
-  font: inherit;
-  color: inherit;
-  text-align: start;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-@media (hover: hover) {
-  .acc-report-violation-header:hover {
-    background: var(--acc-hover-tint);
-  }
 }
 .acc-report-violation-header:focus-visible {
   outline: 2px solid var(--acc-focus-ring-color, #0072e4);
   outline-offset: -2px;
 }
-/* Arrow at the end of the row; it turns over when the row is open. */
-.acc-report-violation-header::after {
-  content: "";
-  flex-shrink: 0;
-  width: 8px;
-  height: 8px;
-  margin: 0 4px 3px;
-  border-right: 1.5px solid var(--acc-report-muted);
-  border-bottom: 1.5px solid var(--acc-report-muted);
-  transform: rotate(45deg);
-  transition: transform 0.2s ease;
+@media (hover: hover) {
+  .acc-report-violation-header:hover {
+    background: #f0f0f0;
+  }
 }
-.acc-report-violation.expanded .acc-report-violation-header::after {
-  margin: 3px 4px 0;
-  transform: rotate(-135deg);
-}
-/* Soft pills: a light tint with dark text of the same colour. */
 .acc-report-violation-impact {
-  flex-shrink: 0;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  line-height: 1.3;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #fff;
 }
-.acc-report-violation-impact.critical { background: #fdecea; color: #a61b1b; }
-.acc-report-violation-impact.serious { background: #fff0e0; color: #8f3f00; }
-.acc-report-violation-impact.moderate { background: #fff4cf; color: #6f4e00; }
-.acc-report-violation-impact.minor { background: #edf5df; color: #3d6210; }
+.acc-report-violation-impact.critical { background: #d32f2f; }
+.acc-report-violation-impact.serious { background: #f57c00; }
+.acc-report-violation-impact.moderate { background: #fbc02d; color: #333; }
+.acc-report-violation-impact.minor { background: #7cb342; }
 .acc-report-violation-title {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--acc-text-color, #222222);
+  flex: 1;
+  font-weight: 500;
+  color: #333;
 }
 .acc-report-violation-count {
-  flex-shrink: 0;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--acc-bg-color, #f3f5f8);
-  font-size: 13px;
-  line-height: 1.3;
-  color: var(--acc-report-muted);
-  white-space: nowrap;
+  font-size: 12px;
+  color: #666;
+  background: #e0e0e0;
+  padding: 2px 8px;
+  border-radius: 12px;
 }
 .acc-report-violation-details {
   display: none;
-  padding: 4px 16px 16px;
+  padding: 16px;
+  border-top: 1px solid #e0e0e0;
 }
 .acc-report-violation.expanded .acc-report-violation-details {
   display: block;
 }
 .acc-report-violation-desc {
-  margin: 0 0 10px;
-  font-size: 15px;
-  color: var(--acc-report-muted);
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 .acc-report-violation-help {
-  margin: 0 0 12px;
-  font-size: 15px;
+  font-size: 13px;
+  margin-bottom: 12px;
 }
 .acc-report-violation-help a {
-  font-weight: 600;
-  color: var(--acc-primary-color, #0072e4);
-  text-decoration: none;
-}
-@media (hover: hover) {
-  .acc-report-violation-help a:hover {
-    text-decoration: underline;
-  }
-}
-.acc-report-violation-help a:focus-visible {
-  outline: 2px solid var(--acc-focus-ring-color, #0072e4);
-  outline-offset: 2px;
-  border-radius: 4px;
+  color: #0072e4;
 }
 .acc-report-node {
-  margin-top: 8px;
+  background: #f8f9fa;
+  border-radius: 6px;
   padding: 12px;
-  border-radius: 14px;
-  background: var(--acc-bg-color, #f3f5f8);
+  margin-top: 8px;
 }
 .acc-report-node-html {
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: #1f2933;
-  color: #e6edf3;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 12.5px;
-  line-height: 1.5;
+  font-family: monospace;
+  font-size: 12px;
+  background: #263238;
+  color: #80cbc4;
+  padding: 8px 12px;
+  border-radius: 4px;
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-all;
 }
 .acc-report-node-fix {
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 13px;
-  color: var(--acc-text-color, #222222);
-  /* The check's own advice comes as several short lines. */
-  white-space: pre-line;
+  color: #333;
 }
 .acc-report-node-fix strong {
-  font-weight: 600;
+  color: #0072e4;
 }
 .acc-report-success {
-  padding: 32px 16px;
   text-align: center;
-}
-.acc-report-success h3 {
-  margin: 0;
-  font-family: inherit;
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--acc-text-color, #222222);
+  padding: 40px;
 }
 .acc-report-success-icon {
+  width: 64px;
+  height: 64px;
+  background: #43a047;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 56px;
-  height: 56px;
   margin: 0 auto 16px;
-  border-radius: 50%;
-  background: #2e7d32;
 }
 .acc-report-success-icon svg {
-  width: 28px;
-  height: 28px;
-  fill: #ffffff;
+  width: 32px;
+  height: 32px;
+  fill: #fff;
 }
-/* The credit sits on the dialog's own colour, like the menu's footer. */
 .acc-report-footer {
-  flex-shrink: 0;
-  padding: 12px 24px;
+  padding: 12px 20px;
+  border-top: 1px solid #e0e0e0;
   text-align: center;
 }
 .acc-report-powered {
-  font-size: 13px;
-  line-height: 1.3;
-  color: var(--acc-text-color-inverted, #ffffff);
+  font-size: 12px;
 }
 @media (max-width: 600px) {
   .acc-report-dialog {
-    width: calc(100% - 16px);
+    width: 95%;
     max-height: 90vh;
     max-height: 90dvh;
   }
-  .acc-report-header {
-    padding-inline: 20px 8px;
-  }
-  .acc-report-status {
-    padding: 16px 20px 0;
-  }
-  .acc-report-content {
-    padding: 16px 16px 20px;
-  }
   .acc-report-summary {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .acc-report-stat.passed {
-    grid-column: 1 / -1;
-  }
-  /* The pill and the count share the first line; the title gets its own. */
-  .acc-report-violation-header {
-    flex-wrap: wrap;
-    row-gap: 8px;
-    padding: 12px 14px;
-  }
-  .acc-report-violation-title {
-    order: 3;
-    flex-basis: 100%;
-  }
-  .acc-report-violation-count {
-    margin-inline-start: auto;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (pointer: coarse) {
   .acc-report-close {
-    width: 44px;
-    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 }

@@ -63,15 +63,11 @@ body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, f
   }
 }
 
-/* Page structure navigator: each list is a white card of rows inside
-   the shared report dialog. */
+/* Page structure navigator — list styling inside the shared report dialog */
 .acc-structure-list {
   list-style: none;
-  margin: 0;
-  padding: 6px;
-  border-radius: 18px;
-  background: var(--acc-card-bg, #ffffff);
-  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
+  margin: 0 0 16px;
+  padding: 0;
 }
 
 .acc-structure-list li {
@@ -82,23 +78,20 @@ body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, f
 .acc-structure-item {
   display: block;
   width: 100%;
-  margin: 0;
   text-align: start;
   background: transparent;
   border: none;
-  border-radius: 12px;
-  padding: 10px 12px;
-  font: inherit;
-  font-size: 15px;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
   line-height: 1.4;
-  color: var(--acc-text-color, #222222);
+  color: var(--acc-text-color, #1f2937);
   cursor: pointer;
-  overflow-wrap: anywhere;
 }
 
 @media (hover: hover) {
   .acc-structure-item:hover {
-    background: var(--acc-hover-tint, #f7f8fa);
+    background: var(--acc-hover-tint, var(--acc-hover-color, #f3f4f6));
   }
 }
 
@@ -114,8 +107,8 @@ body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, f
 }
 
 .acc-structure-empty {
-  color: #5b6472;
-  font-size: 15px;
-  margin: 0;
-  padding: 0 4px;
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0 0 16px;
+  padding: 0 12px;
 }
