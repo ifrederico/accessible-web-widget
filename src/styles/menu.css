@@ -1104,7 +1104,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px calc(var(--acc-content-inline-padding) + 6px);
+  padding: 8px calc(var(--acc-content-inline-padding) + 6px);
   background: var(--acc-primary-color);
 }
 
@@ -1178,9 +1178,9 @@
   border-top-left-radius: 1.75rem;
   border-top-right-radius: 1.75rem;
   background: var(--acc-bg-color);
-  /* A soft shadow cast up onto the header, so the body reads as a sheet
-     lying over it. */
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);
+  /* A soft shadow cast up onto the header and down onto the footer, so
+     the body reads as a sheet lying over both. */
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.18);
 }
 
 .acc-menu-content {

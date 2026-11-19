@@ -114,7 +114,10 @@
   border-top-left-radius: 28px;
   border-top-right-radius: 28px;
   background: var(--acc-bg-color, #f3f5f8);
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18);
+  /* Cast onto the header above and the footer below; isolation lets the
+     shadow show over the footer. */
+  isolation: isolate;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.18), 0 4px 16px rgba(0, 0, 0, 0.18);
 }
 .acc-report-status {
   flex-shrink: 0;
