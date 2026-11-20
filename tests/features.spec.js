@@ -538,7 +538,8 @@ test('the report lists each result as a card that opens on its own, with code to
   await expect(report.locator('.acc-report-header .acc-report-powered')).toHaveText('Powered by axe-core');
 
   // The page plants one image with no description for this demo.
-  const cards = report.locator('.acc-report-section').first().locator('.acc-report-violation');
+  // The first section is the tiles; the results follow it.
+  const cards = report.locator('.acc-report-section').nth(1).locator('.acc-report-violation');
   await expect(cards).toHaveCount(2);
   const first = cards.nth(0).locator('.acc-report-violation-header');
   const second = cards.nth(1).locator('.acc-report-violation-header');
