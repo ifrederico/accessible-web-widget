@@ -66,7 +66,7 @@ Rules the build must follow:
 - The panel's scrollbar is thin with no track where the system always shows scrollbars. This was checked in Chrome only, and has no automated test.
 - The menu's text is set in Inter. The files are in `src/fonts/`, copied to `dist/fonts/` by the build, and loaded from beside the script when the menu first opens (only the parts a language needs). `menuFontUrl` points at another folder; `menuFont: "system"` turns it off. Before release: check the font loads from the CDN address, and in the WordPress plugin, whose PHP line for `menuFontUrl` and font copies were added but never run.
 - The Accessibility Report and Page Structure dialogs are built from the menu's pieces, with no blue (a blue header and footer were tried and rejected as hard to read): a light grey dialog, white cards, soft pills. The design is the "Report" board on the canvas.
-  - Passed tests is a line under the title; the tiles are the four severities.
+  - The header is the title with "Powered by axe-core" beside it, a Close button, and a line under it. Passed tests is the heading over the four severity tiles.
   - Each result is a card that opens on its own, with the element's HTML in a dark code box and a copy button.
   - "Items Need Review" now lists its items as cards. Its note, "A person needs to check these.", and the copy button's names "Copy" and "Copied" are English only, like the engine's own texts.
 - The statement page is one sheet instead of five cards.

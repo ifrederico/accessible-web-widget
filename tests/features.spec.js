@@ -533,8 +533,9 @@ test('the report lists each result as a card that opens on its own, with code to
 
   const report = page.locator('.acc-report-panel.acc-report-visible');
   await expect(report.locator('.acc-report-stat')).toHaveCount(4);
-  // What passed is a line under the title, not a tile.
-  await expect(report.locator('.acc-report-status')).toContainText('Passed Tests');
+  // What passed is the heading over the tiles, not a tile.
+  await expect(report.locator('.acc-report-passed')).toContainText('Passed Tests');
+  await expect(report.locator('.acc-report-header .acc-report-powered')).toHaveText('Powered by axe-core');
 
   // The page plants one image with no description for this demo.
   const cards = report.locator('.acc-report-section').first().locator('.acc-report-violation');

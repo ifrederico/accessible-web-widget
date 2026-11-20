@@ -200,10 +200,8 @@ export const axeReportMethods = {
     this.openReportPanel(panel);
   
     const contentArea = this.findElement('.acc-report-content', panel);
-    const statusArea = this.findElement('.acc-report-status', panel);
   
     // Show loading state
-    statusArea.textContent = '';
     contentArea.innerHTML = `<div class="acc-report-loading">${this.translate('Analyzing page...')}</div>`;
   
     try {
@@ -213,7 +211,6 @@ export const axeReportMethods = {
   
     } catch (error) {
       contentArea.innerHTML = `<div class="acc-report-error">Error: ${this.escapeHtml(error.message)}</div>`;
-      statusArea.textContent = '';
     }
   },
 
@@ -305,14 +302,11 @@ export const axeReportMethods = {
         <div class="acc-report-header">
           <div class="acc-report-heading">
             <h2 id="acc-report-title" class="acc-report-title">${this.translate('Accessibility Report')}</h2>
-            <div class="acc-report-status"></div>
+            <span class="acc-report-powered">Powered by axe-core</span>
           </div>
           <button type="button" class="acc-report-close" aria-label="${this.translate('Close')}">${this.widgetIcons.close}</button>
         </div>
         <div class="acc-report-content"></div>
-        <div class="acc-report-footer">
-          <span class="acc-report-powered">Powered by axe-core</span>
-        </div>
       </div>
     `;
   
@@ -438,7 +432,6 @@ export const axeReportMethods = {
 
   displayReportResults(panel, results) {
     const contentArea = this.findElement('.acc-report-content', panel);
-    const statusArea = this.findElement('.acc-report-status', panel);
   
     const violations = results.violations || [];
     const passes = results.passes || [];
@@ -452,11 +445,11 @@ export const axeReportMethods = {
       }
     });
   
-    // Under the title: how much passed. It is context, not a problem to
-    // open, so it is a quiet line and not one of the tiles.
-    statusArea.innerHTML = `<span class="acc-report-passed">${this.widgetIcons.check}<span>${passes.length} ${this.translate('Passed Tests')}</span></span>`;
-  
+    // How much passed is the heading over the four tiles. It is context,
+    // not a problem to open, so it is not a tile itself.
     let html = `
+      <div class="acc-report-section">
+      <div class="acc-report-section-title acc-report-passed">${this.widgetIcons.check}<span>${passes.length} ${this.translate('Passed Tests')}</span></div>
       <div class="acc-report-summary">
         <div class="acc-report-stat critical">
           <span class="acc-report-stat-value">${counts.critical}</span>
@@ -474,6 +467,7 @@ export const axeReportMethods = {
           <span class="acc-report-stat-value">${counts.minor}</span>
           <span class="acc-report-stat-label">${this.translate('Minor')}</span>
         </div>
+      </div>
       </div>
     `;
   
