@@ -34,9 +34,12 @@
 .acc-report-panel *::after {
   box-sizing: border-box;
 }
+/* The dialog hangs from a fixed point near the top and grows downward.
+   Centred, it re-centred itself every time a card opened or the results
+   arrived, so everything on it jumped. */
 .acc-report-panel.acc-report-visible {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 .acc-report-overlay {
@@ -54,8 +57,10 @@
   overflow: hidden;
   width: 92%;
   max-width: 760px;
+  margin-top: 7.5vh;
   max-height: 85vh;
   /* dvh tracks the visible area while mobile browser toolbars show. */
+  margin-top: 7.5dvh;
   max-height: 85dvh;
   border-radius: 28px;
   background: var(--acc-report-sheet);
@@ -143,6 +148,12 @@
   padding: 12px 24px 24px;
   scrollbar-width: thin;
   scrollbar-color: #7c8594 transparent;
+  /* Room for an always-visible scrollbar is kept from the start, so the
+     cards do not shift sideways when one opens and the list gets long
+     enough to scroll. That room comes out of the end padding (measured
+     in openReportPanel), so the cards stay centred. */
+  scrollbar-gutter: stable;
+  padding-inline-end: max(4px, calc(24px - var(--acc-report-gutter, 0px)));
 }
 .acc-report-loading {
   padding: 40px 16px;
@@ -453,7 +464,9 @@
 @media (max-width: 600px) {
   .acc-report-dialog {
     width: calc(100% - 16px);
+    margin-top: 5vh;
     max-height: 90vh;
+    margin-top: 5dvh;
     max-height: 90dvh;
   }
   .acc-report-header {
@@ -462,6 +475,7 @@
   }
   .acc-report-content {
     padding: 12px 16px 20px;
+    padding-inline-end: max(4px, calc(16px - var(--acc-report-gutter, 0px)));
   }
   .acc-report-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));

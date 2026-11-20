@@ -231,6 +231,14 @@ export const axeReportMethods = {
     panel.classList.add('acc-report-visible');
     panel.setAttribute('aria-hidden', 'false');
     panel.setAttribute('dir', this.getUiDirection());
+
+    // Where the system always shows scrollbars, the content gives up that
+    // much end padding so the cards stay centred (see report.css).
+    const scroller = this.findElement('.acc-report-content', panel);
+    if (scroller) {
+      const gutter = Math.max(0, scroller.offsetWidth - scroller.clientWidth);
+      panel.style.setProperty('--acc-report-gutter', `${gutter}px`);
+    }
   
     const dialog = this.findElement('.acc-report-dialog', panel);
     const focusTarget = dialog || panel;
