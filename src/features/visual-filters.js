@@ -3,15 +3,65 @@
 /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
 export const visualFilterMethods = {
 
+  // The Contrast tile shows the active choice by name. Light Contrast is
+  // stored under the old High Contrast key (see contrastModes).
   getContrastToggleDisplay(index) {
       const control = 'Contrast';
       if (index === 0) {
-        return { key: 'light-contrast', control, label: 'Light Contrast', icon: this.widgetIcons.lightContrast };
+        return { key: 'smart-contrast', control, label: 'Smart Contrast', icon: this.widgetIcons.smartContrast };
       }
       if (index === 1) {
         return { key: 'dark-contrast', control, label: 'Dark Contrast', icon: this.widgetIcons.darkContrast };
       }
+      if (index === 2) {
+        return { key: 'light-contrast', control, label: 'Light Contrast', icon: this.widgetIcons.lightContrast };
+      }
       return { key: null, control, label: control, icon: this.widgetIcons.contrast };
+    },
+
+  // The active Contrast choice as its state key, or null. Light wins over
+  // Dark, and Dark over Smart, when a profile or an old save leaves more
+  // than one on. A saved "light-contrast" is the faint filter the tile
+  // once had; it now means Light Contrast.
+  getContrastMode(states = this.loadConfig().states || {}) {
+      if (!states) return null;
+      if (states['high-contrast-mode'] || states['light-contrast']) return 'high-contrast-mode';
+      if (states['dark-contrast']) return 'dark-contrast';
+      if (states['smart-contrast']) return 'smart-contrast';
+      return null;
+    },
+
+  setContrastUI(menu, mode = null) {
+      if (!menu || !menu.querySelector) return;
+      const feature = this.multiLevelFeatures?.['contrast-toggle'];
+      if (!feature) return;
+      const index = mode ? feature.values.indexOf(mode) : -1;
+      feature.currentIndex = index;
+      const button = menu.querySelector('.acc-btn[data-key="contrast-toggle"]');
+      if (!button) return;
+      this.updateContrastToggleButton(button, index);
+      const isActive = index >= 0;
+      button.classList.toggle('acc-selected', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      button.querySelectorAll('.acc-progress-dot').forEach((dot, dotIndex) => {
+        dot.classList.toggle('active', dotIndex === index);
+      });
+    },
+
+  // Put the active Contrast choice on the page. Light is the High
+  // Contrast rules, Dark has its own, and Smart Contrast runs only when
+  // neither is on, since both already set every color.
+  applyContrastMode(states = this.loadConfig().states || {}) {
+      const mode = this.getContrastMode(states);
+      this.enableHighContrastMode(mode === 'high-contrast-mode');
+      const isDark = mode === 'dark-contrast';
+      if (isDark) {
+        this.injectStyle('acc-dark-contrast', this.buildDarkContrastCss());
+      } else {
+        this.removeStyle('acc-dark-contrast');
+      }
+      document.documentElement.classList.toggle('acc-dark-contrast', isDark);
+      this.refreshSmartContrast({ rescan: true });
     },
 
   applyModeToggleButtonDisplay(button, display, modeAttribute) {
@@ -173,25 +223,6 @@ export const visualFilterMethods = {
 
   setColorFilterUI(menu, activeKey = null) {
       if (!menu || !menu.querySelectorAll) return;
-      const contrastFeature = this.multiLevelFeatures?.['contrast-toggle'];
-      const contrastButton = menu.querySelector('.acc-btn[data-key="contrast-toggle"]');
-      if (contrastFeature) {
-        const contrastIndex = contrastFeature.values.indexOf(activeKey);
-        contrastFeature.currentIndex = contrastIndex;
-        this.updateContrastToggleButton(contrastButton, contrastIndex);
-        if (contrastButton) {
-          const isContrastActive = contrastIndex >= 0;
-          contrastButton.classList.toggle('acc-selected', isContrastActive);
-          contrastButton.setAttribute('aria-pressed', isContrastActive ? 'true' : 'false');
-          const indicator = contrastButton.querySelector('.acc-progress-indicator[data-feature="contrast-toggle"]');
-          if (indicator) {
-            const dots = indicator.querySelectorAll('.acc-progress-dot');
-            dots.forEach((dot, index) => {
-              dot.classList.toggle('active', index === contrastIndex);
-            });
-          }
-        }
-      }
       const saturationFeature = this.multiLevelFeatures?.['saturation-toggle'];
       const saturationButton = menu.querySelector('.acc-btn[data-key="saturation-toggle"]');
       if (saturationFeature) {
@@ -258,12 +289,6 @@ export const visualFilterMethods = {
         case 'invert-colors':
           r = 255 - r; g = 255 - g; b = 255 - b;
           break;
-        case 'light-contrast': {
-          // filter: contrast(125%) brightness(1.2)
-          r = 128 + (r - 128) * 1.25; g = 128 + (g - 128) * 1.25; b = 128 + (b - 128) * 1.25;
-          r *= 1.2; g *= 1.2; b *= 1.2;
-          break;
-        }
         case 'low-saturation': {
           // filter: saturate(50%) — use standard saturate matrix with s=0.5
           const s = 0.5;
@@ -298,8 +323,8 @@ export const visualFilterMethods = {
     },
 
   // Dark Contrast: black page, white text, yellow links. The same shape
-  // as High Contrast with the colors turned around. With both on, High
-  // Contrast wins: its rules are the more specific ones.
+  // as Light Contrast (the High Contrast rules) with the colors turned
+  // around.
   buildDarkContrastCss() {
       const X = ':not(.acc-container):not(.acc-container *):not(.acc-rg-container):not(.acc-rg-container *)';
       const shapes = 'path, circle, ellipse, rect, polygon, polyline, line';
@@ -375,7 +400,6 @@ export const visualFilterMethods = {
       const { states } = this.loadConfig();
       const activeKey = this.getActiveColorFilterKey(states);
       this.activeColorFilterKey = activeKey;
-      document.documentElement.classList.toggle('acc-dark-contrast', activeKey === 'dark-contrast');
   
       if (!activeKey) {
         this.removeStyle('acc-filter-style');
@@ -384,10 +408,6 @@ export const visualFilterMethods = {
       const filter = this.visualFilters[activeKey];
       if (!filter) {
         this.removeStyle('acc-filter-style');
-        return;
-      }
-      if (filter.theme === 'dark') {
-        this.injectStyle('acc-filter-style', this.buildDarkContrastCss());
         return;
       }
       const adjustedFilter = {
@@ -474,8 +494,25 @@ export const visualFilterMethods = {
         return;
       }
 
-      // Beyond those, only the color filter toggles render as cycling buttons.
-      if (featureKey !== 'contrast-toggle' && featureKey !== 'saturation-toggle') return;
+      // Contrast: Smart, Dark, Light, then off. One choice at a time.
+      if (featureKey === 'contrast-toggle') {
+        const current = feature.values.indexOf(this.getContrastMode());
+        const newIndex = current + 1;
+        const newMode = newIndex < feature.levels ? feature.values[newIndex] : null;
+        const payload = { 'light-contrast': false };
+        feature.values.forEach((modeKey) => {
+          payload[modeKey] = modeKey === newMode;
+        });
+        this.updateState(payload);
+        this.applyContrastMode();
+        this.setContrastUI(menu, newMode);
+        // "Contrast: Dark Contrast On" / "Contrast Off".
+        this.announceFeatureState(button.getAttribute('aria-label'), !!newMode);
+        return;
+      }
+
+      // Beyond those, only Saturation renders as a cycling color filter.
+      if (featureKey !== 'saturation-toggle') return;
 
       const newIndex = feature.currentIndex + 1;
       const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
@@ -483,8 +520,8 @@ export const visualFilterMethods = {
       this.setColorFilterUI(menu, newActiveKey);
       this.applyVisualFilters();
       // setColorFilterUI re-labels the button with the control and the
-      // active mode ("Contrast: Light Contrast"), so the announcement reads
-      // "Contrast: Light Contrast On" / "Contrast Off".
+      // active mode ("Saturation: Low Saturation"), so the announcement
+      // reads "Saturation: Low Saturation On" / "Saturation Off".
       this.announceFeatureState(button.getAttribute('aria-label'), !!newActiveKey);
     },
 

@@ -4,6 +4,7 @@ import { axeReportMethods } from './features/axe-report.js';
 import { annotationMethods } from './features/annotations.js';
 import { visualFilterMethods } from './features/visual-filters.js';
 import { pageToolMethods } from './features/page-tools.js';
+import { smartContrastMethods } from './features/smart-contrast.js';
 
 /** @typedef {import('./index.js').default} AccessibleWebWidget */
 
@@ -14,5 +15,6 @@ export const featureMethods = {
   ...axeReportMethods,
   ...annotationMethods,
   ...visualFilterMethods,
-  ...pageToolMethods
+  ...pageToolMethods,
+  ...smartContrastMethods
 };

@@ -66,6 +66,7 @@ const WIDGET_ICONS = {
       highlightLinks: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M238,88.18a52.42,52.42,0,0,1-15.4,35.66l-34.75,34.75A52.28,52.28,0,0,1,150.62,174h-.05A52.63,52.63,0,0,1,98,119.9a6,6,0,0,1,6-5.84h.17a6,6,0,0,1,5.83,6.16A40.62,40.62,0,0,0,150.58,162h0a40.4,40.4,0,0,0,28.73-11.9l34.75-34.74A40.63,40.63,0,0,0,156.63,57.9l-11,11a6,6,0,0,1-8.49-8.49l11-11a52.62,52.62,0,0,1,74.43,0A52.83,52.83,0,0,1,238,88.18Zm-127.62,98.9-11,11A40.36,40.36,0,0,1,70.6,210h0a40.63,40.63,0,0,1-28.7-69.36L76.62,105.9A40.63,40.63,0,0,1,146,135.77a6,6,0,0,0,5.83,6.16H152a6,6,0,0,0,6-5.84A52.63,52.63,0,0,0,68.14,97.42L33.38,132.16A52.63,52.63,0,0,0,70.56,222h0a52.26,52.26,0,0,0,37.22-15.42l11-11a6,6,0,1,0-8.49-8.48Z"/></svg>',
       highlightTitle: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M230,112v96a6,6,0,0,1-12,0V123.21L203.33,133a6,6,0,0,1-6.66-10l24-16a6,6,0,0,1,9.33,5ZM144,50a6,6,0,0,0-6,6v54H46V56a6,6,0,0,0-12,0V176a6,6,0,0,0,12,0V122h92v54a6,6,0,0,0,12,0V56A6,6,0,0,0,144,50Z"/></svg>',
       contrast: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm6,12.2a89.86,89.86,0,0,1,20,3.63V214.17a89.86,89.86,0,0,1-20,3.63Zm32,8.23a90.48,90.48,0,0,1,20,12.81V196.76a90.48,90.48,0,0,1-20,12.81ZM38,128a90.12,90.12,0,0,1,84-89.8V217.8A90.12,90.12,0,0,1,38,128Zm160,56.5V71.5a89.81,89.81,0,0,1,0,113Z"/></svg>',
+      smartContrast: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M246,152a6,6,0,0,1-6,6H222v18a6,6,0,0,1-12,0V158H192a6,6,0,0,1,0-12h18V128a6,6,0,0,1,12,0v18h18A6,6,0,0,1,246,152ZM56,70H74V88a6,6,0,0,0,12,0V70h18a6,6,0,0,0,0-12H86V40a6,6,0,0,0-12,0V58H56a6,6,0,0,0,0,12ZM184,194H174V184a6,6,0,0,0-12,0v10H152a6,6,0,0,0,0,12h10v10a6,6,0,0,0,12,0V206h10a6,6,0,0,0,0-12ZM217.9,78.59,78.58,217.9a14,14,0,0,1-19.8,0L38.09,197.21a14,14,0,0,1,0-19.8L177.41,38.1a14,14,0,0,1,19.8,0L217.9,58.79A14,14,0,0,1,217.9,78.59ZM167.51,112,144,88.49,46.58,185.9a2,2,0,0,0,0,2.83l20.69,20.68a2,2,0,0,0,2.82,0h0Zm41.9-44.73L188.73,46.59a2,2,0,0,0-2.83,0L152.48,80,176,103.52,209.41,70.1A2,2,0,0,0,209.41,67.27Z"/></svg>',
       darkContrast: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M232.13,143.64a6,6,0,0,0-6-1.49A90.07,90.07,0,0,1,113.86,29.85a6,6,0,0,0-7.49-7.48A102.88,102.88,0,0,0,54.48,58.68,102,102,0,0,0,197.32,201.52a102.88,102.88,0,0,0,36.31-51.89A6,6,0,0,0,232.13,143.64Zm-42,48.29a90,90,0,0,1-126-126A90.9,90.9,0,0,1,99.65,37.66,102.06,102.06,0,0,0,218.34,156.35,90.9,90.9,0,0,1,190.1,191.93Z"/></svg>',
       lightContrast: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M122,40V16a6,6,0,0,1,12,0V40a6,6,0,0,1-12,0Zm68,88a62,62,0,1,1-62-62A62.07,62.07,0,0,1,190,128Zm-12,0a50,50,0,1,0-50,50A50.06,50.06,0,0,0,178,128ZM59.76,68.24a6,6,0,1,0,8.48-8.48l-16-16a6,6,0,0,0-8.48,8.48Zm0,119.52-16,16a6,6,0,1,0,8.48,8.48l16-16a6,6,0,1,0-8.48-8.48ZM192,70a6,6,0,0,0,4.24-1.76l16-16a6,6,0,0,0-8.48-8.48l-16,16A6,6,0,0,0,192,70Zm4.24,117.76a6,6,0,0,0-8.48,8.48l16,16a6,6,0,0,0,8.48-8.48ZM46,128a6,6,0,0,0-6-6H16a6,6,0,0,0,0,12H40A6,6,0,0,0,46,128Zm82,82a6,6,0,0,0-6,6v24a6,6,0,0,0,12,0V216A6,6,0,0,0,128,210Zm112-88H216a6,6,0,0,0,0,12h24a6,6,0,0,0,0-12Z"/></svg>',
       invertColors: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M172.53,49.06a251.42,251.42,0,0,0-41.09-38,6,6,0,0,0-6.88,0,251.42,251.42,0,0,0-41.09,38C56.34,80.26,42,113.09,42,144a86,86,0,0,0,172,0C214,113.09,199.66,80.26,172.53,49.06ZM202,144a75,75,0,0,1-.69,10H134V134h67.44A92.09,92.09,0,0,1,202,144ZM186.8,90H134V70h39.89A176,176,0,0,1,186.8,90ZM134,198h44.52A73.76,73.76,0,0,1,134,217.74Zm0-12V166h64.66a74.05,74.05,0,0,1-9.78,20Zm0-64V102h58.7a117.43,117.43,0,0,1,6.69,20Zm30.29-64H134V28.3A257.09,257.09,0,0,1,164.29,58ZM54,144c0-53.42,47.35-98.56,68-115.7V217.74A74.09,74.09,0,0,1,54,144Z"/></svg>',
@@ -131,6 +132,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Light Contrast",
         "Dark Contrast": "Dark Contrast",
         "High Contrast": "High Contrast",
+        "Smart Contrast": "Smart Contrast",
         "High Saturation": "High Saturation",
         "Low Saturation": "Low Saturation",
         "Monochrome": "Monochrome",
@@ -232,6 +234,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Contraste Claro",
         "Dark Contrast": "Contraste Escuro",
         "High Contrast": "Alto Contraste",
+        "Smart Contrast": "Contraste Inteligente",
         "High Saturation": "Alta Saturação",
         "Low Saturation": "Baixa Saturação",
         "Monochrome": "Monocromático",
@@ -333,6 +336,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Contrasto Chiaro",
         "Dark Contrast": "Contrasto Scuro",
         "High Contrast": "Alto Contrasto",
+        "Smart Contrast": "Contrasto Intelligente",
         "High Saturation": "Alta Saturazione",
         "Low Saturation": "Bassa Saturazione",
         "Monochrome": "Monocromatico",
@@ -434,6 +438,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Contraste Clair",
         "Dark Contrast": "Contraste Sombre",
         "High Contrast": "Contraste Élevé",
+        "Smart Contrast": "Contraste Intelligent",
         "High Saturation": "Saturation Élevée",
         "Low Saturation": "Saturation Faible",
         "Monochrome": "Monochrome",
@@ -535,6 +540,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Heller Kontrast",
         "Dark Contrast": "Dunkler Kontrast",
         "High Contrast": "Hoher Kontrast",
+        "Smart Contrast": "Intelligenter Kontrast",
         "High Saturation": "Hohe Sättigung",
         "Low Saturation": "Niedrige Sättigung",
         "Monochrome": "Monochrom",
@@ -636,6 +642,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Contraste Claro",
         "Dark Contrast": "Contraste Oscuro",
         "High Contrast": "Alto Contraste",
+        "Smart Contrast": "Contraste Inteligente",
         "High Saturation": "Alta Saturación",
         "Low Saturation": "Baja Saturación",
         "Monochrome": "Monocromo",
@@ -737,6 +744,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Светлый контраст",
         "Dark Contrast": "Тёмный контраст",
         "High Contrast": "Высокий контраст",
+        "Smart Contrast": "Умный контраст",
         "High Saturation": "Высокая насыщенность",
         "Low Saturation": "Низкая насыщенность",
         "Monochrome": "Монохромный",
@@ -838,6 +846,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Jasny Kontrast",
         "Dark Contrast": "Ciemny Kontrast",
         "High Contrast": "Wysoki Kontrast",
+        "Smart Contrast": "Inteligentny Kontrast",
         "High Saturation": "Wysoka Saturacja",
         "Low Saturation": "Niska Saturacja",
         "Monochrome": "Monochromatyczny",
@@ -939,6 +948,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Contrast Luminos",
         "Dark Contrast": "Contrast Întunecat",
         "High Contrast": "Contrast Ridicat",
+        "Smart Contrast": "Contrast Inteligent",
         "High Saturation": "Saturație Ridicată",
         "Low Saturation": "Saturație Scăzută",
         "Monochrome": "Monocrom",
@@ -1040,6 +1050,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Licht Contrast",
         "Dark Contrast": "Donker Contrast",
         "High Contrast": "Hoog Contrast",
+        "Smart Contrast": "Slim Contrast",
         "High Saturation": "Hoge Verzadiging",
         "Low Saturation": "Lage Verzadiging",
         "Monochrome": "Monochroom",
@@ -1141,6 +1152,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Світлий контраст",
         "Dark Contrast": "Темний контраст",
         "High Contrast": "Високий контраст",
+        "Smart Contrast": "Розумний контраст",
         "High Saturation": "Висока насиченість",
         "Low Saturation": "Низька насиченість",
         "Monochrome": "Монохромний",
@@ -1242,6 +1254,7 @@ const TRANSLATIONS = {
         "Light Contrast": "تباين فاتح",
         "Dark Contrast": "تباين داكن",
         "High Contrast": "تباين عالٍ",
+        "Smart Contrast": "تباين ذكي",
         "High Saturation": "تشبع عالٍ",
         "Low Saturation": "تشبع منخفض",
         "Monochrome": "أحادي اللون",
@@ -1343,6 +1356,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ניגודיות בהירה",
         "Dark Contrast": "ניגודיות כהה",
         "High Contrast": "ניגודיות גבוהה",
+        "Smart Contrast": "ניגודיות חכמה",
         "High Saturation": "רוויה גבוהה",
         "Low Saturation": "רוויה נמוכה",
         "Monochrome": "מונוכרום",
@@ -1444,6 +1458,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Ljus kontrast",
         "Dark Contrast": "Mörk kontrast",
         "High Contrast": "Hög kontrast",
+        "Smart Contrast": "Smart kontrast",
         "High Saturation": "Hög mättnad",
         "Low Saturation": "Låg mättnad",
         "Monochrome": "Monokrom",
@@ -1545,6 +1560,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Lys kontrast",
         "Dark Contrast": "Mørk kontrast",
         "High Contrast": "Høj kontrast",
+        "Smart Contrast": "Smart kontrast",
         "High Saturation": "Høj mætning",
         "Low Saturation": "Lav mætning",
         "Monochrome": "Monokrom",
@@ -1646,6 +1662,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Contrast clar",
         "Dark Contrast": "Contrast fosc",
         "High Contrast": "Contrast alt",
+        "Smart Contrast": "Contrast intel·ligent",
         "High Saturation": "Saturació alta",
         "Low Saturation": "Saturació baixa",
         "Monochrome": "Monocrom",
@@ -1747,6 +1764,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Svetli kontrast",
         "Dark Contrast": "Temni kontrast",
         "High Contrast": "Visok kontrast",
+        "Smart Contrast": "Pametni kontrast",
         "High Saturation": "Visoka nasičenost",
         "Low Saturation": "Nizka nasičenost",
         "Monochrome": "Enobarvno",
@@ -1848,6 +1866,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Gaišs kontrasts",
         "Dark Contrast": "Tumšs kontrasts",
         "High Contrast": "Augsts kontrasts",
+        "Smart Contrast": "Viedais kontrasts",
         "High Saturation": "Augsts piesātinājums",
         "Low Saturation": "Zems piesātinājums",
         "Monochrome": "Vienkrāsains",
@@ -1949,6 +1968,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Φωτεινή αντίθεση",
         "Dark Contrast": "Σκοτεινή αντίθεση",
         "High Contrast": "Υψηλή αντίθεση",
+        "Smart Contrast": "Έξυπνη αντίθεση",
         "High Saturation": "Υψηλός κορεσμός",
         "Low Saturation": "Χαμηλός κορεσμός",
         "Monochrome": "Μονόχρωμο",
@@ -2050,6 +2070,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ღია კონტრასტი",
         "Dark Contrast": "მუქი კონტრასტი",
         "High Contrast": "მაღალი კონტრასტი",
+        "Smart Contrast": "ჭკვიანი კონტრასტი",
         "High Saturation": "მაღალი გაჯერებულობა",
         "Low Saturation": "დაბალი გაჯერებულობა",
         "Monochrome": "მონოქრომული",
@@ -2151,6 +2172,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ብሩህ ንፅፅር",
         "Dark Contrast": "ጨለማ ንፅፅር",
         "High Contrast": "ከፍተኛ ንፅፅር",
+        "Smart Contrast": "ብልህ ንፅፅር",
         "High Saturation": "ከፍተኛ ሙሌት",
         "Low Saturation": "ዝቅተኛ ሙሌት",
         "Monochrome": "ነጠላ ቀለም",
@@ -2252,6 +2274,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Светъл контраст",
         "Dark Contrast": "Тъмен контраст",
         "High Contrast": "Висок контраст",
+        "Smart Contrast": "Умен контраст",
         "High Saturation": "Висока наситеност",
         "Low Saturation": "Ниска наситеност",
         "Monochrome": "Монохром",
@@ -2353,6 +2376,7 @@ const TRANSLATIONS = {
         "Light Contrast": "হালকা কনট্রাস্ট",
         "Dark Contrast": "গাঢ় কনট্রাস্ট",
         "High Contrast": "উচ্চ কনট্রাস্ট",
+        "Smart Contrast": "স্মার্ট কনট্রাস্ট",
         "High Saturation": "উচ্চ স্যাচুরেশন",
         "Low Saturation": "কম স্যাচুরেশন",
         "Monochrome": "একরঙা",
@@ -2454,6 +2478,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Světlý kontrast",
         "Dark Contrast": "Tmavý kontrast",
         "High Contrast": "Vysoký kontrast",
+        "Smart Contrast": "Chytrý kontrast",
         "High Saturation": "Vysoká sytost",
         "Low Saturation": "Nízká sytost",
         "Monochrome": "Monochromatický režim",
@@ -2555,6 +2580,7 @@ const TRANSLATIONS = {
         "Light Contrast": "کنتراست روشن",
         "Dark Contrast": "کنتراست تیره",
         "High Contrast": "کنتراست بالا",
+        "Smart Contrast": "کنتراست هوشمند",
         "High Saturation": "اشباع بالا",
         "Low Saturation": "اشباع پایین",
         "Monochrome": "تک‌رنگ",
@@ -2656,6 +2682,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Vaalea kontrasti",
         "Dark Contrast": "Tumma kontrasti",
         "High Contrast": "Korkea kontrasti",
+        "Smart Contrast": "Älykäs kontrasti",
         "High Saturation": "Korkea värikylläisyys",
         "Low Saturation": "Matala värikylläisyys",
         "Monochrome": "Yksivärinen",
@@ -2757,6 +2784,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Maliwanag na Contrast",
         "Dark Contrast": "Madilim na Contrast",
         "High Contrast": "Mataas na Contrast",
+        "Smart Contrast": "Matalinong Contrast",
         "High Saturation": "Mataas na Saturation",
         "Low Saturation": "Mababang Saturation",
         "Monochrome": "Monochrome",
@@ -2858,6 +2886,7 @@ const TRANSLATIONS = {
         "Light Contrast": "हल्का कंट्रास्ट",
         "Dark Contrast": "गहरा कंट्रास्ट",
         "High Contrast": "उच्च कंट्रास्ट",
+        "Smart Contrast": "स्मार्ट कंट्रास्ट",
         "High Saturation": "उच्च सैचुरेशन",
         "Low Saturation": "कम सैचुरेशन",
         "Monochrome": "मोनोक्रोम",
@@ -2959,6 +2988,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Svijetli kontrast",
         "Dark Contrast": "Tamni kontrast",
         "High Contrast": "Visoki kontrast",
+        "Smart Contrast": "Pametni kontrast",
         "High Saturation": "Visoka zasićenost",
         "Low Saturation": "Niska zasićenost",
         "Monochrome": "Monokromatski",
@@ -3060,6 +3090,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Világos kontraszt",
         "Dark Contrast": "Sötét kontraszt",
         "High Contrast": "Magas kontraszt",
+        "Smart Contrast": "Intelligens kontraszt",
         "High Saturation": "Magas telítettség",
         "Low Saturation": "Alacsony telítettség",
         "Monochrome": "Monokróm",
@@ -3161,6 +3192,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Kontras Terang",
         "Dark Contrast": "Kontras Gelap",
         "High Contrast": "Kontras Tinggi",
+        "Smart Contrast": "Kontras Cerdas",
         "High Saturation": "Saturasi Tinggi",
         "Low Saturation": "Saturasi Rendah",
         "Monochrome": "Monokrom",
@@ -3262,6 +3294,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ライトコントラスト",
         "Dark Contrast": "ダークコントラスト",
         "High Contrast": "ハイコントラスト",
+        "Smart Contrast": "スマートコントラスト",
         "High Saturation": "高彩度",
         "Low Saturation": "低彩度",
         "Monochrome": "モノクロ",
@@ -3363,6 +3396,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ತಿಳಿ ಕಾಂಟ್ರಾಸ್ಟ್",
         "Dark Contrast": "ಗಾಢ ಕಾಂಟ್ರಾಸ್ಟ್",
         "High Contrast": "ಅಧಿಕ ಕಾಂಟ್ರಾಸ್ಟ್",
+        "Smart Contrast": "ಸ್ಮಾರ್ಟ್ ಕಾಂಟ್ರಾಸ್ಟ್",
         "High Saturation": "ಅಧಿಕ ಸ್ಯಾಚುರೇಶನ್",
         "Low Saturation": "ಕಡಿಮೆ ಸ್ಯಾಚುರೇಶನ್",
         "Monochrome": "ಏಕವರ್ಣ",
@@ -3464,6 +3498,7 @@ const TRANSLATIONS = {
         "Light Contrast": "밝은 대비",
         "Dark Contrast": "어두운 대비",
         "High Contrast": "고대비",
+        "Smart Contrast": "스마트 대비",
         "High Saturation": "고채도",
         "Low Saturation": "저채도",
         "Monochrome": "흑백",
@@ -3565,6 +3600,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Kontrasta Ronî",
         "Dark Contrast": "Kontrasta Tarî",
         "High Contrast": "Kontrasta Bilind",
+        "Smart Contrast": "Kontrasta Jîr",
         "High Saturation": "Têrbûna Bilind",
         "Low Saturation": "Têrbûna Nizm",
         "Monochrome": "Yekreng",
@@ -3666,6 +3702,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Helle Kontrast",
         "Dark Contrast": "Donkele Kontrast",
         "High Contrast": "Héije Kontrast",
+        "Smart Contrast": "Intelligente Kontrast",
         "High Saturation": "Héich Saturatioun",
         "Low Saturation": "Niddreg Saturatioun",
         "Monochrome": "Monochrom",
@@ -3767,6 +3804,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ഇളം കോൺട്രാസ്റ്റ്",
         "Dark Contrast": "ഇരുണ്ട കോൺട്രാസ്റ്റ്",
         "High Contrast": "ഉയർന്ന കോൺട്രാസ്റ്റ്",
+        "Smart Contrast": "സ്മാർട്ട് കോൺട്രാസ്റ്റ്",
         "High Saturation": "ഉയർന്ന സാച്ചുറേഷൻ",
         "Low Saturation": "കുറഞ്ഞ സാച്ചുറേഷൻ",
         "Monochrome": "മോണോക്രോം",
@@ -3868,6 +3906,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Цайвар контраст",
         "Dark Contrast": "Бараан контраст",
         "High Contrast": "Өндөр контраст",
+        "Smart Contrast": "Ухаалаг контраст",
         "High Saturation": "Өндөр ханалт",
         "Low Saturation": "Бага ханалт",
         "Monochrome": "Хар цагаан",
@@ -3969,6 +4008,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Kontras Terang",
         "Dark Contrast": "Kontras Gelap",
         "High Contrast": "Kontras Tinggi",
+        "Smart Contrast": "Kontras Pintar",
         "High Saturation": "Ketepuan Tinggi",
         "Low Saturation": "Ketepuan Rendah",
         "Monochrome": "Monokrom",
@@ -4070,6 +4110,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ကွန်ထရက်စ်အလင်း",
         "Dark Contrast": "ကွန်ထရက်စ်အမှောင်",
         "High Contrast": "ကွန်ထရက်စ်မြင့်",
+        "Smart Contrast": "စမတ်ကွန်ထရက်စ်",
         "High Saturation": "ရောင်စိုမှုမြင့်",
         "Low Saturation": "ရောင်စိုမှုနိမ့်",
         "Monochrome": "တစ်ရောင်တည်း",
@@ -4171,6 +4212,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Lys kontrast",
         "Dark Contrast": "Mørk kontrast",
         "High Contrast": "Høy kontrast",
+        "Smart Contrast": "Smart kontrast",
         "High Saturation": "Høy metning",
         "Low Saturation": "Lav metning",
         "Monochrome": "Monokrom",
@@ -4272,6 +4314,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ਹਲਕਾ ਕੰਟਰਾਸਟ",
         "Dark Contrast": "ਗੂੜ੍ਹਾ ਕੰਟਰਾਸਟ",
         "High Contrast": "ਉੱਚ ਕੰਟਰਾਸਟ",
+        "Smart Contrast": "ਸਮਾਰਟ ਕੰਟਰਾਸਟ",
         "High Saturation": "ਉੱਚ ਸੈਚੁਰੇਸ਼ਨ",
         "Low Saturation": "ਘੱਟ ਸੈਚੁਰੇਸ਼ਨ",
         "Monochrome": "ਮੋਨੋਕ੍ਰੋਮ",
@@ -4373,6 +4416,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ලා ප්‍රභේදනය",
         "Dark Contrast": "අඳුරු ප්‍රභේදනය",
         "High Contrast": "ඉහළ ප්‍රභේදනය",
+        "Smart Contrast": "ස්මාර්ට් ප්‍රභේදනය",
         "High Saturation": "ඉහළ සන්තෘප්තිය",
         "Low Saturation": "අඩු සන්තෘප්තිය",
         "Monochrome": "ඒකවර්ණ",
@@ -4474,6 +4518,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Svetlý kontrast",
         "Dark Contrast": "Tmavý kontrast",
         "High Contrast": "Vysoký kontrast",
+        "Smart Contrast": "Inteligentný kontrast",
         "High Saturation": "Vysoká sýtosť",
         "Low Saturation": "Nízka sýtosť",
         "Monochrome": "Čiernobiele",
@@ -4575,6 +4620,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Светли контраст",
         "Dark Contrast": "Тамни контраст",
         "High Contrast": "Високи контраст",
+        "Smart Contrast": "Паметни контраст",
         "High Saturation": "Висока засићеност",
         "Low Saturation": "Ниска засићеност",
         "Monochrome": "Црно-бело",
@@ -4676,6 +4722,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Utofautishaji Angavu",
         "Dark Contrast": "Utofautishaji wa Giza",
         "High Contrast": "Utofautishaji wa Juu",
+        "Smart Contrast": "Utofautishaji Mahiri",
         "High Saturation": "Ukolezi wa Juu",
         "Low Saturation": "Ukolezi wa Chini",
         "Monochrome": "Rangi Moja",
@@ -4777,6 +4824,7 @@ const TRANSLATIONS = {
         "Light Contrast": "வெளிர் மாறுபாடு",
         "Dark Contrast": "இருண்ட மாறுபாடு",
         "High Contrast": "அதிக மாறுபாடு",
+        "Smart Contrast": "ஸ்மார்ட் மாறுபாடு",
         "High Saturation": "அதிக நிறச்செறிவு",
         "Low Saturation": "குறைந்த நிறச்செறிவு",
         "Monochrome": "ஒற்றை வண்ணம்",
@@ -4878,6 +4926,7 @@ const TRANSLATIONS = {
         "Light Contrast": "లేత కాంట్రాస్ట్",
         "Dark Contrast": "ముదురు కాంట్రాస్ట్",
         "High Contrast": "అధిక కాంట్రాస్ట్",
+        "Smart Contrast": "స్మార్ట్ కాంట్రాస్ట్",
         "High Saturation": "అధిక సంతృప్తత",
         "Low Saturation": "తక్కువ సంతృప్తత",
         "Monochrome": "ఏకవర్ణం",
@@ -4979,6 +5028,7 @@ const TRANSLATIONS = {
         "Light Contrast": "ความคมชัดสว่าง",
         "Dark Contrast": "ความคมชัดมืด",
         "High Contrast": "ความคมชัดสูง",
+        "Smart Contrast": "ความคมชัดอัจฉริยะ",
         "High Saturation": "ความอิ่มตัวของสีสูง",
         "Low Saturation": "ความอิ่มตัวของสีต่ำ",
         "Monochrome": "โทนสีเดียว",
@@ -5080,6 +5130,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Açık Kontrast",
         "Dark Contrast": "Koyu Kontrast",
         "High Contrast": "Yüksek Kontrast",
+        "Smart Contrast": "Akıllı Kontrast",
         "High Saturation": "Yüksek Doygunluk",
         "Low Saturation": "Düşük Doygunluk",
         "Monochrome": "Tek Renk",
@@ -5181,6 +5232,7 @@ const TRANSLATIONS = {
         "Light Contrast": "روشن کنٹراسٹ",
         "Dark Contrast": "گہرا کنٹراسٹ",
         "High Contrast": "زیادہ کنٹراسٹ",
+        "Smart Contrast": "سمارٹ کنٹراسٹ",
         "High Saturation": "زیادہ سیچوریشن",
         "Low Saturation": "کم سیچوریشن",
         "Monochrome": "یک رنگی",
@@ -5282,6 +5334,7 @@ const TRANSLATIONS = {
         "Light Contrast": "Tương phản sáng",
         "Dark Contrast": "Tương phản tối",
         "High Contrast": "Tương phản cao",
+        "Smart Contrast": "Tương phản thông minh",
         "High Saturation": "Độ bão hòa cao",
         "Low Saturation": "Độ bão hòa thấp",
         "Monochrome": "Đơn sắc",
@@ -5383,6 +5436,7 @@ const TRANSLATIONS = {
         "Light Contrast": "浅色对比度",
         "Dark Contrast": "深色对比度",
         "High Contrast": "高对比度",
+        "Smart Contrast": "智能对比度",
         "High Saturation": "高饱和度",
         "Low Saturation": "低饱和度",
         "Monochrome": "单色",
@@ -5484,6 +5538,7 @@ const TRANSLATIONS = {
         "Light Contrast": "淺色對比",
         "Dark Contrast": "深色對比",
         "High Contrast": "高對比",
+        "Smart Contrast": "智慧對比",
         "High Saturation": "高飽和度",
         "Low Saturation": "低飽和度",
         "Monochrome": "單色",
@@ -7461,12 +7516,13 @@ const coreFeatureMethods = {
       this.enableReadingAid(states && states['reading-aid']);
       this.pauseMotion(states && states['pause-motion']);
       this.enableLargePointer(states && states['large-pointer']);
-      this.enableHighContrastMode(states && states['high-contrast-mode']);
       this.enableAnnotations(states && states['annotations']);
       this.enableTextToSpeech(states && states['text-to-speech']);
       this.enableSimpleLayout(states && states['simple-layout']);
       this.enableMuteSounds(states && states['mute-sounds']);
       this.enableTextMagnifier(states && states['text-magnifier']);
+      // Last, so Smart Contrast reads the colors the options above left.
+      this.applyContrastMode(states);
     },
 
   resetEnhancements() {
@@ -7503,6 +7559,8 @@ const coreFeatureMethods = {
         'acc-pause-motion',
         'acc-hide-images',
         'acc-filter-style',
+        'acc-dark-contrast',
+        'acc-high-contrast-mode',
         'acc-simple-layout'
       ];
       styleIds.forEach(id => this.removeStyle(id));
@@ -7510,6 +7568,7 @@ const coreFeatureMethods = {
       document.documentElement.classList.remove(
         'acc-filter',
         'acc-dark-contrast',
+        'acc-smart-contrast',
         'acc-saturation',
         'acc-bold-text',
         'acc-letter-spacing',
@@ -7533,6 +7592,7 @@ const coreFeatureMethods = {
         el.style.fontSize = '';
         el.removeAttribute('data-acc-baseSize');
       });
+      this.refreshSmartContrast();
       this.enableReadingAid(false);
       this.disableAnnotations();
       this.stopSpeech();
@@ -8897,15 +8957,65 @@ const annotationMethods = {
 /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
 const visualFilterMethods = {
 
+  // The Contrast tile shows the active choice by name. Light Contrast is
+  // stored under the old High Contrast key (see contrastModes).
   getContrastToggleDisplay(index) {
       const control = 'Contrast';
       if (index === 0) {
-        return { key: 'light-contrast', control, label: 'Light Contrast', icon: this.widgetIcons.lightContrast };
+        return { key: 'smart-contrast', control, label: 'Smart Contrast', icon: this.widgetIcons.smartContrast };
       }
       if (index === 1) {
         return { key: 'dark-contrast', control, label: 'Dark Contrast', icon: this.widgetIcons.darkContrast };
       }
+      if (index === 2) {
+        return { key: 'light-contrast', control, label: 'Light Contrast', icon: this.widgetIcons.lightContrast };
+      }
       return { key: null, control, label: control, icon: this.widgetIcons.contrast };
+    },
+
+  // The active Contrast choice as its state key, or null. Light wins over
+  // Dark, and Dark over Smart, when a profile or an old save leaves more
+  // than one on. A saved "light-contrast" is the faint filter the tile
+  // once had; it now means Light Contrast.
+  getContrastMode(states = this.loadConfig().states || {}) {
+      if (!states) return null;
+      if (states['high-contrast-mode'] || states['light-contrast']) return 'high-contrast-mode';
+      if (states['dark-contrast']) return 'dark-contrast';
+      if (states['smart-contrast']) return 'smart-contrast';
+      return null;
+    },
+
+  setContrastUI(menu, mode = null) {
+      if (!menu || !menu.querySelector) return;
+      const feature = this.multiLevelFeatures?.['contrast-toggle'];
+      if (!feature) return;
+      const index = mode ? feature.values.indexOf(mode) : -1;
+      feature.currentIndex = index;
+      const button = menu.querySelector('.acc-btn[data-key="contrast-toggle"]');
+      if (!button) return;
+      this.updateContrastToggleButton(button, index);
+      const isActive = index >= 0;
+      button.classList.toggle('acc-selected', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      button.querySelectorAll('.acc-progress-dot').forEach((dot, dotIndex) => {
+        dot.classList.toggle('active', dotIndex === index);
+      });
+    },
+
+  // Put the active Contrast choice on the page. Light is the High
+  // Contrast rules, Dark has its own, and Smart Contrast runs only when
+  // neither is on, since both already set every color.
+  applyContrastMode(states = this.loadConfig().states || {}) {
+      const mode = this.getContrastMode(states);
+      this.enableHighContrastMode(mode === 'high-contrast-mode');
+      const isDark = mode === 'dark-contrast';
+      if (isDark) {
+        this.injectStyle('acc-dark-contrast', this.buildDarkContrastCss());
+      } else {
+        this.removeStyle('acc-dark-contrast');
+      }
+      document.documentElement.classList.toggle('acc-dark-contrast', isDark);
+      this.refreshSmartContrast({ rescan: true });
     },
 
   applyModeToggleButtonDisplay(button, display, modeAttribute) {
@@ -9067,25 +9177,6 @@ const visualFilterMethods = {
 
   setColorFilterUI(menu, activeKey = null) {
       if (!menu || !menu.querySelectorAll) return;
-      const contrastFeature = this.multiLevelFeatures?.['contrast-toggle'];
-      const contrastButton = menu.querySelector('.acc-btn[data-key="contrast-toggle"]');
-      if (contrastFeature) {
-        const contrastIndex = contrastFeature.values.indexOf(activeKey);
-        contrastFeature.currentIndex = contrastIndex;
-        this.updateContrastToggleButton(contrastButton, contrastIndex);
-        if (contrastButton) {
-          const isContrastActive = contrastIndex >= 0;
-          contrastButton.classList.toggle('acc-selected', isContrastActive);
-          contrastButton.setAttribute('aria-pressed', isContrastActive ? 'true' : 'false');
-          const indicator = contrastButton.querySelector('.acc-progress-indicator[data-feature="contrast-toggle"]');
-          if (indicator) {
-            const dots = indicator.querySelectorAll('.acc-progress-dot');
-            dots.forEach((dot, index) => {
-              dot.classList.toggle('active', index === contrastIndex);
-            });
-          }
-        }
-      }
       const saturationFeature = this.multiLevelFeatures?.['saturation-toggle'];
       const saturationButton = menu.querySelector('.acc-btn[data-key="saturation-toggle"]');
       if (saturationFeature) {
@@ -9152,12 +9243,6 @@ const visualFilterMethods = {
         case 'invert-colors':
           r = 255 - r; g = 255 - g; b = 255 - b;
           break;
-        case 'light-contrast': {
-          // filter: contrast(125%) brightness(1.2)
-          r = 128 + (r - 128) * 1.25; g = 128 + (g - 128) * 1.25; b = 128 + (b - 128) * 1.25;
-          r *= 1.2; g *= 1.2; b *= 1.2;
-          break;
-        }
         case 'low-saturation': {
           // filter: saturate(50%) — use standard saturate matrix with s=0.5
           const s = 0.5;
@@ -9192,8 +9277,8 @@ const visualFilterMethods = {
     },
 
   // Dark Contrast: black page, white text, yellow links. The same shape
-  // as High Contrast with the colors turned around. With both on, High
-  // Contrast wins: its rules are the more specific ones.
+  // as Light Contrast (the High Contrast rules) with the colors turned
+  // around.
   buildDarkContrastCss() {
       const X = ':not(.acc-container):not(.acc-container *):not(.acc-rg-container):not(.acc-rg-container *)';
       const shapes = 'path, circle, ellipse, rect, polygon, polyline, line';
@@ -9269,7 +9354,6 @@ const visualFilterMethods = {
       const { states } = this.loadConfig();
       const activeKey = this.getActiveColorFilterKey(states);
       this.activeColorFilterKey = activeKey;
-      document.documentElement.classList.toggle('acc-dark-contrast', activeKey === 'dark-contrast');
   
       if (!activeKey) {
         this.removeStyle('acc-filter-style');
@@ -9278,10 +9362,6 @@ const visualFilterMethods = {
       const filter = this.visualFilters[activeKey];
       if (!filter) {
         this.removeStyle('acc-filter-style');
-        return;
-      }
-      if (filter.theme === 'dark') {
-        this.injectStyle('acc-filter-style', this.buildDarkContrastCss());
         return;
       }
       const adjustedFilter = {
@@ -9368,8 +9448,25 @@ const visualFilterMethods = {
         return;
       }
 
-      // Beyond those, only the color filter toggles render as cycling buttons.
-      if (featureKey !== 'contrast-toggle' && featureKey !== 'saturation-toggle') return;
+      // Contrast: Smart, Dark, Light, then off. One choice at a time.
+      if (featureKey === 'contrast-toggle') {
+        const current = feature.values.indexOf(this.getContrastMode());
+        const newIndex = current + 1;
+        const newMode = newIndex < feature.levels ? feature.values[newIndex] : null;
+        const payload = { 'light-contrast': false };
+        feature.values.forEach((modeKey) => {
+          payload[modeKey] = modeKey === newMode;
+        });
+        this.updateState(payload);
+        this.applyContrastMode();
+        this.setContrastUI(menu, newMode);
+        // "Contrast: Dark Contrast On" / "Contrast Off".
+        this.announceFeatureState(button.getAttribute('aria-label'), !!newMode);
+        return;
+      }
+
+      // Beyond those, only Saturation renders as a cycling color filter.
+      if (featureKey !== 'saturation-toggle') return;
 
       const newIndex = feature.currentIndex + 1;
       const newActiveKey = newIndex >= feature.levels ? null : feature.values[newIndex];
@@ -9377,8 +9474,8 @@ const visualFilterMethods = {
       this.setColorFilterUI(menu, newActiveKey);
       this.applyVisualFilters();
       // setColorFilterUI re-labels the button with the control and the
-      // active mode ("Contrast: Light Contrast"), so the announcement reads
-      // "Contrast: Light Contrast On" / "Contrast Off".
+      // active mode ("Saturation: Low Saturation"), so the announcement
+      // reads "Saturation: Low Saturation On" / "Saturation Off".
       this.announceFeatureState(button.getAttribute('aria-label'), !!newActiveKey);
     },
 
@@ -9767,6 +9864,273 @@ const pageToolMethods = {
 
 };
 
+/** @typedef {import('../index.js').default} AccessibleWebWidget */
+
+// Smart Contrast: find text that is hard to read against its own
+// background and recolor only that text, just far enough to pass. The
+// rest of the page keeps its design.
+//
+// "Hard to read" is the WCAG AA measure: a contrast ratio under 4.5, or
+// under 3 for large text (24px and up, or 18.66px and up when bold).
+
+const NORMAL_TEXT_RATIO = 4.5;
+const LARGE_TEXT_RATIO = 3;
+// Past this many text elements the page is scanned no further, so a huge
+// page cannot freeze the browser.
+const MAX_ELEMENTS = 6000;
+const SKIP_SELECTOR = '.acc-container, .acc-rg-container, #acc-widget-host, #acc-skip-link, script, style, noscript, template, svg, [aria-hidden="true"]';
+const FIELD_SELECTOR = 'input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="image"]), textarea, select';
+
+/** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
+const smartContrastMethods = {
+
+  // "rgb(1, 2, 3)" or "rgba(1, 2, 3, 0.5)" as numbers; null for anything
+  // else (a color written in another color space is left alone).
+  parseCssColor(value) {
+    const match = /^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?\s*\)$/.exec(String(value || '').trim());
+    if (!match) return null;
+    let alpha = 1;
+    if (match[4] !== undefined) {
+      alpha = match[4].endsWith('%') ? parseFloat(match[4]) / 100 : parseFloat(match[4]);
+    }
+    return { r: +match[1], g: +match[2], b: +match[3], a: Math.min(1, Math.max(0, alpha)) };
+  },
+
+  // WCAG relative luminance, 0 (black) to 1 (white).
+  colorLuminance(color) {
+    const channel = (value) => {
+      const unit = value / 255;
+      return unit <= 0.03928 ? unit / 12.92 : Math.pow((unit + 0.055) / 1.055, 2.4);
+    };
+    return 0.2126 * channel(color.r) + 0.7152 * channel(color.g) + 0.0722 * channel(color.b);
+  },
+
+  // WCAG contrast ratio, 1 (same color) to 21 (black on white).
+  colorContrast(first, second) {
+    const a = this.colorLuminance(first);
+    const b = this.colorLuminance(second);
+    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  },
+
+  // A see-through color laid over a solid one.
+  blendColors(top, bottom) {
+    const alpha = top.a === undefined ? 1 : top.a;
+    return {
+      r: top.r * alpha + bottom.r * (1 - alpha),
+      g: top.g * alpha + bottom.g * (1 - alpha),
+      b: top.b * alpha + bottom.b * (1 - alpha),
+      a: 1
+    };
+  },
+
+  // The nearest color to `text` that reaches `target` against
+  // `background`: the text is moved toward black or white, whichever the
+  // background calls for, and no further than needed.
+  findReadableColor(text, background, target) {
+    const mix = (end, amount) => ({
+      r: text.r + (end.r - text.r) * amount,
+      g: text.g + (end.g - text.g) * amount,
+      b: text.b + (end.b - text.b) * amount,
+      a: 1
+    });
+    // Whole numbers, rounded toward the end color so rounding cannot
+    // undo the last bit of contrast.
+    const settle = (color, end) => {
+      const round = end.r === 0 ? Math.floor : Math.ceil;
+      return { r: round(color.r), g: round(color.g), b: round(color.b), a: 1 };
+    };
+    const toward = (end) => {
+      if (this.colorContrast(end, background) < target) return null;
+      let low = 0;
+      let high = 1;
+      for (let step = 0; step < 12; step++) {
+        const middle = (low + high) / 2;
+        if (this.colorContrast(mix(end, middle), background) >= target) {
+          high = middle;
+        } else {
+          low = middle;
+        }
+      }
+      for (let amount = high; amount < 1; amount += 0.01) {
+        const candidate = settle(mix(end, amount), end);
+        if (this.colorContrast(candidate, background) >= target) return candidate;
+      }
+      return end;
+    };
+    const black = { r: 0, g: 0, b: 0, a: 1 };
+    const white = { r: 255, g: 255, b: 255, a: 1 };
+    // Above this luminance black contrasts more than white does.
+    const ends = this.colorLuminance(background) > 0.179 ? [black, white] : [white, black];
+    return toward(ends[0]) || toward(ends[1]) || ends[0];
+  },
+
+  // The solid color behind an element: its own background and those of
+  // its ancestors, laid over each other, on a white page. Null when a
+  // picture or gradient is in the way, since its color cannot be known.
+  getEffectiveBackground(element) {
+    const layers = [];
+    for (let node = element; node && node.nodeType === 1; node = node.parentElement) {
+      const style = window.getComputedStyle(node);
+      if (style.backgroundImage && style.backgroundImage !== 'none') return null;
+      const color = this.parseCssColor(style.backgroundColor);
+      if (!color) return null;
+      if (color.a > 0) {
+        layers.push(color);
+        if (color.a >= 1) break;
+      }
+    }
+    let result = { r: 255, g: 255, b: 255, a: 1 };
+    for (let index = layers.length - 1; index >= 0; index--) {
+      result = this.blendColors(layers[index], result);
+    }
+    return result;
+  },
+
+  // The elements under `root` that show text of their own.
+  collectSmartContrastElements(root) {
+    const found = new Set();
+    if (!root || root.nodeType !== 1 || root.closest(SKIP_SELECTOR)) return found;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+    while (node && found.size < MAX_ELEMENTS) {
+      const parent = node.parentElement;
+      if (parent && node.nodeValue.trim() && !found.has(parent) && !parent.closest(SKIP_SELECTOR)) {
+        found.add(parent);
+      }
+      node = walker.nextNode();
+    }
+    const fields = root.matches(FIELD_SELECTOR) ? [root] : [];
+    root.querySelectorAll(FIELD_SELECTOR).forEach((field) => fields.push(field));
+    fields.forEach((field) => {
+      if (found.size < MAX_ELEMENTS && !field.closest(SKIP_SELECTOR)) found.add(field);
+    });
+    return found;
+  },
+
+  // Work out every fix first, then write them, so the browser lays the
+  // page out once rather than once per element.
+  applySmartContrast(root = document.body) {
+    if (!this.smartContrastFixed) this.smartContrastFixed = new Map();
+    const fixes = [];
+    this.collectSmartContrastElements(root).forEach((element) => {
+      if (this.smartContrastFixed.has(element)) return;
+      const style = window.getComputedStyle(element);
+      const text = this.parseCssColor(style.color);
+      if (!text || text.a === 0) return;
+      const background = this.getEffectiveBackground(element);
+      if (!background) return;
+      const shown = this.blendColors(text, background);
+      const size = parseFloat(style.fontSize) || 16;
+      const bold = (parseInt(style.fontWeight, 10) || 400) >= 700;
+      const target = size >= 24 || (bold && size >= 18.66) ? LARGE_TEXT_RATIO : NORMAL_TEXT_RATIO;
+      if (this.colorContrast(shown, background) >= target) return;
+      fixes.push({ element, color: this.findReadableColor(shown, background, target) });
+    });
+    fixes.forEach(({ element, color }) => {
+      this.smartContrastFixed.set(element, {
+        value: element.style.getPropertyValue('color'),
+        priority: element.style.getPropertyPriority('color')
+      });
+      element.style.setProperty('color', `rgb(${color.r}, ${color.g}, ${color.b})`, 'important');
+      element.setAttribute('data-acc-smart-contrast', '');
+    });
+    return fixes.length;
+  },
+
+  // Put back each element's own inline color, or none.
+  clearSmartContrast() {
+    if (!this.smartContrastFixed) return;
+    this.smartContrastFixed.forEach((previous, element) => {
+      if (previous.value) {
+        element.style.setProperty('color', previous.value, previous.priority);
+      } else {
+        element.style.removeProperty('color');
+      }
+      element.removeAttribute('data-acc-smart-contrast');
+    });
+    this.smartContrastFixed = new Map();
+  },
+
+  stopSmartContrastWatch() {
+    if (this.smartContrastObserver) {
+      this.smartContrastObserver.disconnect();
+      this.smartContrastObserver = null;
+    }
+    if (this.smartContrastTimer) {
+      clearTimeout(this.smartContrastTimer);
+      this.smartContrastTimer = null;
+    }
+    if (this.smartContrastLoadHandler) {
+      window.removeEventListener('load', this.smartContrastLoadHandler);
+      this.smartContrastLoadHandler = null;
+    }
+  },
+
+  // Content added later (a menu that opens, results that load) is checked
+  // shortly after it arrives.
+  startSmartContrastWatch() {
+    if (this.smartContrastObserver || typeof MutationObserver === 'undefined' || !document.body) return;
+    const pending = new Set();
+    this.smartContrastObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          const element = node.nodeType === 1 ? node : node.parentElement;
+          if (element && !element.closest(SKIP_SELECTOR)) pending.add(element);
+        });
+      });
+      if (!pending.size || this.smartContrastTimer) return;
+      this.smartContrastTimer = setTimeout(() => {
+        this.smartContrastTimer = null;
+        const roots = [...pending].filter((element) => element.isConnected);
+        pending.clear();
+        roots.forEach((element) => this.applySmartContrast(element));
+      }, 250);
+    });
+    this.smartContrastObserver.observe(document.body, { childList: true, subtree: true });
+    // Styles that arrive with the rest of the page can change the colors.
+    if (document.readyState !== 'complete') {
+      this.smartContrastLoadHandler = () => {
+        this.smartContrastLoadHandler = null;
+        if (!this.smartContrastActive) return;
+        this.clearSmartContrast();
+        this.applySmartContrast();
+      };
+      window.addEventListener('load', this.smartContrastLoadHandler, { once: true });
+    }
+  },
+
+  // High Contrast and Dark Contrast set every color themselves, so Smart
+  // Contrast stands down while either is on and comes back after.
+  shouldRunSmartContrast() {
+    if (!this.retrieveState('smart-contrast')) return false;
+    if (document.documentElement.classList.contains('acc-dark-contrast')) return false;
+    if (document.body && document.body.classList.contains('acc-high-contrast-mode')) return false;
+    return true;
+  },
+
+  // Called whenever a setting changes. It rescans only when Smart
+  // Contrast itself starts or stops, or when `rescan` asks for it because
+  // the page's colors have just changed.
+  refreshSmartContrast({ rescan = false } = {}) {
+    try {
+      const shouldRun = this.shouldRunSmartContrast();
+      document.documentElement.classList.toggle('acc-smart-contrast', shouldRun);
+      if (shouldRun === !!this.smartContrastActive && !(rescan && shouldRun)) return;
+      this.smartContrastActive = shouldRun;
+      this.clearSmartContrast();
+      if (shouldRun) {
+        this.applySmartContrast();
+        this.startSmartContrastWatch();
+      } else {
+        this.stopSmartContrastWatch();
+      }
+    } catch (e) {
+      console.warn('Error applying smart contrast:', e);
+    }
+  }
+
+};
+
 /** @typedef {import('./index.js').default} AccessibleWebWidget */
 
 /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
@@ -9776,7 +10140,8 @@ const featureMethods = {
   ...axeReportMethods,
   ...annotationMethods,
   ...visualFilterMethods,
-  ...pageToolMethods
+  ...pageToolMethods,
+  ...smartContrastMethods
 };
 
 // The menu's own font: Inter (SIL OFL 1.1), as a variable font split by
@@ -10086,6 +10451,7 @@ const uiMethods = {
       });
       const activeColorFilter = this.getActiveColorFilterKey(states);
       this.setColorFilterUI(menu, activeColorFilter);
+      this.setContrastUI(menu, this.getContrastMode(states));
       const readableChoice = this.resolveReadableFontChoice(states['readable-text']);
       this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
       this.setLevelTileUI(menu, 'text-scale', this.getTextScaleLevel(states['text-scale']));
@@ -10441,7 +10807,7 @@ const uiMethods = {
         const tileGroups = [
           { label: 'Speech', keys: ['text-to-speech'] },
           { label: 'Text', keys: ['text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text'] },
-          { label: 'Color & Contrast', keys: ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'] },
+          { label: 'Color & Contrast', keys: ['contrast-toggle', 'saturation-toggle', 'invert-colors'] },
           { label: 'Reading Aids', keys: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'] },
           { label: 'Interaction', keys: ['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds', 'annotations', 'accessibility-report'] }
         ];
@@ -11294,13 +11660,6 @@ class AccessibleWebWidget {
     this.targetSelectors = TARGET_SELECTORS;
 
     this.visualFilters = {
-      // A real dark page (black background, light text), written as rules
-      // rather than a filter; see buildDarkContrastCss().
-      'dark-contrast': { theme: 'dark' },
-      'light-contrast': {
-        styles: { 'filter': 'contrast(125%) brightness(1.2)' },
-        selector: PAGE_CONTENT_SELECTOR
-      },
       'invert-colors': {
         styles: { 'filter': 'invert(100%)' },
         selector: PAGE_CONTENT_SELECTOR
@@ -11335,7 +11694,6 @@ class AccessibleWebWidget {
         multiLevel: true,
         requiresSpeechSynthesis: true
       },
-      { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
       { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout },
       { label: 'Mute Sounds', key: 'mute-sounds', icon: this.widgetIcons.muteSounds },
       { label: 'Text Magnifier', key: 'text-magnifier', icon: this.widgetIcons.textMagnifier },
@@ -11446,7 +11804,11 @@ class AccessibleWebWidget {
     // state (legacy true = 1). Each step adds 0.12em between letters and
     // 0.16em between words, the WCAG 1.4.12 text spacing amounts.
     this.letterSpacingLevels = [1, 2, 3];
-    this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
+    // The Contrast tile's choices, in click order, each stored under its
+    // own state key. Smart recolors only text that is hard to read; Dark
+    // is a black page; Light is a white page with black text, kept under
+    // the key of the old High Contrast tile, which it replaces.
+    this.contrastModes = ['smart-contrast', 'dark-contrast', 'high-contrast-mode'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation', 'monochrome'];
 
     // Readable Font levels; the persisted readable-text state holds the
@@ -11495,9 +11857,9 @@ class AccessibleWebWidget {
 
     this.multiLevelFeatures = {
       'contrast-toggle': {
-        levels: this.contrastFilterValues.length,
+        levels: this.contrastModes.length,
         currentIndex: -1,
-        values: this.contrastFilterValues
+        values: this.contrastModes
       },
       'saturation-toggle': {
         levels: this.saturationFilterValues.length,
@@ -11542,7 +11904,7 @@ class AccessibleWebWidget {
         key: 'contrast-toggle',
         icon: this.widgetIcons.contrast,
         multiLevel: true,
-        levels: this.contrastFilterValues.length
+        levels: this.contrastModes.length
       },
       { label: 'Invert Colors', key: 'invert-colors', icon: this.widgetIcons.invertColors },
       {
@@ -11575,6 +11937,14 @@ class AccessibleWebWidget {
     // Screen-reader live region
     this.liveRegion = null;
     this.liveRegionTimer = null;
+
+    // Smart Contrast state: each recolored element with its own inline
+    // color from before, so it can be put back.
+    this.smartContrastFixed = new Map();
+    this.smartContrastActive = false;
+    this.smartContrastObserver = null;
+    this.smartContrastTimer = null;
+    this.smartContrastLoadHandler = null;
 
     // Mute sounds state
     this.muteSoundsObserver = null;

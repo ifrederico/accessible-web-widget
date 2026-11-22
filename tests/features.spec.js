@@ -103,14 +103,14 @@ test('disabling a profile leaves a manually chosen color filter active', async (
   const profileBtn = page.locator('.acc-btn[data-key="profile-seizure-safe"]');
   await profileBtn.click();
   // Manually switch to a different color filter after the profile set its own.
-  await page.locator('.acc-btn[data-key="contrast-toggle"]').click();
+  await page.locator('.acc-btn[data-key="invert-colors"]').click();
   let states = await readStates(page);
-  expect(states['light-contrast']).toBe(true);
+  expect(states['invert-colors']).toBe(true);
   expect(states['low-saturation']).toBe(false);
 
   await profileBtn.click();
   states = await readStates(page);
-  expect(states['light-contrast']).toBe(true);
+  expect(states['invert-colors']).toBe(true);
 });
 
 test('seizure safe profile activates the low saturation color filter', async ({ page }) => {
@@ -444,7 +444,7 @@ test('cycling buttons name both the control and the active level', async ({ page
   const region = page.locator('#acc-live-region');
 
   const controls = [
-    { key: 'contrast-toggle', name: 'Contrast', levels: ['Light Contrast', 'Dark Contrast'] },
+    { key: 'contrast-toggle', name: 'Contrast', levels: ['Smart Contrast', 'Dark Contrast', 'Light Contrast'] },
     { key: 'saturation-toggle', name: 'Saturation', levels: ['Low Saturation', 'High Saturation', 'Monochrome'] },
     { key: 'readable-text', name: 'Readable Font', levels: ['Dyslexia Font', 'Legible Font', 'Lexend'] }
   ];
@@ -482,12 +482,12 @@ test('switching language re-translates both parts of a cycling button name', asy
   for (let i = 0; i < 3; i++) {
     await readableFont.click();
   }
-  await expectButtonName(contrast, 'Contrast: Light Contrast');
+  await expectButtonName(contrast, 'Contrast: Smart Contrast');
   await expectButtonName(readableFont, 'Readable Font: Lexend');
 
   await switchLanguage('es');
-  await expectButtonName(contrast, 'Contraste: Contraste Claro');
-  await expect(contrast.locator('.acc-label')).toHaveText('Contraste Claro');
+  await expectButtonName(contrast, 'Contraste: Contraste Inteligente');
+  await expect(contrast.locator('.acc-label')).toHaveText('Contraste Inteligente');
   // Lexend is a font name and stays untranslated.
   await expectButtonName(readableFont, 'Fuente Legible: Lexend');
   await expectButtonName(saturation, 'Saturación');
@@ -496,15 +496,15 @@ test('switching language re-translates both parts of a cycling button name', asy
   await expectButtonName(contrast, 'Contraste: Contraste Oscuro');
   await expect(page.locator('#acc-live-region')).toHaveText('Contraste: Contraste Oscuro Activado');
 
-  // A saturation level replaces the active contrast filter.
+  // Saturation is its own choice; the Contrast choice stays on beside it.
   await saturation.click();
   await expectButtonName(saturation, 'Saturación: Baja Saturación');
-  await expectButtonName(contrast, 'Contraste');
+  await expectButtonName(contrast, 'Contraste: Contraste Oscuro');
 
   await switchLanguage('en');
   await expectButtonName(saturation, 'Saturation: Low Saturation');
   await expectButtonName(readableFont, 'Readable Font: Lexend');
-  await expectButtonName(contrast, 'Contrast');
+  await expectButtonName(contrast, 'Contrast: Dark Contrast');
 });
 
 test('saved cycling levels are named in the configured language on load', async ({ page }) => {

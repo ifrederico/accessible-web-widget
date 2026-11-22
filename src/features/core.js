@@ -1196,12 +1196,13 @@ export const coreFeatureMethods = {
       this.enableReadingAid(states && states['reading-aid']);
       this.pauseMotion(states && states['pause-motion']);
       this.enableLargePointer(states && states['large-pointer']);
-      this.enableHighContrastMode(states && states['high-contrast-mode']);
       this.enableAnnotations(states && states['annotations']);
       this.enableTextToSpeech(states && states['text-to-speech']);
       this.enableSimpleLayout(states && states['simple-layout']);
       this.enableMuteSounds(states && states['mute-sounds']);
       this.enableTextMagnifier(states && states['text-magnifier']);
+      // Last, so Smart Contrast reads the colors the options above left.
+      this.applyContrastMode(states);
     },
 
   resetEnhancements() {
@@ -1238,6 +1239,8 @@ export const coreFeatureMethods = {
         'acc-pause-motion',
         'acc-hide-images',
         'acc-filter-style',
+        'acc-dark-contrast',
+        'acc-high-contrast-mode',
         'acc-simple-layout'
       ];
       styleIds.forEach(id => this.removeStyle(id));
@@ -1245,6 +1248,7 @@ export const coreFeatureMethods = {
       document.documentElement.classList.remove(
         'acc-filter',
         'acc-dark-contrast',
+        'acc-smart-contrast',
         'acc-saturation',
         'acc-bold-text',
         'acc-letter-spacing',
@@ -1268,6 +1272,7 @@ export const coreFeatureMethods = {
         el.style.fontSize = '';
         el.removeAttribute('data-acc-baseSize');
       });
+      this.refreshSmartContrast();
       this.enableReadingAid(false);
       this.disableAnnotations();
       this.stopSpeech();

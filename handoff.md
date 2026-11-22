@@ -53,6 +53,17 @@ Rules the build must follow:
 - The statement page's wording was drafted from the README and the disclaimer. It needs the owner's read-through.
 - The statement link points at the production site, where the page only exists after `dev` is merged.
 
+## Options brought up to standard (2026-11-22)
+
+- **Contrast is one tile with three choices**, one click each, then off: Smart Contrast (recolors only the text that fails the WCAG AA contrast measure, just far enough to pass), Dark Contrast (black page, white text, yellow links) and Light Contrast (white page, black text). The separate High Contrast tile is gone: Light Contrast is the same rules under the same saved key, `high-contrast-mode`. The old faint "light-contrast" filter is gone; a saved one now means Light Contrast. Contrast no longer switches off when a Saturation level or Invert Colors is picked.
+- **Smart Contrast leaves alone** text over a picture or gradient (it cannot know the color behind it) and colors written in a color space other than RGB. It stands down while Dark or Light Contrast is on. It does not fix text made faint with `opacity`.
+- **Line Height has three steps** (line-height 2, 2.5, 3; headings take three quarters). **Letter Spacing has three steps** and spaces words too (0.12em and 0.16em per step). A saved "on" from before means the first step of each, which for Line Height is gentler than the old single step of 3.
+- **Hide Images keeps each picture's space**, and leaves the icons inside buttons and links. It still hides videos, canvases and iframes; an iframe can be a payment form or a map, which may deserve a second look.
+- **Font Size, Line Height and Text to Speech show the level in the tile name** ("Font Size 125%").
+- **The figure in the floating button is 15% larger.**
+- **New word, machine translated in 53 languages and not checked by native speakers:** "Smart Contrast".
+- Not checked: Dark Contrast and Smart Contrast on real customer sites, which have backgrounds, icons and widgets the demo pages do not.
+
 ## Other changes since the redesign
 
 - Tiles are square and the panel is 456px wide, the narrowest that keeps every English label on one line. Phones show two tiles per row.

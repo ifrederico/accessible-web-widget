@@ -260,6 +260,7 @@ export const uiMethods = {
       });
       const activeColorFilter = this.getActiveColorFilterKey(states);
       this.setColorFilterUI(menu, activeColorFilter);
+      this.setContrastUI(menu, this.getContrastMode(states));
       const readableChoice = this.resolveReadableFontChoice(states['readable-text']);
       this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
       this.setLevelTileUI(menu, 'text-scale', this.getTextScaleLevel(states['text-scale']));
@@ -615,7 +616,7 @@ export const uiMethods = {
         const tileGroups = [
           { label: 'Speech', keys: ['text-to-speech'] },
           { label: 'Text', keys: ['text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text'] },
-          { label: 'Color & Contrast', keys: ['contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode'] },
+          { label: 'Color & Contrast', keys: ['contrast-toggle', 'saturation-toggle', 'invert-colors'] },
           { label: 'Reading Aids', keys: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'] },
           { label: 'Interaction', keys: ['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds', 'annotations', 'accessibility-report'] }
         ];

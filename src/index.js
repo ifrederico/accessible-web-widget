@@ -30,13 +30,6 @@ class AccessibleWebWidget {
     this.targetSelectors = TARGET_SELECTORS;
 
     this.visualFilters = {
-      // A real dark page (black background, light text), written as rules
-      // rather than a filter; see buildDarkContrastCss().
-      'dark-contrast': { theme: 'dark' },
-      'light-contrast': {
-        styles: { 'filter': 'contrast(125%) brightness(1.2)' },
-        selector: PAGE_CONTENT_SELECTOR
-      },
       'invert-colors': {
         styles: { 'filter': 'invert(100%)' },
         selector: PAGE_CONTENT_SELECTOR
@@ -71,7 +64,6 @@ class AccessibleWebWidget {
         multiLevel: true,
         requiresSpeechSynthesis: true
       },
-      { label: 'High Contrast', key: 'high-contrast-mode', icon: this.widgetIcons.highContrast },
       { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout },
       { label: 'Mute Sounds', key: 'mute-sounds', icon: this.widgetIcons.muteSounds },
       { label: 'Text Magnifier', key: 'text-magnifier', icon: this.widgetIcons.textMagnifier },
@@ -182,7 +174,11 @@ class AccessibleWebWidget {
     // state (legacy true = 1). Each step adds 0.12em between letters and
     // 0.16em between words, the WCAG 1.4.12 text spacing amounts.
     this.letterSpacingLevels = [1, 2, 3];
-    this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
+    // The Contrast tile's choices, in click order, each stored under its
+    // own state key. Smart recolors only text that is hard to read; Dark
+    // is a black page; Light is a white page with black text, kept under
+    // the key of the old High Contrast tile, which it replaces.
+    this.contrastModes = ['smart-contrast', 'dark-contrast', 'high-contrast-mode'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation', 'monochrome'];
 
     // Readable Font levels; the persisted readable-text state holds the
@@ -231,9 +227,9 @@ class AccessibleWebWidget {
 
     this.multiLevelFeatures = {
       'contrast-toggle': {
-        levels: this.contrastFilterValues.length,
+        levels: this.contrastModes.length,
         currentIndex: -1,
-        values: this.contrastFilterValues
+        values: this.contrastModes
       },
       'saturation-toggle': {
         levels: this.saturationFilterValues.length,
@@ -278,7 +274,7 @@ class AccessibleWebWidget {
         key: 'contrast-toggle',
         icon: this.widgetIcons.contrast,
         multiLevel: true,
-        levels: this.contrastFilterValues.length
+        levels: this.contrastModes.length
       },
       { label: 'Invert Colors', key: 'invert-colors', icon: this.widgetIcons.invertColors },
       {
@@ -311,6 +307,14 @@ class AccessibleWebWidget {
     // Screen-reader live region
     this.liveRegion = null;
     this.liveRegionTimer = null;
+
+    // Smart Contrast state: each recolored element with its own inline
+    // color from before, so it can be put back.
+    this.smartContrastFixed = new Map();
+    this.smartContrastActive = false;
+    this.smartContrastObserver = null;
+    this.smartContrastTimer = null;
+    this.smartContrastLoadHandler = null;
 
     // Mute sounds state
     this.muteSoundsObserver = null;

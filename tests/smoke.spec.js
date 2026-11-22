@@ -493,43 +493,155 @@ test('data attributes for position, offset, and size are applied', async ({ page
   expect(computed.height).toBe('58px');
 });
 
-test('contrast is a single cycling tile and monochrome has no tile of its own', async ({ page }) => {
+test('Contrast is one tile that steps through Smart, Dark and Light', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
+  // No tiles of their own for the old High Contrast, or for Monochrome.
+  await expect(page.locator('.acc-btn[data-key="high-contrast-mode"]')).toHaveCount(0);
   await expect(page.locator('.acc-btn[data-key="monochrome"]')).toHaveCount(0);
   const contrastButton = page.locator('.acc-btn[data-key="contrast-toggle"]');
   await expect(contrastButton).toHaveCount(1);
-  await expect(contrastButton.locator('.acc-progress-dot')).toHaveCount(2);
+  await expect(contrastButton.locator('.acc-progress-dot')).toHaveCount(3);
   await expect(contrastButton).toHaveAttribute('title', 'Contrast');
   await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'off');
 
-  await contrastButton.click();
-  await expect(contrastButton).toHaveClass(/acc-selected/);
-  await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '0');
-  await expect(contrastButton).toHaveAttribute('title', 'Contrast: Light Contrast');
-  await expect(contrastButton.locator('.acc-label')).toHaveText('Light Contrast');
-  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'light-contrast');
-  let states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
-  expect(states['light-contrast']).toBe(true);
-  expect(states['dark-contrast']).toBeFalsy();
-
-  await contrastButton.click();
-  await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '1');
-  await expect(contrastButton).toHaveAttribute('title', 'Contrast: Dark Contrast');
-  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'dark-contrast');
-  states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
-  expect(states['dark-contrast']).toBe(true);
-  expect(states['light-contrast']).toBeFalsy();
+  // Each choice is stored under its own key; Light keeps the old High Contrast key.
+  const choices = [
+    { label: 'Smart Contrast', mode: 'smart-contrast', state: 'smart-contrast' },
+    { label: 'Dark Contrast', mode: 'dark-contrast', state: 'dark-contrast' },
+    { label: 'Light Contrast', mode: 'light-contrast', state: 'high-contrast-mode' }
+  ];
+  for (const [index, choice] of choices.entries()) {
+    await contrastButton.click();
+    await expect(contrastButton).toHaveClass(/acc-selected/);
+    await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', String(index));
+    await expect(contrastButton).toHaveAttribute('title', `Contrast: ${choice.label}`);
+    await expect(contrastButton.locator('.acc-label')).toHaveText(choice.label);
+    await expect(contrastButton).toHaveAttribute('data-contrast-mode', choice.mode);
+    const states = await readStates(page);
+    for (const other of choices) {
+      expect(!!states[other.state]).toBe(other.state === choice.state);
+    }
+  }
 
   await contrastButton.click();
   await expect(contrastButton).not.toHaveClass(/acc-selected/);
   await expect(contrastButton.locator('.acc-progress-dot.active')).toHaveCount(0);
   await expect(contrastButton).toHaveAttribute('title', 'Contrast');
   await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'off');
-  states = await page.evaluate(() => JSON.parse(localStorage.getItem('accweb') || '{}').states || {});
-  expect(states['dark-contrast']).toBeFalsy();
-  expect(states['light-contrast']).toBeFalsy();
+  const states = await readStates(page);
+  for (const choice of choices) {
+    expect(states[choice.state]).toBeFalsy();
+  }
+});
+
+test('Dark Contrast makes a black page with light text and yellow links', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const contrastButton = page.locator('.acc-btn[data-key="contrast-toggle"]');
+  await contrastButton.click();
+  await contrastButton.click();
+  await expect(page.locator('html')).toHaveClass(/acc-dark-contrast/);
+
+  const colors = (selector) => page.locator(selector).first().evaluate((element) => {
+    const style = window.getComputedStyle(element);
+    return { color: style.color, background: style.backgroundColor };
+  });
+  expect(await colors('body')).toEqual({ color: 'rgb(255, 255, 255)', background: 'rgb(0, 0, 0)' });
+  expect(await colors('.hero-subtitle')).toEqual({ color: 'rgb(255, 255, 255)', background: 'rgb(0, 0, 0)' });
+  expect((await colors('nav a')).color).toBe('rgb(255, 255, 0)');
+  // The widget keeps its own colors.
+  expect((await colors('.acc-menu')).background).not.toBe('rgb(0, 0, 0)');
+
+  // It stays on beside a Saturation level, and comes back after a reload.
+  await page.locator('.acc-btn[data-key="saturation-toggle"]').click();
+  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'dark-contrast');
+  await page.reload();
+  await expect(page.locator('html')).toHaveClass(/acc-dark-contrast/);
+  expect((await colors('body')).background).toBe('rgb(0, 0, 0)');
+
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-action-reset').click();
+  await expect(page.locator('html')).not.toHaveClass(/acc-dark-contrast/);
+  expect((await colors('body')).background).not.toBe('rgb(0, 0, 0)');
+});
+
+test('Smart Contrast recolors only the text that is hard to read, and puts it back', async ({ page }) => {
+  await page.goto('index.html');
+  await page.evaluate(() => {
+    const box = document.createElement('div');
+    box.id = 'contrast-samples';
+    box.innerHTML = `
+      <p id="weak-on-white" style="color: rgb(170, 170, 170); background: rgb(255, 255, 255);">Pale grey on white</p>
+      <p id="weak-on-dark" style="color: rgb(90, 90, 90); background: rgb(20, 20, 20);">Dark grey on near black</p>
+      <p id="fine" style="color: rgb(30, 30, 30); background: rgb(255, 255, 255);">Dark on white</p>
+      <div style="background: rgb(255, 255, 255);"><span id="inherits" style="color: rgb(200, 200, 60);">Yellow on a white parent</span></div>
+      <p id="on-picture" style="color: rgb(200, 200, 200); background-image: linear-gradient(#fff, #eee);">Over a gradient</p>`;
+    document.querySelector('main').prepend(box);
+  });
+  const ratio = (selector) => page.locator(selector).evaluate((element) => {
+    const channel = (value) => {
+      const unit = value / 255;
+      return unit <= 0.03928 ? unit / 12.92 : Math.pow((unit + 0.055) / 1.055, 2.4);
+    };
+    const luminance = (text) => {
+      const [r, g, b] = text.match(/[\d.]+/g).map(Number);
+      return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+    };
+    let node = element;
+    let background = 'rgba(0, 0, 0, 0)';
+    while (node && /rgba\(.*, 0\)$/.test(background)) {
+      background = window.getComputedStyle(node).backgroundColor;
+      node = node.parentElement;
+    }
+    const a = luminance(window.getComputedStyle(element).color);
+    const b = luminance(background);
+    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  });
+  const color = (selector) => page.locator(selector).evaluate((element) => window.getComputedStyle(element).color);
+
+  expect(await ratio('#weak-on-white')).toBeLessThan(4.5);
+  expect(await ratio('#weak-on-dark')).toBeLessThan(4.5);
+
+  await page.locator('.acc-toggle-btn').click();
+  const contrastButton = page.locator('.acc-btn[data-key="contrast-toggle"]');
+  await contrastButton.click();
+  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'smart-contrast');
+  await expect(page.locator('html')).toHaveClass(/acc-smart-contrast/);
+
+  // Weak text now passes, by the smallest change that gets it there.
+  expect(await ratio('#weak-on-white')).toBeGreaterThanOrEqual(4.5);
+  expect(await ratio('#weak-on-white')).toBeLessThan(5);
+  expect(await ratio('#weak-on-dark')).toBeGreaterThanOrEqual(4.5);
+  expect(await ratio('#inherits')).toBeGreaterThanOrEqual(4.5);
+  // Text that was fine, and text over a picture, are left alone.
+  expect(await color('#fine')).toBe('rgb(30, 30, 30)');
+  expect(await color('#on-picture')).toBe('rgb(200, 200, 200)');
+  await expect(page.locator('#fine')).not.toHaveAttribute('data-acc-smart-contrast');
+
+  // Text added later is checked too.
+  await page.evaluate(() => {
+    const late = document.createElement('p');
+    late.id = 'late';
+    late.style.cssText = 'color: rgb(170, 170, 170); background: rgb(255, 255, 255);';
+    late.textContent = 'Arrived later';
+    document.getElementById('contrast-samples').append(late);
+  });
+  await expect.poll(() => ratio('#late')).toBeGreaterThanOrEqual(4.5);
+
+  // Dark Contrast takes over, and nothing of Smart Contrast is left behind.
+  await contrastButton.click();
+  await expect(page.locator('[data-acc-smart-contrast]')).toHaveCount(0);
+  await expect(page.locator('html')).not.toHaveClass(/acc-smart-contrast/);
+
+  // Off again: every color is as the page wrote it.
+  await contrastButton.click();
+  await contrastButton.click();
+  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'off');
+  expect(await color('#weak-on-white')).toBe('rgb(170, 170, 170)');
+  expect(await color('#weak-on-dark')).toBe('rgb(90, 90, 90)');
+  expect(await page.locator('#weak-on-white').getAttribute('style')).toContain('rgb(170, 170, 170)');
 });
 
 test('saturation is a single cycling tile', async ({ page }) => {
@@ -626,7 +738,7 @@ test('menu renders one tile grid with the group names kept for screen readers', 
   const keys = await page.locator('.acc-options .acc-btn').evaluateAll((tiles) => tiles.map((tile) => tile.dataset.key));
   expect(keys).toEqual([
     'text-to-speech', 'text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text',
-    'contrast-toggle', 'saturation-toggle', 'invert-colors', 'high-contrast-mode',
+    'contrast-toggle', 'saturation-toggle', 'invert-colors',
     'highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure',
     'hide-images', 'large-pointer', 'pause-motion', 'mute-sounds'
   ]);
@@ -1470,12 +1582,21 @@ test('system preferences only auto-enable pause motion', async ({ page }) => {
   expect(statesAfterReset['dark-contrast']).toBeFalsy();
 });
 
-test('high contrast mode applies styles and toggles cleanly', async ({ page }) => {
+// Light Contrast is the old High Contrast: same rules, same saved key.
+const pickLightContrast = async (page) => {
+  const contrastButton = page.locator('.acc-btn[data-key="contrast-toggle"]');
+  for (let i = 0; i < 3; i++) {
+    await contrastButton.click();
+  }
+  await expect(contrastButton).toHaveAttribute('data-contrast-mode', 'light-contrast');
+  return contrastButton;
+};
+
+test('Light Contrast applies styles and toggles cleanly', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  // Enable high contrast
-  await page.locator('.acc-btn[data-key="high-contrast-mode"]').click();
+  const contrastButton = await pickLightContrast(page);
   await expect(page.locator('body')).toHaveClass(/acc-high-contrast-mode/);
 
   // Verify CSS overrides on page content
@@ -1493,32 +1614,54 @@ test('high contrast mode applies styles and toggles cleanly', async ({ page }) =
   });
   expect(menuStyles.color).not.toBe('rgb(0, 0, 0)');
 
-  // Toggle off
-  await page.locator('.acc-btn[data-key="high-contrast-mode"]').click();
+  // The next click turns Contrast off
+  await contrastButton.click();
   await expect(page.locator('body')).not.toHaveClass(/acc-high-contrast-mode/);
 });
 
-test('high contrast mode persists and works with other features', async ({ page }) => {
+test('Light Contrast persists and works with other features', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
-  // Enable high contrast + bold text + highlight links simultaneously
-  await page.locator('.acc-btn[data-key="high-contrast-mode"]').click();
+  // Enable Light Contrast + bold text + highlight links simultaneously
+  const contrastButton = await pickLightContrast(page);
   await page.locator('.acc-btn[data-key="bold-text"]').click();
   await page.locator('.acc-btn[data-key="highlight-links"]').click();
 
-  await expect(page.locator('.acc-btn[data-key="high-contrast-mode"]')).toHaveClass(/acc-selected/);
+  await expect(contrastButton).toHaveClass(/acc-selected/);
   await expect(page.locator('.acc-btn[data-key="bold-text"]')).toHaveClass(/acc-selected/);
   await expect(page.locator('.acc-btn[data-key="highlight-links"]')).toHaveClass(/acc-selected/);
 
   // Persists after reload
   await page.reload();
   await page.locator('.acc-toggle-btn').click();
-  await expect(page.locator('.acc-btn[data-key="high-contrast-mode"]')).toHaveClass(/acc-selected/);
+  await expect(contrastButton).toHaveClass(/acc-selected/);
+  await expect(contrastButton.locator('.acc-label')).toHaveText('Light Contrast');
   await expect(page.locator('body')).toHaveClass(/acc-high-contrast-mode/);
 
   // Reset clears everything
   await page.locator('.acc-action-reset').click();
   await expect(page.locator('body')).not.toHaveClass(/acc-high-contrast-mode/);
-  await expect(page.locator('.acc-btn[data-key="high-contrast-mode"]')).not.toHaveClass(/acc-selected/);
+  await expect(contrastButton).not.toHaveClass(/acc-selected/);
+});
+
+test('saved choices from the old Contrast and High Contrast tiles still mean something', async ({ page }) => {
+  // The old tile's faint "light-contrast" filter is now Light Contrast.
+  await page.addInitScript(() => {
+    if (!window.localStorage.getItem('accweb')) {
+      window.localStorage.setItem('accweb', JSON.stringify({ states: { 'light-contrast': true } }));
+    }
+  });
+  await page.goto('index.html');
+  await expect(page.locator('body')).toHaveClass(/acc-high-contrast-mode/);
+  await page.locator('.acc-toggle-btn').click();
+  const contrastButton = page.locator('.acc-btn[data-key="contrast-toggle"]');
+  await expect(contrastButton.locator('.acc-label')).toHaveText('Light Contrast');
+
+  // One more click is off, and the old key is cleared with it.
+  await contrastButton.click();
+  await expect(page.locator('body')).not.toHaveClass(/acc-high-contrast-mode/);
+  const states = await readStates(page);
+  expect(states['light-contrast']).toBeFalsy();
+  expect(states['high-contrast-mode']).toBeFalsy();
 });
