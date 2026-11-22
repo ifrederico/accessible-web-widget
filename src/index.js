@@ -67,6 +67,8 @@ class AccessibleWebWidget {
       { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout },
       { label: 'Mute Sounds', key: 'mute-sounds', icon: this.widgetIcons.muteSounds },
       { label: 'Text Magnifier', key: 'text-magnifier', icon: this.widgetIcons.textMagnifier },
+      // Shown on hover and on keyboard focus; touch-only devices have neither.
+      { label: 'Tooltips', key: 'tooltips', icon: this.widgetIcons.tooltips, requiresFinePointer: true },
       {
         label: 'Page Structure',
         key: 'page-structure',
@@ -314,7 +316,7 @@ class AccessibleWebWidget {
     this.smartContrastActive = false;
     this.smartContrastObserver = null;
     this.smartContrastTimer = null;
-    this.smartContrastLoadHandler = null;
+    this.contrastLoadHandler = null;
 
     // Mute sounds state
     this.muteSoundsObserver = null;
@@ -329,6 +331,13 @@ class AccessibleWebWidget {
     this.magnifierDownHandler = null;
     this.magnifierScrollHandler = null;
     this.magnifierLastPointerType = null;
+
+    // Tooltips state: the bubble, the element it describes, and that
+    // element's own title, held back while the bubble shows.
+    this.tooltipElement = null;
+    this.tooltipAnchor = null;
+    this.tooltipHeldTitle = null;
+    this.tooltipHandlers = null;
 
     // Page structure panel state
     this.structurePanel = null;

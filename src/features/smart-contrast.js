@@ -6,13 +6,21 @@
 //
 // "Hard to read" is the WCAG AA measure: a contrast ratio under 4.5, or
 // under 3 for large text (24px and up, or 18.66px and up when bold).
+// Over a gradient the text must pass against its lightest and its darkest
+// color. Text over a picture is left alone: its background is unknown.
 
 const NORMAL_TEXT_RATIO = 4.5;
 const LARGE_TEXT_RATIO = 3;
 // Past this many text elements the page is scanned no further, so a huge
 // page cannot freeze the browser.
 const MAX_ELEMENTS = 6000;
-const SKIP_SELECTOR = '.acc-container, .acc-rg-container, #acc-widget-host, #acc-skip-link, script, style, noscript, template, svg, [aria-hidden="true"]';
+// Text marked as lying over a picture is skipped too: the picture is its
+// real background, and that cannot be measured.
+const SKIP_SELECTOR = '.acc-container, .acc-rg-container, #acc-widget-host, #acc-skip-link, script, style, noscript, template, svg, [aria-hidden="true"], [data-acc-over-media]';
+// Text this close to its background color would be invisible, which no
+// page intends. Something else is behind it (a picture placed under the
+// text), so it is left alone.
+const INVISIBLE_RATIO = 1.25;
 const FIELD_SELECTOR = 'input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="image"]), textarea, select';
 
 /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
@@ -98,26 +106,99 @@ export const smartContrastMethods = {
     return toward(ends[0]) || toward(ends[1]) || ends[0];
   },
 
-  // The solid color behind an element: its own background and those of
-  // its ancestors, laid over each other, on a white page. Null when a
-  // picture or gradient is in the way, since its color cannot be known.
-  getEffectiveBackground(element) {
+  // The colors a background-image value is made of: none for "none", the
+  // color stops for a gradient, and null for a picture, or a color written
+  // some other way, since what it shows cannot be known.
+  parseGradientColors(value) {
+    const text = String(value || '').trim();
+    if (!text || text === 'none') return [];
+    if (!/gradient\(/i.test(text) || /url\(|image-set\(|element\(|cross-fade\(/i.test(text)) return null;
+    const stops = text.match(/rgba?\([^)]*\)/g) || [];
+    const rest = text.replace(/rgba?\([^)]*\)/g, '');
+    if (!stops.length || /(?:color|color-mix|oklch|oklab|lab|lch|hsl|hsla|hwb)\(/i.test(rest)) return null;
+    const colors = stops.map((stop) => this.parseCssColor(stop));
+    return colors.every(Boolean) ? colors : null;
+  },
+
+  // The lightest and the darkest of some colors. Text that reads against
+  // both reads against everything in between.
+  colorExtremes(colors) {
+    let lightest = colors[0];
+    let darkest = colors[0];
+    colors.forEach((color) => {
+      if (this.colorLuminance(color) > this.colorLuminance(lightest)) lightest = color;
+      if (this.colorLuminance(color) < this.colorLuminance(darkest)) darkest = color;
+    });
+    return lightest === darkest ? [lightest] : [lightest, darkest];
+  },
+
+  // The solid colors behind an element: its own background and those of
+  // its ancestors, laid over each other, on a white page. One color for a
+  // plain background; the lightest and darkest for a gradient. Null when
+  // a picture is in the way.
+  getBackgroundColors(element) {
     const layers = [];
     for (let node = element; node && node.nodeType === 1; node = node.parentElement) {
       const style = window.getComputedStyle(node);
-      if (style.backgroundImage && style.backgroundImage !== 'none') return null;
+      // A background clipped to the text paints the letters themselves.
+      if (style.backgroundClip === 'text' || style.webkitBackgroundClip === 'text') {
+        if (node === element) return null;
+        continue;
+      }
+      const gradient = this.parseGradientColors(style.backgroundImage);
       const color = this.parseCssColor(style.backgroundColor);
-      if (!color) return null;
-      if (color.a > 0) {
-        layers.push(color);
-        if (color.a >= 1) break;
+      if (!gradient || !color) return null;
+      if (gradient.length) layers.push(gradient);
+      if (color.a > 0) layers.push([color]);
+      if (color.a >= 1 || (gradient.length && gradient.every((stop) => stop.a >= 1))) break;
+    }
+    let results = [{ r: 255, g: 255, b: 255, a: 1 }];
+    for (let index = layers.length - 1; index >= 0; index--) {
+      const blended = [];
+      layers[index].forEach((top) => {
+        results.forEach((bottom) => blended.push(this.blendColors(top, bottom)));
+      });
+      results = this.colorExtremes(blended);
+    }
+    return results;
+  },
+
+  // The lowest contrast `text` has against any of `backgrounds`.
+  lowestContrast(text, backgrounds) {
+    return Math.min(...backgrounds.map((background) => this.colorContrast(this.blendColors(text, background), background)));
+  },
+
+  // A readable color against every one of `backgrounds`. One background
+  // has an exact answer. For several, the text is stepped toward black
+  // and toward white and the smallest step that passes them all wins.
+  // Null when nothing passes and nothing reads clearly better than the
+  // text does already.
+  findReadableColorAcross(text, backgrounds, target) {
+    if (backgrounds.length === 1) {
+      return this.findReadableColor(this.blendColors(text, backgrounds[0]), backgrounds[0], target);
+    }
+    const start = this.blendColors(text, backgrounds[0]);
+    const ends = [{ r: 0, g: 0, b: 0, a: 1 }, { r: 255, g: 255, b: 255, a: 1 }];
+    let best = null;
+    let bestContrast = this.lowestContrast(text, backgrounds);
+    for (let step = 1; step <= 64; step++) {
+      for (const end of ends) {
+        const amount = step / 64;
+        const candidate = {
+          r: Math.round(start.r + (end.r - start.r) * amount),
+          g: Math.round(start.g + (end.g - start.g) * amount),
+          b: Math.round(start.b + (end.b - start.b) * amount),
+          a: 1
+        };
+        const contrast = this.lowestContrast(candidate, backgrounds);
+        if (contrast >= target) return candidate;
+        if (contrast > bestContrast + 0.5) {
+          best = candidate;
+          bestContrast = contrast;
+        }
       }
     }
-    let result = { r: 255, g: 255, b: 255, a: 1 };
-    for (let index = layers.length - 1; index >= 0; index--) {
-      result = this.blendColors(layers[index], result);
-    }
-    return result;
+    return best;
   },
 
   // The elements under `root` that show text of their own.
@@ -151,14 +232,15 @@ export const smartContrastMethods = {
       const style = window.getComputedStyle(element);
       const text = this.parseCssColor(style.color);
       if (!text || text.a === 0) return;
-      const background = this.getEffectiveBackground(element);
-      if (!background) return;
-      const shown = this.blendColors(text, background);
+      const backgrounds = this.getBackgroundColors(element);
+      if (!backgrounds) return;
       const size = parseFloat(style.fontSize) || 16;
       const bold = (parseInt(style.fontWeight, 10) || 400) >= 700;
       const target = size >= 24 || (bold && size >= 18.66) ? LARGE_TEXT_RATIO : NORMAL_TEXT_RATIO;
-      if (this.colorContrast(shown, background) >= target) return;
-      fixes.push({ element, color: this.findReadableColor(shown, background, target) });
+      const contrast = this.lowestContrast(text, backgrounds);
+      if (contrast >= target || contrast < INVISIBLE_RATIO) return;
+      const color = this.findReadableColorAcross(text, backgrounds, target);
+      if (color) fixes.push({ element, color });
     });
     fixes.forEach(({ element, color }) => {
       this.smartContrastFixed.set(element, {
@@ -194,10 +276,6 @@ export const smartContrastMethods = {
       clearTimeout(this.smartContrastTimer);
       this.smartContrastTimer = null;
     }
-    if (this.smartContrastLoadHandler) {
-      window.removeEventListener('load', this.smartContrastLoadHandler);
-      this.smartContrastLoadHandler = null;
-    }
   },
 
   // Content added later (a menu that opens, results that load) is checked
@@ -221,16 +299,6 @@ export const smartContrastMethods = {
       }, 250);
     });
     this.smartContrastObserver.observe(document.body, { childList: true, subtree: true });
-    // Styles that arrive with the rest of the page can change the colors.
-    if (document.readyState !== 'complete') {
-      this.smartContrastLoadHandler = () => {
-        this.smartContrastLoadHandler = null;
-        if (!this.smartContrastActive) return;
-        this.clearSmartContrast();
-        this.applySmartContrast();
-      };
-      window.addEventListener('load', this.smartContrastLoadHandler, { once: true });
-    }
   },
 
   // High Contrast and Dark Contrast set every color themselves, so Smart

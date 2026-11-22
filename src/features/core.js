@@ -641,6 +641,16 @@ export const coreFeatureMethods = {
           background: #fff !important;
         }
 
+        /* ── Text laid over a picture: fade the picture behind it rather
+           than cover it (see markMediaOverlays) ── */
+        body.acc-high-contrast-mode [data-acc-over-media]${X} {
+          background-color: rgba(255, 255, 255, 0.85) !important;
+        }
+
+        body.acc-high-contrast-mode [data-acc-over-media] *${X} {
+          background-color: transparent !important;
+        }
+
         /* ── Borders: solid and visible ── */
         body.acc-high-contrast-mode *${X} {
           border-color: #000 !important;
@@ -877,6 +887,7 @@ export const coreFeatureMethods = {
   // Hide Images keeps each picture's space, so the page does not jump, and
   // leaves alone the icons that controls are made of: an icon-only button
   // or link would otherwise turn into a blank, unlabeled-looking box.
+  // Embedded frames stay too; one can be a payment form or a map.
   concealImages(enable = false) {
     const styleId = `acc-hide-images`;
     this.removeStyle(styleId);
@@ -890,7 +901,6 @@ export const coreFeatureMethods = {
         ${S} picture:not(${inButton} picture),
         ${S} svg:not(.acc-container svg):not(${inControl} svg),
         ${S} video,
-        ${S} iframe,
         ${S} canvas,
         ${S} .video,
         ${S} .image {
@@ -1201,6 +1211,7 @@ export const coreFeatureMethods = {
       this.enableSimpleLayout(states && states['simple-layout']);
       this.enableMuteSounds(states && states['mute-sounds']);
       this.enableTextMagnifier(states && states['text-magnifier']);
+      this.enableTooltips(states && states['tooltips']);
       // Last, so Smart Contrast reads the colors the options above left.
       this.applyContrastMode(states);
     },
@@ -1280,6 +1291,7 @@ export const coreFeatureMethods = {
       this.setMediaMotionPaused(false);
       this.enableMuteSounds(false);
       this.enableTextMagnifier(false);
+      this.enableTooltips(false);
       this.clearSystemPreferenceListeners();
       this.detectSystemPreferences();
       this.setupMediaQueryListeners();

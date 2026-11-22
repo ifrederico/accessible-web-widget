@@ -52,7 +52,7 @@ Or self-host — just download `dist/accessible-web-widget.min.js` and serve it 
 - **Profiles** — One-tap presets: Seizure Safe, Vision Impaired, ADHD Friendly, Dyslexia Friendly
 - **Text** — Font size, line height and letter spacing (three steps each), bold, readable font
 - **Color** — Contrast (smart, which recolors only hard-to-read text; dark; light), invert, saturation (low/high/monochrome)
-- **Reading** — readable fonts (OpenDyslexic, Atkinson Hyperlegible, Lexend), reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, page structure navigator (headings/landmarks/links)
+- **Reading** — readable fonts (OpenDyslexic, Atkinson Hyperlegible, Lexend), reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, tooltips (the hidden name of an icon button or the description of a picture, shown on hover and on keyboard focus), page structure navigator (headings/landmarks/links)
 - **Interaction** — Large cursor, pause animations (including videos and animated GIFs), hide images, mute sounds
 
 Plus: 54 languages (including RTL Arabic, Hebrew, Persian, and Urdu), persistent settings, system preference detection (`prefers-reduced-motion`, `prefers-contrast`), screen-reader announcements for every toggle, keyboard accessible, and mobile friendly. The widget UI lives in a shadow root, so your site's CSS can't break it and its styles can't leak into your page.

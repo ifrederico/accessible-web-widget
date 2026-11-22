@@ -92,6 +92,7 @@ const WIDGET_ICONS = {
       highContrast: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M200.12,55.88A102,102,0,1,0,55.88,200.13,102,102,0,1,0,200.12,55.88ZM90,209.62a89.61,89.61,0,0,1-21.23-13.89L90,174.49Zm32,8.16a90,90,0,0,1-20-3.58V162.49l20-20Zm32-3.58a89.8,89.8,0,0,1-20,3.58V130.49l20-20Zm32-17.4a89.45,89.45,0,0,1-20,12.83V98.49l20-20ZM60.27,187.24a90,90,0,0,1,127-127ZM198,184.57V71.43a90,90,0,0,1,0,113.14Z"/></svg>',
       simplifyLayout: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M216,42H40A14,14,0,0,0,26,56V200a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V56A14,14,0,0,0,216,42Zm2,158a2,2,0,0,1-2,2H40a2,2,0,0,1-2-2V56a2,2,0,0,1,2-2H216a2,2,0,0,1,2,2ZM182,96a6,6,0,0,1-6,6H80a6,6,0,0,1,0-12h96A6,6,0,0,1,182,96Zm0,32a6,6,0,0,1-6,6H80a6,6,0,0,1,0-12h96A6,6,0,0,1,182,128Zm0,32a6,6,0,0,1-6,6H80a6,6,0,0,1,0-12h96A6,6,0,0,1,182,160Z"/></svg>',
       muteSounds: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M52.44,36A6,6,0,0,0,43.56,44L78,81.94l-.08.06H32A14,14,0,0,0,18,96v64a14,14,0,0,0,14,14H77.94l70.38,54.74A6,6,0,0,0,158,224V169.92L203.56,220a6,6,0,0,0,8.88-8.08ZM30,160V96a2,2,0,0,1,2-2H74v68H32A2,2,0,0,1,30,160Zm116,51.73L86,165.07V90.93l.11-.08L146,156.72Zm41.5-66.53a26,26,0,0,0,0-34.37,6,6,0,1,1,9-7.93,38,38,0,0,1,0,50.24,6,6,0,0,1-9-7.94ZM107.41,66.68a6,6,0,0,1,1.06-8.42l39.85-31A6,6,0,0,1,158,32v74.83a6,6,0,0,1-12,0V44.27L115.83,67.73A6,6,0,0,1,107.41,66.68ZM246,128a77.86,77.86,0,0,1-19.86,52,6,6,0,1,1-8.94-8,66,66,0,0,0,0-88,6,6,0,1,1,8.94-8A77.86,77.86,0,0,1,246,128Z"/></svg>',
+      tooltips: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M166,104a6,6,0,0,1-6,6H96a6,6,0,0,1,0-12h64A6,6,0,0,1,166,104Zm-6,26H96a6,6,0,0,0,0,12h64a6,6,0,0,0,0-12Zm70-74V184a14,14,0,0,1-14,14H154.41L140.16,223a14,14,0,0,1-24.32,0L101.59,198H40a14,14,0,0,1-14-14V56A14,14,0,0,1,40,42H216A14,14,0,0,1,230,56Zm-12,0a2,2,0,0,0-2-2H40a2,2,0,0,0-2,2V184a2,2,0,0,0,2,2h65.07a6,6,0,0,1,5.21,3l16,28a2,2,0,0,0,3.48,0l16-28a6,6,0,0,1,5.21-3H216a2,2,0,0,0,2-2Z"/></svg>',
       textMagnifier: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M150,112a6,6,0,0,1-6,6H118v26a6,6,0,0,1-12,0V118H80a6,6,0,0,1,0-12h26V80a6,6,0,0,1,12,0v26h26A6,6,0,0,1,150,112Zm78.24,116.24a6,6,0,0,1-8.48,0l-51.38-51.38a86.15,86.15,0,1,1,8.48-8.48l51.38,51.38A6,6,0,0,1,228.24,228.24ZM112,186a74,74,0,1,0-74-74A74.09,74.09,0,0,0,112,186Z"/></svg>',
       pageStructure: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M160,110h48a14,14,0,0,0,14-14V48a14,14,0,0,0-14-14H160a14,14,0,0,0-14,14V66H128a22,22,0,0,0-22,22v34H70V112A14,14,0,0,0,56,98H24a14,14,0,0,0-14,14v32a14,14,0,0,0,14,14H56a14,14,0,0,0,14-14V134h36v34a22,22,0,0,0,22,22h18v18a14,14,0,0,0,14,14h48a14,14,0,0,0,14-14V160a14,14,0,0,0-14-14H160a14,14,0,0,0-14,14v18H128a10,10,0,0,1-10-10V88a10,10,0,0,1,10-10h18V96A14,14,0,0,0,160,110ZM58,144a2,2,0,0,1-2,2H24a2,2,0,0,1-2-2V112a2,2,0,0,1,2-2H56a2,2,0,0,1,2,2Zm100,16a2,2,0,0,1,2-2h48a2,2,0,0,1,2,2v48a2,2,0,0,1-2,2H160a2,2,0,0,1-2-2Zm0-112a2,2,0,0,1,2-2h48a2,2,0,0,1,2,2V96a2,2,0,0,1-2,2H160a2,2,0,0,1-2-2Z"/></svg>'
     };
@@ -202,6 +203,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Mute Sounds",
         "Page Structure": "Page Structure",
         "Text Magnifier": "Text Magnifier",
+        "Tooltips": "Tooltips",
+        "Navigation": "Navigation",
+        "Header": "Header",
+        "Main content": "Main content",
+        "Footer": "Footer",
+        "Sidebar": "Sidebar",
+        "Search": "Search",
+        "Form": "Form",
+        "Section": "Section",
         "Headings": "Headings",
         "Landmarks": "Landmarks",
         "Links": "Links",
@@ -304,6 +314,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Silenciar Sons",
         "Page Structure": "Estrutura da Página",
         "Text Magnifier": "Lupa de Texto",
+        "Tooltips": "Dicas",
+        "Navigation": "Navegação",
+        "Header": "Cabeçalho",
+        "Main content": "Conteúdo principal",
+        "Footer": "Rodapé",
+        "Sidebar": "Barra lateral",
+        "Search": "Busca",
+        "Form": "Formulário",
+        "Section": "Seção",
         "Headings": "Títulos",
         "Landmarks": "Pontos de Referência",
         "Links": "Links",
@@ -406,6 +425,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Disattiva Suoni",
         "Page Structure": "Struttura della Pagina",
         "Text Magnifier": "Lente d'Ingrandimento Testo",
+        "Tooltips": "Suggerimenti",
+        "Navigation": "Navigazione",
+        "Header": "Intestazione",
+        "Main content": "Contenuto principale",
+        "Footer": "Piè di pagina",
+        "Sidebar": "Barra laterale",
+        "Search": "Ricerca",
+        "Form": "Modulo",
+        "Section": "Sezione",
         "Headings": "Intestazioni",
         "Landmarks": "Punti di Riferimento",
         "Links": "Link",
@@ -508,6 +536,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Couper les Sons",
         "Page Structure": "Structure de la Page",
         "Text Magnifier": "Loupe de Texte",
+        "Tooltips": "Infobulles",
+        "Navigation": "Navigation",
+        "Header": "En-tête",
+        "Main content": "Contenu principal",
+        "Footer": "Pied de page",
+        "Sidebar": "Barre latérale",
+        "Search": "Recherche",
+        "Form": "Formulaire",
+        "Section": "Section",
         "Headings": "Titres",
         "Landmarks": "Points de Repère",
         "Links": "Liens",
@@ -610,6 +647,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Töne stummschalten",
         "Page Structure": "Seitenstruktur",
         "Text Magnifier": "Textlupe",
+        "Tooltips": "Tooltips",
+        "Navigation": "Navigation",
+        "Header": "Kopfbereich",
+        "Main content": "Hauptinhalt",
+        "Footer": "Fußbereich",
+        "Sidebar": "Seitenleiste",
+        "Search": "Suche",
+        "Form": "Formular",
+        "Section": "Abschnitt",
         "Headings": "Überschriften",
         "Landmarks": "Orientierungspunkte",
         "Links": "Links",
@@ -712,6 +758,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Silenciar Sonidos",
         "Page Structure": "Estructura de la Página",
         "Text Magnifier": "Lupa de Texto",
+        "Tooltips": "Descripciones",
+        "Navigation": "Navegación",
+        "Header": "Encabezado",
+        "Main content": "Contenido principal",
+        "Footer": "Pie de página",
+        "Sidebar": "Barra lateral",
+        "Search": "Búsqueda",
+        "Form": "Formulario",
+        "Section": "Sección",
         "Headings": "Encabezados",
         "Landmarks": "Puntos de Referencia",
         "Links": "Enlaces",
@@ -814,6 +869,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Отключить звук",
         "Page Structure": "Структура страницы",
         "Text Magnifier": "Текстовая лупа",
+        "Tooltips": "Подсказки",
+        "Navigation": "Навигация",
+        "Header": "Шапка",
+        "Main content": "Основное содержимое",
+        "Footer": "Подвал",
+        "Sidebar": "Боковая панель",
+        "Search": "Поиск",
+        "Form": "Форма",
+        "Section": "Раздел",
         "Headings": "Заголовки",
         "Landmarks": "Ориентиры",
         "Links": "Ссылки",
@@ -916,6 +980,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Wycisz Dźwięki",
         "Page Structure": "Struktura Strony",
         "Text Magnifier": "Lupa Tekstu",
+        "Tooltips": "Podpowiedzi",
+        "Navigation": "Nawigacja",
+        "Header": "Nagłówek",
+        "Main content": "Główna treść",
+        "Footer": "Stopka",
+        "Sidebar": "Panel boczny",
+        "Search": "Wyszukiwanie",
+        "Form": "Formularz",
+        "Section": "Sekcja",
         "Headings": "Nagłówki",
         "Landmarks": "Punkty Orientacyjne",
         "Links": "Linki",
@@ -1018,6 +1091,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Dezactivare Sunete",
         "Page Structure": "Structura Paginii",
         "Text Magnifier": "Lupă pentru Text",
+        "Tooltips": "Sugestii",
+        "Navigation": "Navigare",
+        "Header": "Antet",
+        "Main content": "Conținut principal",
+        "Footer": "Subsol",
+        "Sidebar": "Bară laterală",
+        "Search": "Căutare",
+        "Form": "Formular",
+        "Section": "Secțiune",
         "Headings": "Titluri",
         "Landmarks": "Repere",
         "Links": "Linkuri",
@@ -1120,6 +1202,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Geluiden dempen",
         "Page Structure": "Paginastructuur",
         "Text Magnifier": "Tekstvergrootglas",
+        "Tooltips": "Tooltips",
+        "Navigation": "Navigatie",
+        "Header": "Koptekst",
+        "Main content": "Hoofdinhoud",
+        "Footer": "Voettekst",
+        "Sidebar": "Zijbalk",
+        "Search": "Zoeken",
+        "Form": "Formulier",
+        "Section": "Sectie",
         "Headings": "Koppen",
         "Landmarks": "Oriëntatiepunten",
         "Links": "Links",
@@ -1222,6 +1313,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Вимкнути звук",
         "Page Structure": "Структура сторінки",
         "Text Magnifier": "Текстова лупа",
+        "Tooltips": "Підказки",
+        "Navigation": "Навігація",
+        "Header": "Шапка",
+        "Main content": "Основний вміст",
+        "Footer": "Підвал",
+        "Sidebar": "Бічна панель",
+        "Search": "Пошук",
+        "Form": "Форма",
+        "Section": "Розділ",
         "Headings": "Заголовки",
         "Landmarks": "Орієнтири",
         "Links": "Посилання",
@@ -1324,6 +1424,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "كتم الأصوات",
         "Page Structure": "بنية الصفحة",
         "Text Magnifier": "مكبّر النص",
+        "Tooltips": "تلميحات",
+        "Navigation": "التنقل",
+        "Header": "الرأس",
+        "Main content": "المحتوى الرئيسي",
+        "Footer": "التذييل",
+        "Sidebar": "الشريط الجانبي",
+        "Search": "بحث",
+        "Form": "نموذج",
+        "Section": "قسم",
         "Headings": "العناوين",
         "Landmarks": "المعالم",
         "Links": "الروابط",
@@ -1426,6 +1535,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "השתקת צלילים",
         "Page Structure": "מבנה הדף",
         "Text Magnifier": "זכוכית מגדלת לטקסט",
+        "Tooltips": "רמזים",
+        "Navigation": "ניווט",
+        "Header": "כותרת עליונה",
+        "Main content": "תוכן ראשי",
+        "Footer": "כותרת תחתונה",
+        "Sidebar": "סרגל צד",
+        "Search": "חיפוש",
+        "Form": "טופס",
+        "Section": "מקטע",
         "Headings": "כותרות",
         "Landmarks": "ציוני דרך",
         "Links": "קישורים",
@@ -1528,6 +1646,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Stäng av ljud",
         "Page Structure": "Sidstruktur",
         "Text Magnifier": "Textförstorare",
+        "Tooltips": "Verktygstips",
+        "Navigation": "Navigering",
+        "Header": "Sidhuvud",
+        "Main content": "Huvudinnehåll",
+        "Footer": "Sidfot",
+        "Sidebar": "Sidofält",
+        "Search": "Sök",
+        "Form": "Formulär",
+        "Section": "Avsnitt",
         "Headings": "Rubriker",
         "Landmarks": "Landmärken",
         "Links": "Länkar",
@@ -1630,6 +1757,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Slå lyd fra",
         "Page Structure": "Sidestruktur",
         "Text Magnifier": "Tekstforstørrer",
+        "Tooltips": "Værktøjstip",
+        "Navigation": "Navigation",
+        "Header": "Sidehoved",
+        "Main content": "Hovedindhold",
+        "Footer": "Sidefod",
+        "Sidebar": "Sidepanel",
+        "Search": "Søg",
+        "Form": "Formular",
+        "Section": "Sektion",
         "Headings": "Overskrifter",
         "Landmarks": "Landemærker",
         "Links": "Links",
@@ -1732,6 +1868,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Silencia els sons",
         "Page Structure": "Estructura de la pàgina",
         "Text Magnifier": "Lupa de text",
+        "Tooltips": "Descripcions",
+        "Navigation": "Navegació",
+        "Header": "Capçalera",
+        "Main content": "Contingut principal",
+        "Footer": "Peu de pàgina",
+        "Sidebar": "Barra lateral",
+        "Search": "Cerca",
+        "Form": "Formulari",
+        "Section": "Secció",
         "Headings": "Encapçalaments",
         "Landmarks": "Punts de referència",
         "Links": "Enllaços",
@@ -1834,6 +1979,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Izklopi zvok",
         "Page Structure": "Struktura strani",
         "Text Magnifier": "Povečevalnik besedila",
+        "Tooltips": "Namigi",
+        "Navigation": "Navigacija",
+        "Header": "Glava",
+        "Main content": "Glavna vsebina",
+        "Footer": "Noga",
+        "Sidebar": "Stranska vrstica",
+        "Search": "Iskanje",
+        "Form": "Obrazec",
+        "Section": "Razdelek",
         "Headings": "Naslovi",
         "Landmarks": "Mejniki",
         "Links": "Povezave",
@@ -1936,6 +2090,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Izslēgt skaņu",
         "Page Structure": "Lapas struktūra",
         "Text Magnifier": "Teksta lupa",
+        "Tooltips": "Padomi",
+        "Navigation": "Navigācija",
+        "Header": "Galvene",
+        "Main content": "Galvenais saturs",
+        "Footer": "Kājene",
+        "Sidebar": "Sānjosla",
+        "Search": "Meklēšana",
+        "Form": "Veidlapa",
+        "Section": "Sadaļa",
         "Headings": "Virsraksti",
         "Landmarks": "Orientieri",
         "Links": "Saites",
@@ -2038,6 +2201,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Σίγαση ήχων",
         "Page Structure": "Δομή σελίδας",
         "Text Magnifier": "Μεγεθυντής κειμένου",
+        "Tooltips": "Συμβουλές",
+        "Navigation": "Πλοήγηση",
+        "Header": "Κεφαλίδα",
+        "Main content": "Κύριο περιεχόμενο",
+        "Footer": "Υποσέλιδο",
+        "Sidebar": "Πλαϊνή στήλη",
+        "Search": "Αναζήτηση",
+        "Form": "Φόρμα",
+        "Section": "Ενότητα",
         "Headings": "Επικεφαλίδες",
         "Landmarks": "Ορόσημα",
         "Links": "Σύνδεσμοι",
@@ -2140,6 +2312,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "ხმის გამორთვა",
         "Page Structure": "გვერდის სტრუქტურა",
         "Text Magnifier": "ტექსტის გამადიდებელი",
+        "Tooltips": "მინიშნებები",
+        "Navigation": "ნავიგაცია",
+        "Header": "ზედა კოლონტიტული",
+        "Main content": "მთავარი შინაარსი",
+        "Footer": "ქვედა კოლონტიტული",
+        "Sidebar": "გვერდითი პანელი",
+        "Search": "ძიება",
+        "Form": "ფორმა",
+        "Section": "სექცია",
         "Headings": "სათაურები",
         "Landmarks": "ორიენტირები",
         "Links": "ბმულები",
@@ -2242,6 +2423,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "ድምፆችን አጥፋ",
         "Page Structure": "የገጽ መዋቅር",
         "Text Magnifier": "የጽሑፍ ማጉያ",
+        "Tooltips": "ፍንጮች",
+        "Navigation": "አሰሳ",
+        "Header": "ራስጌ",
+        "Main content": "ዋና ይዘት",
+        "Footer": "ግርጌ",
+        "Sidebar": "የጎን አሞሌ",
+        "Search": "ፍለጋ",
+        "Form": "ቅጽ",
+        "Section": "ክፍል",
         "Headings": "ርዕሶች",
         "Landmarks": "ምልክቶች",
         "Links": "አገናኞች",
@@ -2344,6 +2534,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Заглушаване на звука",
         "Page Structure": "Структура на страницата",
         "Text Magnifier": "Лупа за текст",
+        "Tooltips": "Подсказки",
+        "Navigation": "Навигация",
+        "Header": "Заглавна част",
+        "Main content": "Основно съдържание",
+        "Footer": "Долна част",
+        "Sidebar": "Странична лента",
+        "Search": "Търсене",
+        "Form": "Формуляр",
+        "Section": "Раздел",
         "Headings": "Заглавия",
         "Landmarks": "Ориентири",
         "Links": "Връзки",
@@ -2446,6 +2645,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "শব্দ বন্ধ করুন",
         "Page Structure": "পৃষ্ঠার কাঠামো",
         "Text Magnifier": "টেক্সট ম্যাগনিফায়ার",
+        "Tooltips": "টুলটিপ",
+        "Navigation": "নেভিগেশন",
+        "Header": "হেডার",
+        "Main content": "মূল বিষয়বস্তু",
+        "Footer": "ফুটার",
+        "Sidebar": "সাইডবার",
+        "Search": "অনুসন্ধান",
+        "Form": "ফর্ম",
+        "Section": "বিভাগ",
         "Headings": "শিরোনাম",
         "Landmarks": "ল্যান্ডমার্ক",
         "Links": "লিঙ্ক",
@@ -2548,6 +2756,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Ztlumit zvuky",
         "Page Structure": "Struktura stránky",
         "Text Magnifier": "Textová lupa",
+        "Tooltips": "Nápovědy",
+        "Navigation": "Navigace",
+        "Header": "Záhlaví",
+        "Main content": "Hlavní obsah",
+        "Footer": "Zápatí",
+        "Sidebar": "Postranní panel",
+        "Search": "Hledání",
+        "Form": "Formulář",
+        "Section": "Sekce",
         "Headings": "Nadpisy",
         "Landmarks": "Orientační body",
         "Links": "Odkazy",
@@ -2650,6 +2867,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "قطع صدا",
         "Page Structure": "ساختار صفحه",
         "Text Magnifier": "ذره‌بین متن",
+        "Tooltips": "راهنمای ابزار",
+        "Navigation": "ناوبری",
+        "Header": "سربرگ",
+        "Main content": "محتوای اصلی",
+        "Footer": "پابرگ",
+        "Sidebar": "نوار کناری",
+        "Search": "جستجو",
+        "Form": "فرم",
+        "Section": "بخش",
         "Headings": "سرفصل‌ها",
         "Landmarks": "مرزنماها",
         "Links": "پیوندها",
@@ -2752,6 +2978,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Mykistä äänet",
         "Page Structure": "Sivun rakenne",
         "Text Magnifier": "Tekstin suurennuslasi",
+        "Tooltips": "Työkaluvihjeet",
+        "Navigation": "Navigointi",
+        "Header": "Ylätunniste",
+        "Main content": "Pääsisältö",
+        "Footer": "Alatunniste",
+        "Sidebar": "Sivupalkki",
+        "Search": "Haku",
+        "Form": "Lomake",
+        "Section": "Osio",
         "Headings": "Otsikot",
         "Landmarks": "Maamerkit",
         "Links": "Linkit",
@@ -2854,6 +3089,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "I-mute ang Mga Tunog",
         "Page Structure": "Istruktura ng Pahina",
         "Text Magnifier": "Pampalaki ng Teksto",
+        "Tooltips": "Mga Tooltip",
+        "Navigation": "Nabigasyon",
+        "Header": "Header",
+        "Main content": "Pangunahing nilalaman",
+        "Footer": "Footer",
+        "Sidebar": "Sidebar",
+        "Search": "Paghahanap",
+        "Form": "Form",
+        "Section": "Seksyon",
         "Headings": "Mga Heading",
         "Landmarks": "Mga Landmark",
         "Links": "Mga Link",
@@ -2956,6 +3200,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "ध्वनि म्यूट करें",
         "Page Structure": "पृष्ठ संरचना",
         "Text Magnifier": "टेक्स्ट आवर्धक",
+        "Tooltips": "टूलटिप",
+        "Navigation": "नेविगेशन",
+        "Header": "हेडर",
+        "Main content": "मुख्य सामग्री",
+        "Footer": "फ़ुटर",
+        "Sidebar": "साइडबार",
+        "Search": "खोज",
+        "Form": "फ़ॉर्म",
+        "Section": "अनुभाग",
         "Headings": "हेडिंग",
         "Landmarks": "लैंडमार्क",
         "Links": "लिंक",
@@ -3058,6 +3311,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Isključi zvukove",
         "Page Structure": "Struktura stranice",
         "Text Magnifier": "Povećalo teksta",
+        "Tooltips": "Savjeti",
+        "Navigation": "Navigacija",
+        "Header": "Zaglavlje",
+        "Main content": "Glavni sadržaj",
+        "Footer": "Podnožje",
+        "Sidebar": "Bočna traka",
+        "Search": "Pretraživanje",
+        "Form": "Obrazac",
+        "Section": "Odjeljak",
         "Headings": "Naslovi",
         "Landmarks": "Orijentiri",
         "Links": "Poveznice",
@@ -3160,6 +3422,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Hangok némítása",
         "Page Structure": "Oldalszerkezet",
         "Text Magnifier": "Szövegnagyító",
+        "Tooltips": "Eszköztippek",
+        "Navigation": "Navigáció",
+        "Header": "Fejléc",
+        "Main content": "Fő tartalom",
+        "Footer": "Lábléc",
+        "Sidebar": "Oldalsáv",
+        "Search": "Keresés",
+        "Form": "Űrlap",
+        "Section": "Szakasz",
         "Headings": "Címsorok",
         "Landmarks": "Tájékozódási pontok",
         "Links": "Hivatkozások",
@@ -3262,6 +3533,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Bisukan Suara",
         "Page Structure": "Struktur Halaman",
         "Text Magnifier": "Pembesar Teks",
+        "Tooltips": "Tooltip",
+        "Navigation": "Navigasi",
+        "Header": "Header",
+        "Main content": "Konten utama",
+        "Footer": "Footer",
+        "Sidebar": "Bilah sisi",
+        "Search": "Pencarian",
+        "Form": "Formulir",
+        "Section": "Bagian",
         "Headings": "Judul",
         "Landmarks": "Landmark",
         "Links": "Tautan",
@@ -3364,6 +3644,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "サウンドをミュート",
         "Page Structure": "ページ構造",
         "Text Magnifier": "テキスト拡大鏡",
+        "Tooltips": "ツールチップ",
+        "Navigation": "ナビゲーション",
+        "Header": "ヘッダー",
+        "Main content": "メインコンテンツ",
+        "Footer": "フッター",
+        "Sidebar": "サイドバー",
+        "Search": "検索",
+        "Form": "フォーム",
+        "Section": "セクション",
         "Headings": "見出し",
         "Landmarks": "ランドマーク",
         "Links": "リンク",
@@ -3466,6 +3755,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "ಶಬ್ದಗಳನ್ನು ಮ್ಯೂಟ್ ಮಾಡಿ",
         "Page Structure": "ಪುಟದ ರಚನೆ",
         "Text Magnifier": "ಪಠ್ಯ ವರ್ಧಕ",
+        "Tooltips": "ಟೂಲ್‌ಟಿಪ್‌ಗಳು",
+        "Navigation": "ನ್ಯಾವಿಗೇಷನ್",
+        "Header": "ಹೆಡರ್",
+        "Main content": "ಮುಖ್ಯ ವಿಷಯ",
+        "Footer": "ಫೂಟರ್",
+        "Sidebar": "ಸೈಡ್‌ಬಾರ್",
+        "Search": "ಹುಡುಕಾಟ",
+        "Form": "ಫಾರ್ಮ್",
+        "Section": "ವಿಭಾಗ",
         "Headings": "ಶೀರ್ಷಿಕೆಗಳು",
         "Landmarks": "ಲ್ಯಾಂಡ್‌ಮಾರ್ಕ್‌ಗಳು",
         "Links": "ಲಿಂಕ್‌ಗಳು",
@@ -3568,6 +3866,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "음소거",
         "Page Structure": "페이지 구조",
         "Text Magnifier": "텍스트 돋보기",
+        "Tooltips": "도구 설명",
+        "Navigation": "탐색",
+        "Header": "머리글",
+        "Main content": "주요 콘텐츠",
+        "Footer": "바닥글",
+        "Sidebar": "사이드바",
+        "Search": "검색",
+        "Form": "양식",
+        "Section": "섹션",
         "Headings": "제목",
         "Landmarks": "랜드마크",
         "Links": "링크",
@@ -3670,6 +3977,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Dengan Bigire",
         "Page Structure": "Struktura Rûpelê",
         "Text Magnifier": "Mezinkera Nivîsê",
+        "Tooltips": "Serişte",
+        "Navigation": "Navîgasyon",
+        "Header": "Sernav",
+        "Main content": "Naveroka sereke",
+        "Footer": "Jêrnav",
+        "Sidebar": "Darika kêlekê",
+        "Search": "Lêgerîn",
+        "Form": "Form",
+        "Section": "Beş",
         "Headings": "Sernav",
         "Landmarks": "Nîşangeh",
         "Links": "Girêdan",
@@ -3772,6 +4088,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Toun ausmaachen",
         "Page Structure": "Säitestruktur",
         "Text Magnifier": "Textlupp",
+        "Tooltips": "Tooltips",
+        "Navigation": "Navigatioun",
+        "Header": "Kappberäich",
+        "Main content": "Haaptinhalt",
+        "Footer": "Foussberäich",
+        "Sidebar": "Säiteleescht",
+        "Search": "Sich",
+        "Form": "Formulaire",
+        "Section": "Sektioun",
         "Headings": "Iwwerschrëften",
         "Landmarks": "Regiounen",
         "Links": "Linken",
@@ -3874,6 +4199,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "ശബ്ദം മ്യൂട്ട് ചെയ്യുക",
         "Page Structure": "പേജ് ഘടന",
         "Text Magnifier": "ടെക്സ്റ്റ് ഭൂതക്കണ്ണാടി",
+        "Tooltips": "ടൂൾടിപ്പുകൾ",
+        "Navigation": "നാവിഗേഷൻ",
+        "Header": "ഹെഡർ",
+        "Main content": "പ്രധാന ഉള്ളടക്കം",
+        "Footer": "ഫൂട്ടർ",
+        "Sidebar": "സൈഡ്ബാർ",
+        "Search": "തിരയൽ",
+        "Form": "ഫോം",
+        "Section": "വിഭാഗം",
         "Headings": "തലക്കെട്ടുകൾ",
         "Landmarks": "ലാൻഡ്മാർക്കുകൾ",
         "Links": "ലിങ്കുകൾ",
@@ -3976,6 +4310,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Дууг хаах",
         "Page Structure": "Хуудасны бүтэц",
         "Text Magnifier": "Текст томруулагч",
+        "Tooltips": "Зөвлөмж",
+        "Navigation": "Навигац",
+        "Header": "Толгой хэсэг",
+        "Main content": "Үндсэн агуулга",
+        "Footer": "Хөл хэсэг",
+        "Sidebar": "Хажуугийн самбар",
+        "Search": "Хайлт",
+        "Form": "Маягт",
+        "Section": "Хэсэг",
         "Headings": "Гарчгууд",
         "Landmarks": "Бүсүүд",
         "Links": "Холбоосууд",
@@ -4078,6 +4421,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Redam Bunyi",
         "Page Structure": "Struktur Halaman",
         "Text Magnifier": "Pembesar Teks",
+        "Tooltips": "Petua alat",
+        "Navigation": "Navigasi",
+        "Header": "Pengepala",
+        "Main content": "Kandungan utama",
+        "Footer": "Pengaki",
+        "Sidebar": "Bar sisi",
+        "Search": "Carian",
+        "Form": "Borang",
+        "Section": "Bahagian",
         "Headings": "Tajuk",
         "Landmarks": "Mercu Tanda",
         "Links": "Pautan",
@@ -4180,6 +4532,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "အသံ ပိတ်ရန်",
         "Page Structure": "စာမျက်နှာ ဖွဲ့စည်းပုံ",
         "Text Magnifier": "စာသား မှန်ဘီလူး",
+        "Tooltips": "အကြံပြုချက်များ",
+        "Navigation": "လမ်းညွှန်",
+        "Header": "ခေါင်းစီး",
+        "Main content": "အဓိကအကြောင်းအရာ",
+        "Footer": "အောက်ခြေ",
+        "Sidebar": "ဘေးဘား",
+        "Search": "ရှာဖွေရန်",
+        "Form": "ဖောင်",
+        "Section": "အပိုင်း",
         "Headings": "ခေါင်းစဉ်များ",
         "Landmarks": "မှတ်တိုင်များ",
         "Links": "လင့်ခ်များ",
@@ -4282,6 +4643,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Demp lyder",
         "Page Structure": "Sidestruktur",
         "Text Magnifier": "Tekstforstørrer",
+        "Tooltips": "Verktøytips",
+        "Navigation": "Navigasjon",
+        "Header": "Topptekst",
+        "Main content": "Hovedinnhold",
+        "Footer": "Bunntekst",
+        "Sidebar": "Sidefelt",
+        "Search": "Søk",
+        "Form": "Skjema",
+        "Section": "Seksjon",
         "Headings": "Overskrifter",
         "Landmarks": "Landemerker",
         "Links": "Lenker",
@@ -4384,6 +4754,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "ਅਵਾਜ਼ਾਂ ਮਿਊਟ ਕਰੋ",
         "Page Structure": "ਪੰਨੇ ਦੀ ਬਣਤਰ",
         "Text Magnifier": "ਲਿਖਤ ਵੱਡਦਰਸ਼ੀ",
+        "Tooltips": "ਟੂਲਟਿਪ",
+        "Navigation": "ਨੈਵੀਗੇਸ਼ਨ",
+        "Header": "ਹੈਡਰ",
+        "Main content": "ਮੁੱਖ ਸਮੱਗਰੀ",
+        "Footer": "ਫੁੱਟਰ",
+        "Sidebar": "ਸਾਈਡਬਾਰ",
+        "Search": "ਖੋਜ",
+        "Form": "ਫਾਰਮ",
+        "Section": "ਭਾਗ",
         "Headings": "ਸਿਰਲੇਖ",
         "Landmarks": "ਲੈਂਡਮਾਰਕ",
         "Links": "ਲਿੰਕ",
@@ -4486,6 +4865,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "ශබ්ද නිහඬ කරන්න",
         "Page Structure": "පිටු ව්‍යුහය",
         "Text Magnifier": "පෙළ විශාලකය",
+        "Tooltips": "මෙවලම් ඉඟි",
+        "Navigation": "සංචාලනය",
+        "Header": "ශීර්ෂකය",
+        "Main content": "ප්‍රධාන අන්තර්ගතය",
+        "Footer": "පාදකය",
+        "Sidebar": "පැති තීරුව",
+        "Search": "සෙවීම",
+        "Form": "පෝරමය",
+        "Section": "කොටස",
         "Headings": "ශීර්ෂ",
         "Landmarks": "සලකුණු",
         "Links": "සබැඳි",
@@ -4588,6 +4976,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Stlmiť zvuky",
         "Page Structure": "Štruktúra stránky",
         "Text Magnifier": "Textová lupa",
+        "Tooltips": "Popisy",
+        "Navigation": "Navigácia",
+        "Header": "Hlavička",
+        "Main content": "Hlavný obsah",
+        "Footer": "Päta",
+        "Sidebar": "Bočný panel",
+        "Search": "Hľadanie",
+        "Form": "Formulár",
+        "Section": "Sekcia",
         "Headings": "Nadpisy",
         "Landmarks": "Orientačné body",
         "Links": "Odkazy",
@@ -4690,6 +5087,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Искључи звук",
         "Page Structure": "Структура странице",
         "Text Magnifier": "Лупа за текст",
+        "Tooltips": "Савети",
+        "Navigation": "Навигација",
+        "Header": "Заглавље",
+        "Main content": "Главни садржај",
+        "Footer": "Подножје",
+        "Sidebar": "Бочна трака",
+        "Search": "Претрага",
+        "Form": "Образац",
+        "Section": "Одељак",
         "Headings": "Наслови",
         "Landmarks": "Оријентири",
         "Links": "Везе",
@@ -4792,6 +5198,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Zima Sauti",
         "Page Structure": "Muundo wa Ukurasa",
         "Text Magnifier": "Kikuza Maandishi",
+        "Tooltips": "Vidokezo",
+        "Navigation": "Urambazaji",
+        "Header": "Kichwa",
+        "Main content": "Maudhui makuu",
+        "Footer": "Kijachini",
+        "Sidebar": "Upau wa kando",
+        "Search": "Tafuta",
+        "Form": "Fomu",
+        "Section": "Sehemu",
         "Headings": "Vichwa",
         "Landmarks": "Alama Muhimu",
         "Links": "Viungo",
@@ -4894,6 +5309,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "ஒலியை முடக்கு",
         "Page Structure": "பக்க அமைப்பு",
         "Text Magnifier": "உரைப் பெரிதாக்கி",
+        "Tooltips": "உதவிக்குறிப்புகள்",
+        "Navigation": "வழிசெலுத்தல்",
+        "Header": "தலைப்புப் பகுதி",
+        "Main content": "முதன்மை உள்ளடக்கம்",
+        "Footer": "அடிக்குறிப்பு",
+        "Sidebar": "பக்கப்பட்டி",
+        "Search": "தேடல்",
+        "Form": "படிவம்",
+        "Section": "பிரிவு",
         "Headings": "தலைப்புகள்",
         "Landmarks": "அடையாளங்கள்",
         "Links": "இணைப்புகள்",
@@ -4996,6 +5420,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "శబ్దాలను మ్యూట్ చేయండి",
         "Page Structure": "పేజీ నిర్మాణం",
         "Text Magnifier": "వచన మాగ్నిఫైయర్",
+        "Tooltips": "టూల్‌టిప్‌లు",
+        "Navigation": "నావిగేషన్",
+        "Header": "హెడర్",
+        "Main content": "ప్రధాన కంటెంట్",
+        "Footer": "ఫుటర్",
+        "Sidebar": "సైడ్‌బార్",
+        "Search": "శోధన",
+        "Form": "ఫారమ్",
+        "Section": "విభాగం",
         "Headings": "శీర్షికలు",
         "Landmarks": "ల్యాండ్‌మార్క్‌లు",
         "Links": "లింక్‌లు",
@@ -5098,6 +5531,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "ปิดเสียง",
         "Page Structure": "โครงสร้างหน้าเว็บ",
         "Text Magnifier": "แว่นขยายข้อความ",
+        "Tooltips": "คำแนะนำเครื่องมือ",
+        "Navigation": "การนำทาง",
+        "Header": "ส่วนหัว",
+        "Main content": "เนื้อหาหลัก",
+        "Footer": "ส่วนท้าย",
+        "Sidebar": "แถบด้านข้าง",
+        "Search": "ค้นหา",
+        "Form": "แบบฟอร์ม",
+        "Section": "ส่วน",
         "Headings": "หัวข้อ",
         "Landmarks": "จุดสังเกต",
         "Links": "ลิงก์",
@@ -5200,6 +5642,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Sesleri Kapat",
         "Page Structure": "Sayfa Yapısı",
         "Text Magnifier": "Metin Büyüteci",
+        "Tooltips": "İpuçları",
+        "Navigation": "Gezinme",
+        "Header": "Üst bilgi",
+        "Main content": "Ana içerik",
+        "Footer": "Alt bilgi",
+        "Sidebar": "Kenar çubuğu",
+        "Search": "Arama",
+        "Form": "Form",
+        "Section": "Bölüm",
         "Headings": "Başlıklar",
         "Landmarks": "Sınırlar",
         "Links": "Bağlantılar",
@@ -5302,6 +5753,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "آوازیں خاموش کریں",
         "Page Structure": "صفحے کی ساخت",
         "Text Magnifier": "متن میگنیفائر",
+        "Tooltips": "ٹول ٹپس",
+        "Navigation": "نیویگیشن",
+        "Header": "ہیڈر",
+        "Main content": "مرکزی مواد",
+        "Footer": "فوٹر",
+        "Sidebar": "سائڈبار",
+        "Search": "تلاش",
+        "Form": "فارم",
+        "Section": "سیکشن",
         "Headings": "سرخیاں",
         "Landmarks": "نشانات",
         "Links": "روابط",
@@ -5404,6 +5864,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "Tắt âm thanh",
         "Page Structure": "Cấu trúc trang",
         "Text Magnifier": "Kính lúp văn bản",
+        "Tooltips": "Chú giải",
+        "Navigation": "Điều hướng",
+        "Header": "Đầu trang",
+        "Main content": "Nội dung chính",
+        "Footer": "Chân trang",
+        "Sidebar": "Thanh bên",
+        "Search": "Tìm kiếm",
+        "Form": "Biểu mẫu",
+        "Section": "Phần",
         "Headings": "Đề mục",
         "Landmarks": "Điểm mốc",
         "Links": "Liên kết",
@@ -5506,6 +5975,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "静音",
         "Page Structure": "页面结构",
         "Text Magnifier": "文本放大镜",
+        "Tooltips": "工具提示",
+        "Navigation": "导航",
+        "Header": "页眉",
+        "Main content": "主要内容",
+        "Footer": "页脚",
+        "Sidebar": "侧边栏",
+        "Search": "搜索",
+        "Form": "表单",
+        "Section": "区域",
         "Headings": "标题",
         "Landmarks": "地标",
         "Links": "链接",
@@ -5608,6 +6086,15 @@ const TRANSLATIONS = {
         "Mute Sounds": "靜音",
         "Page Structure": "頁面結構",
         "Text Magnifier": "文字放大鏡",
+        "Tooltips": "工具提示",
+        "Navigation": "導覽",
+        "Header": "頁首",
+        "Main content": "主要內容",
+        "Footer": "頁尾",
+        "Sidebar": "側邊欄",
+        "Search": "搜尋",
+        "Form": "表單",
+        "Section": "區段",
         "Headings": "標題",
         "Landmarks": "地標",
         "Links": "連結",
@@ -6056,7 +6543,7 @@ var skipLinkCSS = ".acc-skip-link {\n  font-family: inherit;\n  position: fixed;
 
 var annotationsCSS = ".acc-annotation-layer {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 0;\n  height: 0;\n  z-index: calc(var(--acc-widget-z-index, 100000) + 5);\n  pointer-events: none;\n}\n\n.acc-annotation-marker {\n  position: absolute;\n  width: 20px;\n  height: 20px;\n  border: none;\n  border-radius: 999px;\n  color: #fff;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);\n  cursor: pointer;\n  pointer-events: auto;\n  transform: translate(-40%, -50%);\n}\n\n.acc-annotation-marker svg {\n  width: 12px;\n  height: 12px;\n  fill: currentColor;\n}\n\n.acc-annotation-marker[data-impact=\"critical\"] {\n  background: #b71c1c;\n}\n\n.acc-annotation-marker[data-impact=\"serious\"] {\n  background: #d84315;\n}\n\n.acc-annotation-marker[data-impact=\"moderate\"] {\n  background: #ef6c00;\n}\n\n.acc-annotation-marker[data-impact=\"minor\"] {\n  background: #1565c0;\n}\n\n.acc-annotation-popup {\n  position: absolute;\n  width: min(320px, 92vw);\n  background: #fff;\n  color: #1a1a1a;\n  border: 1px solid #d7d7d7;\n  border-radius: 10px;\n  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);\n  padding: 12px;\n  pointer-events: auto;\n}\n\n.acc-annotation-popup-header {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n}\n\n.acc-annotation-popup-title {\n  margin: 0;\n  font-size: 14px;\n  line-height: 1.3;\n}\n\n.acc-annotation-popup-close {\n  border: 0;\n  background: transparent;\n  padding: 2px;\n  width: 24px;\n  height: 24px;\n  color: #444;\n  cursor: pointer;\n}\n\n.acc-annotation-popup-close svg {\n  width: 20px;\n  height: 20px;\n  fill: currentColor;\n}\n\n.acc-annotation-popup p {\n  margin: 8px 0;\n  font-size: 13px;\n  line-height: 1.45;\n}\n\n.acc-annotation-popup a {\n  color: #0049a5;\n  font-weight: 600;\n  text-decoration: underline;\n}\n";
 
-var extrasCSS = "/* TTS click-to-read — these target light-DOM page content, so they must\n   live in <head>, not the widget shadow root */\nbody.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {\n  cursor: pointer;\n}\n\n.acc-tts-active-block {\n  outline: 2px solid var(--acc-primary-color, #0072e4) !important;\n  outline-offset: 3px !important;\n  border-radius: 4px;\n}\n\n/* Text magnifier — fixed banner showing enlarged copy of hovered text */\n.acc-text-magnifier {\n  position: fixed;\n  left: 50%;\n  bottom: calc(24px + env(safe-area-inset-bottom, 0px));\n  transform: translateX(-50%);\n  /* max-content first: a left: 50% box otherwise shrink-wraps to half the\n     viewport, which turned the banner into a tall, narrow column. */\n  width: max-content;\n  max-width: min(90vw, 880px);\n  background: #111827;\n  color: #ffffff;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, Arial, sans-serif;\n  font-size: clamp(18px, 5.5vw, 28px);\n  line-height: 1.45;\n  /* Vertical spacing comes from transparent borders, not padding:\n     overflow clips at the padding box, so the first clamped-away line\n     would otherwise peek through the bottom padding. */\n  padding: 0 22px;\n  border-block: 14px solid transparent;\n  border-radius: 10px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);\n  z-index: 2147483646;\n  pointer-events: none;\n  display: none;\n  overflow: hidden;\n}\n\n/* Clamped so a long block can never cover a phone screen. */\n.acc-text-magnifier.acc-visible {\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  -webkit-line-clamp: 6;\n}\n\n/* Docked at the top while the magnified text sits in the lower part of\n   the screen, so the banner never covers what is being read. */\n.acc-text-magnifier.acc-text-magnifier-top {\n  top: calc(16px + env(safe-area-inset-top, 0px));\n  bottom: auto;\n}\n\n/* Landscape phones: six large lines would cover most of the screen. */\n@media (max-height: 500px) {\n  .acc-text-magnifier {\n    font-size: 22px;\n  }\n\n  .acc-text-magnifier.acc-visible {\n    -webkit-line-clamp: 3;\n  }\n}\n\n/* Page structure navigator: each list is a white card of rows inside\n   the shared report dialog. */\n.acc-structure-list {\n  list-style: none;\n  margin: 0;\n  padding: 6px;\n  border-radius: 22px;\n  background: var(--acc-card-bg, #ffffff);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n}\n\n.acc-structure-list li {\n  margin: 0;\n  padding: 0;\n}\n\n.acc-structure-item {\n  display: block;\n  width: 100%;\n  margin: 0;\n  text-align: start;\n  background: transparent;\n  border: none;\n  border-radius: 16px;\n  padding: 10px 12px;\n  font: inherit;\n  font-size: 15px;\n  line-height: 1.4;\n  color: var(--acc-text-color, #222222);\n  cursor: pointer;\n  overflow-wrap: anywhere;\n}\n\n@media (hover: hover) {\n  .acc-structure-item:hover {\n    background: var(--acc-hover-tint, #e7eaee);\n  }\n}\n\n@media (pointer: coarse) {\n  .acc-structure-item {\n    padding: 12px;\n  }\n}\n\n.acc-structure-item:focus-visible {\n  outline: 2px solid var(--acc-focus-ring-color, #0072e4);\n  outline-offset: -2px;\n}\n\n.acc-structure-empty {\n  color: #5b6472;\n  font-size: 15px;\n  margin: 0;\n  padding: 0 4px;\n}\n";
+var extrasCSS = "/* TTS click-to-read — these target light-DOM page content, so they must\n   live in <head>, not the widget shadow root */\nbody.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, figcaption, caption, th, td, div, section):not(.acc-container *):hover {\n  cursor: pointer;\n}\n\n.acc-tts-active-block {\n  outline: 2px solid var(--acc-primary-color, #0072e4) !important;\n  outline-offset: 3px !important;\n  border-radius: 4px;\n}\n\n/* Text magnifier — fixed banner showing enlarged copy of hovered text */\n.acc-text-magnifier {\n  position: fixed;\n  left: 50%;\n  bottom: calc(24px + env(safe-area-inset-bottom, 0px));\n  transform: translateX(-50%);\n  /* max-content first: a left: 50% box otherwise shrink-wraps to half the\n     viewport, which turned the banner into a tall, narrow column. */\n  width: max-content;\n  max-width: min(90vw, 880px);\n  background: #111827;\n  color: #ffffff;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, Arial, sans-serif;\n  font-size: clamp(18px, 5.5vw, 28px);\n  line-height: 1.45;\n  /* Vertical spacing comes from transparent borders, not padding:\n     overflow clips at the padding box, so the first clamped-away line\n     would otherwise peek through the bottom padding. */\n  padding: 0 22px;\n  border-block: 14px solid transparent;\n  border-radius: 10px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);\n  z-index: 2147483646;\n  pointer-events: none;\n  display: none;\n  overflow: hidden;\n}\n\n/* Clamped so a long block can never cover a phone screen. */\n.acc-text-magnifier.acc-visible {\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  -webkit-line-clamp: 6;\n}\n\n/* Docked at the top while the magnified text sits in the lower part of\n   the screen, so the banner never covers what is being read. */\n.acc-text-magnifier.acc-text-magnifier-top {\n  top: calc(16px + env(safe-area-inset-top, 0px));\n  bottom: auto;\n}\n\n/* Landscape phones: six large lines would cover most of the screen. */\n@media (max-height: 500px) {\n  .acc-text-magnifier {\n    font-size: 22px;\n  }\n\n  .acc-text-magnifier.acc-visible {\n    -webkit-line-clamp: 3;\n  }\n}\n\n/* Tooltips: the hidden name or description of the thing under the\n   pointer or the keyboard focus, in a large bubble beside it. */\n.acc-tooltip-bubble {\n  display: none;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 2147483646;\n  box-sizing: border-box;\n  width: max-content;\n  max-width: min(360px, calc(100vw - 16px));\n  margin: 0;\n  padding: 8px 12px;\n  border-radius: 10px;\n  background: #111827;\n  color: #ffffff;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, Arial, sans-serif;\n  font-size: 16px;\n  font-weight: 400;\n  line-height: 1.4;\n  letter-spacing: normal;\n  word-spacing: normal;\n  text-align: start;\n  overflow-wrap: anywhere;\n  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);\n  pointer-events: none;\n}\n\n.acc-tooltip-bubble.acc-visible {\n  display: block;\n}\n\n/* Page structure navigator: each list is a white card of rows inside\n   the shared report dialog. */\n.acc-structure-list {\n  list-style: none;\n  margin: 0;\n  padding: 6px;\n  border-radius: 22px;\n  background: var(--acc-card-bg, #ffffff);\n  box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);\n}\n\n.acc-structure-list li {\n  margin: 0;\n  padding: 0;\n}\n\n.acc-structure-item {\n  display: block;\n  width: 100%;\n  margin: 0;\n  text-align: start;\n  background: transparent;\n  border: none;\n  border-radius: 16px;\n  padding: 10px 12px;\n  font: inherit;\n  font-size: 15px;\n  line-height: 1.4;\n  color: var(--acc-text-color, #222222);\n  cursor: pointer;\n  overflow-wrap: anywhere;\n}\n\n@media (hover: hover) {\n  .acc-structure-item:hover {\n    background: var(--acc-hover-tint, #e7eaee);\n  }\n}\n\n@media (pointer: coarse) {\n  .acc-structure-item {\n    padding: 12px;\n  }\n}\n\n.acc-structure-item:focus-visible {\n  outline: 2px solid var(--acc-focus-ring-color, #0072e4);\n  outline-offset: -2px;\n}\n\n.acc-structure-empty {\n  color: #5b6472;\n  font-size: 15px;\n  margin: 0;\n  padding: 0 4px;\n}\n";
 
 const STATIC_STYLE_ID = 'acc-static-styles';
 // Widget UI styles live inside the shadow root so host-page CSS cannot
@@ -6961,6 +7448,16 @@ const coreFeatureMethods = {
           background: #fff !important;
         }
 
+        /* ── Text laid over a picture: fade the picture behind it rather
+           than cover it (see markMediaOverlays) ── */
+        body.acc-high-contrast-mode [data-acc-over-media]${X} {
+          background-color: rgba(255, 255, 255, 0.85) !important;
+        }
+
+        body.acc-high-contrast-mode [data-acc-over-media] *${X} {
+          background-color: transparent !important;
+        }
+
         /* ── Borders: solid and visible ── */
         body.acc-high-contrast-mode *${X} {
           border-color: #000 !important;
@@ -7197,6 +7694,7 @@ const coreFeatureMethods = {
   // Hide Images keeps each picture's space, so the page does not jump, and
   // leaves alone the icons that controls are made of: an icon-only button
   // or link would otherwise turn into a blank, unlabeled-looking box.
+  // Embedded frames stay too; one can be a payment form or a map.
   concealImages(enable = false) {
     const styleId = `acc-hide-images`;
     this.removeStyle(styleId);
@@ -7210,7 +7708,6 @@ const coreFeatureMethods = {
         ${S} picture:not(${inButton} picture),
         ${S} svg:not(.acc-container svg):not(${inControl} svg),
         ${S} video,
-        ${S} iframe,
         ${S} canvas,
         ${S} .video,
         ${S} .image {
@@ -7521,6 +8018,7 @@ const coreFeatureMethods = {
       this.enableSimpleLayout(states && states['simple-layout']);
       this.enableMuteSounds(states && states['mute-sounds']);
       this.enableTextMagnifier(states && states['text-magnifier']);
+      this.enableTooltips(states && states['tooltips']);
       // Last, so Smart Contrast reads the colors the options above left.
       this.applyContrastMode(states);
     },
@@ -7600,6 +8098,7 @@ const coreFeatureMethods = {
       this.setMediaMotionPaused(false);
       this.enableMuteSounds(false);
       this.enableTextMagnifier(false);
+      this.enableTooltips(false);
       this.clearSystemPreferenceListeners();
       this.detectSystemPreferences();
       this.setupMediaQueryListeners();
@@ -9002,11 +9501,107 @@ const visualFilterMethods = {
       });
     },
 
+  // Text is often laid over a picture: a banner photo with a headline on
+  // it. Mark the blocks that sit over a picture, so Dark and Light
+  // Contrast can dim the picture behind them rather than cover it with a
+  // solid box, and so Smart Contrast leaves them alone (it cannot see the
+  // picture). A block counts when at least half of it lies over the
+  // picture and it is not the picture's own container.
+  markMediaOverlays() {
+      this.clearMediaOverlays();
+      const skip = '.acc-container, .acc-rg-container, #acc-widget-host';
+      const pictures = [];
+      document.querySelectorAll('img, video, canvas').forEach((media) => {
+        if (media.closest(skip)) return;
+        const box = media.getBoundingClientRect();
+        if (box.width >= 120 && box.height >= 80) pictures.push({ media, box });
+      });
+      const shared = (a, b) => Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left))
+        * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+      pictures.forEach(({ media, box: picture }) => {
+        const pictureArea = picture.width * picture.height;
+        let child = media;
+        let parent = media.parentElement;
+        for (let depth = 0; parent && parent !== document.documentElement && depth < 6; depth++) {
+          Array.from(parent.children).forEach((sibling) => {
+            if (sibling === child || sibling.hasAttribute('data-acc-over-media') || sibling.matches(skip)) return;
+            if (!sibling.textContent || !sibling.textContent.trim()) return;
+            const box = sibling.getBoundingClientRect();
+            const area = box.width * box.height;
+            if (!area || !shared(picture, box)) return;
+            // A banner is often two or more pictures side by side; count
+            // what the block shares with all of them.
+            const covered = pictures.reduce((sum, other) => sum + shared(other.box, box), 0);
+            if (covered >= area * 0.5) sibling.setAttribute('data-acc-over-media', '');
+          });
+          // Past an ancestor far larger than the picture, nothing more
+          // is laid over it.
+          const frame = parent.getBoundingClientRect();
+          if (parent === document.body || frame.width * frame.height > pictureArea * 4) break;
+          child = parent;
+          parent = parent.parentElement;
+        }
+      });
+    },
+
+  clearMediaOverlays() {
+      document.querySelectorAll('[data-acc-over-media]').forEach((element) => {
+        element.removeAttribute('data-acc-over-media');
+      });
+    },
+
+  // Many icons are drawn as a mask filled with a background color. Dark
+  // Contrast turns every background black, which would erase them, so
+  // mark them and let them take the text color instead. "self" is an
+  // element that is itself the icon; "before" and "after" are icons drawn
+  // in front of or behind an element's text.
+  markMaskIcons() {
+      this.clearMaskIcons();
+      const skip = '.acc-container, .acc-rg-container, #acc-widget-host';
+      const masked = (style) => {
+        const mask = style.maskImage || style.webkitMaskImage || '';
+        return !!mask && mask !== 'none';
+      };
+      const elements = document.body.getElementsByTagName('*');
+      const limit = Math.min(elements.length, 6000);
+      const found = [];
+      for (let index = 0; index < limit; index++) {
+        const element = elements[index];
+        if (element.namespaceURI !== 'http://www.w3.org/1999/xhtml') continue;
+        const parts = [];
+        if (!element.firstElementChild && masked(window.getComputedStyle(element))) parts.push('self');
+        if (masked(window.getComputedStyle(element, '::before'))) parts.push('before');
+        if (masked(window.getComputedStyle(element, '::after'))) parts.push('after');
+        if (parts.length && !element.closest(skip)) found.push([element, parts.join(' ')]);
+      }
+      found.forEach(([element, parts]) => element.setAttribute('data-acc-mask-icon', parts));
+    },
+
+  clearMaskIcons() {
+      document.querySelectorAll('[data-acc-mask-icon]').forEach((element) => {
+        element.removeAttribute('data-acc-mask-icon');
+      });
+    },
+
   // Put the active Contrast choice on the page. Light is the High
   // Contrast rules, Dark has its own, and Smart Contrast runs only when
   // neither is on, since both already set every color.
   applyContrastMode(states = this.loadConfig().states || {}) {
       const mode = this.getContrastMode(states);
+      try {
+        if (mode) {
+          this.markMediaOverlays();
+        } else {
+          this.clearMediaOverlays();
+        }
+        if (mode === 'dark-contrast') {
+          this.markMaskIcons();
+        } else {
+          this.clearMaskIcons();
+        }
+      } catch (e) {
+        console.warn('Error preparing contrast:', e);
+      }
       this.enableHighContrastMode(mode === 'high-contrast-mode');
       const isDark = mode === 'dark-contrast';
       if (isDark) {
@@ -9016,6 +9611,15 @@ const visualFilterMethods = {
       }
       document.documentElement.classList.toggle('acc-dark-contrast', isDark);
       this.refreshSmartContrast({ rescan: true });
+      // Pictures and styles that arrive with the rest of the page change
+      // what lies over what; look once more when the page has loaded.
+      if (mode && document.readyState !== 'complete' && !this.contrastLoadHandler) {
+        this.contrastLoadHandler = () => {
+          this.contrastLoadHandler = null;
+          this.applyContrastMode();
+        };
+        window.addEventListener('load', this.contrastLoadHandler, { once: true });
+      }
     },
 
   applyModeToggleButtonDisplay(button, display, modeAttribute) {
@@ -9308,6 +9912,23 @@ const visualFilterMethods = {
           box-shadow: none !important;
         }
 
+        /* Icons drawn as a mask take the text color (see markMaskIcons). */
+        body [data-acc-mask-icon~="self"]${X},
+        body [data-acc-mask-icon~="before"]${X}::before,
+        body [data-acc-mask-icon~="after"]${X}::after {
+          background-color: currentColor !important;
+        }
+
+        /* Text laid over a picture: dim the picture behind it instead of
+           covering it (see markMediaOverlays). */
+        body [data-acc-over-media]${X} {
+          background-color: rgba(0, 0, 0, 0.65) !important;
+        }
+
+        body [data-acc-over-media] *${X} {
+          background-color: transparent !important;
+        }
+
         /* Links: yellow and underlined, with whatever they wrap. */
         body a${X},
         body a${X} * {
@@ -9329,9 +9950,20 @@ const visualFilterMethods = {
           fill: currentColor !important;
         }
 
+        /* A logo or icon in dark ink would vanish on black; a thin light
+           edge keeps its shape readable. */
+        body svg${X},
+        body :where(header, nav, footer, [role="banner"], [role="navigation"], [role="contentinfo"]) img${X} {
+          filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) !important;
+        }
+
         /* Inputs and buttons keep a visible edge. */
-        body :where(input, textarea, select, button)${X} {
+        body :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select, button)${X} {
           border: 2px solid #fff !important;
+        }
+
+        body :where(input[type="checkbox"], input[type="radio"], input[type="range"])${X} {
+          accent-color: #ff0 !important;
         }
 
         body ::placeholder {
@@ -9696,6 +10328,157 @@ const pageToolMethods = {
     this.magnifierLastBlock = null;
   },
 
+  // ── Tooltips ───────────────────────────────────────────────────────
+  // Many controls are an icon with a name only assistive technology can
+  // read, and pictures carry a description nobody sees. Tooltips shows
+  // that hidden text in a large bubble, on hover and on keyboard focus.
+
+  // The hidden description of `target`, or of the control it sits in.
+  // Null when there is none, or when it only repeats the visible text.
+  findTooltipSource(target) {
+    if (!(target instanceof Element)) return null;
+    if (target.closest('.acc-container, .acc-rg-container, #acc-widget-host, #acc-skip-link')) return null;
+    const controlSelector = 'a[href], button, input, select, textarea, summary, label, [role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="checkbox"], [role="switch"], [tabindex]';
+    const control = target.closest(controlSelector);
+    const drawing = target.closest('svg');
+    const candidates = [];
+    for (let node = target; node && node.nodeType === 1 && node !== document.body; node = node.parentElement) {
+      candidates.push(node);
+      if (node === control || (!control && (node === drawing || !drawing))) break;
+    }
+    for (const node of candidates) {
+      const tag = node.tagName.toLowerCase();
+      let text = '';
+      if (tag === 'img' || tag === 'area' || (tag === 'input' && node.getAttribute('type') === 'image')) {
+        text = node.getAttribute('alt') || '';
+      }
+      if (!text && tag === 'svg') {
+        const title = Array.from(node.children).find((child) => child.tagName.toLowerCase() === 'title');
+        text = title ? title.textContent : '';
+      }
+      text = text || this.getAccessibleLabel(node) || node.getAttribute('title')
+        || (node === this.tooltipAnchor ? this.tooltipHeldTitle : '') || '';
+      text = this.normalizeReadableText(text).slice(0, 300);
+      if (!text) continue;
+      const visible = this.normalizeReadableText(node.innerText || node.textContent || '');
+      if (visible && visible.toLowerCase() === text.toLowerCase()) return null;
+      return { element: node, text };
+    }
+    return null;
+  },
+
+  showTooltip(target) {
+    const source = this.findTooltipSource(target);
+    if (!source) {
+      this.hideTooltip();
+      return;
+    }
+    const bubble = this.tooltipElement;
+    if (!bubble) return;
+    if (source.element !== this.tooltipAnchor) {
+      this.hideTooltip();
+      this.tooltipAnchor = source.element;
+      // Hold back the element's own title so the browser does not draw a
+      // second, small tooltip over ours.
+      if (source.element.hasAttribute('title')) {
+        this.tooltipHeldTitle = source.element.getAttribute('title');
+        source.element.removeAttribute('title');
+      }
+    }
+    bubble.textContent = source.text;
+    bubble.classList.add('acc-visible');
+    this.positionTooltip();
+  },
+
+  // Under the element, or above it when there is no room, and always
+  // inside the screen. Once the element has scrolled out of view the
+  // bubble goes with it.
+  positionTooltip() {
+    const bubble = this.tooltipElement;
+    const element = this.tooltipAnchor;
+    if (!bubble || !element) return;
+    const gap = 8;
+    const anchor = element.getBoundingClientRect();
+    if (!element.isConnected || anchor.bottom < 0 || anchor.top > window.innerHeight
+      || anchor.right < 0 || anchor.left > window.innerWidth) {
+      this.hideTooltip();
+      return;
+    }
+    const size = bubble.getBoundingClientRect();
+    const maxLeft = Math.max(gap, window.innerWidth - size.width - gap);
+    const left = Math.min(maxLeft, Math.max(gap, anchor.left + anchor.width / 2 - size.width / 2));
+    let top = anchor.bottom + gap;
+    if (top + size.height > window.innerHeight - gap) top = anchor.top - size.height - gap;
+    bubble.style.left = `${Math.round(left)}px`;
+    bubble.style.top = `${Math.round(Math.max(gap, top))}px`;
+  },
+
+  hideTooltip() {
+    if (this.tooltipAnchor && this.tooltipHeldTitle !== null) {
+      this.tooltipAnchor.setAttribute('title', this.tooltipHeldTitle);
+    }
+    this.tooltipAnchor = null;
+    this.tooltipHeldTitle = null;
+    if (this.tooltipElement) {
+      this.tooltipElement.classList.remove('acc-visible');
+      this.tooltipElement.textContent = '';
+    }
+  },
+
+  enableTooltips(enable = false) {
+    if (typeof document === 'undefined' || !document.body) return;
+    if (enable) {
+      if (!this.tooltipElement || !document.body.contains(this.tooltipElement)) {
+        const bubble = document.createElement('div');
+        bubble.className = 'acc-tooltip-bubble acc-container';
+        // The text is already the element's accessible name; a screen
+        // reader should not hear it twice.
+        bubble.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(bubble);
+        this.tooltipElement = bubble;
+      }
+      if (this.tooltipHandlers) return;
+      const leaves = (event) => {
+        const next = event.relatedTarget;
+        if (this.tooltipAnchor && next instanceof Node && this.tooltipAnchor.contains(next)) return;
+        this.hideTooltip();
+      };
+      this.tooltipHandlers = {
+        over: (event) => this.showTooltip(event.target),
+        out: leaves,
+        focusin: (event) => this.showTooltip(event.target),
+        focusout: leaves,
+        // Focusing a control can scroll it into view; the bubble follows
+        // rather than vanishing the moment it appears.
+        scroll: () => this.positionTooltip(),
+        keydown: (event) => {
+          if (event.key === 'Escape') this.hideTooltip();
+        }
+      };
+      document.addEventListener('mouseover', this.tooltipHandlers.over, { passive: true });
+      document.addEventListener('mouseout', this.tooltipHandlers.out, { passive: true });
+      document.addEventListener('focusin', this.tooltipHandlers.focusin);
+      document.addEventListener('focusout', this.tooltipHandlers.focusout);
+      document.addEventListener('keydown', this.tooltipHandlers.keydown);
+      window.addEventListener('scroll', this.tooltipHandlers.scroll, { passive: true, capture: true });
+    } else {
+      this.hideTooltip();
+      if (this.tooltipHandlers) {
+        document.removeEventListener('mouseover', this.tooltipHandlers.over);
+        document.removeEventListener('mouseout', this.tooltipHandlers.out);
+        document.removeEventListener('focusin', this.tooltipHandlers.focusin);
+        document.removeEventListener('focusout', this.tooltipHandlers.focusout);
+        document.removeEventListener('keydown', this.tooltipHandlers.keydown);
+        window.removeEventListener('scroll', this.tooltipHandlers.scroll, { capture: true });
+        this.tooltipHandlers = null;
+      }
+      if (this.tooltipElement) {
+        this.tooltipElement.remove();
+        this.tooltipElement = null;
+      }
+    }
+  },
+
   // ── Page structure navigator ───────────────────────────────────────
 
   isStructureCandidate(element) {
@@ -9732,18 +10515,56 @@ const pageToolMethods = {
       .slice(0, STRUCTURE_MAX_ITEMS);
   },
 
+  // A landmark's kind in plain words (a translation key), from its role
+  // or its tag. A header or footer inside an article or a section belongs
+  // to that part of the page, not to the page, so it is not a landmark.
+  getLandmarkKind(element) {
+    const role = (element.getAttribute('role') || '').trim().toLowerCase();
+    const tag = element.tagName.toLowerCase();
+    const byRole = {
+      main: 'Main content',
+      navigation: 'Navigation',
+      banner: 'Header',
+      contentinfo: 'Footer',
+      complementary: 'Sidebar',
+      search: 'Search',
+      form: 'Form',
+      region: 'Section'
+    };
+    if (byRole[role]) return byRole[role];
+    if (role) return '';
+    if ((tag === 'header' || tag === 'footer') && element.parentElement
+      && element.parentElement.closest('article, aside, main, nav, section')) {
+      return '';
+    }
+    const byTag = {
+      main: 'Main content',
+      nav: 'Navigation',
+      header: 'Header',
+      footer: 'Footer',
+      aside: 'Sidebar',
+      search: 'Search',
+      form: 'Form',
+      section: 'Section'
+    };
+    return byTag[tag] || '';
+  },
+
   collectPageLandmarks() {
-    const selector = 'main,nav,header,footer,aside,form,section[aria-label],section[aria-labelledby],[role="main"],[role="navigation"],[role="banner"],[role="contentinfo"],[role="complementary"],[role="search"],[role="form"],[role="region"]';
+    const selector = 'main,nav,header,footer,aside,search,form,section[aria-label],section[aria-labelledby],[role="main"],[role="navigation"],[role="banner"],[role="contentinfo"],[role="complementary"],[role="search"],[role="form"],[role="region"]';
     const seen = new Set();
     const landmarks = [];
     document.querySelectorAll(selector).forEach((el) => {
       if (seen.has(el) || !this.isStructureCandidate(el)) return;
       seen.add(el);
-      const role = el.getAttribute('role') || el.tagName.toLowerCase();
+      const kind = this.getLandmarkKind(el);
+      if (!kind) return;
+      // "Navigation", or "Navigation: Main menu" when the page names it.
       const name = this.getAccessibleLabel(el);
+      const label = this.translate(kind);
       landmarks.push({
         element: el,
-        label: name ? `${role} — ${name}`.slice(0, 120) : role
+        label: name ? `${label}: ${name}`.slice(0, 120) : label
       });
     });
     return landmarks.slice(0, STRUCTURE_MAX_ITEMS);
@@ -9872,13 +10693,21 @@ const pageToolMethods = {
 //
 // "Hard to read" is the WCAG AA measure: a contrast ratio under 4.5, or
 // under 3 for large text (24px and up, or 18.66px and up when bold).
+// Over a gradient the text must pass against its lightest and its darkest
+// color. Text over a picture is left alone: its background is unknown.
 
 const NORMAL_TEXT_RATIO = 4.5;
 const LARGE_TEXT_RATIO = 3;
 // Past this many text elements the page is scanned no further, so a huge
 // page cannot freeze the browser.
 const MAX_ELEMENTS = 6000;
-const SKIP_SELECTOR = '.acc-container, .acc-rg-container, #acc-widget-host, #acc-skip-link, script, style, noscript, template, svg, [aria-hidden="true"]';
+// Text marked as lying over a picture is skipped too: the picture is its
+// real background, and that cannot be measured.
+const SKIP_SELECTOR = '.acc-container, .acc-rg-container, #acc-widget-host, #acc-skip-link, script, style, noscript, template, svg, [aria-hidden="true"], [data-acc-over-media]';
+// Text this close to its background color would be invisible, which no
+// page intends. Something else is behind it (a picture placed under the
+// text), so it is left alone.
+const INVISIBLE_RATIO = 1.25;
 const FIELD_SELECTOR = 'input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="image"]), textarea, select';
 
 /** @type {{ [methodName: string]: (this: AccessibleWebWidget, ...args: any[]) => any }} */
@@ -9964,26 +10793,99 @@ const smartContrastMethods = {
     return toward(ends[0]) || toward(ends[1]) || ends[0];
   },
 
-  // The solid color behind an element: its own background and those of
-  // its ancestors, laid over each other, on a white page. Null when a
-  // picture or gradient is in the way, since its color cannot be known.
-  getEffectiveBackground(element) {
+  // The colors a background-image value is made of: none for "none", the
+  // color stops for a gradient, and null for a picture, or a color written
+  // some other way, since what it shows cannot be known.
+  parseGradientColors(value) {
+    const text = String(value || '').trim();
+    if (!text || text === 'none') return [];
+    if (!/gradient\(/i.test(text) || /url\(|image-set\(|element\(|cross-fade\(/i.test(text)) return null;
+    const stops = text.match(/rgba?\([^)]*\)/g) || [];
+    const rest = text.replace(/rgba?\([^)]*\)/g, '');
+    if (!stops.length || /(?:color|color-mix|oklch|oklab|lab|lch|hsl|hsla|hwb)\(/i.test(rest)) return null;
+    const colors = stops.map((stop) => this.parseCssColor(stop));
+    return colors.every(Boolean) ? colors : null;
+  },
+
+  // The lightest and the darkest of some colors. Text that reads against
+  // both reads against everything in between.
+  colorExtremes(colors) {
+    let lightest = colors[0];
+    let darkest = colors[0];
+    colors.forEach((color) => {
+      if (this.colorLuminance(color) > this.colorLuminance(lightest)) lightest = color;
+      if (this.colorLuminance(color) < this.colorLuminance(darkest)) darkest = color;
+    });
+    return lightest === darkest ? [lightest] : [lightest, darkest];
+  },
+
+  // The solid colors behind an element: its own background and those of
+  // its ancestors, laid over each other, on a white page. One color for a
+  // plain background; the lightest and darkest for a gradient. Null when
+  // a picture is in the way.
+  getBackgroundColors(element) {
     const layers = [];
     for (let node = element; node && node.nodeType === 1; node = node.parentElement) {
       const style = window.getComputedStyle(node);
-      if (style.backgroundImage && style.backgroundImage !== 'none') return null;
+      // A background clipped to the text paints the letters themselves.
+      if (style.backgroundClip === 'text' || style.webkitBackgroundClip === 'text') {
+        if (node === element) return null;
+        continue;
+      }
+      const gradient = this.parseGradientColors(style.backgroundImage);
       const color = this.parseCssColor(style.backgroundColor);
-      if (!color) return null;
-      if (color.a > 0) {
-        layers.push(color);
-        if (color.a >= 1) break;
+      if (!gradient || !color) return null;
+      if (gradient.length) layers.push(gradient);
+      if (color.a > 0) layers.push([color]);
+      if (color.a >= 1 || (gradient.length && gradient.every((stop) => stop.a >= 1))) break;
+    }
+    let results = [{ r: 255, g: 255, b: 255, a: 1 }];
+    for (let index = layers.length - 1; index >= 0; index--) {
+      const blended = [];
+      layers[index].forEach((top) => {
+        results.forEach((bottom) => blended.push(this.blendColors(top, bottom)));
+      });
+      results = this.colorExtremes(blended);
+    }
+    return results;
+  },
+
+  // The lowest contrast `text` has against any of `backgrounds`.
+  lowestContrast(text, backgrounds) {
+    return Math.min(...backgrounds.map((background) => this.colorContrast(this.blendColors(text, background), background)));
+  },
+
+  // A readable color against every one of `backgrounds`. One background
+  // has an exact answer. For several, the text is stepped toward black
+  // and toward white and the smallest step that passes them all wins.
+  // Null when nothing passes and nothing reads clearly better than the
+  // text does already.
+  findReadableColorAcross(text, backgrounds, target) {
+    if (backgrounds.length === 1) {
+      return this.findReadableColor(this.blendColors(text, backgrounds[0]), backgrounds[0], target);
+    }
+    const start = this.blendColors(text, backgrounds[0]);
+    const ends = [{ r: 0, g: 0, b: 0, a: 1 }, { r: 255, g: 255, b: 255, a: 1 }];
+    let best = null;
+    let bestContrast = this.lowestContrast(text, backgrounds);
+    for (let step = 1; step <= 64; step++) {
+      for (const end of ends) {
+        const amount = step / 64;
+        const candidate = {
+          r: Math.round(start.r + (end.r - start.r) * amount),
+          g: Math.round(start.g + (end.g - start.g) * amount),
+          b: Math.round(start.b + (end.b - start.b) * amount),
+          a: 1
+        };
+        const contrast = this.lowestContrast(candidate, backgrounds);
+        if (contrast >= target) return candidate;
+        if (contrast > bestContrast + 0.5) {
+          best = candidate;
+          bestContrast = contrast;
+        }
       }
     }
-    let result = { r: 255, g: 255, b: 255, a: 1 };
-    for (let index = layers.length - 1; index >= 0; index--) {
-      result = this.blendColors(layers[index], result);
-    }
-    return result;
+    return best;
   },
 
   // The elements under `root` that show text of their own.
@@ -10017,14 +10919,15 @@ const smartContrastMethods = {
       const style = window.getComputedStyle(element);
       const text = this.parseCssColor(style.color);
       if (!text || text.a === 0) return;
-      const background = this.getEffectiveBackground(element);
-      if (!background) return;
-      const shown = this.blendColors(text, background);
+      const backgrounds = this.getBackgroundColors(element);
+      if (!backgrounds) return;
       const size = parseFloat(style.fontSize) || 16;
       const bold = (parseInt(style.fontWeight, 10) || 400) >= 700;
       const target = size >= 24 || (bold && size >= 18.66) ? LARGE_TEXT_RATIO : NORMAL_TEXT_RATIO;
-      if (this.colorContrast(shown, background) >= target) return;
-      fixes.push({ element, color: this.findReadableColor(shown, background, target) });
+      const contrast = this.lowestContrast(text, backgrounds);
+      if (contrast >= target || contrast < INVISIBLE_RATIO) return;
+      const color = this.findReadableColorAcross(text, backgrounds, target);
+      if (color) fixes.push({ element, color });
     });
     fixes.forEach(({ element, color }) => {
       this.smartContrastFixed.set(element, {
@@ -10060,10 +10963,6 @@ const smartContrastMethods = {
       clearTimeout(this.smartContrastTimer);
       this.smartContrastTimer = null;
     }
-    if (this.smartContrastLoadHandler) {
-      window.removeEventListener('load', this.smartContrastLoadHandler);
-      this.smartContrastLoadHandler = null;
-    }
   },
 
   // Content added later (a menu that opens, results that load) is checked
@@ -10087,16 +10986,6 @@ const smartContrastMethods = {
       }, 250);
     });
     this.smartContrastObserver.observe(document.body, { childList: true, subtree: true });
-    // Styles that arrive with the rest of the page can change the colors.
-    if (document.readyState !== 'complete') {
-      this.smartContrastLoadHandler = () => {
-        this.smartContrastLoadHandler = null;
-        if (!this.smartContrastActive) return;
-        this.clearSmartContrast();
-        this.applySmartContrast();
-      };
-      window.addEventListener('load', this.smartContrastLoadHandler, { once: true });
-    }
   },
 
   // High Contrast and Dark Contrast set every color themselves, so Smart
@@ -10808,7 +11697,7 @@ const uiMethods = {
           { label: 'Speech', keys: ['text-to-speech'] },
           { label: 'Text', keys: ['text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text'] },
           { label: 'Color & Contrast', keys: ['contrast-toggle', 'saturation-toggle', 'invert-colors'] },
-          { label: 'Reading Aids', keys: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure'] },
+          { label: 'Reading Aids', keys: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'tooltips', 'page-structure'] },
           { label: 'Interaction', keys: ['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds', 'annotations', 'accessibility-report'] }
         ];
         const groupedKeys = new Set(tileGroups.flatMap(group => group.keys));
@@ -11697,6 +12586,8 @@ class AccessibleWebWidget {
       { label: 'Simplify Layout', key: 'simple-layout', icon: this.widgetIcons.simplifyLayout },
       { label: 'Mute Sounds', key: 'mute-sounds', icon: this.widgetIcons.muteSounds },
       { label: 'Text Magnifier', key: 'text-magnifier', icon: this.widgetIcons.textMagnifier },
+      // Shown on hover and on keyboard focus; touch-only devices have neither.
+      { label: 'Tooltips', key: 'tooltips', icon: this.widgetIcons.tooltips, requiresFinePointer: true },
       {
         label: 'Page Structure',
         key: 'page-structure',
@@ -11944,7 +12835,7 @@ class AccessibleWebWidget {
     this.smartContrastActive = false;
     this.smartContrastObserver = null;
     this.smartContrastTimer = null;
-    this.smartContrastLoadHandler = null;
+    this.contrastLoadHandler = null;
 
     // Mute sounds state
     this.muteSoundsObserver = null;
@@ -11959,6 +12850,13 @@ class AccessibleWebWidget {
     this.magnifierDownHandler = null;
     this.magnifierScrollHandler = null;
     this.magnifierLastPointerType = null;
+
+    // Tooltips state: the bubble, the element it describes, and that
+    // element's own title, held back while the bubble shows.
+    this.tooltipElement = null;
+    this.tooltipAnchor = null;
+    this.tooltipHeldTitle = null;
+    this.tooltipHandlers = null;
 
     // Page structure panel state
     this.structurePanel = null;

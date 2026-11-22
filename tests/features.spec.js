@@ -301,6 +301,41 @@ test('page structure panel lists headings and navigates to them', async ({ page 
   await expect(panel).toBeHidden();
 });
 
+test('page structure names landmarks in plain words, with their own names', async ({ page }) => {
+  await page.goto('index.html');
+  await page.evaluate(() => {
+    const nav = document.createElement('nav');
+    nav.setAttribute('aria-label', 'Related pages');
+    nav.innerHTML = '<a href="#top">Top</a>';
+    const article = document.createElement('article');
+    article.innerHTML = '<header><p>An article has its own header</p></header>';
+    document.querySelector('main').append(nav, article);
+  });
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="page-structure"]').click();
+
+  const labels = await page.locator('.acc-structure-panel .acc-structure-item').allTextContents();
+  expect(labels).toContain('Main content');
+  expect(labels).toContain('Footer');
+  expect(labels).toContain('Navigation: Related pages');
+  // Tag names are not shown, and an article's header is not a page landmark.
+  expect(labels).not.toContain('main');
+  expect(labels).not.toContain('nav');
+  expect(labels.filter((label) => label.startsWith('Header'))).toHaveLength(1);
+});
+
+test('page structure landmark names follow the menu language', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.AccessibleWebWidgetOptions = { lang: 'es' };
+  });
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="page-structure"]').click();
+  const labels = await page.locator('.acc-structure-panel .acc-structure-item').allTextContents();
+  expect(labels).toContain('Contenido principal');
+  expect(labels).toContain('Pie de página');
+});
+
 test('text magnifier shows enlarged text for hovered blocks', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();

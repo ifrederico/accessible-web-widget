@@ -577,7 +577,9 @@ test('Smart Contrast recolors only the text that is hard to read, and puts it ba
       <p id="weak-on-dark" style="color: rgb(90, 90, 90); background: rgb(20, 20, 20);">Dark grey on near black</p>
       <p id="fine" style="color: rgb(30, 30, 30); background: rgb(255, 255, 255);">Dark on white</p>
       <div style="background: rgb(255, 255, 255);"><span id="inherits" style="color: rgb(200, 200, 60);">Yellow on a white parent</span></div>
-      <p id="on-picture" style="color: rgb(200, 200, 200); background-image: linear-gradient(#fff, #eee);">Over a gradient</p>`;
+      <p id="on-gradient" style="color: rgb(200, 200, 200); background-image: linear-gradient(#fff, #eee);">Over a light gradient</p>
+      <p id="on-wide-gradient" style="color: rgb(120, 120, 120); background-image: linear-gradient(90deg, #fff, #000);">Over white fading to black</p>
+      <p id="on-picture" style="color: rgb(200, 200, 200); background-image: url(data:image/gif;base64,R0lGODlhAQABAAAAACw=);">Over a picture</p>`;
     document.querySelector('main').prepend(box);
   });
   const ratio = (selector) => page.locator(selector).evaluate((element) => {
@@ -615,6 +617,13 @@ test('Smart Contrast recolors only the text that is hard to read, and puts it ba
   expect(await ratio('#weak-on-white')).toBeLessThan(5);
   expect(await ratio('#weak-on-dark')).toBeGreaterThanOrEqual(4.5);
   expect(await ratio('#inherits')).toBeGreaterThanOrEqual(4.5);
+  // Over a gradient the text must read against its lightest color too.
+  const [red] = (await color('#on-gradient')).match(/\d+/g).map(Number);
+  expect(red).toBeLessThan(120);
+  // One grey does read on both white and black, and it is a step away.
+  const [wide] = (await color('#on-wide-gradient')).match(/\d+/g).map(Number);
+  expect(wide).toBeLessThan(120);
+  expect(wide).toBeGreaterThan(100);
   // Text that was fine, and text over a picture, are left alone.
   expect(await color('#fine')).toBe('rgb(30, 30, 30)');
   expect(await color('#on-picture')).toBe('rgb(200, 200, 200)');
@@ -642,6 +651,134 @@ test('Smart Contrast recolors only the text that is hard to read, and puts it ba
   expect(await color('#weak-on-white')).toBe('rgb(170, 170, 170)');
   expect(await color('#weak-on-dark')).toBe('rgb(90, 90, 90)');
   expect(await page.locator('#weak-on-white').getAttribute('style')).toContain('rgb(170, 170, 170)');
+});
+
+test('text laid over a picture keeps the picture, and icons drawn as masks survive Dark Contrast', async ({ page }) => {
+  await page.goto('index.html');
+  await page.evaluate(() => {
+    const box = document.createElement('div');
+    box.id = 'banner-sample';
+    box.style.cssText = 'position: relative; width: 400px; height: 200px;';
+    box.innerHTML = `
+      <img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" style="position: absolute; inset: 0; width: 400px; height: 200px;">
+      <div id="over-picture" style="position: absolute; inset: 0;"><p id="banner-text" style="color: rgb(255, 255, 255);">White text on a photo</p></div>`;
+    const icon = document.createElement('span');
+    icon.id = 'mask-icon';
+    icon.style.cssText = 'display: inline-block; width: 20px; height: 20px; background-color: rgb(10, 10, 10); -webkit-mask-image: linear-gradient(#000, #000); mask-image: linear-gradient(#000, #000);';
+    document.querySelector('main').prepend(box, icon);
+  });
+  const style = (selector, property) => page.locator(selector).evaluate((element, name) => window.getComputedStyle(element)[name], property);
+
+  await page.locator('.acc-toggle-btn').click();
+  const contrastButton = page.locator('.acc-btn[data-key="contrast-toggle"]');
+
+  // Smart Contrast cannot see the photo, so it leaves the white text white.
+  await contrastButton.click();
+  await expect(page.locator('#over-picture')).toHaveAttribute('data-acc-over-media', '');
+  expect(await style('#banner-text', 'color')).toBe('rgb(255, 255, 255)');
+  await expect(page.locator('#banner-text')).not.toHaveAttribute('data-acc-smart-contrast');
+
+  // Dark Contrast dims the photo behind the text instead of covering it.
+  await contrastButton.click();
+  expect(await style('#over-picture', 'backgroundColor')).toBe('rgba(0, 0, 0, 0.65)');
+  expect(await style('#banner-text', 'backgroundColor')).toBe('rgba(0, 0, 0, 0)');
+  // An icon drawn as a mask takes the text color instead of turning black on black.
+  await expect(page.locator('#mask-icon')).toHaveAttribute('data-acc-mask-icon', 'self');
+  expect(await style('#mask-icon', 'backgroundColor')).toBe('rgb(255, 255, 255)');
+
+  // Light Contrast fades the photo the other way.
+  await contrastButton.click();
+  expect(await style('#over-picture', 'backgroundColor')).toBe('rgba(255, 255, 255, 0.85)');
+  await expect(page.locator('#mask-icon')).not.toHaveAttribute('data-acc-mask-icon');
+
+  // Off: no marks are left on the page.
+  await contrastButton.click();
+  await expect(page.locator('[data-acc-over-media]')).toHaveCount(0);
+});
+
+test('Hide Images keeps the layout, the icons inside controls, and embedded frames', async ({ page }) => {
+  await page.goto('index.html');
+  await page.evaluate(() => {
+    const box = document.createElement('div');
+    box.id = 'hide-samples';
+    box.innerHTML = `
+      <button id="icon-button" type="button" aria-label="Menu"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 6h18v2H3z"/></svg></button>
+      <svg id="loose-drawing" width="24" height="24" viewBox="0 0 24 24"><path d="M3 6h18v2H3z"/></svg>
+      <iframe id="frame" title="Embedded form" srcdoc="<p>form</p>" width="200" height="60"></iframe>`;
+    document.querySelector('main').prepend(box);
+  });
+  const visibility = (selector) => page.locator(selector).first().evaluate((element) => window.getComputedStyle(element).visibility);
+  const pageHeight = () => page.evaluate(() => document.documentElement.scrollHeight);
+  const before = await pageHeight();
+
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="hide-images"]').click();
+  await expect(page.locator('html')).toHaveClass(/acc-hide-images/);
+
+  expect(await visibility('main img')).toBe('hidden');
+  expect(await visibility('#loose-drawing')).toBe('hidden');
+  expect(await visibility('#icon-button svg')).toBe('visible');
+  expect(await visibility('#frame')).toBe('visible');
+  // Hidden pictures keep their space, so nothing on the page moves.
+  expect(await pageHeight()).toBe(before);
+});
+
+test('Tooltips shows the hidden name of a control or picture, on hover and on focus', async ({ page }) => {
+  await page.goto('index.html');
+  await page.evaluate(() => {
+    const box = document.createElement('div');
+    box.id = 'tooltip-samples';
+    box.style.cssText = 'display: flex; gap: 40px; padding: 20px;';
+    box.innerHTML = `
+      <button id="named-icon" type="button" aria-label="Open the shopping cart"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 6h18v2H3z"/></svg></button>
+      <a id="titled" href="#top" title="Back to the top of the page">Top</a>
+      <a id="same" href="#top" aria-label="Plain link">Plain link</a>
+      <img id="pictured" alt="A tray of small cakes" width="40" height="40" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+      <p id="nothing">No hidden text here</p>`;
+    document.querySelector('main').prepend(box);
+  });
+  const bubble = page.locator('.acc-tooltip-bubble');
+
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="tooltips"]').click();
+  await expect(page.locator('.acc-btn[data-key="tooltips"]')).toHaveAttribute('aria-pressed', 'true');
+  await page.keyboard.press('Escape');
+  await expect(bubble).toBeHidden();
+
+  // Hovering the drawing inside the button names the button.
+  await page.locator('#named-icon svg').hover();
+  await expect(bubble).toBeVisible();
+  await expect(bubble).toHaveText('Open the shopping cart');
+  // A screen reader already has this name; it must not hear it twice.
+  await expect(bubble).toHaveAttribute('aria-hidden', 'true');
+  const [button, shown] = await Promise.all([page.locator('#named-icon').boundingBox(), bubble.boundingBox()]);
+  expect(shown.y).toBeGreaterThanOrEqual(button.y + button.height);
+  expect(shown.x).toBeGreaterThanOrEqual(0);
+
+  await page.locator('#pictured').hover();
+  await expect(bubble).toHaveText('A tray of small cakes');
+
+  // The element's own title is held back while ours shows, then returned.
+  await page.locator('#titled').hover();
+  await expect(bubble).toHaveText('Back to the top of the page');
+  await expect(page.locator('#titled')).not.toHaveAttribute('title');
+  await page.locator('#nothing').hover();
+  await expect(bubble).toBeHidden();
+  await expect(page.locator('#titled')).toHaveAttribute('title', 'Back to the top of the page');
+
+  // A name that only repeats the visible text adds nothing.
+  await page.locator('#same').hover();
+  await expect(bubble).toBeHidden();
+
+  // Keyboard focus shows it too, and Escape puts it away.
+  await page.locator('#named-icon').focus();
+  await expect(bubble).toHaveText('Open the shopping cart');
+  await page.keyboard.press('Escape');
+  await expect(bubble).toBeHidden();
+
+  await page.locator('.acc-toggle-btn').click();
+  await page.locator('.acc-btn[data-key="tooltips"]').click();
+  await expect(bubble).toHaveCount(0);
 });
 
 test('saturation is a single cycling tile', async ({ page }) => {
@@ -739,7 +876,7 @@ test('menu renders one tile grid with the group names kept for screen readers', 
   expect(keys).toEqual([
     'text-to-speech', 'text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text',
     'contrast-toggle', 'saturation-toggle', 'invert-colors',
-    'highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'page-structure',
+    'highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'tooltips', 'page-structure',
     'hide-images', 'large-pointer', 'pause-motion', 'mute-sounds'
   ]);
 });

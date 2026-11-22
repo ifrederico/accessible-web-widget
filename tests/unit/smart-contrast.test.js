@@ -60,3 +60,35 @@ test('findReadableColor always reaches the target, whatever the background', () 
     }
   }
 });
+
+test('parseGradientColors reads the stops of a gradient and refuses a picture', () => {
+  assert.deepEqual(sc.parseGradientColors('none'), []);
+  assert.deepEqual(
+    sc.parseGradientColors('linear-gradient(rgb(255, 255, 255), rgba(0, 0, 0, 0.5))'),
+    [rgb(255, 255, 255), rgb(0, 0, 0, 0.5)]
+  );
+  assert.equal(sc.parseGradientColors('url("photo.jpg")'), null);
+  assert.equal(sc.parseGradientColors('linear-gradient(rgb(0, 0, 0), rgb(9, 9, 9)), url("photo.jpg")'), null);
+  assert.equal(sc.parseGradientColors('linear-gradient(oklch(0.7 0.1 200), rgb(0, 0, 0))'), null);
+});
+
+test('colorExtremes keeps the lightest and the darkest', () => {
+  assert.deepEqual(sc.colorExtremes([rgb(100, 100, 100), rgb(250, 250, 250), rgb(5, 5, 5)]), [rgb(250, 250, 250), rgb(5, 5, 5)]);
+  assert.deepEqual(sc.colorExtremes([rgb(9, 9, 9)]), [rgb(9, 9, 9)]);
+});
+
+test('findReadableColorAcross passes against every background it is given', () => {
+  const light = [rgb(255, 255, 255), rgb(238, 238, 238)];
+  const fixed = sc.findReadableColorAcross(rgb(200, 200, 200), light, 4.5);
+  assert.ok(sc.lowestContrast(fixed, light) >= 4.5);
+
+  // White fading to black: one mid grey reads on both ends.
+  const wide = [rgb(255, 255, 255), rgb(0, 0, 0)];
+  const middle = sc.findReadableColorAcross(rgb(120, 120, 120), wide, 4.5);
+  assert.ok(sc.lowestContrast(middle, wide) >= 4.5, JSON.stringify(middle));
+});
+
+test('findReadableColorAcross gives up when no color can do better', () => {
+  // Nothing reads at 7:1 on both white and black, and mid grey is already the best there is.
+  assert.equal(sc.findReadableColorAcross(rgb(118, 118, 118), [rgb(255, 255, 255), rgb(0, 0, 0)], 7), null);
+});

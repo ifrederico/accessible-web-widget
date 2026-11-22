@@ -61,8 +61,15 @@ Rules the build must follow:
 - **Hide Images keeps each picture's space**, and leaves the icons inside buttons and links. It still hides videos, canvases and iframes; an iframe can be a payment form or a map, which may deserve a second look.
 - **Font Size, Line Height and Text to Speech show the level in the tile name** ("Font Size 125%").
 - **The figure in the floating button is 15% larger.**
-- **New word, machine translated in 53 languages and not checked by native speakers:** "Smart Contrast".
-- Not checked: Dark Contrast and Smart Contrast on real customer sites, which have backgrounds, icons and widgets the demo pages do not.
+- **Tooltips is a new tile** (hidden on touch-only devices). On hover and on keyboard focus it shows the hidden name of a control (`aria-label`, `title`) or the description of a picture (`alt`) in a large bubble. It shows nothing when that name only repeats the visible text. The element's own `title` is held back while the bubble shows and put back after.
+- **Page Structure names landmarks in plain words** ("Navigation: Main menu", "Main content", "Footer") instead of tag names. A header or footer inside an article or section is no longer listed as a page landmark.
+- **Smart Contrast handles gradients**: text must pass against the gradient's lightest and darkest color. It leaves text over a picture alone, and text so close to its background that it would be invisible (that means a picture is underneath).
+- **Text laid over a picture** (a banner photo with a headline) is marked with `data-acc-over-media`. Dark and Light Contrast dim or fade the picture behind it instead of covering it with a solid box.
+- **Dark Contrast keeps icons and logos visible**: icons drawn as a CSS mask take the text color, and SVGs and header/footer images get a thin light edge so dark ink shows on black.
+- **Hide Images leaves embedded frames alone** (a frame can be a payment form or a map).
+- **New words, machine translated in 53 languages and not checked by native speakers:** "Smart Contrast", "Tooltips", and the landmark names "Navigation", "Header", "Main content", "Footer", "Sidebar", "Search", "Form", "Section".
+- **Tried on real sites** (a Wikipedia article, the Shopify Dawn demo shop, a payments company home page, a news front page) by loading the local build into them: Smart, Dark and Light Contrast ran without errors, and the scan took 20 to 70 ms. Still not tried on the owner's own shop, in Safari or Firefox, or with a screen reader.
+- **Not done, waiting on a decision:** a keyboard shortcut to open the menu (the obvious keys are taken by browsers), and more profiles.
 
 ## Other changes since the redesign
 

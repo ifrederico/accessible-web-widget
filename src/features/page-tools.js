@@ -213,6 +213,157 @@ export const pageToolMethods = {
     this.magnifierLastBlock = null;
   },
 
+  // ── Tooltips ───────────────────────────────────────────────────────
+  // Many controls are an icon with a name only assistive technology can
+  // read, and pictures carry a description nobody sees. Tooltips shows
+  // that hidden text in a large bubble, on hover and on keyboard focus.
+
+  // The hidden description of `target`, or of the control it sits in.
+  // Null when there is none, or when it only repeats the visible text.
+  findTooltipSource(target) {
+    if (!(target instanceof Element)) return null;
+    if (target.closest('.acc-container, .acc-rg-container, #acc-widget-host, #acc-skip-link')) return null;
+    const controlSelector = 'a[href], button, input, select, textarea, summary, label, [role="button"], [role="link"], [role="tab"], [role="menuitem"], [role="checkbox"], [role="switch"], [tabindex]';
+    const control = target.closest(controlSelector);
+    const drawing = target.closest('svg');
+    const candidates = [];
+    for (let node = target; node && node.nodeType === 1 && node !== document.body; node = node.parentElement) {
+      candidates.push(node);
+      if (node === control || (!control && (node === drawing || !drawing))) break;
+    }
+    for (const node of candidates) {
+      const tag = node.tagName.toLowerCase();
+      let text = '';
+      if (tag === 'img' || tag === 'area' || (tag === 'input' && node.getAttribute('type') === 'image')) {
+        text = node.getAttribute('alt') || '';
+      }
+      if (!text && tag === 'svg') {
+        const title = Array.from(node.children).find((child) => child.tagName.toLowerCase() === 'title');
+        text = title ? title.textContent : '';
+      }
+      text = text || this.getAccessibleLabel(node) || node.getAttribute('title')
+        || (node === this.tooltipAnchor ? this.tooltipHeldTitle : '') || '';
+      text = this.normalizeReadableText(text).slice(0, 300);
+      if (!text) continue;
+      const visible = this.normalizeReadableText(node.innerText || node.textContent || '');
+      if (visible && visible.toLowerCase() === text.toLowerCase()) return null;
+      return { element: node, text };
+    }
+    return null;
+  },
+
+  showTooltip(target) {
+    const source = this.findTooltipSource(target);
+    if (!source) {
+      this.hideTooltip();
+      return;
+    }
+    const bubble = this.tooltipElement;
+    if (!bubble) return;
+    if (source.element !== this.tooltipAnchor) {
+      this.hideTooltip();
+      this.tooltipAnchor = source.element;
+      // Hold back the element's own title so the browser does not draw a
+      // second, small tooltip over ours.
+      if (source.element.hasAttribute('title')) {
+        this.tooltipHeldTitle = source.element.getAttribute('title');
+        source.element.removeAttribute('title');
+      }
+    }
+    bubble.textContent = source.text;
+    bubble.classList.add('acc-visible');
+    this.positionTooltip();
+  },
+
+  // Under the element, or above it when there is no room, and always
+  // inside the screen. Once the element has scrolled out of view the
+  // bubble goes with it.
+  positionTooltip() {
+    const bubble = this.tooltipElement;
+    const element = this.tooltipAnchor;
+    if (!bubble || !element) return;
+    const gap = 8;
+    const anchor = element.getBoundingClientRect();
+    if (!element.isConnected || anchor.bottom < 0 || anchor.top > window.innerHeight
+      || anchor.right < 0 || anchor.left > window.innerWidth) {
+      this.hideTooltip();
+      return;
+    }
+    const size = bubble.getBoundingClientRect();
+    const maxLeft = Math.max(gap, window.innerWidth - size.width - gap);
+    const left = Math.min(maxLeft, Math.max(gap, anchor.left + anchor.width / 2 - size.width / 2));
+    let top = anchor.bottom + gap;
+    if (top + size.height > window.innerHeight - gap) top = anchor.top - size.height - gap;
+    bubble.style.left = `${Math.round(left)}px`;
+    bubble.style.top = `${Math.round(Math.max(gap, top))}px`;
+  },
+
+  hideTooltip() {
+    if (this.tooltipAnchor && this.tooltipHeldTitle !== null) {
+      this.tooltipAnchor.setAttribute('title', this.tooltipHeldTitle);
+    }
+    this.tooltipAnchor = null;
+    this.tooltipHeldTitle = null;
+    if (this.tooltipElement) {
+      this.tooltipElement.classList.remove('acc-visible');
+      this.tooltipElement.textContent = '';
+    }
+  },
+
+  enableTooltips(enable = false) {
+    if (typeof document === 'undefined' || !document.body) return;
+    if (enable) {
+      if (!this.tooltipElement || !document.body.contains(this.tooltipElement)) {
+        const bubble = document.createElement('div');
+        bubble.className = 'acc-tooltip-bubble acc-container';
+        // The text is already the element's accessible name; a screen
+        // reader should not hear it twice.
+        bubble.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(bubble);
+        this.tooltipElement = bubble;
+      }
+      if (this.tooltipHandlers) return;
+      const leaves = (event) => {
+        const next = event.relatedTarget;
+        if (this.tooltipAnchor && next instanceof Node && this.tooltipAnchor.contains(next)) return;
+        this.hideTooltip();
+      };
+      this.tooltipHandlers = {
+        over: (event) => this.showTooltip(event.target),
+        out: leaves,
+        focusin: (event) => this.showTooltip(event.target),
+        focusout: leaves,
+        // Focusing a control can scroll it into view; the bubble follows
+        // rather than vanishing the moment it appears.
+        scroll: () => this.positionTooltip(),
+        keydown: (event) => {
+          if (event.key === 'Escape') this.hideTooltip();
+        }
+      };
+      document.addEventListener('mouseover', this.tooltipHandlers.over, { passive: true });
+      document.addEventListener('mouseout', this.tooltipHandlers.out, { passive: true });
+      document.addEventListener('focusin', this.tooltipHandlers.focusin);
+      document.addEventListener('focusout', this.tooltipHandlers.focusout);
+      document.addEventListener('keydown', this.tooltipHandlers.keydown);
+      window.addEventListener('scroll', this.tooltipHandlers.scroll, { passive: true, capture: true });
+    } else {
+      this.hideTooltip();
+      if (this.tooltipHandlers) {
+        document.removeEventListener('mouseover', this.tooltipHandlers.over);
+        document.removeEventListener('mouseout', this.tooltipHandlers.out);
+        document.removeEventListener('focusin', this.tooltipHandlers.focusin);
+        document.removeEventListener('focusout', this.tooltipHandlers.focusout);
+        document.removeEventListener('keydown', this.tooltipHandlers.keydown);
+        window.removeEventListener('scroll', this.tooltipHandlers.scroll, { capture: true });
+        this.tooltipHandlers = null;
+      }
+      if (this.tooltipElement) {
+        this.tooltipElement.remove();
+        this.tooltipElement = null;
+      }
+    }
+  },
+
   // ── Page structure navigator ───────────────────────────────────────
 
   isStructureCandidate(element) {
@@ -249,18 +400,56 @@ export const pageToolMethods = {
       .slice(0, STRUCTURE_MAX_ITEMS);
   },
 
+  // A landmark's kind in plain words (a translation key), from its role
+  // or its tag. A header or footer inside an article or a section belongs
+  // to that part of the page, not to the page, so it is not a landmark.
+  getLandmarkKind(element) {
+    const role = (element.getAttribute('role') || '').trim().toLowerCase();
+    const tag = element.tagName.toLowerCase();
+    const byRole = {
+      main: 'Main content',
+      navigation: 'Navigation',
+      banner: 'Header',
+      contentinfo: 'Footer',
+      complementary: 'Sidebar',
+      search: 'Search',
+      form: 'Form',
+      region: 'Section'
+    };
+    if (byRole[role]) return byRole[role];
+    if (role) return '';
+    if ((tag === 'header' || tag === 'footer') && element.parentElement
+      && element.parentElement.closest('article, aside, main, nav, section')) {
+      return '';
+    }
+    const byTag = {
+      main: 'Main content',
+      nav: 'Navigation',
+      header: 'Header',
+      footer: 'Footer',
+      aside: 'Sidebar',
+      search: 'Search',
+      form: 'Form',
+      section: 'Section'
+    };
+    return byTag[tag] || '';
+  },
+
   collectPageLandmarks() {
-    const selector = 'main,nav,header,footer,aside,form,section[aria-label],section[aria-labelledby],[role="main"],[role="navigation"],[role="banner"],[role="contentinfo"],[role="complementary"],[role="search"],[role="form"],[role="region"]';
+    const selector = 'main,nav,header,footer,aside,search,form,section[aria-label],section[aria-labelledby],[role="main"],[role="navigation"],[role="banner"],[role="contentinfo"],[role="complementary"],[role="search"],[role="form"],[role="region"]';
     const seen = new Set();
     const landmarks = [];
     document.querySelectorAll(selector).forEach((el) => {
       if (seen.has(el) || !this.isStructureCandidate(el)) return;
       seen.add(el);
-      const role = el.getAttribute('role') || el.tagName.toLowerCase();
+      const kind = this.getLandmarkKind(el);
+      if (!kind) return;
+      // "Navigation", or "Navigation: Main menu" when the page names it.
       const name = this.getAccessibleLabel(el);
+      const label = this.translate(kind);
       landmarks.push({
         element: el,
-        label: name ? `${role} — ${name}`.slice(0, 120) : role
+        label: name ? `${label}: ${name}`.slice(0, 120) : label
       });
     });
     return landmarks.slice(0, STRUCTURE_MAX_ITEMS);

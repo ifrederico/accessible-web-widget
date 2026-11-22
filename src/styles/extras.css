@@ -63,6 +63,38 @@ body.acc-tts-click-mode :is(h1, h2, h3, h4, h5, h6, p, li, dt, dd, blockquote, f
   }
 }
 
+/* Tooltips: the hidden name or description of the thing under the
+   pointer or the keyboard focus, in a large bubble beside it. */
+.acc-tooltip-bubble {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2147483646;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(360px, calc(100vw - 16px));
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #111827;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: start;
+  overflow-wrap: anywhere;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.acc-tooltip-bubble.acc-visible {
+  display: block;
+}
+
 /* Page structure navigator: each list is a white card of rows inside
    the shared report dialog. */
 .acc-structure-list {

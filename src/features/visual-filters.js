@@ -48,11 +48,107 @@ export const visualFilterMethods = {
       });
     },
 
+  // Text is often laid over a picture: a banner photo with a headline on
+  // it. Mark the blocks that sit over a picture, so Dark and Light
+  // Contrast can dim the picture behind them rather than cover it with a
+  // solid box, and so Smart Contrast leaves them alone (it cannot see the
+  // picture). A block counts when at least half of it lies over the
+  // picture and it is not the picture's own container.
+  markMediaOverlays() {
+      this.clearMediaOverlays();
+      const skip = '.acc-container, .acc-rg-container, #acc-widget-host';
+      const pictures = [];
+      document.querySelectorAll('img, video, canvas').forEach((media) => {
+        if (media.closest(skip)) return;
+        const box = media.getBoundingClientRect();
+        if (box.width >= 120 && box.height >= 80) pictures.push({ media, box });
+      });
+      const shared = (a, b) => Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left))
+        * Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+      pictures.forEach(({ media, box: picture }) => {
+        const pictureArea = picture.width * picture.height;
+        let child = media;
+        let parent = media.parentElement;
+        for (let depth = 0; parent && parent !== document.documentElement && depth < 6; depth++) {
+          Array.from(parent.children).forEach((sibling) => {
+            if (sibling === child || sibling.hasAttribute('data-acc-over-media') || sibling.matches(skip)) return;
+            if (!sibling.textContent || !sibling.textContent.trim()) return;
+            const box = sibling.getBoundingClientRect();
+            const area = box.width * box.height;
+            if (!area || !shared(picture, box)) return;
+            // A banner is often two or more pictures side by side; count
+            // what the block shares with all of them.
+            const covered = pictures.reduce((sum, other) => sum + shared(other.box, box), 0);
+            if (covered >= area * 0.5) sibling.setAttribute('data-acc-over-media', '');
+          });
+          // Past an ancestor far larger than the picture, nothing more
+          // is laid over it.
+          const frame = parent.getBoundingClientRect();
+          if (parent === document.body || frame.width * frame.height > pictureArea * 4) break;
+          child = parent;
+          parent = parent.parentElement;
+        }
+      });
+    },
+
+  clearMediaOverlays() {
+      document.querySelectorAll('[data-acc-over-media]').forEach((element) => {
+        element.removeAttribute('data-acc-over-media');
+      });
+    },
+
+  // Many icons are drawn as a mask filled with a background color. Dark
+  // Contrast turns every background black, which would erase them, so
+  // mark them and let them take the text color instead. "self" is an
+  // element that is itself the icon; "before" and "after" are icons drawn
+  // in front of or behind an element's text.
+  markMaskIcons() {
+      this.clearMaskIcons();
+      const skip = '.acc-container, .acc-rg-container, #acc-widget-host';
+      const masked = (style) => {
+        const mask = style.maskImage || style.webkitMaskImage || '';
+        return !!mask && mask !== 'none';
+      };
+      const elements = document.body.getElementsByTagName('*');
+      const limit = Math.min(elements.length, 6000);
+      const found = [];
+      for (let index = 0; index < limit; index++) {
+        const element = elements[index];
+        if (element.namespaceURI !== 'http://www.w3.org/1999/xhtml') continue;
+        const parts = [];
+        if (!element.firstElementChild && masked(window.getComputedStyle(element))) parts.push('self');
+        if (masked(window.getComputedStyle(element, '::before'))) parts.push('before');
+        if (masked(window.getComputedStyle(element, '::after'))) parts.push('after');
+        if (parts.length && !element.closest(skip)) found.push([element, parts.join(' ')]);
+      }
+      found.forEach(([element, parts]) => element.setAttribute('data-acc-mask-icon', parts));
+    },
+
+  clearMaskIcons() {
+      document.querySelectorAll('[data-acc-mask-icon]').forEach((element) => {
+        element.removeAttribute('data-acc-mask-icon');
+      });
+    },
+
   // Put the active Contrast choice on the page. Light is the High
   // Contrast rules, Dark has its own, and Smart Contrast runs only when
   // neither is on, since both already set every color.
   applyContrastMode(states = this.loadConfig().states || {}) {
       const mode = this.getContrastMode(states);
+      try {
+        if (mode) {
+          this.markMediaOverlays();
+        } else {
+          this.clearMediaOverlays();
+        }
+        if (mode === 'dark-contrast') {
+          this.markMaskIcons();
+        } else {
+          this.clearMaskIcons();
+        }
+      } catch (e) {
+        console.warn('Error preparing contrast:', e);
+      }
       this.enableHighContrastMode(mode === 'high-contrast-mode');
       const isDark = mode === 'dark-contrast';
       if (isDark) {
@@ -62,6 +158,15 @@ export const visualFilterMethods = {
       }
       document.documentElement.classList.toggle('acc-dark-contrast', isDark);
       this.refreshSmartContrast({ rescan: true });
+      // Pictures and styles that arrive with the rest of the page change
+      // what lies over what; look once more when the page has loaded.
+      if (mode && document.readyState !== 'complete' && !this.contrastLoadHandler) {
+        this.contrastLoadHandler = () => {
+          this.contrastLoadHandler = null;
+          this.applyContrastMode();
+        };
+        window.addEventListener('load', this.contrastLoadHandler, { once: true });
+      }
     },
 
   applyModeToggleButtonDisplay(button, display, modeAttribute) {
@@ -354,6 +459,23 @@ export const visualFilterMethods = {
           box-shadow: none !important;
         }
 
+        /* Icons drawn as a mask take the text color (see markMaskIcons). */
+        body [data-acc-mask-icon~="self"]${X},
+        body [data-acc-mask-icon~="before"]${X}::before,
+        body [data-acc-mask-icon~="after"]${X}::after {
+          background-color: currentColor !important;
+        }
+
+        /* Text laid over a picture: dim the picture behind it instead of
+           covering it (see markMediaOverlays). */
+        body [data-acc-over-media]${X} {
+          background-color: rgba(0, 0, 0, 0.65) !important;
+        }
+
+        body [data-acc-over-media] *${X} {
+          background-color: transparent !important;
+        }
+
         /* Links: yellow and underlined, with whatever they wrap. */
         body a${X},
         body a${X} * {
@@ -375,9 +497,20 @@ export const visualFilterMethods = {
           fill: currentColor !important;
         }
 
+        /* A logo or icon in dark ink would vanish on black; a thin light
+           edge keeps its shape readable. */
+        body svg${X},
+        body :where(header, nav, footer, [role="banner"], [role="navigation"], [role="contentinfo"]) img${X} {
+          filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) !important;
+        }
+
         /* Inputs and buttons keep a visible edge. */
-        body :where(input, textarea, select, button)${X} {
+        body :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select, button)${X} {
           border: 2px solid #fff !important;
+        }
+
+        body :where(input[type="checkbox"], input[type="radio"], input[type="range"])${X} {
+          accent-color: #ff0 !important;
         }
 
         body ::placeholder {
