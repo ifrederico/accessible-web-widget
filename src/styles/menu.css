@@ -628,7 +628,9 @@
   /* Square; a tile still grows if a long label wraps. */
   aspect-ratio: 1 / 1;
   min-height: 112px;
-  padding: 16px 8px 12px;
+  /* The same in every tile, so icons and labels line up along a row.
+     The bottom keeps a strip free for the level dots. */
+  padding: 18px 8px 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1310,8 +1312,13 @@
   z-index: calc(var(--acc-widget-z-index, 100000) - 1);
 }
 
-/* Level dots under a cycling tile's label. */
+/* Level dots of a cycling tile. They sit in the strip at the bottom of
+   the tile, out of the flow, so a tile with dots lays out its icon and
+   label exactly like a tile without. */
 .acc-progress-indicator {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;

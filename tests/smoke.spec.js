@@ -196,6 +196,33 @@ test('state persists after reload (bold text toggle)', async ({ page }) => {
   await expect(page.locator('.acc-btn[data-key="bold-text"]')).toHaveClass(/acc-selected/);
 });
 
+test('a tile with level dots lines up with a tile without them', async ({ page }) => {
+  await page.goto('index.html');
+  await page.locator('.acc-toggle-btn').click();
+  const place = (key) => page.locator(`.acc-btn[data-key="${key}"]`).evaluate((tile) => {
+    const box = tile.getBoundingClientRect();
+    const dots = tile.querySelector('.acc-progress-indicator');
+    return {
+      icon: Math.round(tile.querySelector('svg').getBoundingClientRect().top - box.top),
+      label: Math.round(tile.querySelector('.acc-label').getBoundingClientRect().top - box.top),
+      labelEnd: tile.querySelector('.acc-label').getBoundingClientRect().bottom,
+      dotsStart: dots ? dots.getBoundingClientRect().top : null,
+      dotsEnd: dots ? dots.getBoundingClientRect().bottom : null,
+      tileEnd: box.bottom
+    };
+  });
+  const withDots = await place('text-scale');
+  const without = await place('line-spacing');
+
+  expect(withDots.dotsStart).not.toBeNull();
+  expect(without.dotsStart).toBeNull();
+  expect(withDots.icon).toBe(without.icon);
+  expect(withDots.label).toBe(without.label);
+  // The dots stay under the label and inside the tile.
+  expect(withDots.dotsStart).toBeGreaterThan(withDots.labelEnd);
+  expect(withDots.dotsEnd).toBeLessThan(withDots.tileEnd);
+});
+
 test('Font Size tile cycles 110%, 125%, 150% and back to off, and persists', async ({ page }) => {
   const textTarget = page.locator('.hero-subtitle');
   const readFontSize = () => textTarget.evaluate((element) => parseFloat(window.getComputedStyle(element).fontSize));
