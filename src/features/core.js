@@ -285,24 +285,62 @@ export const coreFeatureMethods = {
       this.applyToolStyle({ ...config, enable });
     },
 
-  adjustLetterSpacing(enable = false) {
-      const config = {
-        id: "letter-spacing",
-        selector: "html",
-        childrenSelector: ['', '*:not(.material-icons,.acc-menu,.acc-menu *, .acc-widget, .acc-widget *)'],
-        styles: { 'letter-spacing': '2px' }
-      };
-      this.applyToolStyle({ ...config, enable });
+  // Map a persisted level state to one of the feature's levels, or null
+  // when off. Legacy configs stored true, which is the first level; any
+  // other number lands on the nearest level.
+  resolveSpacingLevel(levels, value) {
+      if (!Array.isArray(levels) || !levels.length) return null;
+      if (value === true) return levels[0];
+      const numeric = Number(value);
+      if (!value || !Number.isFinite(numeric) || numeric <= 0) return null;
+      return levels.reduce((nearest, level) => (
+        Math.abs(level - numeric) < Math.abs(nearest - numeric) ? level : nearest
+      ), levels[0]);
     },
 
-  adjustLineSpacing(enable = false) {
+  // Index of the active level, -1 when off.
+  getLetterSpacingLevel(value) {
+      return (this.letterSpacingLevels || []).indexOf(this.resolveSpacingLevel(this.letterSpacingLevels, value));
+    },
+
+  getLineSpacingLevel(value) {
+      return (this.lineSpacingLevels || []).indexOf(this.resolveSpacingLevel(this.lineSpacingLevels, value));
+    },
+
+  adjustLetterSpacing(value = false) {
+      const level = this.resolveSpacingLevel(this.letterSpacingLevels, value);
+      const X = ':not(.material-icons):not(.acc-container):not(.acc-container *)';
+      const round = (number) => Math.round(number * 100) / 100;
+      const config = {
+        id: "letter-spacing",
+        css: level ? `
+          html.acc-letter-spacing, html.acc-letter-spacing *${X} {
+            letter-spacing: ${round(0.12 * level)}em !important;
+            word-spacing: ${round(0.16 * level)}em !important;
+          }
+        ` : ''
+      };
+      this.applyToolStyle({ ...config, enable: !!level });
+    },
+
+  adjustLineSpacing(value = false) {
+      const level = this.resolveSpacingLevel(this.lineSpacingLevels, value);
+      const X = ':not(.material-icons):not(.acc-container):not(.acc-container *)';
+      const headings = (this.targetSelectors.HEADERS || []).join(',');
+      const round = (number) => Math.round(number * 1000) / 1000;
       const config = {
         id: "line-spacing",
-        selector: "html",
-        childrenSelector: ['', '*:not(.material-icons,.acc-menu,.acc-menu *, .acc-widget, .acc-widget *)'],
-        styles: { 'line-height': '3' }
+        css: level ? `
+          html.acc-line-spacing, html.acc-line-spacing *${X} {
+            line-height: ${level} !important;
+          }
+          html.acc-line-spacing :where(${headings})${X},
+          html.acc-line-spacing :where(${headings})${X} * {
+            line-height: ${round(level * 0.75)} !important;
+          }
+        ` : ''
       };
-      this.applyToolStyle({ ...config, enable });
+      this.applyToolStyle({ ...config, enable: !!level });
     },
 
   enableLargePointer(enable = false) {
@@ -836,21 +874,27 @@ export const coreFeatureMethods = {
     listen(contrastQuery, onContrastChange);
   },
 
+  // Hide Images keeps each picture's space, so the page does not jump, and
+  // leaves alone the icons that controls are made of: an icon-only button
+  // or link would otherwise turn into a blank, unlabeled-looking box.
   concealImages(enable = false) {
     const styleId = `acc-hide-images`;
     this.removeStyle(styleId);
     document.documentElement.classList.toggle(styleId, enable);
     if (enable) {
+      const S = 'body > *:not(.acc-container)';
+      const inButton = ':is(button, [role="button"], summary)';
+      const inControl = ':is(a, button, label, summary, [role="button"], [role="link"], [role="tab"], [role="menuitem"])';
       const css = `
-        body > *:not(.acc-container) img,
-        body > *:not(.acc-container) picture,
-        body > *:not(.acc-container) svg:not(.acc-container svg),
-        body > *:not(.acc-container) video,
-        body > *:not(.acc-container) iframe,
-        body > *:not(.acc-container) canvas,
-        body > *:not(.acc-container) .video,
-        body > *:not(.acc-container) .image {
-          display: none !important;
+        ${S} img:not(${inButton} img),
+        ${S} picture:not(${inButton} picture),
+        ${S} svg:not(.acc-container svg):not(${inControl} svg),
+        ${S} video,
+        ${S} iframe,
+        ${S} canvas,
+        ${S} .video,
+        ${S} .image {
+          visibility: hidden !important;
         }
       `;
       this.injectStyle(styleId, css);
@@ -1200,6 +1244,7 @@ export const coreFeatureMethods = {
       this.clearSimpleLayoutDomMutations();
       document.documentElement.classList.remove(
         'acc-filter',
+        'acc-dark-contrast',
         'acc-saturation',
         'acc-bold-text',
         'acc-letter-spacing',

@@ -264,6 +264,8 @@ export const uiMethods = {
       this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
       this.setLevelTileUI(menu, 'text-scale', this.getTextScaleLevel(states['text-scale']));
       this.setLevelTileUI(menu, 'text-to-speech', this.getTtsSpeedLevel(states['text-to-speech']));
+      this.setLevelTileUI(menu, 'line-spacing', this.getLineSpacingLevel(states['line-spacing']));
+      this.setLevelTileUI(menu, 'letter-spacing', this.getLetterSpacingLevel(states['letter-spacing']));
       this.syncMenuSummary(menu);
     },
 
@@ -550,6 +552,11 @@ export const uiMethods = {
       const levelText = el.getAttribute("data-acc-level-text");
       if (levelText) {
         return `${this.translate(text)}: ${this.translate(levelText)}`;
+      }
+      // A tile's visible name followed by its level ("Font Size 125%").
+      const suffix = el.getAttribute("data-acc-suffix");
+      if (suffix) {
+        return `${this.translate(text)} ${suffix}`;
       }
       return this.translate(text);
     },

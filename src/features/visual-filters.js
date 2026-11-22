@@ -98,8 +98,9 @@ export const visualFilterMethods = {
       }
     },
 
-  // Font Size and Text to Speech keep their name on the tile; the level
-  // goes into the accessible name only ("Font Size: 125%").
+  // Tiles whose levels are numbers keep their name and show the level
+  // after it ("Font Size 125%"). Letter Spacing has no number worth
+  // showing, so its dots carry the level and the name stays as it is.
   getLevelTileText(featureKey, index) {
       if (featureKey === 'text-scale') {
         const level = this.textScaleLevels?.[index];
@@ -108,6 +109,14 @@ export const visualFilterMethods = {
       if (featureKey === 'text-to-speech') {
         const choice = this.ttsSpeedChoices?.[index];
         return choice ? `${choice.rate}×` : '';
+      }
+      if (featureKey === 'line-spacing') {
+        const level = this.lineSpacingLevels?.[index];
+        return level ? `${level}×` : '';
+      }
+      if (featureKey === 'letter-spacing') {
+        const level = this.letterSpacingLevels?.[index];
+        return level ? `${level}` : '';
       }
       return '';
     },
@@ -124,6 +133,17 @@ export const visualFilterMethods = {
         button.setAttribute('data-acc-level-text', levelText);
       } else {
         button.removeAttribute('data-acc-level-text');
+      }
+      // The visible name carries the level too, kept in its own attribute
+      // so translateMenuUI() can rebuild it on a language switch.
+      const labelNode = button.querySelector('.acc-label');
+      if (labelNode) {
+        if (levelText && featureKey !== 'letter-spacing') {
+          labelNode.setAttribute('data-acc-suffix', levelText);
+        } else {
+          labelNode.removeAttribute('data-acc-suffix');
+        }
+        labelNode.innerText = this.getTranslatedText(labelNode, labelNode.innerText.trim());
       }
       const accessibleName = this.getTranslatedText(button);
       button.setAttribute('title', accessibleName);
@@ -238,12 +258,6 @@ export const visualFilterMethods = {
         case 'invert-colors':
           r = 255 - r; g = 255 - g; b = 255 - b;
           break;
-        case 'dark-contrast': {
-          // filter: contrast(150%) brightness(0.8) — applied left to right
-          r = 128 + (r - 128) * 1.5; g = 128 + (g - 128) * 1.5; b = 128 + (b - 128) * 1.5;
-          r *= 0.8; g *= 0.8; b *= 0.8;
-          break;
-        }
         case 'light-contrast': {
           // filter: contrast(125%) brightness(1.2)
           r = 128 + (r - 128) * 1.25; g = 128 + (g - 128) * 1.25; b = 128 + (b - 128) * 1.25;
@@ -283,10 +297,85 @@ export const visualFilterMethods = {
       return `rgb(${r},${g},${b})`;
     },
 
+  // Dark Contrast: black page, white text, yellow links. The same shape
+  // as High Contrast with the colors turned around. With both on, High
+  // Contrast wins: its rules are the more specific ones.
+  buildDarkContrastCss() {
+      const X = ':not(.acc-container):not(.acc-container *):not(.acc-rg-container):not(.acc-rg-container *)';
+      const shapes = 'path, circle, ellipse, rect, polygon, polyline, line';
+      return `
+        html, body {
+          background: #000 !important;
+          color: #fff !important;
+        }
+
+        body *${X} {
+          color: #fff !important;
+          background-color: #000 !important;
+          background-image: none !important;
+          border-color: #fff !important;
+          text-shadow: none !important;
+          box-shadow: none !important;
+        }
+
+        /* Decorations drawn with ::before and ::after would stay light
+           behind the white text. */
+        body *${X}::before,
+        body *${X}::after {
+          color: #fff !important;
+          background-color: transparent !important;
+          background-image: none !important;
+          border-color: #fff !important;
+          box-shadow: none !important;
+        }
+
+        /* Links: yellow and underlined, with whatever they wrap. */
+        body a${X},
+        body a${X} * {
+          color: #ff0 !important;
+        }
+
+        body a${X} {
+          text-decoration: underline !important;
+        }
+
+        /* Pictures keep their own colors. */
+        body :where(img, picture, video, canvas, iframe, svg)${X} {
+          background-color: transparent !important;
+        }
+
+        /* Icons that draw in the default black take the text color. Icons
+           that set their own fill or stroke are left alone. */
+        body svg${X} :where(${shapes}):not([fill]):not([stroke]):not([fill] *):not([stroke] *) {
+          fill: currentColor !important;
+        }
+
+        /* Inputs and buttons keep a visible edge. */
+        body :where(input, textarea, select, button)${X} {
+          border: 2px solid #fff !important;
+        }
+
+        body ::placeholder {
+          color: #ccc !important;
+          opacity: 1 !important;
+        }
+
+        body :focus-visible${X} {
+          outline: 3px solid #ff0 !important;
+          outline-offset: 2px !important;
+        }
+
+        body :where(table, th, td)${X} {
+          border: 1px solid #fff !important;
+        }
+      `;
+    },
+
   applyVisualFilters() {
       const { states } = this.loadConfig();
       const activeKey = this.getActiveColorFilterKey(states);
       this.activeColorFilterKey = activeKey;
+      document.documentElement.classList.toggle('acc-dark-contrast', activeKey === 'dark-contrast');
   
       if (!activeKey) {
         this.removeStyle('acc-filter-style');
@@ -295,6 +384,10 @@ export const visualFilterMethods = {
       const filter = this.visualFilters[activeKey];
       if (!filter) {
         this.removeStyle('acc-filter-style');
+        return;
+      }
+      if (filter.theme === 'dark') {
+        this.injectStyle('acc-filter-style', this.buildDarkContrastCss());
         return;
       }
       const adjustedFilter = {
@@ -342,6 +435,25 @@ export const visualFilterMethods = {
         this.announce(multiplier > 1
           ? `${fontSize} ${Math.round(multiplier * 100)}%`
           : `${fontSize} ${this.translate('Off')}`);
+        return;
+      }
+
+      // Line Height and Letter Spacing: three steps, then off.
+      if (featureKey === 'line-spacing' || featureKey === 'letter-spacing') {
+        const isLine = featureKey === 'line-spacing';
+        const current = isLine
+          ? this.getLineSpacingLevel(this.retrieveState(featureKey))
+          : this.getLetterSpacingLevel(this.retrieveState(featureKey));
+        const newIndex = current + 1;
+        const value = newIndex < feature.levels ? feature.values[newIndex] : false;
+        this.updateState({ [featureKey]: value });
+        if (isLine) {
+          this.adjustLineSpacing(value);
+        } else {
+          this.adjustLetterSpacing(value);
+        }
+        this.setLevelTileUI(menu, featureKey, value ? newIndex : -1);
+        this.announceFeatureState(button.getAttribute('aria-label'), !!value);
         return;
       }
 

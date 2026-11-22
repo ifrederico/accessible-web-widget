@@ -71,7 +71,8 @@ test('disabling a profile restores prior explicit user choices', async ({ page }
   await profileBtn.click();
 
   const states = await readStates(page);
-  expect(states['line-spacing']).toBe(true);
+  // The visitor's own pick, the first Line Height level, comes back.
+  expect(states['line-spacing']).toBe(2);
   expect(states['readable-text']).toBeUndefined();
   await expect(page.locator('.acc-btn[data-key="line-spacing"]')).toHaveAttribute('aria-pressed', 'true');
 });

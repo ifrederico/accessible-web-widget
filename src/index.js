@@ -30,10 +30,9 @@ class AccessibleWebWidget {
     this.targetSelectors = TARGET_SELECTORS;
 
     this.visualFilters = {
-      'dark-contrast': {
-        styles: { 'filter': 'contrast(150%) brightness(0.8)' },
-        selector: PAGE_CONTENT_SELECTOR
-      },
+      // A real dark page (black background, light text), written as rules
+      // rather than a filter; see buildDarkContrastCss().
+      'dark-contrast': { theme: 'dark' },
       'light-contrast': {
         styles: { 'filter': 'contrast(125%) brightness(1.2)' },
         selector: PAGE_CONTENT_SELECTOR
@@ -175,6 +174,14 @@ class AccessibleWebWidget {
       { key: 'slow', rate: 0.8 },
       { key: 'fast', rate: 1.3 }
     ];
+    // Line Height levels, as the line-height persisted in the line-spacing
+    // state (legacy true = the first level). Headings get three quarters
+    // of it, so large type does not fly apart.
+    this.lineSpacingLevels = [2, 2.5, 3];
+    // Letter Spacing levels, persisted as 1 to 3 in the letter-spacing
+    // state (legacy true = 1). Each step adds 0.12em between letters and
+    // 0.16em between words, the WCAG 1.4.12 text spacing amounts.
+    this.letterSpacingLevels = [1, 2, 3];
     this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation', 'monochrome'];
 
@@ -189,8 +196,20 @@ class AccessibleWebWidget {
 
     this.contentOptions = [
       { label: 'Font Weight', key: 'bold-text', icon: this.widgetIcons.boldText },
-      { label: 'Line Height', key: 'line-spacing', icon: this.widgetIcons.lineSpacing },
-      { label: 'Letter Spacing', key: 'letter-spacing', icon: this.widgetIcons.letterSpacing },
+      {
+        label: 'Line Height',
+        key: 'line-spacing',
+        icon: this.widgetIcons.lineSpacing,
+        multiLevel: true,
+        levels: this.lineSpacingLevels.length
+      },
+      {
+        label: 'Letter Spacing',
+        key: 'letter-spacing',
+        icon: this.widgetIcons.letterSpacing,
+        multiLevel: true,
+        levels: this.letterSpacingLevels.length
+      },
       { label: 'Hide Images', key: 'hide-images', icon: this.widgetIcons.hideImages },
       {
         label: 'Readable Font',
@@ -230,6 +249,16 @@ class AccessibleWebWidget {
         levels: this.textScaleLevels.length,
         currentIndex: -1,
         values: this.textScaleLevels
+      },
+      'line-spacing': {
+        levels: this.lineSpacingLevels.length,
+        currentIndex: -1,
+        values: this.lineSpacingLevels
+      },
+      'letter-spacing': {
+        levels: this.letterSpacingLevels.length,
+        currentIndex: -1,
+        values: this.letterSpacingLevels
       },
       'text-to-speech': {
         levels: this.ttsSpeedChoices.length,

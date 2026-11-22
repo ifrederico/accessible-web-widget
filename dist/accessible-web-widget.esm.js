@@ -6550,24 +6550,62 @@ const coreFeatureMethods = {
       this.applyToolStyle({ ...config, enable });
     },
 
-  adjustLetterSpacing(enable = false) {
-      const config = {
-        id: "letter-spacing",
-        selector: "html",
-        childrenSelector: ['', '*:not(.material-icons,.acc-menu,.acc-menu *, .acc-widget, .acc-widget *)'],
-        styles: { 'letter-spacing': '2px' }
-      };
-      this.applyToolStyle({ ...config, enable });
+  // Map a persisted level state to one of the feature's levels, or null
+  // when off. Legacy configs stored true, which is the first level; any
+  // other number lands on the nearest level.
+  resolveSpacingLevel(levels, value) {
+      if (!Array.isArray(levels) || !levels.length) return null;
+      if (value === true) return levels[0];
+      const numeric = Number(value);
+      if (!value || !Number.isFinite(numeric) || numeric <= 0) return null;
+      return levels.reduce((nearest, level) => (
+        Math.abs(level - numeric) < Math.abs(nearest - numeric) ? level : nearest
+      ), levels[0]);
     },
 
-  adjustLineSpacing(enable = false) {
+  // Index of the active level, -1 when off.
+  getLetterSpacingLevel(value) {
+      return (this.letterSpacingLevels || []).indexOf(this.resolveSpacingLevel(this.letterSpacingLevels, value));
+    },
+
+  getLineSpacingLevel(value) {
+      return (this.lineSpacingLevels || []).indexOf(this.resolveSpacingLevel(this.lineSpacingLevels, value));
+    },
+
+  adjustLetterSpacing(value = false) {
+      const level = this.resolveSpacingLevel(this.letterSpacingLevels, value);
+      const X = ':not(.material-icons):not(.acc-container):not(.acc-container *)';
+      const round = (number) => Math.round(number * 100) / 100;
+      const config = {
+        id: "letter-spacing",
+        css: level ? `
+          html.acc-letter-spacing, html.acc-letter-spacing *${X} {
+            letter-spacing: ${round(0.12 * level)}em !important;
+            word-spacing: ${round(0.16 * level)}em !important;
+          }
+        ` : ''
+      };
+      this.applyToolStyle({ ...config, enable: !!level });
+    },
+
+  adjustLineSpacing(value = false) {
+      const level = this.resolveSpacingLevel(this.lineSpacingLevels, value);
+      const X = ':not(.material-icons):not(.acc-container):not(.acc-container *)';
+      const headings = (this.targetSelectors.HEADERS || []).join(',');
+      const round = (number) => Math.round(number * 1000) / 1000;
       const config = {
         id: "line-spacing",
-        selector: "html",
-        childrenSelector: ['', '*:not(.material-icons,.acc-menu,.acc-menu *, .acc-widget, .acc-widget *)'],
-        styles: { 'line-height': '3' }
+        css: level ? `
+          html.acc-line-spacing, html.acc-line-spacing *${X} {
+            line-height: ${level} !important;
+          }
+          html.acc-line-spacing :where(${headings})${X},
+          html.acc-line-spacing :where(${headings})${X} * {
+            line-height: ${round(level * 0.75)} !important;
+          }
+        ` : ''
       };
-      this.applyToolStyle({ ...config, enable });
+      this.applyToolStyle({ ...config, enable: !!level });
     },
 
   enableLargePointer(enable = false) {
@@ -7101,21 +7139,27 @@ const coreFeatureMethods = {
     listen(contrastQuery, onContrastChange);
   },
 
+  // Hide Images keeps each picture's space, so the page does not jump, and
+  // leaves alone the icons that controls are made of: an icon-only button
+  // or link would otherwise turn into a blank, unlabeled-looking box.
   concealImages(enable = false) {
     const styleId = `acc-hide-images`;
     this.removeStyle(styleId);
     document.documentElement.classList.toggle(styleId, enable);
     if (enable) {
+      const S = 'body > *:not(.acc-container)';
+      const inButton = ':is(button, [role="button"], summary)';
+      const inControl = ':is(a, button, label, summary, [role="button"], [role="link"], [role="tab"], [role="menuitem"])';
       const css = `
-        body > *:not(.acc-container) img,
-        body > *:not(.acc-container) picture,
-        body > *:not(.acc-container) svg:not(.acc-container svg),
-        body > *:not(.acc-container) video,
-        body > *:not(.acc-container) iframe,
-        body > *:not(.acc-container) canvas,
-        body > *:not(.acc-container) .video,
-        body > *:not(.acc-container) .image {
-          display: none !important;
+        ${S} img:not(${inButton} img),
+        ${S} picture:not(${inButton} picture),
+        ${S} svg:not(.acc-container svg):not(${inControl} svg),
+        ${S} video,
+        ${S} iframe,
+        ${S} canvas,
+        ${S} .video,
+        ${S} .image {
+          visibility: hidden !important;
         }
       `;
       this.injectStyle(styleId, css);
@@ -7465,6 +7509,7 @@ const coreFeatureMethods = {
       this.clearSimpleLayoutDomMutations();
       document.documentElement.classList.remove(
         'acc-filter',
+        'acc-dark-contrast',
         'acc-saturation',
         'acc-bold-text',
         'acc-letter-spacing',
@@ -8947,8 +8992,9 @@ const visualFilterMethods = {
       }
     },
 
-  // Font Size and Text to Speech keep their name on the tile; the level
-  // goes into the accessible name only ("Font Size: 125%").
+  // Tiles whose levels are numbers keep their name and show the level
+  // after it ("Font Size 125%"). Letter Spacing has no number worth
+  // showing, so its dots carry the level and the name stays as it is.
   getLevelTileText(featureKey, index) {
       if (featureKey === 'text-scale') {
         const level = this.textScaleLevels?.[index];
@@ -8957,6 +9003,14 @@ const visualFilterMethods = {
       if (featureKey === 'text-to-speech') {
         const choice = this.ttsSpeedChoices?.[index];
         return choice ? `${choice.rate}×` : '';
+      }
+      if (featureKey === 'line-spacing') {
+        const level = this.lineSpacingLevels?.[index];
+        return level ? `${level}×` : '';
+      }
+      if (featureKey === 'letter-spacing') {
+        const level = this.letterSpacingLevels?.[index];
+        return level ? `${level}` : '';
       }
       return '';
     },
@@ -8973,6 +9027,17 @@ const visualFilterMethods = {
         button.setAttribute('data-acc-level-text', levelText);
       } else {
         button.removeAttribute('data-acc-level-text');
+      }
+      // The visible name carries the level too, kept in its own attribute
+      // so translateMenuUI() can rebuild it on a language switch.
+      const labelNode = button.querySelector('.acc-label');
+      if (labelNode) {
+        if (levelText && featureKey !== 'letter-spacing') {
+          labelNode.setAttribute('data-acc-suffix', levelText);
+        } else {
+          labelNode.removeAttribute('data-acc-suffix');
+        }
+        labelNode.innerText = this.getTranslatedText(labelNode, labelNode.innerText.trim());
       }
       const accessibleName = this.getTranslatedText(button);
       button.setAttribute('title', accessibleName);
@@ -9087,12 +9152,6 @@ const visualFilterMethods = {
         case 'invert-colors':
           r = 255 - r; g = 255 - g; b = 255 - b;
           break;
-        case 'dark-contrast': {
-          // filter: contrast(150%) brightness(0.8) — applied left to right
-          r = 128 + (r - 128) * 1.5; g = 128 + (g - 128) * 1.5; b = 128 + (b - 128) * 1.5;
-          r *= 0.8; g *= 0.8; b *= 0.8;
-          break;
-        }
         case 'light-contrast': {
           // filter: contrast(125%) brightness(1.2)
           r = 128 + (r - 128) * 1.25; g = 128 + (g - 128) * 1.25; b = 128 + (b - 128) * 1.25;
@@ -9132,10 +9191,85 @@ const visualFilterMethods = {
       return `rgb(${r},${g},${b})`;
     },
 
+  // Dark Contrast: black page, white text, yellow links. The same shape
+  // as High Contrast with the colors turned around. With both on, High
+  // Contrast wins: its rules are the more specific ones.
+  buildDarkContrastCss() {
+      const X = ':not(.acc-container):not(.acc-container *):not(.acc-rg-container):not(.acc-rg-container *)';
+      const shapes = 'path, circle, ellipse, rect, polygon, polyline, line';
+      return `
+        html, body {
+          background: #000 !important;
+          color: #fff !important;
+        }
+
+        body *${X} {
+          color: #fff !important;
+          background-color: #000 !important;
+          background-image: none !important;
+          border-color: #fff !important;
+          text-shadow: none !important;
+          box-shadow: none !important;
+        }
+
+        /* Decorations drawn with ::before and ::after would stay light
+           behind the white text. */
+        body *${X}::before,
+        body *${X}::after {
+          color: #fff !important;
+          background-color: transparent !important;
+          background-image: none !important;
+          border-color: #fff !important;
+          box-shadow: none !important;
+        }
+
+        /* Links: yellow and underlined, with whatever they wrap. */
+        body a${X},
+        body a${X} * {
+          color: #ff0 !important;
+        }
+
+        body a${X} {
+          text-decoration: underline !important;
+        }
+
+        /* Pictures keep their own colors. */
+        body :where(img, picture, video, canvas, iframe, svg)${X} {
+          background-color: transparent !important;
+        }
+
+        /* Icons that draw in the default black take the text color. Icons
+           that set their own fill or stroke are left alone. */
+        body svg${X} :where(${shapes}):not([fill]):not([stroke]):not([fill] *):not([stroke] *) {
+          fill: currentColor !important;
+        }
+
+        /* Inputs and buttons keep a visible edge. */
+        body :where(input, textarea, select, button)${X} {
+          border: 2px solid #fff !important;
+        }
+
+        body ::placeholder {
+          color: #ccc !important;
+          opacity: 1 !important;
+        }
+
+        body :focus-visible${X} {
+          outline: 3px solid #ff0 !important;
+          outline-offset: 2px !important;
+        }
+
+        body :where(table, th, td)${X} {
+          border: 1px solid #fff !important;
+        }
+      `;
+    },
+
   applyVisualFilters() {
       const { states } = this.loadConfig();
       const activeKey = this.getActiveColorFilterKey(states);
       this.activeColorFilterKey = activeKey;
+      document.documentElement.classList.toggle('acc-dark-contrast', activeKey === 'dark-contrast');
   
       if (!activeKey) {
         this.removeStyle('acc-filter-style');
@@ -9144,6 +9278,10 @@ const visualFilterMethods = {
       const filter = this.visualFilters[activeKey];
       if (!filter) {
         this.removeStyle('acc-filter-style');
+        return;
+      }
+      if (filter.theme === 'dark') {
+        this.injectStyle('acc-filter-style', this.buildDarkContrastCss());
         return;
       }
       const adjustedFilter = {
@@ -9191,6 +9329,25 @@ const visualFilterMethods = {
         this.announce(multiplier > 1
           ? `${fontSize} ${Math.round(multiplier * 100)}%`
           : `${fontSize} ${this.translate('Off')}`);
+        return;
+      }
+
+      // Line Height and Letter Spacing: three steps, then off.
+      if (featureKey === 'line-spacing' || featureKey === 'letter-spacing') {
+        const isLine = featureKey === 'line-spacing';
+        const current = isLine
+          ? this.getLineSpacingLevel(this.retrieveState(featureKey))
+          : this.getLetterSpacingLevel(this.retrieveState(featureKey));
+        const newIndex = current + 1;
+        const value = newIndex < feature.levels ? feature.values[newIndex] : false;
+        this.updateState({ [featureKey]: value });
+        if (isLine) {
+          this.adjustLineSpacing(value);
+        } else {
+          this.adjustLetterSpacing(value);
+        }
+        this.setLevelTileUI(menu, featureKey, value ? newIndex : -1);
+        this.announceFeatureState(button.getAttribute('aria-label'), !!value);
         return;
       }
 
@@ -9933,6 +10090,8 @@ const uiMethods = {
       this.setReadableFontUI(menu, readableChoice ? readableChoice.key : null);
       this.setLevelTileUI(menu, 'text-scale', this.getTextScaleLevel(states['text-scale']));
       this.setLevelTileUI(menu, 'text-to-speech', this.getTtsSpeedLevel(states['text-to-speech']));
+      this.setLevelTileUI(menu, 'line-spacing', this.getLineSpacingLevel(states['line-spacing']));
+      this.setLevelTileUI(menu, 'letter-spacing', this.getLetterSpacingLevel(states['letter-spacing']));
       this.syncMenuSummary(menu);
     },
 
@@ -10219,6 +10378,11 @@ const uiMethods = {
       const levelText = el.getAttribute("data-acc-level-text");
       if (levelText) {
         return `${this.translate(text)}: ${this.translate(levelText)}`;
+      }
+      // A tile's visible name followed by its level ("Font Size 125%").
+      const suffix = el.getAttribute("data-acc-suffix");
+      if (suffix) {
+        return `${this.translate(text)} ${suffix}`;
       }
       return this.translate(text);
     },
@@ -11130,10 +11294,9 @@ class AccessibleWebWidget {
     this.targetSelectors = TARGET_SELECTORS;
 
     this.visualFilters = {
-      'dark-contrast': {
-        styles: { 'filter': 'contrast(150%) brightness(0.8)' },
-        selector: PAGE_CONTENT_SELECTOR
-      },
+      // A real dark page (black background, light text), written as rules
+      // rather than a filter; see buildDarkContrastCss().
+      'dark-contrast': { theme: 'dark' },
       'light-contrast': {
         styles: { 'filter': 'contrast(125%) brightness(1.2)' },
         selector: PAGE_CONTENT_SELECTOR
@@ -11275,6 +11438,14 @@ class AccessibleWebWidget {
       { key: 'slow', rate: 0.8 },
       { key: 'fast', rate: 1.3 }
     ];
+    // Line Height levels, as the line-height persisted in the line-spacing
+    // state (legacy true = the first level). Headings get three quarters
+    // of it, so large type does not fly apart.
+    this.lineSpacingLevels = [2, 2.5, 3];
+    // Letter Spacing levels, persisted as 1 to 3 in the letter-spacing
+    // state (legacy true = 1). Each step adds 0.12em between letters and
+    // 0.16em between words, the WCAG 1.4.12 text spacing amounts.
+    this.letterSpacingLevels = [1, 2, 3];
     this.contrastFilterValues = ['light-contrast', 'dark-contrast'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation', 'monochrome'];
 
@@ -11289,8 +11460,20 @@ class AccessibleWebWidget {
 
     this.contentOptions = [
       { label: 'Font Weight', key: 'bold-text', icon: this.widgetIcons.boldText },
-      { label: 'Line Height', key: 'line-spacing', icon: this.widgetIcons.lineSpacing },
-      { label: 'Letter Spacing', key: 'letter-spacing', icon: this.widgetIcons.letterSpacing },
+      {
+        label: 'Line Height',
+        key: 'line-spacing',
+        icon: this.widgetIcons.lineSpacing,
+        multiLevel: true,
+        levels: this.lineSpacingLevels.length
+      },
+      {
+        label: 'Letter Spacing',
+        key: 'letter-spacing',
+        icon: this.widgetIcons.letterSpacing,
+        multiLevel: true,
+        levels: this.letterSpacingLevels.length
+      },
       { label: 'Hide Images', key: 'hide-images', icon: this.widgetIcons.hideImages },
       {
         label: 'Readable Font',
@@ -11330,6 +11513,16 @@ class AccessibleWebWidget {
         levels: this.textScaleLevels.length,
         currentIndex: -1,
         values: this.textScaleLevels
+      },
+      'line-spacing': {
+        levels: this.lineSpacingLevels.length,
+        currentIndex: -1,
+        values: this.lineSpacingLevels
+      },
+      'letter-spacing': {
+        levels: this.letterSpacingLevels.length,
+        currentIndex: -1,
+        values: this.letterSpacingLevels
       },
       'text-to-speech': {
         levels: this.ttsSpeedChoices.length,
