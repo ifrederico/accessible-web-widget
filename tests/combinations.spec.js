@@ -60,7 +60,7 @@ test('Letter Spacing, Font Weight and Readable Font leave the menu and Page Stru
 
   for (let step = 0; step < 3; step++) await tile(page, 'letter-spacing').click();
   await tile(page, 'bold-text').click();
-  await tile(page, 'readable-text').click();
+  await tile(page, 'dyslexia-font').click();
   await expect(page.locator('html')).toHaveClass(/acc-letter-spacing/);
   await expect(page.locator('html')).toHaveClass(/acc-readable-text/);
 

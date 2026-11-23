@@ -224,15 +224,28 @@ export const visualFilterMethods = {
     },
 
   getReadableFontDisplay(index) {
-      const choices = this.readableFontChoices || [];
-      const choice = index >= 0 ? choices[index] : null;
+      const fontKey = index >= 0 ? (this.readableFontTileKeys || [])[index] : null;
+      const choice = fontKey ? (this.readableFontChoices || []).find((entry) => entry.key === fontKey) : null;
       const control = 'Readable Font';
       return {
         key: choice ? choice.key : null,
         control,
         label: choice ? choice.label : control,
-        icon: this.widgetIcons.dyslexiaFont
+        icon: this.widgetIcons.readableFont
       };
+    },
+
+  // The Dyslexia Font tile: on when that is the reading font in use. It
+  // shares the readable-text state with the Readable Font tile, so
+  // switching one font on switches the other tile's font off.
+  toggleDyslexiaFont(menu, button) {
+      const current = this.resolveReadableFontChoice(this.retrieveState('readable-text'));
+      const enable = !(current && current.key === 'dyslexic');
+      const value = enable ? 'dyslexic' : false;
+      this.updateState({ 'readable-text': value });
+      this.enableReadableText(value);
+      this.setReadableFontUI(menu, value || null);
+      if (button) this.announceFeatureState(button.getAttribute('aria-label'), enable);
     },
 
   setReadableFontUI(menu, activeKey = null) {
@@ -241,6 +254,12 @@ export const visualFilterMethods = {
       if (!feature) return;
       const index = activeKey ? feature.values.indexOf(activeKey) : -1;
       feature.currentIndex = index;
+      const dyslexiaButton = menu.querySelector('.acc-btn[data-key="dyslexia-font"]');
+      if (dyslexiaButton) {
+        const isDyslexic = activeKey === 'dyslexic';
+        dyslexiaButton.classList.toggle('acc-selected', isDyslexic);
+        dyslexiaButton.setAttribute('aria-pressed', isDyslexic ? 'true' : 'false');
+      }
       const button = menu.querySelector('.acc-btn[data-key="readable-text"]');
       if (!button) return;
       this.applyModeToggleButtonDisplay(button, this.getReadableFontDisplay(index), 'data-readable-font-mode');

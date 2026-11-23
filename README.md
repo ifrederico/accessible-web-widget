@@ -50,7 +50,7 @@ Or self-host — just download `dist/accessible-web-widget.min.js` and serve it 
 ## What you get
 
 - **Profiles** — One-tap presets: Seizure Safe, Vision Impaired, ADHD Friendly, Dyslexia Friendly
-- **Text** — Font size, line height and letter spacing (three steps each), bold, readable font
+- **Text** — Font size, line height and letter spacing (three steps each), bold, a dyslexia font with a tile of its own, and two more readable fonts
 - **Color** — Contrast (smart, which recolors only hard-to-read text; dark; light), invert, saturation (low/high/monochrome)
 - **Reading** — readable fonts (OpenDyslexic, Atkinson Hyperlegible, Lexend), reading guide, link/title highlighting, reader mode, text-to-speech, text magnifier, tooltips (the hidden name of an icon button or the description of a picture, shown on hover and on keyboard focus), page structure navigator (headings/landmarks/links)
 - **Interaction** — Large cursor, pause animations (including videos and animated GIFs), hide images, mute sounds
@@ -145,7 +145,7 @@ If you copy the script to your own server, copy the `fonts/` folder with it, or 
 
 ### Readable font sources
 
-The "Readable Font" control cycles through three fonts — OpenDyslexic, Atkinson Hyperlegible, and Lexend — loaded from accessibleweb.pages.dev by default (all three are SIL OFL licensed). To self-host any of them, point the widget at your own copies:
+The "Dyslexia Font" tile switches on OpenDyslexic, and the "Readable Font" tile steps through Atkinson Hyperlegible and Lexend. All three are loaded from accessibleweb.pages.dev by default and are SIL OFL licensed. To self-host any of them, point the widget at your own copies:
 
 ```html
 <script>

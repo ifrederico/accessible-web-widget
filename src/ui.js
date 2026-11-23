@@ -251,7 +251,7 @@ export const uiMethods = {
       const states = this.loadConfig().states || {};
       menu.querySelectorAll('.acc-btn[data-key]').forEach(btn => {
         const key = btn.dataset.key;
-        if (!key || this.isColorFilterKey(key) || this.multiLevelFeatures[key]) return;
+        if (!key || this.isColorFilterKey(key) || this.multiLevelFeatures[key] || key === 'dyslexia-font') return;
         const option = [...(this.accessTools || []), ...(this.contentOptions || [])].find(o => o.key === key);
         if (option?.isAction) return;
         const isActive = !!states[key];
@@ -617,7 +617,7 @@ export const uiMethods = {
         // the last group.
         const tileGroups = [
           { label: 'Speech', keys: ['text-to-speech'] },
-          { label: 'Text', keys: ['text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text'] },
+          { label: 'Text', keys: ['text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'dyslexia-font', 'readable-text'] },
           { label: 'Color & Contrast', keys: ['contrast-toggle', 'saturation-toggle', 'invert-colors'] },
           { label: 'Reading Aids', keys: ['highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'tooltips', 'page-structure'] },
           { label: 'Interaction', keys: ['hide-images', 'large-pointer', 'pause-motion', 'mute-sounds', 'annotations', 'accessibility-report'] }
@@ -949,6 +949,10 @@ export const uiMethods = {
             // One-tap profiles bundle several feature states.
             else if (key && key.startsWith('profile-')) {
               this.toggleAccessibilityProfile(key, menu);
+            }
+            // Dyslexia Font shares its saved state with Readable Font.
+            else if (key === 'dyslexia-font') {
+              this.toggleDyslexiaFont(menu, btn);
             }
             // Handle multi-level features (speech, font size, contrast).
             else if (this.multiLevelFeatures[key]) {

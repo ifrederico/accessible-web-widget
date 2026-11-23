@@ -163,31 +163,64 @@ test('mute sounds mutes existing and dynamically added media', async ({ page }) 
   await expect.poll(() => page.evaluate(() => document.getElementById('test-video').muted)).toBe(false);
 });
 
-test('readable font cycles through dyslexic, legible, and lexend', async ({ page }) => {
+test('Dyslexia Font has its own tile; Readable Font steps through the other two fonts', async ({ page }) => {
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
 
+  const dyslexia = page.locator('.acc-btn[data-key="dyslexia-font"]');
   const btn = page.locator('.acc-btn[data-key="readable-text"]');
-  await btn.click();
-  await expect(btn).toHaveAttribute('data-readable-font-mode', 'dyslexic');
+  await expect(dyslexia.locator('.acc-label')).toHaveText('Dyslexia Font');
+  await expect(dyslexia).toHaveAttribute('aria-pressed', 'false');
+
+  // Dyslexia Font: one click on, one click off.
+  await dyslexia.click();
+  await expect(dyslexia).toHaveAttribute('aria-pressed', 'true');
+  await expect(btn).toHaveAttribute('data-readable-font-mode', 'off');
+  await expect(page.locator('#acc-live-region')).toHaveText('Dyslexia Font On');
   let states = await readStates(page);
   expect(states['readable-text']).toBe('dyslexic');
   expect(await page.evaluate(() =>
     document.documentElement.classList.contains('acc-readable-text'))).toBe(true);
+  expect(await page.locator('main p').first().evaluate((element) => window.getComputedStyle(element).fontFamily))
+    .toContain('OpenDyslexic');
+  await expect(page.locator('.acc-reset-count')).toHaveText('1');
 
+  // One reading font at a time: picking another switches Dyslexia Font off.
   await btn.click();
   await expect(btn).toHaveAttribute('data-readable-font-mode', 'legible');
+  await expect(dyslexia).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('.acc-reset-count')).toHaveText('1');
   await btn.click();
   await expect(btn).toHaveAttribute('data-readable-font-mode', 'lexend');
   states = await readStates(page);
   expect(states['readable-text']).toBe('lexend');
 
-  await btn.click();
+  // And the other way round.
+  await dyslexia.click();
+  await expect(dyslexia).toHaveAttribute('aria-pressed', 'true');
   await expect(btn).toHaveAttribute('data-readable-font-mode', 'off');
+  await expect(btn).toHaveAttribute('aria-pressed', 'false');
+  await dyslexia.click();
+  await expect(dyslexia).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('#acc-live-region')).toHaveText('Dyslexia Font Off');
   states = await readStates(page);
   expect(states['readable-text']).toBe(false);
   expect(await page.evaluate(() =>
     document.documentElement.classList.contains('acc-readable-text'))).toBe(false);
+
+  // Readable Font alone: Legible Font, Lexend, off.
+  await btn.click();
+  await btn.click();
+  await btn.click();
+  await expect(btn).toHaveAttribute('data-readable-font-mode', 'off');
+  expect((await readStates(page))['readable-text']).toBe(false);
+
+  // The choice survives a reload, on the right tile.
+  await dyslexia.click();
+  await page.reload();
+  await page.locator('.acc-toggle-btn').click();
+  await expect(dyslexia).toHaveAttribute('aria-pressed', 'true');
+  await expect(btn).toHaveAttribute('aria-pressed', 'false');
 });
 
 test('legacy readable-text boolean state maps to the dyslexia font', async ({ page }) => {
@@ -198,7 +231,8 @@ test('legacy readable-text boolean state maps to the dyslexia font', async ({ pa
   await expect.poll(() => page.evaluate(() =>
     document.documentElement.classList.contains('acc-readable-text'))).toBe(true);
   await page.locator('.acc-toggle-btn').click();
-  await expect(page.locator('.acc-btn[data-key="readable-text"]')).toHaveAttribute('data-readable-font-mode', 'dyslexic');
+  await expect(page.locator('.acc-btn[data-key="dyslexia-font"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.acc-btn[data-key="readable-text"]')).toHaveAttribute('data-readable-font-mode', 'off');
 });
 
 test('public API toggles the panel alongside the default button', async ({ page }) => {
@@ -482,7 +516,7 @@ test('cycling buttons name both the control and the active level', async ({ page
   const controls = [
     { key: 'contrast-toggle', name: 'Contrast', levels: ['Smart Contrast', 'Dark Contrast', 'Light Contrast'] },
     { key: 'saturation-toggle', name: 'Saturation', levels: ['Low Saturation', 'High Saturation', 'Monochrome'] },
-    { key: 'readable-text', name: 'Readable Font', levels: ['Dyslexia Font', 'Legible Font', 'Lexend'] }
+    { key: 'readable-text', name: 'Readable Font', levels: ['Legible Font', 'Lexend'] }
   ];
   for (const { key, name, levels } of controls) {
     const button = page.locator(`.acc-btn[data-key="${key}"]`);
@@ -514,8 +548,8 @@ test('switching language re-translates both parts of a cycling button name', asy
   };
 
   await contrast.click();
-  // Dyslexia Font → Legible Font → Lexend.
-  for (let i = 0; i < 3; i++) {
+  // Legible Font → Lexend.
+  for (let i = 0; i < 2; i++) {
     await readableFont.click();
   }
   await expectButtonName(contrast, 'Contrast: Smart Contrast');
@@ -554,7 +588,9 @@ test('saved cycling levels are named in the configured language on load', async 
   await page.locator('.acc-toggle-btn').click();
 
   await expectButtonName(page.locator('.acc-btn[data-key="contrast-toggle"]'), 'Contraste: Contraste Oscuro');
-  await expectButtonName(page.locator('.acc-btn[data-key="readable-text"]'), 'Fuente Legible: Fuente para Dislexia');
+  await expectButtonName(page.locator('.acc-btn[data-key="dyslexia-font"]'), 'Fuente para Dislexia');
+  await expect(page.locator('.acc-btn[data-key="dyslexia-font"]')).toHaveAttribute('aria-pressed', 'true');
+  await expectButtonName(page.locator('.acc-btn[data-key="readable-text"]'), 'Fuente Legible');
   await expectButtonName(page.locator('.acc-btn[data-key="saturation-toggle"]'), 'Saturación');
 });
 

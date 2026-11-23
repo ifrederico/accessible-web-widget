@@ -874,7 +874,7 @@ test('menu renders one tile grid with the group names kept for screen readers', 
 
   const keys = await page.locator('.acc-options .acc-btn').evaluateAll((tiles) => tiles.map((tile) => tile.dataset.key));
   expect(keys).toEqual([
-    'text-to-speech', 'text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'readable-text',
+    'text-to-speech', 'text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'dyslexia-font', 'readable-text',
     'contrast-toggle', 'saturation-toggle', 'invert-colors',
     'highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'tooltips', 'page-structure',
     'hide-images', 'large-pointer', 'pause-motion', 'mute-sounds'

@@ -183,14 +183,18 @@ class AccessibleWebWidget {
     this.contrastModes = ['smart-contrast', 'dark-contrast', 'high-contrast-mode'];
     this.saturationFilterValues = ['low-saturation', 'high-saturation', 'monochrome'];
 
-    // Readable Font levels; the persisted readable-text state holds the
+    // The reading fonts; the persisted readable-text state holds the
     // active key ('dyslexic' | 'legible' | 'lexend'; legacy true maps to
-    // 'dyslexic'). Labels are translation keys except the Lexend brand name.
+    // 'dyslexic'). Labels are translation keys except the Lexend brand
+    // name. One font is on at a time, from two tiles: Dyslexia Font has a
+    // tile of its own, so nobody has to look for it, and the Readable
+    // Font tile steps through the others.
     this.readableFontChoices = [
       { key: 'dyslexic', label: 'Dyslexia Font', family: '"OpenDyslexic3", "Comic Sans MS", Arial, Helvetica, sans-serif' },
       { key: 'legible', label: 'Legible Font', family: '"Atkinson Hyperlegible", Verdana, Arial, Helvetica, sans-serif' },
       { key: 'lexend', label: 'Lexend', family: '"Lexend", "Segoe UI", Roboto, Arial, sans-serif' }
     ];
+    this.readableFontTileKeys = ['legible', 'lexend'];
 
     this.contentOptions = [
       { label: 'Font Weight', key: 'bold-text', icon: this.widgetIcons.boldText },
@@ -209,12 +213,14 @@ class AccessibleWebWidget {
         levels: this.letterSpacingLevels.length
       },
       { label: 'Hide Images', key: 'hide-images', icon: this.widgetIcons.hideImages },
+      // No saved state of its own: on means readable-text is 'dyslexic'.
+      { label: 'Dyslexia Font', key: 'dyslexia-font', icon: this.widgetIcons.dyslexiaFont },
       {
         label: 'Readable Font',
         key: 'readable-text',
-        icon: this.widgetIcons.dyslexiaFont,
+        icon: this.widgetIcons.readableFont,
         multiLevel: true,
-        levels: this.readableFontChoices.length
+        levels: this.readableFontTileKeys.length
       },
       { label: 'Highlight Links', key: 'highlight-links', icon: this.widgetIcons.highlightLinks },
       { label: 'Highlight Title', key: 'highlight-title', icon: this.widgetIcons.highlightTitle },
@@ -239,9 +245,9 @@ class AccessibleWebWidget {
         values: this.saturationFilterValues
       },
       'readable-text': {
-        levels: this.readableFontChoices.length,
+        levels: this.readableFontTileKeys.length,
         currentIndex: -1,
-        values: this.readableFontChoices.map((choice) => choice.key)
+        values: this.readableFontTileKeys
       },
       'text-scale': {
         levels: this.textScaleLevels.length,
