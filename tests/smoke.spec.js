@@ -1002,6 +1002,12 @@ test('Hide widget asks for how long, hides for the visit, and can be undone from
   await page.keyboard.press('ArrowDown');
   await expect(page.getByRole('radio', { name: 'One day' })).toBeChecked();
   await page.keyboard.press('ArrowUp');
+  // Whatever the choice, one line says how to get the button back early,
+  // and a screen reader hears it with the choices.
+  const note = page.locator('.acc-hide-note');
+  await expect(note).toBeVisible();
+  await expect(note).toHaveText("To bring it back sooner, clear this site's data in your browser.");
+  await expect(page.getByRole('radiogroup')).toHaveAccessibleDescription("To bring it back sooner, clear this site's data in your browser.");
 
   // Close backs out without hiding.
   await page.locator('.acc-hide-cancel').click();
@@ -1070,6 +1076,8 @@ test('hiding the widget always warns first and survives a new visit', async ({ p
   await page.locator('.acc-hide-confirm').click();
   await expect(warning).toBeVisible();
   await expect(warning).toContainText('clear this site');
+  // The warning says it all; the small line leaves with the choices.
+  await expect(page.locator('.acc-hide-note')).toBeHidden();
   await expect(page.locator('.acc-menu')).toBeVisible();
   expect(await page.locator('.acc-toggle-btn').evaluate((el) => el.hidden)).toBe(false);
 

@@ -658,12 +658,13 @@ export const uiMethods = {
                   ${this.widgetIcons.hideWidget}
                   <span class="acc-label">Hide widget</span>
                 </div>
-                <div class="acc-hide-choices" role="radiogroup" aria-label="Hide widget">
+                <div class="acc-hide-choices" role="radiogroup" aria-label="Hide widget" aria-describedby="acc-hide-note">
                   ${[['visit', 'This visit'], ['day', 'One day'], ['week', 'One week'], ['always', 'Always']].map(([value, label], index) => `<button type="button" class="acc-hide-choice" role="radio" aria-checked="${index === 0}" tabindex="${index === 0 ? 0 : -1}" data-hide-for="${value}">
                     <span class="acc-hide-radio" aria-hidden="true"></span>
                     <span class="acc-label">${label}</span>
                   </button>`).join('')}
                 </div>
+                <p id="acc-hide-note" class="acc-hide-note acc-label">To bring it back sooner, clear this site's data in your browser.</p>
                 <p class="acc-hide-warning acc-label" hidden>The widget stays hidden until you clear this site's data in your browser.</p>
                 <div class="acc-hide-buttons">
                   <button type="button" class="acc-hide-cancel"><span class="acc-label">Close</span></button>

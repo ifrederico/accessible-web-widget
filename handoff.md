@@ -93,6 +93,8 @@ Every tile was tried alone, then every pair in both orders, every three, random 
 
 - **The Highlight Title tile is gone** (owner's call, 2026-11-23: not needed). Its code, icon and its word in the 54 languages went with it. A saved `highlight-title` from an older version is ignored and cleared by Reset. Highlight Links stays.
 
+- **The Hide step says how to get the button back, for every choice.** One line under the four choices: "To bring it back sooner, clear this site's data in your browser." It is always visible and adds no click. "Always" keeps its own warning and second click. The line is a new sentence, **machine translated in 53 languages and not checked by native speakers**.
+
 ## Other changes since the redesign
 
 - Tiles are square and the panel is 456px wide, the narrowest that keeps every English label on one line. Phones show two tiles per row.
