@@ -123,6 +123,16 @@ export const coreFeatureMethods = {
       if (Number.isNaN(computedSize) || computedSize <= 0) {
         return;
       }
+      // A size the page wrote on the element itself is put back when
+      // Font Size goes off.
+      const inlineSize = element.style.getPropertyValue('font-size');
+      if (inlineSize) {
+        if (!this.textScaleInlineSizes) this.textScaleInlineSizes = new WeakMap();
+        this.textScaleInlineSizes.set(element, {
+          value: inlineSize,
+          priority: element.style.getPropertyPriority('font-size')
+        });
+      }
       element.setAttribute(baseAttr, String(computedSize));
     },
 
@@ -152,11 +162,11 @@ export const coreFeatureMethods = {
       });
 
       scaledAncestors.forEach(({ node }) => {
-        node.style.fontSize = `${node.getAttribute('data-acc-baseSize')}px`;
+        node.style.setProperty('font-size', `${node.getAttribute('data-acc-baseSize')}px`, 'important');
       });
       unrecorded.forEach((element) => this.recordBaseSize(element));
       scaledAncestors.forEach(({ node, scaledSize }) => {
-        node.style.fontSize = scaledSize;
+        node.style.setProperty('font-size', scaledSize, 'important');
       });
     },
 
@@ -169,7 +179,25 @@ export const coreFeatureMethods = {
       if (Number.isNaN(baseSize) || baseSize <= 0) {
         return;
       }
-      element.style.fontSize = `${baseSize * multiplier}px`;
+      // Important, so a page rule (or Simplify Layout) that is important
+      // too cannot hold the text at its old size.
+      element.style.setProperty('font-size', `${baseSize * multiplier}px`, 'important');
+    },
+
+  // Take Font Size off every element and give back the size each had.
+  clearTextScale() {
+      document.querySelectorAll('[data-acc-baseSize]').forEach((element) => {
+        if (this.shouldSkipScaling(element)) return;
+        const previous = this.textScaleInlineSizes && this.textScaleInlineSizes.get(element);
+        // Removed first: writing a plain value over an important one
+        // leaves some browsers treating it as important still.
+        element.style.removeProperty('font-size');
+        if (previous) {
+          element.style.setProperty('font-size', previous.value, previous.priority);
+          this.textScaleInlineSizes.delete(element);
+        }
+        element.removeAttribute('data-acc-baseSize');
+      });
     },
 
   ensureTextScaleObserver() {
@@ -209,6 +237,11 @@ export const coreFeatureMethods = {
         const isDefaultScale = Math.abs(resolvedMultiply - 1) < 0.001;
         this.currentTextScaleMultiplier = resolvedMultiply;
         if (!isDefaultScale) {
+          // Simplify Layout gives the text other sizes. Sizes measured
+          // under the other layout are stale, so measure again.
+          const layout = document.body.classList.contains('acc-simple-layout-enabled') ? 'simple' : 'page';
+          if (this.textScaleLayout && this.textScaleLayout !== layout) this.clearTextScale();
+          this.textScaleLayout = layout;
           this.ensureTextScaleObserver();
           const elements = document.querySelectorAll(this.textScaleSelectors);
           const directParents = this.collectDirectTextParents(document.body);
@@ -217,12 +250,8 @@ export const coreFeatureMethods = {
           allTargets.forEach(el => this.applyScaleToElement(el, resolvedMultiply));
         } else {
           this.disconnectTextScaleObserver();
-          const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
-          scaledElements.forEach(el => {
-            if (this.shouldSkipScaling(el)) return;
-            el.style.fontSize = '';
-            el.removeAttribute('data-acc-baseSize');
-          });
+          this.textScaleLayout = null;
+          this.clearTextScale();
         }
       } catch (e) {
         console.warn('Error scaling text:', e);
@@ -266,7 +295,10 @@ export const coreFeatureMethods = {
         ':not(.icon)',
         ':not(.icons)',
         ':not([class*="icon-"])',
-        ':not([data-icon])'
+        ':not([data-icon])',
+        // The widget's own dialogs keep their own type.
+        ':not(.acc-report-panel)',
+        ':not(.acc-report-panel *)'
       ].join('');
       const config = {
         id: "bold-text",
@@ -274,9 +306,6 @@ export const coreFeatureMethods = {
         childrenSelector: [contentSelector],
         styles: { 'font-weight': '700' },
         css: `
-          .acc-container, .acc-container *, .acc-menu, .acc-menu * {
-            font-weight: inherit !important;
-          }
           input::placeholder, textarea::placeholder {
             font-weight: 700 !important;
           }
@@ -311,10 +340,12 @@ export const coreFeatureMethods = {
       const level = this.resolveSpacingLevel(this.letterSpacingLevels, value);
       const X = ':not(.material-icons):not(.acc-container):not(.acc-container *)';
       const round = (number) => Math.round(number * 100) / 100;
+      // ":root" makes these rules outrank Simplify Layout's own spacing,
+      // whichever of the two was switched on first.
       const config = {
         id: "letter-spacing",
         css: level ? `
-          html.acc-letter-spacing, html.acc-letter-spacing *${X} {
+          html.acc-letter-spacing:root, html.acc-letter-spacing:root *${X} {
             letter-spacing: ${round(0.12 * level)}em !important;
             word-spacing: ${round(0.16 * level)}em !important;
           }
@@ -331,11 +362,11 @@ export const coreFeatureMethods = {
       const config = {
         id: "line-spacing",
         css: level ? `
-          html.acc-line-spacing, html.acc-line-spacing *${X} {
+          html.acc-line-spacing:root, html.acc-line-spacing:root *${X} {
             line-height: ${level} !important;
           }
-          html.acc-line-spacing :where(${headings})${X},
-          html.acc-line-spacing :where(${headings})${X} * {
+          html.acc-line-spacing:root :where(${headings})${X},
+          html.acc-line-spacing:root :where(${headings})${X} * {
             line-height: ${round(level * 0.75)} !important;
           }
         ` : ''
@@ -470,7 +501,10 @@ export const coreFeatureMethods = {
         ':not(.icon)',
         ':not(.icons)',
         ':not([class*="icon-"])',
-        ':not([data-icon])'
+        ':not([data-icon])',
+        // The widget's own dialogs keep their own type.
+        ':not(.acc-report-panel)',
+        ':not(.acc-report-panel *)'
       ].join('');
       const config = {
         id: "readable-text",
@@ -480,9 +514,6 @@ export const coreFeatureMethods = {
           'font-family': fontFamily
         },
         css: `
-          .acc-container, .acc-container *, .acc-menu, .acc-menu * {
-            font-family: inherit !important;
-          }
           input::placeholder, textarea::placeholder {
             font-family: ${fontFamily || 'inherit'} !important;
           }
@@ -703,7 +734,7 @@ export const coreFeatureMethods = {
   enableReadingAid(enable = false) {
     try {
       let container = this.findElement('.acc-rg-container');
-      const guideHeight = 100; // Height of the clear reading window
+      const guideHeight = 120; // Height of the clear reading window
 
       // Always clean up existing listeners first to prevent duplicates
       this.detachReadingGuideListeners();
@@ -740,25 +771,43 @@ export const coreFeatureMethods = {
         rgBottom.style.display = 'block';
         this.readingAidVisible = true;
 
-        // Taps and moves inside the widget's own UI leave the guide where
-        // the visitor put it on the page.
-        const isWidgetEvent = (event) => (
-          event.target instanceof Element && !!event.target.closest('.acc-container')
-        );
-        // Mouse and pen drag the window continuously. A touch places it
-        // where the finger lands, then the page scrolls beneath it.
-        const onPointerMove = this.throttle((event) => {
+        // Taps and moves on the widget's own UI leave the guide where the
+        // visitor put it on the page. While the menu is open a clear
+        // overlay covers the page; over that the pointer is still on the
+        // page, so only the menu, the button and the dialogs count.
+        const isWidgetEvent = (event) => {
+          const path = typeof event.composedPath === 'function' ? event.composedPath() : [event.target];
+          return path.some((node) => node instanceof Element
+            && node.matches('.acc-menu, .acc-toggle-btn, .acc-report-panel, .acc-annotation-popup'));
+        };
+        // Mouse and pen drag the window continuously, once per frame and
+        // always to the latest position, so it never stops short of the
+        // pointer. A touch places it where the finger lands, then the
+        // page scrolls beneath it.
+        let pendingY = null;
+        let frame = 0;
+        const onPointerMove = (event) => {
           if (event.pointerType === 'touch' || isWidgetEvent(event)) return;
-          placeGuide(event.clientY);
-        }, 16);
+          pendingY = event.clientY;
+          if (frame) return;
+          frame = requestAnimationFrame(() => {
+            frame = 0;
+            if (pendingY !== null && this.readingAidVisible) placeGuide(pendingY);
+          });
+        };
         const onPointerDown = (event) => {
           if (isWidgetEvent(event)) return;
+          pendingY = null;
           placeGuide(event.clientY);
+        };
+        const cancel = () => {
+          if (frame) cancelAnimationFrame(frame);
+          frame = 0;
         };
 
         document.addEventListener('pointermove', onPointerMove, { passive: true });
         document.addEventListener('pointerdown', onPointerDown, { passive: true });
-        this.readingGuideListeners = { onPointerMove, onPointerDown };
+        this.readingGuideListeners = { onPointerMove, onPointerDown, cancel };
       } else {
         this.readingAidVisible = false;
         if (container) {
@@ -775,6 +824,7 @@ export const coreFeatureMethods = {
     if (!listeners) return;
     document.removeEventListener('pointermove', listeners.onPointerMove);
     document.removeEventListener('pointerdown', listeners.onPointerDown);
+    if (typeof listeners.cancel === 'function') listeners.cancel();
     this.readingGuideListeners = null;
   },
 
@@ -1195,7 +1245,6 @@ export const coreFeatureMethods = {
 
   applyEnhancements() {
       const { states } = this.loadConfig();
-      this.scaleText(this.resolveTextScale(states && states['text-scale']));
       this.concealImages(states && states['hide-images']);
       this.highlightTitles(states && states['highlight-title']);
       this.highlightLinks(states && states['highlight-links']);
@@ -1209,6 +1258,8 @@ export const coreFeatureMethods = {
       this.enableAnnotations(states && states['annotations']);
       this.enableTextToSpeech(states && states['text-to-speech']);
       this.enableSimpleLayout(states && states['simple-layout']);
+      // After Simplify Layout, which changes the sizes Font Size starts from.
+      this.scaleText(this.resolveTextScale(states && states['text-scale']));
       this.enableMuteSounds(states && states['mute-sounds']);
       this.enableTextMagnifier(states && states['text-magnifier']);
       this.enableTooltips(states && states['tooltips']);
@@ -1219,6 +1270,7 @@ export const coreFeatureMethods = {
   resetEnhancements() {
       this.saveConfig({ states: {}, systemDefaults: {}, profileSnapshots: {} });
       this.activeColorFilterKey = null;
+      this.unfilteredBodyBackground = null;
       Object.keys(this.multiLevelFeatures).forEach(key => {
         this.multiLevelFeatures[key].currentIndex = -1;
       });
@@ -1277,12 +1329,8 @@ export const coreFeatureMethods = {
       document.body?.classList.remove('acc-high-contrast-mode');
       this.disconnectTextScaleObserver();
       this.currentTextScaleMultiplier = 1;
-      const scaledElements = document.querySelectorAll('[data-acc-baseSize]');
-      scaledElements.forEach(el => {
-        if (!(el instanceof Element) || this.shouldSkipScaling(el)) return;
-        el.style.fontSize = '';
-        el.removeAttribute('data-acc-baseSize');
-      });
+      this.textScaleLayout = null;
+      this.clearTextScale();
       this.refreshSmartContrast();
       this.enableReadingAid(false);
       this.disableAnnotations();

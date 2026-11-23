@@ -12,14 +12,19 @@ export const pageToolMethods = {
     if (!profile) return;
 
     const enable = !this.retrieveState(profileKey);
+    const has = (object, key) => Object.prototype.hasOwnProperty.call(object || {}, key);
+    // Where a snapshot keeps the color filter that was on before.
+    const FILTER_SLOT = 'color-filter';
 
     // Keys also bundled by another currently-active profile must survive
     // this profile turning off, so sibling profiles stay truthful.
+    const otherProfiles = (this.accessibilityProfiles || [])
+      .filter((other) => other.key !== profileKey && this.retrieveState(other.key));
     const keysHeldByOtherProfiles = new Set();
-    (this.accessibilityProfiles || []).forEach((other) => {
-      if (other.key === profileKey || !this.retrieveState(other.key)) return;
+    otherProfiles.forEach((other) => {
       Object.keys(other.states).forEach((key) => keysHeldByOtherProfiles.add(key));
     });
+    const savedSnapshots = this.widgetConfig.profileSnapshots || {};
 
     if (enable) {
       // Snapshot explicit user choices for the bundled keys so disabling
@@ -34,35 +39,49 @@ export const pageToolMethods = {
           colorFilterKey = key;
           return;
         }
-        if (this.hasExplicitStatePreference(key)) {
+        if (keysHeldByOtherProfiles.has(key)) {
+          // Another profile switched this on already. What the visitor
+          // had before is in that profile's snapshot, not in the state
+          // as it stands now.
+          const holder = otherProfiles.find((other) => has(other.states, key) && has(savedSnapshots[other.key], key));
+          if (holder) snapshot[key] = savedSnapshots[holder.key][key];
+        } else if (this.hasExplicitStatePreference(key)) {
           snapshot[key] = this.retrieveState(key);
         }
+        // A level the visitor already chose stays; a profile only
+        // switches on what is off.
+        if (value === true && this.retrieveState(key)) return;
         payload[key] = value;
       });
+      const filterBefore = this.getActiveColorFilterKey(this.widgetConfig.states);
+      if (colorFilterKey) {
+        snapshot[FILTER_SLOT] = filterBefore || null;
+      }
       this.saveConfig({
-        profileSnapshots: { ...(this.widgetConfig.profileSnapshots || {}), [profileKey]: snapshot }
+        profileSnapshots: { ...savedSnapshots, [profileKey]: snapshot }
       });
       this.updateState(payload);
-      if (colorFilterKey) {
+      // Monochrome already has less color than Low Saturation; it stays.
+      if (colorFilterKey && !(colorFilterKey === 'low-saturation' && filterBefore === 'monochrome')) {
         this.updateColorFilterState(colorFilterKey);
       }
     } else {
-      const snapshots = { ...(this.widgetConfig.profileSnapshots || {}) };
+      const snapshots = { ...savedSnapshots };
       const snapshot = snapshots[profileKey] || {};
       delete snapshots[profileKey];
 
       const restorePayload = { [profileKey]: false };
       const clearKeys = [];
-      let clearColorFilter = false;
+      let restoreColorFilter = false;
       Object.keys(profile.states).forEach((key) => {
         if (keysHeldByOtherProfiles.has(key)) return;
         if (this.isColorFilterKey(key)) {
-          // Clear only the filter this profile activated; a filter the
-          // user switched to manually stays untouched.
-          if (this.retrieveState(key)) clearColorFilter = true;
+          // Only while the filter this profile switched on is still the
+          // one in use; a filter the visitor has picked since stays.
+          if (this.retrieveState(key)) restoreColorFilter = true;
           return;
         }
-        if (Object.prototype.hasOwnProperty.call(snapshot, key)) {
+        if (has(snapshot, key)) {
           restorePayload[key] = snapshot[key];
         } else {
           clearKeys.push(key);
@@ -74,8 +93,9 @@ export const pageToolMethods = {
         this.clearStates(clearKeys);
       }
       this.saveConfig({ profileSnapshots: snapshots });
-      if (clearColorFilter) {
-        this.updateColorFilterState(null);
+      if (restoreColorFilter) {
+        // Back to the filter that was on before the profile, if any.
+        this.updateColorFilterState(snapshot[FILTER_SLOT] || null);
       }
       // Cleared keys may be governed by OS media queries; re-establish
       // those defaults immediately instead of waiting for the next load.
@@ -520,6 +540,8 @@ export const pageToolMethods = {
         : item.label;
       button.addEventListener('click', () => {
         this.closeReportPanel(this.structurePanel);
+        // Going to a place on the page: the menu steps aside as well.
+        if (this.activeMenuContainer) this.closeMenu(this.activeMenuContainer);
         this.focusStructureTarget(item.element);
       });
       entry.appendChild(button);

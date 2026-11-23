@@ -21,6 +21,7 @@
   font-size: 16px;
   height: auto;
   letter-spacing: 0.015em;
+  word-spacing: normal;
   color: var(--acc-text-color);
   --acc-content-inline-padding: 20px;
   /* Theme headerHeight, capped on small screens by the media queries. */
@@ -69,6 +70,9 @@
   margin: 0;
   line-height: 1.5 !important;
   letter-spacing: normal !important;
+  /* Letter Spacing widens the gaps between words on the page; the menu
+     keeps its own. */
+  word-spacing: normal !important;
 }
 
 /* The menu's own font, once it is registered (see ensureMenuFontLoaded).

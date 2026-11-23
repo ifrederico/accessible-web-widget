@@ -71,6 +71,23 @@ Rules the build must follow:
 - **Tried on real sites** (a Wikipedia article, the Shopify Dawn demo shop, a payments company home page, a news front page) by loading the local build into them: Smart, Dark and Light Contrast ran without errors, and the scan took 20 to 70 ms. Still not tried on the owner's own shop, in Safari or Firefox, or with a screen reader.
 - **Not done, waiting on a decision:** a keyboard shortcut to open the menu (the obvious keys are taken by browsers), and more profiles.
 
+## Options used together (2026-11-22)
+
+Every tile was tried alone, then every pair in both orders, every three, random larger sets, and the four profiles on top of each tile, with reloads and Reset in between: about 53,000 checks on a test page. What that found is fixed and has tests in `tests/combinations.spec.js`.
+
+- **The menu and the Page Structure window keep their own type.** Letter Spacing used to widen the word gaps in the menu; Font Weight and Readable Font used to restyle the Page Structure window. The Text Magnifier banner and the Tooltips bubble do follow the reader's font and weight, on purpose: they show page text.
+- **Dark Contrast and Simplify Layout** now give a black page with white text whichever is switched on first. Before, Dark then Simplify gave dark grey on black.
+- **Font Size works under Simplify Layout.** Its sizes are now written as important, and are measured again when Simplify Layout goes on or off. A size the page wrote on an element itself is put back when Font Size goes off.
+- **Line Height and Letter Spacing win over Simplify Layout's own spacing**, also after a reload (before, it depended on which was switched on first).
+- **Smart Contrast measures in the page's own colors under Invert Colors and Saturation**, and looks again when Font Size changes (large text needs less contrast than small text).
+- **Dark Contrast, Light Contrast and Simplify Layout fix colors the page forces.** A color written on an element as `!important` beats any rule, so under these three the Smart Contrast scan runs as a net and fixes what is left unreadable, up to a ratio of 7.
+- **A color filter follows the body color.** With Invert Colors on, switching Dark Contrast on turns the whole page light (a black page, inverted), with no dark frame left around it.
+- **Profiles that share an option** (Seizure Safe and ADHD Friendly both stop animations) give it back when both are off. Before, Stop Animations stayed on.
+- **A profile gives back the color filter that was on before it**, keeps Monochrome if that was already chosen, and keeps a Line Height or Letter Spacing level that is higher than its own.
+- **Reading Guide:** the window is 120px tall (was 100px), has a line along its top and bottom edge, follows the mouse while the menu is open (over the page, not over the menu), and no longer stops short of where the mouse stops.
+- **Page Structure opens over the menu**, which stays open behind it. Escape or the close button comes back to the Page Structure tile; picking a heading or link closes both. The developer-only Accessibility Report still closes the menu first.
+- **Left as it is:** changing a tile that a profile switched on, then switching the profile off, puts that tile back to how it was before the profile.
+
 ## Other changes since the redesign
 
 - Tiles are square and the panel is 456px wide, the narrowest that keeps every English label on one line. Phones show two tiles per row.

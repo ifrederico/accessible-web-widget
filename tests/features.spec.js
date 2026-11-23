@@ -292,13 +292,14 @@ test('page structure panel lists headings and navigates to them', async ({ page 
   await page.locator('.acc-btn[data-key="page-structure"]').click();
   const panel = page.locator('.acc-structure-panel');
   await expect(panel).toBeVisible();
-  // The menu closes when a panel opens so their focus traps never compete.
-  await expect(page.locator('.acc-menu')).toBeHidden();
+  // The menu stays open behind the window (see combinations.spec.js).
+  await expect(page.locator('.acc-menu')).toBeVisible();
   const items = panel.locator('.acc-structure-item');
   expect(await items.count()).toBeGreaterThan(0);
 
   await items.first().click();
   await expect(panel).toBeHidden();
+  await expect(page.locator('.acc-menu')).toBeHidden();
 });
 
 test('page structure names landmarks in plain words, with their own names', async ({ page }) => {

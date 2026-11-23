@@ -16,6 +16,7 @@
   font-size: 15px;
   line-height: 1.5;
   letter-spacing: normal;
+  word-spacing: normal;
   color: var(--acc-text-color, #222222);
   --acc-report-muted: #5b6472;
   --acc-report-sheet: var(--acc-bg-color, #f3f5f8);

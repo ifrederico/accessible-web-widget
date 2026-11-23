@@ -11,9 +11,18 @@
 }
 .acc-rg-top {
   top: 0;
+  /* A line along each edge of the reading window shows the eye where it
+     starts and ends, also on a page too dark for the shade to show. The
+     white hairline beside it keeps the line visible on dark pages. */
+  box-sizing: border-box;
+  border-bottom: 3px solid var(--acc-primary-color, #0072e4);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 .acc-rg-bottom {
   bottom: 0;
+  box-sizing: border-box;
+  border-top: 3px solid var(--acc-primary-color, #0072e4);
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.9);
 }
 /* Softer overlay when high contrast is active */
 body.acc-high-contrast-mode .acc-rg {

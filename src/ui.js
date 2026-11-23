@@ -406,6 +406,8 @@ export const uiMethods = {
   
       this.menuKeyListener = (event) => {
         if (!this.activeMenuContainer) return;
+        // A dialog open over the menu owns the keyboard until it closes.
+        if (document.querySelector('.acc-report-panel.acc-report-visible')) return;
         if (event.key === 'Escape' || event.key === 'Esc') {
           event.preventDefault();
           // Escape peels back one layer: an open language list closes
@@ -933,16 +935,15 @@ export const uiMethods = {
           if (btn) {
             const key = btn.dataset.key;
             // Handle action buttons (open a panel; no persistent state).
-            // Close the menu first: the panel is its own modal surface, and
-            // leaving the menu open would leave two competing document-level
-            // focus traps active at once. Closing also parks focus on the
+            // The report closes the menu first and parks focus on the
             // toggle, which the panel captures as its restore target.
             if (key === 'accessibility-report') {
               this.closeMenu(menuContainer);
               this.runAccessibilityReport();
             }
+            // Page Structure opens over the menu, which stays open
+            // behind it; closing the dialog comes back to this tile.
             else if (key === 'page-structure') {
-              this.closeMenu(menuContainer);
               this.openPageStructurePanel();
             }
             // One-tap profiles bundle several feature states.

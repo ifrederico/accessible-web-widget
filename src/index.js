@@ -293,6 +293,12 @@ class AccessibleWebWidget {
     this.textScaleSelectors = 'h1,h2,h3,h4,h5,h6,p,a,dl,dt,li,ol,th,td,span,blockquote,.acc-text';
     this.textScaleObserver = null;
     this.currentTextScaleMultiplier = 1;
+    // Which layout the Font Size starting sizes were measured under, and
+    // the sizes the page itself wrote on elements, to put back later.
+    this.textScaleLayout = null;
+    this.textScaleInlineSizes = null;
+    // The body's own color while a color filter overrides it.
+    this.unfilteredBodyBackground = null;
 
     // Global settings and state
     this.widgetConfig = {};
@@ -313,7 +319,7 @@ class AccessibleWebWidget {
     // Smart Contrast state: each recolored element with its own inline
     // color from before, so it can be put back.
     this.smartContrastFixed = new Map();
-    this.smartContrastActive = false;
+    this.smartContrastActive = null;
     this.smartContrastObserver = null;
     this.smartContrastTimer = null;
     this.contrastLoadHandler = null;

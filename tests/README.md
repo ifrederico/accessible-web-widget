@@ -26,3 +26,6 @@ Playwright smoke coverage for critical behavior.
   the old slider
 - Text to Speech tile: normal/slow/fast/off, speed persistence, legacy `true`
 - Reset: count badge and disabled state when nothing is on
+- options used together (`combinations.spec.js`): tiles that touch the same
+  text in either order and after a reload, profiles on top of tiles, and page
+  options that must not change the widget's own menu and dialogs

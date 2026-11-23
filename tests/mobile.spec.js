@@ -128,7 +128,7 @@ test('reading guide shows right away and moves to a tap', async ({ page }) => {
   await page.touchscreen.tap(Math.round(title.x + 20), tapY);
   await expect
     .poll(() => shade.evaluate((el) => Math.round(el.getBoundingClientRect().height)))
-    .toBe(tapY - 50);
+    .toBe(tapY - 60);
 });
 
 test('text magnifier responds to a tap and stays within the screen', async ({ page }) => {

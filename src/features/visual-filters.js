@@ -157,6 +157,8 @@ export const visualFilterMethods = {
         this.removeStyle('acc-dark-contrast');
       }
       document.documentElement.classList.toggle('acc-dark-contrast', isDark);
+      // The body color has just changed; a color filter must match it.
+      if (this.activeColorFilterKey || this.hasStyle('acc-filter-style')) this.applyVisualFilters();
       this.refreshSmartContrast({ rescan: true });
       // Pictures and styles that arrive with the rest of the page change
       // what lies over what; look once more when the page has loaded.
@@ -433,13 +435,16 @@ export const visualFilterMethods = {
   buildDarkContrastCss() {
       const X = ':not(.acc-container):not(.acc-container *):not(.acc-rg-container):not(.acc-rg-container *)';
       const shapes = 'path, circle, ellipse, rect, polygon, polyline, line';
+      // Every rule starts from the class on <html>, which makes Dark
+      // Contrast outrank Simplify Layout's colors whichever came first.
+      const B = 'html.acc-dark-contrast body';
       return `
-        html, body {
+        html.acc-dark-contrast, ${B} {
           background: #000 !important;
           color: #fff !important;
         }
 
-        body *${X} {
+        ${B} *${X} {
           color: #fff !important;
           background-color: #000 !important;
           background-image: none !important;
@@ -450,8 +455,8 @@ export const visualFilterMethods = {
 
         /* Decorations drawn with ::before and ::after would stay light
            behind the white text. */
-        body *${X}::before,
-        body *${X}::after {
+        ${B} *${X}::before,
+        ${B} *${X}::after {
           color: #fff !important;
           background-color: transparent !important;
           background-image: none !important;
@@ -460,70 +465,70 @@ export const visualFilterMethods = {
         }
 
         /* Icons drawn as a mask take the text color (see markMaskIcons). */
-        body [data-acc-mask-icon~="self"]${X},
-        body [data-acc-mask-icon~="before"]${X}::before,
-        body [data-acc-mask-icon~="after"]${X}::after {
+        ${B} [data-acc-mask-icon~="self"]${X},
+        ${B} [data-acc-mask-icon~="before"]${X}::before,
+        ${B} [data-acc-mask-icon~="after"]${X}::after {
           background-color: currentColor !important;
         }
 
         /* Text laid over a picture: dim the picture behind it instead of
            covering it (see markMediaOverlays). */
-        body [data-acc-over-media]${X} {
+        ${B} [data-acc-over-media]${X} {
           background-color: rgba(0, 0, 0, 0.65) !important;
         }
 
-        body [data-acc-over-media] *${X} {
+        ${B} [data-acc-over-media] *${X} {
           background-color: transparent !important;
         }
 
         /* Links: yellow and underlined, with whatever they wrap. */
-        body a${X},
-        body a${X} * {
+        ${B} a${X},
+        ${B} a${X} * {
           color: #ff0 !important;
         }
 
-        body a${X} {
+        ${B} a${X} {
           text-decoration: underline !important;
         }
 
         /* Pictures keep their own colors. */
-        body :where(img, picture, video, canvas, iframe, svg)${X} {
+        ${B} :where(img, picture, video, canvas, iframe, svg)${X} {
           background-color: transparent !important;
         }
 
         /* Icons that draw in the default black take the text color. Icons
            that set their own fill or stroke are left alone. */
-        body svg${X} :where(${shapes}):not([fill]):not([stroke]):not([fill] *):not([stroke] *) {
+        ${B} svg${X} :where(${shapes}):not([fill]):not([stroke]):not([fill] *):not([stroke] *) {
           fill: currentColor !important;
         }
 
         /* A logo or icon in dark ink would vanish on black; a thin light
            edge keeps its shape readable. */
-        body svg${X},
-        body :where(header, nav, footer, [role="banner"], [role="navigation"], [role="contentinfo"]) img${X} {
+        ${B} svg${X},
+        ${B} :where(header, nav, footer, [role="banner"], [role="navigation"], [role="contentinfo"]) img${X} {
           filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) !important;
         }
 
         /* Inputs and buttons keep a visible edge. */
-        body :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select, button)${X} {
+        ${B} :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select, button)${X} {
           border: 2px solid #fff !important;
         }
 
-        body :where(input[type="checkbox"], input[type="radio"], input[type="range"])${X} {
+        ${B} :where(input[type="checkbox"], input[type="radio"], input[type="range"])${X} {
           accent-color: #ff0 !important;
         }
 
-        body ::placeholder {
+        ${B} ::placeholder {
           color: #ccc !important;
           opacity: 1 !important;
         }
 
-        body :focus-visible${X} {
+        ${B} :focus-visible${X} {
           outline: 3px solid #ff0 !important;
           outline-offset: 2px !important;
         }
 
-        body :where(table, th, td)${X} {
+        ${B} :where(table, th, td)${X} {
           border: 1px solid #fff !important;
         }
       `;
@@ -533,16 +538,13 @@ export const visualFilterMethods = {
       const { states } = this.loadConfig();
       const activeKey = this.getActiveColorFilterKey(states);
       this.activeColorFilterKey = activeKey;
-  
-      if (!activeKey) {
-        this.removeStyle('acc-filter-style');
-        return;
-      }
-      const filter = this.visualFilters[activeKey];
-      if (!filter) {
-        this.removeStyle('acc-filter-style');
-        return;
-      }
+      // Take the last filter off first, so the body color read below is
+      // the page's own and not one that was already filtered.
+      this.removeStyle('acc-filter-style');
+      this.unfilteredBodyBackground = null;
+
+      const filter = activeKey ? this.visualFilters[activeKey] : null;
+      if (!filter) return;
       const adjustedFilter = {
         ...filter,
         selector: filter.selector || 'body > *:not(.acc-container):not(.acc-rg-container):not(#acc-skip-link)'
@@ -550,10 +552,13 @@ export const visualFilterMethods = {
       let css = this.buildCSS(adjustedFilter);
 
       // Compute a filtered body background so the body itself matches
-      // the visual filter applied to its children.
+      // the visual filter applied to its children. ":root:root" lets it
+      // win over the body colors of Dark Contrast and Simplify Layout.
       const filteredBg = this.computeFilteredBodyColor(activeKey);
       if (filteredBg) {
-        css += `body{background-color:${filteredBg}!important;}`;
+        // Smart Contrast measures against the page's own color.
+        this.unfilteredBodyBackground = window.getComputedStyle(document.body).backgroundColor;
+        css += `:root:root body{background-color:${filteredBg}!important;}`;
       }
 
       this.injectStyle('acc-filter-style', css);
@@ -583,6 +588,9 @@ export const visualFilterMethods = {
         const multiplier = newIndex < feature.levels ? feature.values[newIndex] : 1;
         this.updateState({ 'text-scale': multiplier });
         this.scaleText(multiplier);
+        // Large text needs less contrast than small text, so what Smart
+        // Contrast fixed at the old size may no longer be right.
+        this.refreshSmartContrast({ rescan: true });
         this.setLevelTileUI(menu, featureKey, multiplier > 1 ? newIndex : -1);
         const fontSize = this.translate('Font Size');
         this.announce(multiplier > 1

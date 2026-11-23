@@ -11,6 +11,9 @@
 
 const NORMAL_TEXT_RATIO = 4.5;
 const LARGE_TEXT_RATIO = 3;
+// What the scan aims for when it runs as a net under Dark Contrast and
+// Light Contrast, which promise strong contrast (the WCAG AAA measure).
+const NET_TEXT_RATIO = 7;
 // Past this many text elements the page is scanned no further, so a huge
 // page cannot freeze the browser.
 const MAX_ELEMENTS = 6000;
@@ -146,7 +149,12 @@ export const smartContrastMethods = {
         continue;
       }
       const gradient = this.parseGradientColors(style.backgroundImage);
-      const color = this.parseCssColor(style.backgroundColor);
+      // Under Invert Colors or Saturation the body carries a filtered
+      // color; the text is filtered with it, so measure the page's own.
+      const ownColor = node === document.body && this.activeColorFilterKey && this.unfilteredBodyBackground
+        ? this.unfilteredBodyBackground
+        : style.backgroundColor;
+      const color = this.parseCssColor(ownColor);
       if (!gradient || !color) return null;
       if (gradient.length) layers.push(gradient);
       if (color.a > 0) layers.push([color]);
@@ -226,22 +234,38 @@ export const smartContrastMethods = {
   // page out once rather than once per element.
   applySmartContrast(root = document.body) {
     if (!this.smartContrastFixed) this.smartContrastFixed = new Map();
+    // Under Dark and Light Contrast and Simplify Layout nothing is left
+    // behind the text but the colors those set, so text that vanished
+    // is fixed too.
+    const net = this.smartContrastActive === 'net';
+    const simple = !!document.body && document.body.classList.contains('acc-simple-layout-enabled');
+    const floor = net || simple ? 0 : INVISIBLE_RATIO;
     const fixes = [];
-    this.collectSmartContrastElements(root).forEach((element) => {
-      if (this.smartContrastFixed.has(element)) return;
-      const style = window.getComputedStyle(element);
-      const text = this.parseCssColor(style.color);
-      if (!text || text.a === 0) return;
-      const backgrounds = this.getBackgroundColors(element);
-      if (!backgrounds) return;
-      const size = parseFloat(style.fontSize) || 16;
-      const bold = (parseInt(style.fontWeight, 10) || 400) >= 700;
-      const target = size >= 24 || (bold && size >= 18.66) ? LARGE_TEXT_RATIO : NORMAL_TEXT_RATIO;
-      const contrast = this.lowestContrast(text, backgrounds);
-      if (contrast >= target || contrast < INVISIBLE_RATIO) return;
-      const color = this.findReadableColorAcross(text, backgrounds, target);
-      if (color) fixes.push({ element, color });
-    });
+    // A color that is still fading from one value to another would be
+    // read part-way (a page that animates its colors, just after Dark
+    // Contrast went on). Hold every transition still while measuring.
+    this.injectStyle('acc-contrast-measure', '*, *::before, *::after { transition: none !important; }');
+    try {
+      this.collectSmartContrastElements(root).forEach((element) => {
+        if (this.smartContrastFixed.has(element)) return;
+        const style = window.getComputedStyle(element);
+        const text = this.parseCssColor(style.color);
+        if (!text || text.a === 0) return;
+        const backgrounds = this.getBackgroundColors(element);
+        if (!backgrounds) return;
+        const size = parseFloat(style.fontSize) || 16;
+        const bold = (parseInt(style.fontWeight, 10) || 400) >= 700;
+        let target = size >= 24 || (bold && size >= 18.66) ? LARGE_TEXT_RATIO : NORMAL_TEXT_RATIO;
+        // The net works for modes that promise strong contrast.
+        if (net) target = NET_TEXT_RATIO;
+        const contrast = this.lowestContrast(text, backgrounds);
+        if (contrast >= target || contrast < floor) return;
+        const color = this.findReadableColorAcross(text, backgrounds, target);
+        if (color) fixes.push({ element, color });
+      });
+    } finally {
+      this.removeStyle('acc-contrast-measure');
+    }
     fixes.forEach(({ element, color }) => {
       this.smartContrastFixed.set(element, {
         value: element.style.getPropertyValue('color'),
@@ -257,10 +281,11 @@ export const smartContrastMethods = {
   clearSmartContrast() {
     if (!this.smartContrastFixed) return;
     this.smartContrastFixed.forEach((previous, element) => {
+      // Removed first: writing a plain value over an important one leaves
+      // some browsers treating it as important still.
+      element.style.removeProperty('color');
       if (previous.value) {
         element.style.setProperty('color', previous.value, previous.priority);
-      } else {
-        element.style.removeProperty('color');
       }
       element.removeAttribute('data-acc-smart-contrast');
     });
@@ -301,13 +326,19 @@ export const smartContrastMethods = {
     this.smartContrastObserver.observe(document.body, { childList: true, subtree: true });
   },
 
-  // High Contrast and Dark Contrast set every color themselves, so Smart
-  // Contrast stands down while either is on and comes back after.
-  shouldRunSmartContrast() {
-    if (!this.retrieveState('smart-contrast')) return false;
-    if (document.documentElement.classList.contains('acc-dark-contrast')) return false;
-    if (document.body && document.body.classList.contains('acc-high-contrast-mode')) return false;
-    return true;
+  // How the scan should run, if at all. "smart" is Smart Contrast itself.
+  // Dark Contrast, Light Contrast and Simplify Layout set colors with
+  // rules, but a color the page wrote on an element as important beats
+  // any rule; under those the same scan runs as a "net" that catches what
+  // the rules could not.
+  getSmartContrastRun() {
+    if (document.documentElement.classList.contains('acc-dark-contrast')) return 'net';
+    if (document.body && document.body.classList.contains('acc-high-contrast-mode')) return 'net';
+    if (this.retrieveState('smart-contrast')) return 'smart';
+    // Simplify Layout sets its own text colors the same way. There the
+    // scan only mends what fails the usual measure.
+    if (document.body && document.body.classList.contains('acc-simple-layout-enabled')) return 'simple';
+    return null;
   },
 
   // Called whenever a setting changes. It rescans only when Smart
@@ -315,12 +346,12 @@ export const smartContrastMethods = {
   // the page's colors have just changed.
   refreshSmartContrast({ rescan = false } = {}) {
     try {
-      const shouldRun = this.shouldRunSmartContrast();
-      document.documentElement.classList.toggle('acc-smart-contrast', shouldRun);
-      if (shouldRun === !!this.smartContrastActive && !(rescan && shouldRun)) return;
-      this.smartContrastActive = shouldRun;
+      const run = this.getSmartContrastRun();
+      document.documentElement.classList.toggle('acc-smart-contrast', run === 'smart');
+      if (run === (this.smartContrastActive || null) && !(rescan && run)) return;
       this.clearSmartContrast();
-      if (shouldRun) {
+      this.smartContrastActive = run;
+      if (run) {
         this.applySmartContrast();
         this.startSmartContrastWatch();
       } else {
