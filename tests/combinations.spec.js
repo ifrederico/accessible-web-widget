@@ -109,12 +109,120 @@ test('Page Structure opens over the menu and closing it comes back to its tile',
   await page.keyboard.press('Escape');
   await expect(page.locator('.acc-menu')).toBeHidden();
 
-  // Going to a heading closes both, so the page is in view.
+  // Going to a heading with the mouse closes the window only: the menu
+  // stays and the page moves to the heading behind it.
   await openMenu(page);
   await structureTile.click();
-  await panel.locator('.acc-structure-item').first().click();
+  await panel.locator('.acc-structure-item').nth(1).click();
+  await expect(panel).toBeHidden();
+  await expect(page.locator('.acc-menu')).toBeVisible();
+  expect(await page.evaluate(() => document.activeElement.tagName)).toBe('H2');
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);
+
+  // From the keyboard the menu steps aside too: it holds the Tab key
+  // while open, so reading on from the heading would not work.
+  await structureTile.focus();
+  await page.keyboard.press('Enter');
+  await expect(panel).toBeVisible();
+  await panel.locator('.acc-structure-item').nth(1).focus();
+  await page.keyboard.press('Enter');
   await expect(panel).toBeHidden();
   await expect(page.locator('.acc-menu')).toBeHidden();
+  expect(await page.evaluate(() => document.activeElement.tagName)).toBe('H2');
+});
+
+// The reading fonts are files the page fetches on the first click. Each
+// test serves them from the repo and decides when they arrive.
+const holdFonts = async (page, { fail = false } = {}) => {
+  let release;
+  const released = new Promise((resolve) => { release = resolve; });
+  const files = { OpenDyslexic3: 'examples/fonts/OpenDyslexic3-Regular.ttf', AtkinsonHyperlegible: 'examples/fonts/AtkinsonHyperlegible-Regular.woff2', Lexend: 'examples/fonts/Lexend-Regular.woff2' };
+  await page.route('https://accessibleweb.pages.dev/fonts/**', async (route) => {
+    await released;
+    const name = Object.keys(files).find((key) => route.request().url().includes(key));
+    if (fail || !name) return route.abort();
+    return route.fulfill({ path: files[name], headers: { 'access-control-allow-origin': '*' } });
+  });
+  return release;
+};
+const pageFont = (page) => computed(page, '.hero-subtitle', 'fontFamily');
+
+test('a reading font changes the page once, when its file is in', async ({ page }) => {
+  const release = await holdFonts(page);
+  await page.goto('index.html');
+  await openMenu(page);
+  const before = await pageFont(page);
+
+  // The tile answers at once; the page keeps its type while the file loads,
+  // with no stand-in font in between.
+  await tile(page, 'dyslexia-font').click();
+  await expect(tile(page, 'dyslexia-font')).toHaveAttribute('aria-pressed', 'true');
+  await page.waitForTimeout(300);
+  expect(await pageFont(page)).toBe(before);
+  await expect(page.locator('html')).not.toHaveClass(/acc-readable-text/);
+
+  release();
+  await expect.poll(() => pageFont(page)).toContain('OpenDyslexic');
+  expect(await page.evaluate(() => document.fonts.check('1em "OpenDyslexic3"'))).toBe(true);
+
+  // Loaded once, a font is there at once the next time.
+  await tile(page, 'dyslexia-font').click();
+  expect(await pageFont(page)).toBe(before);
+  await tile(page, 'dyslexia-font').click();
+  expect(await pageFont(page)).toContain('OpenDyslexic');
+
+  // After a reload the saved font comes back, again in one step.
+  await page.reload();
+  await expect.poll(() => pageFont(page)).toContain('OpenDyslexic');
+});
+
+test('a reading font still loading gives way to a later choice, to off and to Reset', async ({ page }) => {
+  const release = await holdFonts(page);
+  await page.goto('index.html');
+  await openMenu(page);
+  const before = await pageFont(page);
+
+  // Dyslexia Font, then Readable Font twice (Lexend), all before any file is in.
+  await tile(page, 'dyslexia-font').click();
+  await tile(page, 'readable-text').click();
+  await tile(page, 'readable-text').click();
+  expect(await pageFont(page)).toBe(before);
+  release();
+  await expect.poll(() => pageFont(page)).toContain('Lexend');
+  await page.waitForTimeout(300);
+  expect(await pageFont(page)).toContain('Lexend');
+
+  // Off: the page has its own type back at once.
+  await tile(page, 'readable-text').click();
+  expect(await pageFont(page)).toBe(before);
+  await expect(page.locator('html')).not.toHaveClass(/acc-readable-text/);
+});
+
+test('switching a reading font off, or Reset, while its file loads leaves the page alone', async ({ page }) => {
+  const release = await holdFonts(page);
+  await page.goto('index.html');
+  await openMenu(page);
+  const before = await pageFont(page);
+
+  await tile(page, 'dyslexia-font').click();
+  await tile(page, 'dyslexia-font').click();
+  await tile(page, 'readable-text').click();
+  await page.locator('.acc-action-reset').click();
+  release();
+  await page.waitForTimeout(500);
+  expect(await pageFont(page)).toBe(before);
+  await expect(page.locator('html')).not.toHaveClass(/acc-readable-text/);
+  expect((await readStates(page))['readable-text']).toBeFalsy();
+});
+
+test('a reading font whose file cannot be fetched falls back to its stand-in fonts', async ({ page }) => {
+  const release = await holdFonts(page, { fail: true });
+  await page.goto('index.html');
+  await openMenu(page);
+  await tile(page, 'dyslexia-font').click();
+  release();
+  await expect.poll(() => pageFont(page)).toContain('Comic Sans MS');
+  await expect(page.locator('html')).toHaveClass(/acc-readable-text/);
 });
 
 test('Reading Guide has a 120px window with a line along each edge and follows the mouse', async ({ page }) => {

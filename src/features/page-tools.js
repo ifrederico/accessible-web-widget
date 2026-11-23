@@ -538,10 +538,15 @@ export const pageToolMethods = {
       button.textContent = options.indentByLevel && item.level
         ? `H${item.level} · ${item.label}`
         : item.label;
-      button.addEventListener('click', () => {
+      button.addEventListener('click', (event) => {
         this.closeReportPanel(this.structurePanel);
-        // Going to a place on the page: the menu steps aside as well.
-        if (this.activeMenuContainer) this.closeMenu(this.activeMenuContainer);
+        // With a mouse or a finger the menu stays where it is and the
+        // page moves behind it. From the keyboard (a click with no
+        // pointer behind it) the menu steps aside: it holds the Tab key
+        // while open, so reading on from the chosen place would not work.
+        if (event.detail === 0 && this.activeMenuContainer) {
+          this.closeMenu(this.activeMenuContainer);
+        }
         this.focusStructureTarget(item.element);
       });
       entry.appendChild(button);

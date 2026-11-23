@@ -473,6 +473,27 @@ export const coreFeatureMethods = {
       this.readableFontsLoaded.add(fontKey);
     },
 
+  // A promise that settles when the font file is in, or null when there
+  // is nothing to wait for (already loaded, no font file, old browser).
+  // A file that fails or takes over three seconds stops the wait, and
+  // the font's system stand-ins show instead.
+  whenReadableFontReady(fontKey) {
+      const face = READABLE_FONT_FACES[fontKey];
+      const fonts = typeof document !== 'undefined' ? document.fonts : null;
+      if (!face || !face.family || !fonts || typeof fonts.load !== 'function') return null;
+      if (!this.hasStyle(`acc-font-${fontKey}`)) return null;
+      const font = `1em "${face.family}"`;
+      try {
+        if (typeof fonts.check === 'function' && fonts.check(font)) return null;
+        return Promise.race([
+          Promise.resolve(fonts.load(font)).catch(() => {}),
+          new Promise((resolve) => setTimeout(resolve, 3000))
+        ]);
+      } catch {
+        return null;
+      }
+    },
+
   enableReadableText(value = false) {
       const choice = this.resolveReadableFontChoice(value);
       const feature = this.multiLevelFeatures?.['readable-text'];
@@ -519,7 +540,21 @@ export const coreFeatureMethods = {
           }
         `
       };
-      this.applyToolStyle({ ...config, enable: !!choice });
+      // The page changes type once: it keeps what it shows until the font
+      // file is in. Switching at once would show the font's system
+      // stand-in first and the font a moment later, two jumps for one
+      // click. A later choice, or Reset, cancels a switch still waiting.
+      const request = (this.readableFontRequest || 0) + 1;
+      this.readableFontRequest = request;
+      const apply = () => this.applyToolStyle({ ...config, enable: !!choice });
+      const ready = choice ? this.whenReadableFontReady(choice.key) : null;
+      if (!ready) {
+        apply();
+        return;
+      }
+      ready.then(() => {
+        if (this.readableFontRequest === request) apply();
+      });
     },
 
   pauseMotion(enable = false) {
@@ -1271,6 +1306,8 @@ export const coreFeatureMethods = {
       this.saveConfig({ states: {}, systemDefaults: {}, profileSnapshots: {} });
       this.activeColorFilterKey = null;
       this.unfilteredBodyBackground = null;
+      // Drops a reading font still waiting for its file.
+      this.readableFontRequest = (this.readableFontRequest || 0) + 1;
       Object.keys(this.multiLevelFeatures).forEach(key => {
         this.multiLevelFeatures[key].currentIndex = -1;
       });

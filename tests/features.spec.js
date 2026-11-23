@@ -179,8 +179,8 @@ test('Dyslexia Font has its own tile; Readable Font steps through the other two 
   await expect(page.locator('#acc-live-region')).toHaveText('Dyslexia Font On');
   let states = await readStates(page);
   expect(states['readable-text']).toBe('dyslexic');
-  expect(await page.evaluate(() =>
-    document.documentElement.classList.contains('acc-readable-text'))).toBe(true);
+  // The page changes once the font file is in (see combinations.spec.js).
+  await expect(page.locator('html')).toHaveClass(/acc-readable-text/);
   expect(await page.locator('main p').first().evaluate((element) => window.getComputedStyle(element).fontFamily))
     .toContain('OpenDyslexic');
   await expect(page.locator('.acc-reset-count')).toHaveText('1');
@@ -331,9 +331,11 @@ test('page structure panel lists headings and navigates to them', async ({ page 
   const items = panel.locator('.acc-structure-item');
   expect(await items.count()).toBeGreaterThan(0);
 
+  // Picking a place closes the window; the menu stays (see
+  // combinations.spec.js for the keyboard).
   await items.first().click();
   await expect(panel).toBeHidden();
-  await expect(page.locator('.acc-menu')).toBeHidden();
+  await expect(page.locator('.acc-menu')).toBeVisible();
 });
 
 test('page structure names landmarks in plain words, with their own names', async ({ page }) => {

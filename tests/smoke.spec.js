@@ -239,9 +239,11 @@ test('Line Height steps through 2, 2.5 and 3, with headings held tighter, then o
     await tile.click();
     await expect(tile).toHaveAttribute('aria-pressed', 'true');
     await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', String(index));
-    await expect(tile.locator('.acc-label')).toHaveText(`Line Height ${level}×`);
-    await expect(tile).toHaveAccessibleName(`Line Height: ${level}×`);
-    await expect(region).toHaveText(`Line Height: ${level}× On`);
+    // The name stays plain and the dots show the step; the step number
+    // is in the spoken name and the announcement.
+    await expect(tile.locator('.acc-label')).toHaveText('Line Height');
+    await expect(tile).toHaveAccessibleName(`Line Height: ${index + 1}`);
+    await expect(region).toHaveText(`Line Height: ${index + 1} On`);
     expect((await readStates(page))['line-spacing']).toBe(level);
     await expect.poll(() => lineRatio('.hero-subtitle')).toBeCloseTo(level, 1);
     // Three quarters of the level, so a large headline does not fly apart.
@@ -271,6 +273,7 @@ test('Letter Spacing steps through three levels and spaces words too', async ({ 
   await page.goto('index.html');
   await page.locator('.acc-toggle-btn').click();
   const tile = page.locator('.acc-btn[data-key="letter-spacing"]');
+  const region = page.locator('#acc-live-region');
   await expect(tile.locator('.acc-progress-dot')).toHaveCount(3);
 
   for (const level of [1, 2, 3]) {
@@ -278,6 +281,8 @@ test('Letter Spacing steps through three levels and spaces words too', async ({ 
     await expect(tile).toHaveAttribute('aria-pressed', 'true');
     await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', String(level - 1));
     await expect(tile.locator('.acc-label')).toHaveText('Letter Spacing');
+    await expect(tile).toHaveAccessibleName(`Letter Spacing: ${level}`);
+    await expect(region).toHaveText(`Letter Spacing: ${level} On`);
     expect((await readStates(page))['letter-spacing']).toBe(level);
     await expect.poll(async () => (await spacing()).letter).toBeCloseTo(0.12 * level, 2);
     await expect.poll(async () => (await spacing()).word).toBeCloseTo(0.16 * level, 2);
@@ -285,6 +290,8 @@ test('Letter Spacing steps through three levels and spaces words too', async ({ 
 
   await tile.click();
   await expect(tile).toHaveAttribute('aria-pressed', 'false');
+  await expect(tile).toHaveAccessibleName('Letter Spacing');
+  await expect(region).toHaveText('Letter Spacing Off');
   await expect(page.locator('html')).not.toHaveClass(/acc-letter-spacing/);
 });
 
@@ -316,15 +323,15 @@ test('Font Size tile cycles 110%, 125%, 150% and back to off, and persists', asy
   const baseSize = await readFontSize();
   expect(baseSize).toBeGreaterThan(0);
 
-  const levels = [{ percent: 110, value: 1.1 }, { percent: 125, value: 1.25 }, { percent: 150, value: 1.5 }];
-  for (const [index, { percent, value }] of levels.entries()) {
+  for (const [index, value] of [1.1, 1.25, 1.5].entries()) {
     await tile.click();
     await expect(tile).toHaveAttribute('aria-pressed', 'true');
     await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', String(index));
-    // The tile names its level, and so do the accessible name and the announcement.
-    await expect(tile.locator('.acc-label')).toHaveText(`Font Size ${percent}%`);
-    await expect(tile).toHaveAccessibleName(`Font Size: ${percent}%`);
-    await expect(region).toHaveText(`Font Size ${percent}%`);
+    // The name stays plain and the dots show the step; the step number
+    // is in the spoken name and the announcement.
+    await expect(tile.locator('.acc-label')).toHaveText('Font Size');
+    await expect(tile).toHaveAccessibleName(`Font Size: ${index + 1}`);
+    await expect(region).toHaveText(`Font Size: ${index + 1} On`);
     expect((await readStates(page))['text-scale']).toBe(value);
     await expect.poll(readFontSize).toBeCloseTo(baseSize * value, 0);
   }
@@ -361,7 +368,7 @@ test('a font size saved by the old slider snaps to the nearest level', async ({ 
   await page.locator('.acc-toggle-btn').click();
   const tile = page.locator('.acc-btn[data-key="text-scale"]');
   await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', '2');
-  await expect(tile).toHaveAccessibleName('Font Size: 150%');
+  await expect(tile).toHaveAccessibleName('Font Size: 3');
   // The next tap goes on from the snapped level: off.
   await tile.click();
   await expect(tile).toHaveAttribute('aria-pressed', 'false');
@@ -1207,17 +1214,17 @@ test('Text to Speech cycles normal, slow, fast, off and remembers the speed', as
   const lastSpoken = () => page.evaluate(() => window.__speakPayloads[window.__speakPayloads.length - 1]);
   // The demo page sets ttsRate: 0.9, which becomes the normal speed.
   const speeds = [
-    { key: 'normal', factor: 1, rate: 0.9 },
-    { key: 'slow', factor: 0.8, rate: 0.72 },
-    { key: 'fast', factor: 1.3, rate: 1.17 }
+    { key: 'normal', rate: 0.9 },
+    { key: 'slow', rate: 0.72 },
+    { key: 'fast', rate: 1.17 }
   ];
-  for (const [index, { key, factor, rate }] of speeds.entries()) {
+  for (const [index, { key, rate }] of speeds.entries()) {
     await tile.click();
     await expect(tile).toHaveAttribute('aria-pressed', 'true');
     await expect(tile.locator('.acc-progress-dot.active')).toHaveAttribute('data-level', String(index));
-    await expect(tile.locator('.acc-label')).toHaveText(`Text to Speech ${factor}×`);
-    await expect(tile).toHaveAccessibleName(`Text to Speech: ${factor}×`);
-    await expect(region).toHaveText(`Text to Speech: ${factor}× On`);
+    await expect(tile.locator('.acc-label')).toHaveText('Text to Speech');
+    await expect(tile).toHaveAccessibleName(`Text to Speech: ${index + 1}`);
+    await expect(region).toHaveText(`Text to Speech: ${index + 1} On`);
     expect((await readStates(page))['text-to-speech']).toBe(key);
     // The spoken cue plays at the new speed.
     expect(await lastSpoken()).toEqual({ text: 'Text to Speech On', rate });

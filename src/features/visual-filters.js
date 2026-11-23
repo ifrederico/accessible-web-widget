@@ -274,27 +274,14 @@ export const visualFilterMethods = {
       }
     },
 
-  // Tiles whose levels are numbers keep their name and show the level
-  // after it ("Font Size 125%"). Letter Spacing has no number worth
-  // showing, so its dots carry the level and the name stays as it is.
+  // Font Size, Line Height, Letter Spacing and Text to Speech step
+  // through an amount. Their tiles keep the plain name at every step and
+  // the dots show which step is on; people judge the amount on the page,
+  // not from a number. The dots are only visible, so the name a screen
+  // reader hears carries the step ("Font Size: 2").
   getLevelTileText(featureKey, index) {
-      if (featureKey === 'text-scale') {
-        const level = this.textScaleLevels?.[index];
-        return level ? `${Math.round(level * 100)}%` : '';
-      }
-      if (featureKey === 'text-to-speech') {
-        const choice = this.ttsSpeedChoices?.[index];
-        return choice ? `${choice.rate}×` : '';
-      }
-      if (featureKey === 'line-spacing') {
-        const level = this.lineSpacingLevels?.[index];
-        return level ? `${level}×` : '';
-      }
-      if (featureKey === 'letter-spacing') {
-        const level = this.letterSpacingLevels?.[index];
-        return level ? `${level}` : '';
-      }
-      return '';
+      const feature = this.multiLevelFeatures?.[featureKey];
+      return feature && index >= 0 && index < feature.levels ? String(index + 1) : '';
     },
 
   setLevelTileUI(menu, featureKey, index) {
@@ -309,17 +296,6 @@ export const visualFilterMethods = {
         button.setAttribute('data-acc-level-text', levelText);
       } else {
         button.removeAttribute('data-acc-level-text');
-      }
-      // The visible name carries the level too, kept in its own attribute
-      // so translateMenuUI() can rebuild it on a language switch.
-      const labelNode = button.querySelector('.acc-label');
-      if (labelNode) {
-        if (levelText && featureKey !== 'letter-spacing') {
-          labelNode.setAttribute('data-acc-suffix', levelText);
-        } else {
-          labelNode.removeAttribute('data-acc-suffix');
-        }
-        labelNode.innerText = this.getTranslatedText(labelNode, labelNode.innerText.trim());
       }
       const accessibleName = this.getTranslatedText(button);
       button.setAttribute('title', accessibleName);
@@ -611,10 +587,7 @@ export const visualFilterMethods = {
         // Contrast fixed at the old size may no longer be right.
         this.refreshSmartContrast({ rescan: true });
         this.setLevelTileUI(menu, featureKey, multiplier > 1 ? newIndex : -1);
-        const fontSize = this.translate('Font Size');
-        this.announce(multiplier > 1
-          ? `${fontSize} ${Math.round(multiplier * 100)}%`
-          : `${fontSize} ${this.translate('Off')}`);
+        this.announceFeatureState(button.getAttribute('aria-label'), multiplier > 1);
         return;
       }
 

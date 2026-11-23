@@ -313,6 +313,9 @@ class AccessibleWebWidget {
     this.readingGuideY = null;
     this.readingGuideListeners = null;
     this.readableFontsLoaded = new Set();
+    // Counts reading-font switches, so one still waiting for its font
+    // file gives way to a later choice.
+    this.readableFontRequest = 0;
 
     // Shadow DOM host for the widget UI
     this.shadowHost = null;

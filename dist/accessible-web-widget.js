@@ -7286,6 +7286,27 @@ var AccessibleWebWidget = (function () {
           this.readableFontsLoaded.add(fontKey);
         },
 
+      // A promise that settles when the font file is in, or null when there
+      // is nothing to wait for (already loaded, no font file, old browser).
+      // A file that fails or takes over three seconds stops the wait, and
+      // the font's system stand-ins show instead.
+      whenReadableFontReady(fontKey) {
+          const face = READABLE_FONT_FACES[fontKey];
+          const fonts = typeof document !== 'undefined' ? document.fonts : null;
+          if (!face || !face.family || !fonts || typeof fonts.load !== 'function') return null;
+          if (!this.hasStyle(`acc-font-${fontKey}`)) return null;
+          const font = `1em "${face.family}"`;
+          try {
+            if (typeof fonts.check === 'function' && fonts.check(font)) return null;
+            return Promise.race([
+              Promise.resolve(fonts.load(font)).catch(() => {}),
+              new Promise((resolve) => setTimeout(resolve, 3000))
+            ]);
+          } catch {
+            return null;
+          }
+        },
+
       enableReadableText(value = false) {
           const choice = this.resolveReadableFontChoice(value);
           const feature = this.multiLevelFeatures?.['readable-text'];
@@ -7332,7 +7353,21 @@ var AccessibleWebWidget = (function () {
           }
         `
           };
-          this.applyToolStyle({ ...config, enable: !!choice });
+          // The page changes type once: it keeps what it shows until the font
+          // file is in. Switching at once would show the font's system
+          // stand-in first and the font a moment later, two jumps for one
+          // click. A later choice, or Reset, cancels a switch still waiting.
+          const request = (this.readableFontRequest || 0) + 1;
+          this.readableFontRequest = request;
+          const apply = () => this.applyToolStyle({ ...config, enable: !!choice });
+          const ready = choice ? this.whenReadableFontReady(choice.key) : null;
+          if (!ready) {
+            apply();
+            return;
+          }
+          ready.then(() => {
+            if (this.readableFontRequest === request) apply();
+          });
         },
 
       pauseMotion(enable = false) {
@@ -8084,6 +8119,8 @@ var AccessibleWebWidget = (function () {
           this.saveConfig({ states: {}, systemDefaults: {}, profileSnapshots: {} });
           this.activeColorFilterKey = null;
           this.unfilteredBodyBackground = null;
+          // Drops a reading font still waiting for its file.
+          this.readableFontRequest = (this.readableFontRequest || 0) + 1;
           Object.keys(this.multiLevelFeatures).forEach(key => {
             this.multiLevelFeatures[key].currentIndex = -1;
           });
@@ -9781,27 +9818,14 @@ var AccessibleWebWidget = (function () {
           }
         },
 
-      // Tiles whose levels are numbers keep their name and show the level
-      // after it ("Font Size 125%"). Letter Spacing has no number worth
-      // showing, so its dots carry the level and the name stays as it is.
+      // Font Size, Line Height, Letter Spacing and Text to Speech step
+      // through an amount. Their tiles keep the plain name at every step and
+      // the dots show which step is on; people judge the amount on the page,
+      // not from a number. The dots are only visible, so the name a screen
+      // reader hears carries the step ("Font Size: 2").
       getLevelTileText(featureKey, index) {
-          if (featureKey === 'text-scale') {
-            const level = this.textScaleLevels?.[index];
-            return level ? `${Math.round(level * 100)}%` : '';
-          }
-          if (featureKey === 'text-to-speech') {
-            const choice = this.ttsSpeedChoices?.[index];
-            return choice ? `${choice.rate}×` : '';
-          }
-          if (featureKey === 'line-spacing') {
-            const level = this.lineSpacingLevels?.[index];
-            return level ? `${level}×` : '';
-          }
-          if (featureKey === 'letter-spacing') {
-            const level = this.letterSpacingLevels?.[index];
-            return level ? `${level}` : '';
-          }
-          return '';
+          const feature = this.multiLevelFeatures?.[featureKey];
+          return feature && index >= 0 && index < feature.levels ? String(index + 1) : '';
         },
 
       setLevelTileUI(menu, featureKey, index) {
@@ -9816,17 +9840,6 @@ var AccessibleWebWidget = (function () {
             button.setAttribute('data-acc-level-text', levelText);
           } else {
             button.removeAttribute('data-acc-level-text');
-          }
-          // The visible name carries the level too, kept in its own attribute
-          // so translateMenuUI() can rebuild it on a language switch.
-          const labelNode = button.querySelector('.acc-label');
-          if (labelNode) {
-            if (levelText && featureKey !== 'letter-spacing') {
-              labelNode.setAttribute('data-acc-suffix', levelText);
-            } else {
-              labelNode.removeAttribute('data-acc-suffix');
-            }
-            labelNode.innerText = this.getTranslatedText(labelNode, labelNode.innerText.trim());
           }
           const accessibleName = this.getTranslatedText(button);
           button.setAttribute('title', accessibleName);
@@ -10118,10 +10131,7 @@ var AccessibleWebWidget = (function () {
             // Contrast fixed at the old size may no longer be right.
             this.refreshSmartContrast({ rescan: true });
             this.setLevelTileUI(menu, featureKey, multiplier > 1 ? newIndex : -1);
-            const fontSize = this.translate('Font Size');
-            this.announce(multiplier > 1
-              ? `${fontSize} ${Math.round(multiplier * 100)}%`
-              : `${fontSize} ${this.translate('Off')}`);
+            this.announceFeatureState(button.getAttribute('aria-label'), multiplier > 1);
             return;
           }
 
@@ -10734,10 +10744,15 @@ var AccessibleWebWidget = (function () {
           button.textContent = options.indentByLevel && item.level
             ? `H${item.level} · ${item.label}`
             : item.label;
-          button.addEventListener('click', () => {
+          button.addEventListener('click', (event) => {
             this.closeReportPanel(this.structurePanel);
-            // Going to a place on the page: the menu steps aside as well.
-            if (this.activeMenuContainer) this.closeMenu(this.activeMenuContainer);
+            // With a mouse or a finger the menu stays where it is and the
+            // page moves behind it. From the keyboard (a click with no
+            // pointer behind it) the menu steps aside: it holds the Tab key
+            // while open, so reading on from the chosen place would not work.
+            if (event.detail === 0 && this.activeMenuContainer) {
+              this.closeMenu(this.activeMenuContainer);
+            }
             this.focusStructureTarget(item.element);
           });
           entry.appendChild(button);
@@ -11769,11 +11784,6 @@ var AccessibleWebWidget = (function () {
           const levelText = el.getAttribute("data-acc-level-text");
           if (levelText) {
             return `${this.translate(text)}: ${this.translate(levelText)}`;
-          }
-          // A tile's visible name followed by its level ("Font Size 125%").
-          const suffix = el.getAttribute("data-acc-suffix");
-          if (suffix) {
-            return `${this.translate(text)} ${suffix}`;
           }
           return this.translate(text);
         },
@@ -12971,6 +12981,9 @@ var AccessibleWebWidget = (function () {
         this.readingGuideY = null;
         this.readingGuideListeners = null;
         this.readableFontsLoaded = new Set();
+        // Counts reading-font switches, so one still waiting for its font
+        // file gives way to a later choice.
+        this.readableFontRequest = 0;
 
         // Shadow DOM host for the widget UI
         this.shadowHost = null;

@@ -556,11 +556,6 @@ export const uiMethods = {
       if (levelText) {
         return `${this.translate(text)}: ${this.translate(levelText)}`;
       }
-      // A tile's visible name followed by its level ("Font Size 125%").
-      const suffix = el.getAttribute("data-acc-suffix");
-      if (suffix) {
-        return `${this.translate(text)} ${suffix}`;
-      }
       return this.translate(text);
     },
 
