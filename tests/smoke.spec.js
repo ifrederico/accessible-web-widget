@@ -883,7 +883,7 @@ test('menu renders one tile grid with the group names kept for screen readers', 
   expect(keys).toEqual([
     'text-to-speech', 'text-scale', 'line-spacing', 'letter-spacing', 'bold-text', 'dyslexia-font', 'readable-text',
     'contrast-toggle', 'saturation-toggle', 'invert-colors',
-    'highlight-links', 'highlight-title', 'reading-aid', 'simple-layout', 'text-magnifier', 'tooltips', 'page-structure',
+    'highlight-links', 'reading-aid', 'simple-layout', 'text-magnifier', 'tooltips', 'page-structure',
     'hide-images', 'large-pointer', 'pause-motion', 'mute-sounds'
   ]);
 });

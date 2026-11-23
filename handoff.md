@@ -91,6 +91,8 @@ Every tile was tried alone, then every pair in both orders, every three, random 
 
 - **A reading font changes the page once.** The font file is fetched on the first click. The page used to switch to the font's system stand-in at once and to the font a moment later, two jumps. Now it keeps its own type until the file is in (three seconds at most, then the stand-ins show). The tile answers at once. A later choice, off, or Reset cancels a switch still waiting.
 
+- **The Highlight Title tile is gone** (owner's call, 2026-11-23: not needed). Its code, icon and its word in the 54 languages went with it. A saved `highlight-title` from an older version is ignored and cleared by Reset. Highlight Links stays.
+
 ## Other changes since the redesign
 
 - Tiles are square and the panel is 456px wide, the narrowest that keeps every English label on one line. Phones show two tiles per row.

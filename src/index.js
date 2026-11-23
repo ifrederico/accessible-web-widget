@@ -223,7 +223,6 @@ class AccessibleWebWidget {
         levels: this.readableFontTileKeys.length
       },
       { label: 'Highlight Links', key: 'highlight-links', icon: this.widgetIcons.highlightLinks },
-      { label: 'Highlight Title', key: 'highlight-title', icon: this.widgetIcons.highlightTitle },
       {
         label: 'Font Size',
         key: 'text-scale',

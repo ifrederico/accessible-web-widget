@@ -403,16 +403,6 @@ export const coreFeatureMethods = {
     this.applyToolStyle({ ...config, enable });
   },
 
-  highlightTitles(enable = false) {
-      const config = {
-        id: "highlight-title",
-        selector: "html",
-        childrenSelector: this.targetSelectors.HEADERS,
-        styles: { 'outline': `3px solid ${this.widgetTheme.primaryColor}`, 'outline-offset': '2px' }
-      };
-      this.applyToolStyle({ ...config, enable });
-    },
-
   // Map a persisted readable-text state to a font choice. Legacy configs
   // stored a boolean (true = the old single dyslexia font).
   resolveReadableFontChoice(value) {
@@ -1281,7 +1271,6 @@ export const coreFeatureMethods = {
   applyEnhancements() {
       const { states } = this.loadConfig();
       this.concealImages(states && states['hide-images']);
-      this.highlightTitles(states && states['highlight-title']);
       this.highlightLinks(states && states['highlight-links']);
       this.adjustLetterSpacing(states && states['letter-spacing']);
       this.adjustLineSpacing(states && states['line-spacing']);
@@ -1334,7 +1323,6 @@ export const coreFeatureMethods = {
         'acc-line-spacing',
         'acc-large-pointer',
         'acc-highlight-links',
-        'acc-highlight-title',
         'acc-readable-text',
         'acc-pause-motion',
         'acc-hide-images',
@@ -1355,7 +1343,6 @@ export const coreFeatureMethods = {
         'acc-line-spacing',
         'acc-large-pointer',
         'acc-highlight-links',
-        'acc-highlight-title',
         'acc-readable-text',
         'acc-pause-motion',
         'acc-hide-images',
