@@ -47,7 +47,9 @@
   --acc-hover-tint: #e7eaee;
   --acc-hover-tint-strong: #dfe3e8;
   --acc-menu-block-gap: var(--acc-menu-inline-gap);
-  border-radius: 1.75rem;
+  /* Round at the top, where the blue header is; nearly straight at the
+     bottom, where the light footer sits. */
+  border-radius: 1.75rem 1.75rem 0.75rem 0.75rem;
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.2);
   /* Clear notches and the home indicator when the host page opts into
      edge-to-edge layout (viewport-fit=cover); env() is 0 everywhere else. */

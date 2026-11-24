@@ -7,7 +7,7 @@ Written 2026-11-19.
 ## Where things stand
 
 - **`main` is version 1.7.0, released.** Dev tools are now off by default and need `data-acc-dev-tools` on the script tag (or `devTools: true`) plus `?acc-dev` in the URL. Issue #33 is closed. GitHub, the CDN, npm and the WordPress plugin directory all have 1.7.0.
-- **`dev` is ahead of `main`.** It holds the panel's new look: the blue `#0072e4`, 28px corners, 8px gap around the panel, a soft shadow onto the header, and 20px inside padding. The `dev` preview site builds from this branch.
+- **`dev` is ahead of `main`.** It holds the panel's new look: the blue `#0072e4`, 28px corners at the top and 12px at the bottom, 8px gap around the panel, a soft shadow onto the header, and 20px inside padding. The `dev` preview site builds from this branch.
 - **The menu redesign is built and on `dev`** (see below). All tests pass. It has not been tried with a real screen reader yet.
 
 ## Still to do from the 1.7.0 release
