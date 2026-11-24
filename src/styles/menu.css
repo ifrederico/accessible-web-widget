@@ -828,7 +828,7 @@
   z-index: 3;
   top: calc(var(--acc-menu-header-height) - 6px);
   inset-inline-end: 12px;
-  /* As wide as its two lines need; the "how long" step sets its own width. */
+  /* As wide as its lines need; the "how long" step sets its own width. */
   width: max-content;
   max-width: calc(100% - 24px);
   box-sizing: border-box;
@@ -858,6 +858,7 @@
   border-radius: 14px;
   background: transparent;
   text-align: start;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -869,7 +870,8 @@
   color: var(--acc-text-color) !important;
 }
 
-.acc-more-item .acc-label {
+.acc-more-item .acc-label,
+.acc-more-brand-name {
   flex: 1 1 auto;
   min-width: 0;
   font-size: 15px !important;

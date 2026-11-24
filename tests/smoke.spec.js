@@ -87,13 +87,19 @@ test('header holds the title, the more button and the close button', async ({ pa
   await expect(page.locator('.acc-menu-header button')).toHaveCount(2);
   await expect(page.locator('.acc-menu-header .acc-menu-close')).toBeVisible();
 
-  // The more button drops down Move widget and Hide widget; Escape
-  // closes the drop-down first and leaves the menu open.
+  // The more button drops down Move widget, Hide widget and, last, the
+  // project's link; Escape closes the drop-down first and leaves the
+  // menu open.
   const more = page.locator('.acc-menu-more');
   await expect(more).toHaveAttribute('aria-expanded', 'false');
   await more.click();
   await expect(more).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.locator('.acc-more-item')).toHaveCount(2);
+  await expect(page.locator('.acc-more-item')).toHaveCount(3);
+  const brand = page.locator('.acc-more-item').last();
+  await expect(brand).toHaveClass(/acc-more-brand/);
+  await expect(brand).toHaveText('AccessibleWeb');
+  await expect(brand).toHaveAttribute('href', 'https://accessibleweb.pages.dev/');
+  await expect(brand).toHaveAttribute('target', '_blank');
   await expect(page.locator('.acc-more-move')).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(page.locator('.acc-more-panel')).toBeHidden();
@@ -976,7 +982,11 @@ test('reset settings lives in footer instead of header button', async ({ page })
   const footerReset = page.locator('.acc-action-reset');
   await expect(footerReset).toHaveCount(1);
   await expect(footerReset).toBeVisible();
-  await expect(page.locator('.acc-footer-brand')).toBeVisible();
+  // The footer holds the statement only; the project's link is in the
+  // more drop-down.
+  await expect(page.locator('.acc-footer-statement')).toBeVisible();
+  await expect(page.locator('.acc-footer-brand')).toHaveCount(0);
+  await expect(page.locator('.acc-more-brand')).toHaveCount(1);
 });
 
 test('Hide widget asks for how long, hides for the visit, and can be undone from the menu', async ({ page }) => {
@@ -1139,6 +1149,9 @@ test('there is no Hide widget button when the site owner removed the floating bu
   await expect(page.locator('.acc-more-hide')).toHaveCount(0);
   await expect(page.locator('.acc-more-move')).toHaveCount(0);
   await expect(page.locator('.acc-menu-more')).toHaveCount(0);
+  // With no drop-down to hold it, the project's link stays in the footer.
+  await expect(page.locator('.acc-footer-brand')).toBeVisible();
+  await expect(page.locator('.acc-footer-statement')).toBeVisible();
 });
 
 test('the footer links to the accessibility statement, in the menu language', async ({ page }) => {
@@ -1165,6 +1178,9 @@ test('hideAttribution removes the footer link but keeps reset', async ({ page })
   await expect(page.locator('.acc-footer')).toHaveCount(0);
   await expect(page.locator('.acc-footer-brand')).toHaveCount(0);
   await expect(page.locator('.acc-footer-statement')).toHaveCount(0);
+  await expect(page.locator('.acc-more-brand')).toHaveCount(0);
+  await page.locator('.acc-menu-more').click();
+  await expect(page.locator('.acc-more-item')).toHaveCount(2);
 });
 
 test('the menu uses its own font, fetched from beside the script only once it opens', async ({ page }) => {

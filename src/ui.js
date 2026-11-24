@@ -652,6 +652,10 @@ export const uiMethods = {
                 ${this.widgetIcons.hideWidget}
                 <span class="acc-label">Hide widget</span>
               </button>
+              ${this.options.hideAttribution === true ? '' : `<a class="acc-more-item acc-more-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">
+                ${this.widgetIcons.externalLink}
+                <span class="acc-more-brand-name">AccessibleWeb</span>
+              </a>`}
             </div>
             <div id="acc-hide-panel" class="acc-hide-panel" hidden>
                 <div class="acc-hide-title">
@@ -725,7 +729,7 @@ export const uiMethods = {
           </div>
           </div>
           ${this.options.hideAttribution === true ? '' : `<div class="acc-footer">
-            <a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb</a>
+            ${this.isLauncherRemovedByOwner() ? '<a class="acc-footer-brand" href="https://accessibleweb.pages.dev/" target="_blank" rel="noopener noreferrer">AccessibleWeb</a>' : ''}
             <a class="acc-footer-statement" href="https://accessibleweb.pages.dev/statement" target="_blank" rel="noopener noreferrer"><span class="acc-label">Accessibility Statement</span></a>
           </div>`}
         </div>
@@ -871,6 +875,12 @@ export const uiMethods = {
           const morePanel = menu.querySelector('.acc-more-panel');
           if (morePanel && !morePanel.hidden && !e.target.closest('.acc-more-panel, .acc-menu-more')) {
             this.toggleMorePanel(menu, false, { restoreFocus: false });
+          }
+          // The project's link in the drop-down opens in a new tab; the
+          // drop-down closes behind it.
+          if (e.target.closest('.acc-more-brand')) {
+            this.toggleMorePanel(menu, false, { restoreFocus: false });
+            return;
           }
           const target = e.target.closest('[role="button"], button, .acc-overlay');
           if (!target) return;
@@ -1114,8 +1124,10 @@ export const uiMethods = {
       this.setLauncherHiddenByVisitor(false);
     },
 
-  // The header's "more" button opens a small drop-down holding Move widget
-  // and Hide widget.
+  // The header's "more" button opens a small drop-down holding Move widget,
+  // Hide widget and, last, the project's link (unless hideAttribution).
+  // Where the owner removed the floating button there is no drop-down,
+  // and the project's link stays in the footer.
   toggleMorePanel(menu, open, { restoreFocus = true } = {}) {
       const panel = menu?.querySelector('.acc-more-panel');
       const button = menu?.querySelector('.acc-menu-more');
