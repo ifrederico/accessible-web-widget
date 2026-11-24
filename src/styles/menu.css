@@ -83,6 +83,13 @@
   word-spacing: normal !important;
 }
 
+/* The icons are drawn as lines in the colour of their <svg>. The rule
+   above gives every element the text colour, the shapes inside an icon
+   too; they take the icon's colour back here. */
+.acc-menu svg * {
+  color: inherit;
+}
+
 /* The menu's own font, once it is registered (see ensureMenuFontLoaded).
    Its name is the widget's own, so it cannot clash with a font of the
    same family on the host page. */
@@ -153,6 +160,7 @@
 .acc-menu-header .acc-menu-close svg,
 .acc-menu-header .acc-menu-more svg {
   fill: var(--acc-text-color-inverted) !important;
+  color: var(--acc-text-color-inverted) !important;
   width: 24px !important;
   height: 24px !important;
   min-width: 24px !important;
@@ -201,12 +209,14 @@
 
 .acc-back-btn svg {
   fill: var(--acc-text-color-inverted) !important;
+  color: var(--acc-text-color-inverted) !important;
   width: 24px !important;
   height: 24px !important;
 }
 
 .acc-menu-header svg {
   fill: var(--acc-text-color-inverted) !important;
+  color: var(--acc-text-color-inverted) !important;
   width: 28px !important;
   height: 28px !important;
   min-width: 28px !important;
@@ -540,6 +550,7 @@
   width: 26px;
   height: 26px;
   fill: var(--acc-text-color);
+  color: var(--acc-text-color);
 }
 
 .acc-card-row .acc-card-row-label {
@@ -734,6 +745,7 @@
   max-height: 34px !important;
   flex-shrink: 0;
   fill: var(--acc-text-color);
+  color: var(--acc-text-color);
 }
 
 .acc-btn .acc-label {
@@ -762,6 +774,7 @@
 
 .acc-btn.acc-selected svg {
   fill: var(--acc-primary-color) !important;
+  color: var(--acc-primary-color) !important;
 }
 
 .acc-btn.acc-selected .acc-label {
@@ -853,6 +866,7 @@
   width: 24px !important;
   height: 24px !important;
   fill: var(--acc-text-color) !important;
+  color: var(--acc-text-color) !important;
 }
 
 .acc-more-item .acc-label {
@@ -877,6 +891,7 @@
 /* Hide widget, already hidden: shown as on. Clicking brings the button back. */
 .acc-more-hide[aria-pressed="true"] svg {
   fill: var(--acc-primary-color) !important;
+  color: var(--acc-primary-color) !important;
 }
 
 .acc-more-hide[aria-pressed="true"] .acc-label {
@@ -906,6 +921,7 @@
   width: 24px !important;
   height: 24px !important;
   fill: var(--acc-text-color) !important;
+  color: var(--acc-text-color) !important;
 }
 
 .acc-hide-title .acc-label {
@@ -1057,6 +1073,7 @@
   width: 22px !important;
   height: 22px !important;
   fill: var(--acc-text-color) !important;
+  color: var(--acc-text-color) !important;
 }
 
 .acc-action-reset .acc-reset-text {
@@ -1108,6 +1125,7 @@
 
 .acc-action-reset:disabled svg {
   fill: #5b6472 !important;
+  color: #5b6472 !important;
 }
 
 .acc-action-reset:disabled .acc-label {
@@ -1138,29 +1156,20 @@
 }
 
 /* Footer bar: the project's name, and its statement on what a widget
-   can and cannot do for a site. It takes the header's colour, so the
-   options read as a sheet lying between the two. */
+   can and cannot do for a site. It takes the sheet's light colour. */
 .acc-footer {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  position: relative;
-  padding: 4px calc(var(--acc-content-inline-padding) + 6px);
+  /* The two links sit together in the middle; they wrap, still centred,
+     where long translations do not fit on one line. */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 24px;
+  padding: 6px calc(var(--acc-content-inline-padding) + 6px);
   background: var(--acc-bg-color);
 }
 
-/* A faint line above the footer, as wide as the tiles: it stops short
-   of the panel's edges. */
-.acc-footer::before {
-  content: "";
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline: var(--acc-content-inline-padding);
-  height: 1px;
-  background: rgba(31, 41, 51, 0.1);
-}
 
 .acc-footer-brand,
 .acc-footer-statement {

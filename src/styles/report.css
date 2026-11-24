@@ -111,6 +111,7 @@
   width: 16px;
   height: 16px;
   fill: #2e7d32;
+  color: #2e7d32;
 }
 .acc-report-close {
   flex-shrink: 0;
@@ -140,6 +141,7 @@
   width: 20px;
   height: 20px;
   fill: var(--acc-text-color, #222222);
+  color: var(--acc-text-color, #222222);
 }
 .acc-report-content {
   flex: 1 1 auto;
@@ -396,9 +398,11 @@
   width: 18px;
   height: 18px;
   fill: #d5dbe3;
+  color: #d5dbe3;
 }
 .acc-report-copy.acc-report-copied svg {
   fill: #b7e3a8;
+  color: #b7e3a8;
 }
 @media (hover: hover) {
   .acc-report-copy:hover {
@@ -461,6 +465,7 @@
   width: 28px;
   height: 28px;
   fill: #ffffff;
+  color: #ffffff;
 }
 @media (max-width: 600px) {
   .acc-report-dialog {
