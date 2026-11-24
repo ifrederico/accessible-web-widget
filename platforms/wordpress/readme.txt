@@ -68,6 +68,7 @@ The bundled JavaScript is built from public, human-readable source code:
 * Page Structure names landmarks in plain words ("Navigation", "Main content", "Footer") and opens over the panel. The Accessibility Report, for administrators in developer mode, has a new layout with one card per result and a button to copy the element's code.
 * The panel and the floating button are now visible in Windows high-contrast themes.
 * Removed the Highlight Title tile. Highlight Links stays.
+* "Text to Speech" and "Simplify Layout" are now translated in Italian, French, German, Russian, Polish, Romanian, Dutch and Ukrainian; they were shown in English.
 * New menu texts in this version were translated by machine. Corrections from native speakers are welcome.
 
 = 1.7.0 =
