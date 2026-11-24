@@ -47,8 +47,9 @@ Rules the build must follow:
 - "Move widget" flips the floating button and the panel to the other side. It is remembered on the device.
 - "Hide widget" swaps the drop-down's two items for a step that asks for how long: this visit, one day, one week, or always, with Close and Hide. "Always" takes a second click, after a note saying the widget stays hidden until the visitor clears the site's data in their browser.
 - While the button is hidden, the menu still opens through the skip link (press Tab on the page) or `AccessibleWebWidget.instance.open()`. Under "more", Hide widget then shows as on, and clicking it brings the floating button back. `showButton()` does the same.
-- Reset (with a count) is one wide white button under the Language and Profiles card, above the tiles.
-- A footer bar is back, in the header's blue, with "AccessibleWeb" and "Accessibility Statement" in white. It is hidden with `hideAttribution`.
+- Reset (with a count) is one wide button under the Language and Profiles card, above the tiles. It is a pale tint of the primary blue (white where the browser cannot mix colours), a little bluer on hover.
+- The footer has "AccessibleWeb" and "Accessibility Statement" in dark text on the sheet's light grey, under a faint line as wide as the tiles. It is no longer blue (owner's trial, 2026-11-24: "I like the footer but don't love it", so it may change again). It is hidden with `hideAttribution`.
+- The header's blue goes a little darker from top to bottom (a 16% black shade laid over the primary colour, so it follows any theme and white text reads as well as before or better). The default `headerHeight` is 56px, down from 64px; a site that sets its own keeps it.
 - New words, translated in all 54 languages by machine and not checked by native speakers: "Hide widget", "Move widget", "This visit", "One day", "One week", "Always", "Hide", "Accessibility Statement", and the one-sentence "Always" note. The note is a full sentence, so it is the most likely to read badly in some languages.
 - The statement page's wording was drafted from the README and the disclaimer. It needs the owner's read-through.
 - The statement link points at the production site, where the page only exists after `dev` is merged.
@@ -97,12 +98,12 @@ Every tile was tried alone, then every pair in both orders, every three, random 
 
 ## Other changes since the redesign
 
-- Tiles are square and the panel is 456px wide, the narrowest that keeps every English label on one line. Phones show two tiles per row.
+- Tiles are 112px tall at every width (wider than tall) and the panel is 456px wide, the narrowest that keeps every English label on one line. Phones show two tiles per row.
 - Profiles are short rows, icon then name, two by two (one per row on phones).
 - The language list has a soft search field, a thin scrollbar and a fade at the bottom.
 
 - Menu icons are Phosphor Icons, Light weight (MIT), a little larger. Hide Images is that set's picture icon with a slash added by hand. The floating button keeps its Material icons.
-- Hover is a soft grey fill everywhere (tiles, Reset, rows). Blue is kept for options that are on and for keyboard focus. The theme's default `hoverColor` is now grey, and the customizer no longer sets one.
+- Hover is a soft grey fill everywhere (tiles, rows); Reset goes a little bluer. Blue is kept for options that are on and for keyboard focus. The theme's default `hoverColor` is now grey, and the customizer no longer sets one.
 - Text sizes: 17 for the title, 15 for rows and buttons, 13 for tile labels and small print. The search field stays 16 so iPhones do not zoom in on it.
 - Two font weights: semibold for the title and the name of anything you press, regular for everything else (values, notes, list choices, picked or not).
 - The panel's scrollbar is thin with no track where the system always shows scrollbars. This was checked in Chrome only, and has no automated test.

@@ -900,9 +900,9 @@ test('tiles sit three to a row at desktop width', async ({ page }) => {
   expect(boxes[2].x).toBeGreaterThan(boxes[1].x);
   expect(boxes[3].y).toBeGreaterThan(boxes[0].y + boxes[0].height - 1);
   expect(boxes[0].height).toBeGreaterThanOrEqual(112);
-  // Tiles are square, and the panel is wide enough that no English label
-  // breaks onto a second line.
-  expect(Math.abs(boxes[0].width - boxes[0].height)).toBeLessThan(1);
+  // Tiles are wider than tall, and the panel is wide enough that no
+  // English label breaks onto a second line.
+  expect(boxes[0].height).toBeLessThan(boxes[0].width);
   const wrapped = await page.locator('.acc-options .acc-btn .acc-label').evaluateAll((labels) => (
     labels.filter((label) => label.getClientRects().length > 1 || label.getBoundingClientRect().height > 22)
       .map((label) => label.textContent.trim())

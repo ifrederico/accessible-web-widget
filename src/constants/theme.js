@@ -23,7 +23,7 @@ export const WIDGET_THEME = {
       warningColor: '#f57c00', // Orange
       
       // Other UI properties
-      headerHeight: '64px',
+      headerHeight: '56px',
       borderRadius: '8px',
       buttonBorderRadius: '0.4rem',
       menuPosition: '', // optional 'left' | 'right'; empty follows the button position

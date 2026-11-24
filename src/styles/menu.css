@@ -10,10 +10,16 @@
   z-index: var(--acc-widget-z-index, 100000);
   overflow: hidden;
   /* The primary color shows through the content margins, framing the body
-     like a gate: header across the top, posts down both sides. */
+     like a gate: header across the top, posts down both sides. It goes a
+     little darker toward the bottom. The shade is laid over the colour,
+     so it follows any theme, and the lightest point is the primary
+     colour itself, so the title and the footer links read as well as
+     before or better. The header and footer are see-through to show it
+     as one run. */
   background: var(--acc-primary-color);
-  /* Wide enough for three square tiles whose longest English labels stay
-     on one line. */
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.16) calc(var(--acc-menu-header-height) + 1.75rem), rgba(0, 0, 0, 0.16) 100%);
+  /* Wide enough for three tiles whose longest English labels stay on one
+     line. */
   width: min(456px, calc(100vw - (var(--acc-menu-inline-gap, 12px) * 2)));
   display: flex;
   flex-direction: column;
@@ -91,7 +97,7 @@
   padding: 0 var(--acc-content-inline-padding);
   height: var(--acc-menu-header-height);
   font-weight: 600 !important;
-  background-color: var(--acc-primary-color) !important;
+  background-color: transparent !important;
 }
 
 .acc-menu-title {
@@ -629,8 +635,8 @@
    forced-colors mode, where shadows disappear. */
 .acc-btn {
   position: relative;
-  /* Square; a tile still grows if a long label wraps. */
-  aspect-ratio: 1 / 1;
+  /* Wider than tall, and the same height at every width; a tile still
+     grows if a long label wraps. */
   min-height: 112px;
   /* The same in every tile, so icons and labels line up along a row.
      The bottom keeps a strip free for the level dots. */
@@ -654,7 +660,6 @@
 /* Profile tiles are short rows, icon then name, two by two. Grey so they
    show on the white card. */
 .acc-btn.acc-profile-tile {
-  aspect-ratio: auto;
   min-height: 56px;
   padding: 8px 12px;
   flex-direction: row;
@@ -1037,6 +1042,8 @@
   padding: 6px 42px;
   border: 1px solid transparent;
   border-radius: 24px;
+  /* A pale tint of the primary colour (set below, where the browser can
+     mix colours; white otherwise). */
   background-color: var(--acc-card-bg) !important;
   box-shadow: 0 1px 2px rgba(31, 41, 51, 0.06);
   cursor: pointer;
@@ -1111,6 +1118,18 @@
   }
 }
 
+@supports (color: color-mix(in srgb, red 50%, transparent)) {
+  .acc-action-reset {
+    background-color: color-mix(in srgb, var(--acc-primary-color) 12%, var(--acc-card-bg)) !important;
+  }
+
+  @media (hover: hover) {
+    .acc-action-reset:not(:disabled):hover {
+      background-color: color-mix(in srgb, var(--acc-primary-color) 22%, var(--acc-card-bg)) !important;
+    }
+  }
+}
+
 .acc-action-reset:focus-visible {
   outline: var(--acc-focus-outline-width) solid var(--acc-focus-ring-color);
   outline-offset: var(--acc-focus-outline-offset);
@@ -1125,8 +1144,20 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 8px calc(var(--acc-content-inline-padding) + 6px);
-  background: var(--acc-primary-color);
+  position: relative;
+  padding: 4px calc(var(--acc-content-inline-padding) + 6px);
+  background: var(--acc-bg-color);
+}
+
+/* A faint line above the footer, as wide as the tiles: it stops short
+   of the panel's edges. */
+.acc-footer::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: var(--acc-content-inline-padding);
+  height: 1px;
+  background: rgba(31, 41, 51, 0.1);
 }
 
 .acc-footer-brand,
@@ -1139,7 +1170,7 @@
 
 .acc-footer-brand {
   font-weight: 600 !important;
-  color: var(--acc-text-color-inverted) !important;
+  color: var(--acc-text-color) !important;
 }
 
 .acc-footer-statement {
@@ -1152,7 +1183,7 @@
   font-size: 13px !important;
   font-weight: 600 !important;
   line-height: 1.2 !important;
-  color: var(--acc-text-color-inverted) !important;
+  color: var(--acc-text-color) !important;
 }
 
 /* Arrow after the link; it points the other way in right-to-left. */
@@ -1161,8 +1192,8 @@
   flex-shrink: 0;
   width: 6px;
   height: 6px;
-  border-top: 1.5px solid var(--acc-text-color-inverted);
-  border-inline-end: 1.5px solid var(--acc-text-color-inverted);
+  border-top: 1.5px solid var(--acc-text-color);
+  border-inline-end: 1.5px solid var(--acc-text-color);
   transform: rotate(45deg);
 }
 
@@ -1177,10 +1208,9 @@
   }
 }
 
-/* On the blue bar the usual blue focus ring would not show. */
 .acc-footer-brand:focus-visible,
 .acc-footer-statement:focus-visible {
-  outline: 2px solid var(--acc-text-color-inverted);
+  outline: 2px solid var(--acc-focus-ring-color);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -1395,10 +1425,8 @@
 
 /* Three tiles no longer fit below a ~380px panel (the viewport minus the
    8px gaps); long labels in some languages need the width. */
-/* Below this width three square tiles would be too narrow for the longer
-   labels to stay on one line, so the grid drops to two per row. Two
-   squares per row would be very tall, so the tiles go back to a fixed
-   height. */
+/* Below this width three tiles would be too narrow for the longer labels
+   to stay on one line, so the grid drops to two per row. */
 @media only screen and (max-width: 449px) {
   /* A narrow panel: tighter, so long translations fit. */
   .acc-action-reset {
@@ -1421,10 +1449,6 @@
   /* One profile per row, so the names stay on one line. */
   .acc-profiles-panel {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .acc-btn {
-    aspect-ratio: auto;
   }
 }
 

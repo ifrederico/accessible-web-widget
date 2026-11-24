@@ -124,6 +124,9 @@ test('Page Structure opens over the menu and closing it comes back to its tile',
   await structureTile.focus();
   await page.keyboard.press('Enter');
   await expect(panel).toBeVisible();
+  // The window moves focus to its Close button a moment after it opens;
+  // wait for that, so it does not take focus back from the item.
+  await expect(panel.locator('.acc-report-close')).toBeFocused();
   await panel.locator('.acc-structure-item').nth(1).focus();
   await page.keyboard.press('Enter');
   await expect(panel).toBeHidden();
