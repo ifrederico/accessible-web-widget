@@ -132,3 +132,17 @@
     }
 
   }
+
+  /* Windows high-contrast themes (forced colors): the system blanks the
+     blue disc and the shadow ring, which left a white figure on white.
+     The button gets an outline in the system's colours and the figure
+     takes the button text colour. */
+  @media (forced-colors: active) {
+    .acc-toggle-btn {
+      border: 2px solid ButtonText !important;
+    }
+
+    .acc-toggle-btn .acc-toggle-icon svg {
+      fill: ButtonText;
+    }
+  }

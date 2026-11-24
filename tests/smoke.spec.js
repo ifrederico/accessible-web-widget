@@ -1833,3 +1833,52 @@ test('saved choices from the old Contrast and High Contrast tiles still mean som
   expect(states['light-contrast']).toBeFalsy();
   expect(states['high-contrast-mode']).toBeFalsy();
 });
+
+
+test('high-contrast themes keep the icons, the step dots and the floating button visible', async ({ page }) => {
+  await page.emulateMedia({ forcedColors: 'active', colorScheme: 'light' });
+  await page.goto('index.html');
+  const launcher = page.locator('.acc-toggle-btn');
+  // The floating button has an edge and a dark figure, not white on white.
+  const button = await launcher.evaluate((el) => {
+    const figure = getComputedStyle(el.querySelector('.acc-toggle-icon svg'));
+    return { border: getComputedStyle(el).borderTopWidth, figure: figure.fill };
+  });
+  expect(button.border).toBe('2px');
+  expect(button.figure).not.toBe('rgb(255, 255, 255)');
+
+  await launcher.click();
+  await page.locator('.acc-btn[data-key="line-spacing"]').click();
+  const seen = await page.evaluate(() => {
+    const root = document.getElementById('acc-widget-host').shadowRoot;
+    const color = (selector) => getComputedStyle(root.querySelector(selector)).color;
+    const dots = [...root.querySelectorAll('.acc-btn[data-key="line-spacing"] .acc-progress-dot')].map((dot) => {
+      const style = getComputedStyle(dot);
+      return { border: style.borderTopWidth };
+    });
+    return {
+      close: color('.acc-menu-close svg'),
+      more: color('.acc-menu-more svg'),
+      tile: color('.acc-btn[data-key="text-scale"] svg'),
+      on: color('.acc-btn[data-key="line-spacing"] svg'),
+      title: color('.acc-menu-title .acc-label'),
+      dots
+    };
+  });
+  // Icons are no longer white on the light header, and the icon of an
+  // option that is on is drawn like the others.
+  expect(seen.close).not.toBe('rgb(255, 255, 255)');
+  expect(seen.more).toBe(seen.close);
+  expect(seen.on).toBe(seen.tile);
+  // Each dot has an edge; only the active one is filled with it (once
+  // its colour change has run).
+  expect(seen.dots.length).toBe(3);
+  expect(seen.dots.every((dot) => dot.border === '1px')).toBe(true);
+  await expect.poll(() => page.evaluate(() => {
+    const root = document.getElementById('acc-widget-host').shadowRoot;
+    return [...root.querySelectorAll('.acc-btn[data-key="line-spacing"] .acc-progress-dot')].filter((dot) => {
+      const style = getComputedStyle(dot);
+      return style.backgroundColor === style.borderTopColor;
+    }).map((dot) => dot.classList.contains('active'));
+  })).toEqual([true]);
+});

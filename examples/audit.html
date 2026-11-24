@@ -75,9 +75,9 @@
                     <article class="get-step-card">
                         <p class="get-step-number">Step 2</p>
                         <h2>Open your page with dev mode</h2>
-                        <p>Add <code>?acc-dev=true</code> to your page URL.</p>
+                        <p>Add <code>?acc-dev</code> to your page URL.</p>
                         <div class="implementation-code">
-                            <code tabindex="0">https://yourdomain.com/page?acc-dev=true</code>
+                            <code tabindex="0">https://yourdomain.com/page?acc-dev</code>
                             <button aria-label="Copy dev mode URL example" class="copy-btn">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round">
@@ -86,7 +86,7 @@
                                 </svg>
                             </button>
                         </div>
-                        <p>If your URL already has a <code>?</code>, append <code>&amp;acc-dev=true</code> instead.</p>
+                        <p>If your URL already has a <code>?</code>, append <code>&amp;acc-dev</code> instead.</p>
                     </article>
                 </div>
 
@@ -108,7 +108,7 @@
                     <article class="get-step-card">
                         <p class="get-step-number">Step 4</p>
                         <h2>Fix issues and disable dev mode</h2>
-                        <p>Use the findings to update your code, then remove <code>acc-dev=true</code> from the URL for normal browsing.</p>
+                        <p>Use the findings to update your code, then remove <code>acc-dev</code> from the URL for normal browsing.</p>
                         <p class="implementation-note get-step-hint"><strong>Important:</strong> dev mode is for testing only, not production use.</p>
                     </article>
                 </div>
@@ -193,19 +193,27 @@
             var tryDevButton = document.getElementById('try-dev-mode');
             if (!tryDevButton) return;
 
+            // Dev mode is on with ?acc-dev in the address, as the widget
+            // reads it: with no value, or any value but "false".
+            function devModeOn(url) {
+                if (!url.searchParams.has('acc-dev')) return false;
+                return url.searchParams.get('acc-dev').trim().toLowerCase() !== 'false';
+            }
+
             tryDevButton.addEventListener('click', function () {
                 var nextUrl = new URL(window.location.href);
-                var hasDevMode = nextUrl.searchParams.get('acc-dev') === 'true';
-                if (hasDevMode) {
-                    nextUrl.searchParams.delete('acc-dev');
-                } else {
-                    nextUrl.searchParams.set('acc-dev', 'true');
+                var turnOn = !devModeOn(nextUrl);
+                nextUrl.searchParams.delete('acc-dev');
+                if (turnOn) {
+                    // Written by hand to get a bare ?acc-dev, with no "=".
+                    var rest = nextUrl.searchParams.toString();
+                    nextUrl.search = rest ? rest + '&acc-dev' : 'acc-dev';
                 }
                 window.location.href = nextUrl.toString();
             });
 
             var currentUrl = new URL(window.location.href);
-            var hasDevMode = currentUrl.searchParams.get('acc-dev') === 'true';
+            var hasDevMode = devModeOn(currentUrl);
             tryDevButton.textContent = hasDevMode ? 'Disable dev mode' : 'Enable dev mode';
             tryDevButton.setAttribute('aria-pressed', hasDevMode ? 'true' : 'false');
 

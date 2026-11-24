@@ -1108,7 +1108,8 @@
   height: 22px;
   padding: 0 6px;
   border-radius: 11px;
-  background: var(--acc-text-color);
+  /* Blue, as everything that says "on" in the menu. */
+  background: var(--acc-primary-color);
   color: var(--acc-text-color-inverted) !important;
   flex-shrink: 0;
   font-size: 12px !important;
@@ -1542,5 +1543,66 @@
   .acc-card-row-chevron,
   .acc-text-adjust div[role="button"] {
     transition: none;
+  }
+}
+
+/* Windows high-contrast themes (forced colors). The system repaints text,
+   borders and backgrounds, but leaves an icon's own colours alone: the
+   white header icons vanished on a light theme and the dark tile icons
+   on a dark one. Icons take the system's text colour here. The level
+   dots are background-only, which the system blanks, so they are drawn
+   with a border and the active one filled. */
+@media (forced-colors: active) {
+  .acc-menu .acc-menu-header svg,
+  .acc-menu .acc-card-row-icon svg,
+  .acc-menu .acc-hide-title svg,
+  .acc-menu .acc-footer svg {
+    fill: CanvasText !important;
+    color: CanvasText !important;
+  }
+
+  .acc-menu .acc-btn svg,
+  .acc-menu .acc-btn.acc-selected svg,
+  .acc-menu .acc-menu-header button svg,
+  .acc-menu .acc-more-item svg,
+  .acc-menu .acc-more-hide[aria-pressed="true"] svg,
+  .acc-menu .acc-action-reset svg,
+  .acc-menu .acc-action-reset:disabled svg {
+    fill: ButtonText !important;
+    color: ButtonText !important;
+  }
+
+  .acc-menu a.acc-more-item svg {
+    fill: LinkText !important;
+    color: LinkText !important;
+  }
+
+  .acc-menu .acc-progress-dot {
+    forced-color-adjust: none;
+    box-sizing: border-box;
+    border: 1px solid ButtonText;
+    background-color: ButtonFace;
+  }
+
+  .acc-menu .acc-btn.acc-selected .acc-progress-dot:not(.active) {
+    background-color: ButtonFace;
+  }
+
+  .acc-menu .acc-progress-dot.active,
+  .acc-menu .acc-btn.acc-selected .acc-progress-dot.active {
+    background-color: ButtonText;
+  }
+
+  /* Shadows are gone, so the panel, its drop-down and the two buttons
+     of the Hide step get an edge. Outlines, so nothing moves. */
+  .acc-menu,
+  .acc-menu .acc-more-panel {
+    outline: 1px solid CanvasText;
+  }
+
+  .acc-menu .acc-hide-cancel:not(:focus-visible),
+  .acc-menu .acc-hide-confirm:not(:focus-visible) {
+    outline: 1px solid ButtonText;
+    outline-offset: -1px;
   }
 }

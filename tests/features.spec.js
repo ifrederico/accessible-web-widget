@@ -596,6 +596,34 @@ test('saved cycling levels are named in the configured language on load', async 
   await expectButtonName(page.locator('.acc-btn[data-key="saturation-toggle"]'), 'Saturación');
 });
 
+test('the audit page turns dev mode on and off with a bare ?acc-dev', async ({ page }) => {
+  // The audit engine from the repo, so the test needs no network.
+  await page.addInitScript(() => {
+    window.AccessibleWebWidgetOptions = { axeCoreUrl: '../platforms/wordpress/js/axe.min.js' };
+  });
+  await page.goto('audit.html');
+  const button = page.locator('#try-dev-mode');
+  await expect(button).toHaveText('Enable dev mode');
+  await expect(button).toHaveAttribute('aria-pressed', 'false');
+
+  await button.click();
+  await expect(page).toHaveURL(/audit\.html\?acc-dev$/);
+  await expect(button).toHaveText('Disable dev mode');
+  await expect(button).toHaveAttribute('aria-pressed', 'true');
+  // The widget reads the same address: its dev tiles are there.
+  await page.locator('.acc-toggle-btn').click();
+  await expect(page.locator('.acc-btn[data-key="accessibility-report"]')).toHaveCount(1);
+  await page.keyboard.press('Escape');
+
+  await button.click();
+  await expect(page).toHaveURL(/audit\.html$/);
+  await expect(button).toHaveText('Enable dev mode');
+
+  // The older ?acc-dev=true still counts as on.
+  await page.goto('audit.html?acc-dev=true');
+  await expect(button).toHaveText('Disable dev mode');
+});
+
 test('the report lists each result as a card that opens on its own, with code to copy', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   // The audit engine from the repo, so the test needs no network.

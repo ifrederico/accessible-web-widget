@@ -507,3 +507,22 @@
     height: 44px;
   }
 }
+
+/* Windows high-contrast themes: icons take the system's colours (see the
+   same rule in menu.css). */
+@media (forced-colors: active) {
+  .acc-report-panel svg {
+    fill: CanvasText !important;
+    color: CanvasText !important;
+  }
+
+  .acc-report-panel button svg {
+    fill: ButtonText !important;
+    color: ButtonText !important;
+  }
+
+  .acc-report-panel a svg {
+    fill: LinkText !important;
+    color: LinkText !important;
+  }
+}
