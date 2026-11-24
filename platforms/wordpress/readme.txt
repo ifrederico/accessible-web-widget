@@ -4,7 +4,7 @@ Tags: accessibility, a11y, widget, contrast, text-to-speech
 Requires at least: 5.0
 Tested up to: 7.1
 Requires PHP: 7.2
-Stable tag: 1.7.0
+Stable tag: 1.8.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -48,12 +48,27 @@ The bundled JavaScript is built from public, human-readable source code:
 * `js/axe.min.js` — axe-core 4.11.1 by Deque Systems, unmodified. Source repository: https://github.com/dequelabs/axe-core (MPL-2.0). Loaded only in developer mode, which is available to logged-in administrators who add `?acc-dev` to the page address.
 * `fonts/OpenDyslexic3-Regular.*` — OpenDyslexic by Abbie Gonzalez, https://opendyslexic.org/ (SIL OFL 1.1; see `fonts/LICENSE.txt`).
 * `fonts/inter-*.woff2` — Inter by The Inter Project Authors, https://github.com/rsms/inter (SIL OFL 1.1; see `fonts/LICENSE.txt`). The menu's own font, split by script.
+* The icons inside the widget script are Heroicons by Tailwind Labs, https://github.com/tailwindlabs/heroicons (MIT), in the panel, and Material Symbols by Google, https://github.com/google/material-design-icons (Apache 2.0), on the floating button.
 
 == Screenshots ==
 
 1. The Handrail panel open on a page — accessibility profiles, text-to-speech, and text controls.
 
 == Changelog ==
+
+= 1.8.0 =
+* A new look for the panel. The options are one grid of tiles, three per row (two on phones), with no "On" and "Off" words: a tile that is on turns blue and gets a check mark. Language and Profiles are two rows at the top that open in place, and one Reset button shows how many options are on.
+* The panel's text is set in the Inter font. It is bundled with the plugin and served from your own site, and is fetched only when a visitor opens the panel.
+* Contrast is one tile with three choices: Smart Contrast, which recolors only the text that is hard to read, Dark Contrast and Light Contrast. Light Contrast replaces the separate High Contrast tile.
+* Font Size is a tile with three steps (110%, 125%, 150%) instead of a slider; a size saved by the slider moves to the nearest step. Line Height and Letter Spacing have three steps each, and Line Height starts gentler than before. Text to Speech is the first tile, and tapping it again changes the reading speed.
+* New: Tooltips shows the hidden name of an icon button, or the description of a picture, in a large bubble on hover and on keyboard focus. Dyslexia Font has a tile of its own.
+* Visitors can move the floating button to the other side of the screen, or hide it for this visit, a day, a week or always, from the new "more" button (three dots) in the panel's header.
+* Options work better together: Dark Contrast with Simplify Layout, Font Size, Line Height and Letter Spacing under Simplify Layout, Smart Contrast with Invert Colors and Saturation, and profiles that share an option.
+* Hide Images keeps each picture's space, so the page does not jump, and leaves embedded frames such as maps and payment forms alone. Dark and Light Contrast keep text over a banner picture readable without covering the picture.
+* Page Structure names landmarks in plain words ("Navigation", "Main content", "Footer") and opens over the panel. The Accessibility Report, for administrators in developer mode, has a new layout with one card per result and a button to copy the element's code.
+* The panel and the floating button are now visible in Windows high-contrast themes.
+* Removed the Highlight Title tile. Highlight Links stays.
+* New menu texts in this version were translated by machine. Corrections from native speakers are welcome.
 
 = 1.7.0 =
 * Developer mode (the Annotations and Accessibility Report tools) is now available only to logged-in administrators. Before, any visitor could turn it on by adding `?acc-dev=true` to a page address, which also loaded the audit engine. Administrators turn it on as before, by adding `?acc-dev` or `?acc-dev=true` to the page address.

@@ -1,9 +1,12 @@
 /*!
- * AccessibleWeb Widget v1.7.0
+ * AccessibleWeb Widget v1.8.0
  * https://github.com/ifrederico/accessible-web-widget
  *
  * Copyright (c) 2025 ifrederico
  * Released under the MIT License
+ *
+ * Menu icons: Heroicons (MIT), Copyright (c) Tailwind Labs, Inc.
+ * Button icons: Material Symbols (Apache-2.0), Copyright Google LLC.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
  * See DISCLAIMER.md for important legal information.

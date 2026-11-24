@@ -32,7 +32,7 @@ It initializes on page load. No config needed.
 For production, pin a specific version — `@latest` ships new releases to your site without review:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.7.0/dist/accessible-web-widget.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/ifrederico/accessible-web-widget@1.8.0/dist/accessible-web-widget.min.js"></script>
 ```
 
 Also on npm for bundler setups:
@@ -178,7 +178,7 @@ Or with the `devTools` option:
 </script>
 ```
 
-Then add `?acc-dev` to the page URL (or `&acc-dev` if it already has a query string) when you want the tools on that visit. `?acc-dev=true` works too. Without both keys the widget shows no dev tools and never downloads axe-core. Before this version, `?acc-dev=true` turned developer mode on by itself on any site.
+Then add `?acc-dev` to the page URL (or `&acc-dev` if it already has a query string) when you want the tools on that visit. `?acc-dev=true` works too. Without both keys the widget shows no dev tools and never downloads axe-core. Before version 1.7.0, `?acc-dev=true` turned developer mode on by itself on any site.
 
 The audit engine (axe-core) loads from the jsDelivr CDN by default, pinned to a specific version with subresource integrity. To self-host it instead:
 

@@ -5,7 +5,7 @@ import { string } from 'rollup-plugin-string';
 
 const { version } = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8'));
 
-const banner = `/*!\n * AccessibleWeb Widget v${version}\n * https://github.com/ifrederico/accessible-web-widget\n *\n * Copyright (c) 2025 ifrederico\n * Released under the MIT License\n *\n * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.\n * See DISCLAIMER.md for important legal information.\n * This widget does not guarantee accessibility compliance.\n */`;
+const banner = `/*!\n * AccessibleWeb Widget v${version}\n * https://github.com/ifrederico/accessible-web-widget\n *\n * Copyright (c) 2025 ifrederico\n * Released under the MIT License\n *\n * Menu icons: Heroicons (MIT), Copyright (c) Tailwind Labs, Inc.\n * Button icons: Material Symbols (Apache-2.0), Copyright Google LLC.\n *\n * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.\n * See DISCLAIMER.md for important legal information.\n * This widget does not guarantee accessibility compliance.\n */`;
 
 // The wordpress.org directory forbids shipping code that references remote
 // executables, even as unreachable fallbacks. The WordPress build replaces
